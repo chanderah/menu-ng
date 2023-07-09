@@ -7,6 +7,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
 @NgModule({
     imports: [
         RouterModule.forRoot([
+            // { path: '', redirectTo: 'order', pathMatch: 'full' },
             {
                 path: '', component: AppLayoutComponent,
                 children: [
@@ -23,7 +24,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'error', component: NotfoundComponent },
-            { path: '**', redirectTo: '/error' },
+            { path: '**', redirectTo: '/' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
     ],
     exports: [RouterModule]

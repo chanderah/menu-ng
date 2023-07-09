@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 import { LayoutService } from './service/app.layout.service';
 
@@ -10,30 +11,57 @@ export class AppMenuComponent implements OnInit {
   isDevelopment: boolean = environment.production === false;
   model: any[] = [];
 
-  constructor(public layoutService: LayoutService) {}
+  constructor(
+    private router: Router,
+    public layoutService: LayoutService
+  ) {}
+
+  getMenu(url: any) {
+    console.log(url);
+    // this.router.navigate([url]);
+  }
 
   ngOnInit() {
     this.model = [
       {
         label: 'Order',
-        icon: 'pi pi-fw pi-briefcase',
-        expanded: true,
+        // icon: 'pi pi-fw pi-briefcase',
         items: [
           {
-            label: 'Menu',
             icon: 'pi pi-fw pi-check-square',
+            label: 'Menu',
+            routerLink: ['/'],
+            routerLinkActiveOptions: {
+              paths: 'exact',
+              queryParams: 'ignored',
+              matrixParams: 'ignored',
+              fragment: 'ignored'
+            },
+            // expanded: true,
             items: [
               {
                 label: 'All',
                 routerLink: ['/']
               },
               {
-                label: 'Dessert',
-                routerLink: ['/dessert']
+                label: 'Foods',
+                routerLink: ['/'],
+                queryParams: { menu: 'food' }
               },
               {
-                label: 'Snack',
-                routerLink: ['/snack']
+                label: 'Drinks',
+                routerLink: ['/'],
+                queryParams: { menu: 'drink' }
+              },
+              {
+                label: 'Desserts',
+                routerLink: ['/'],
+                queryParams: { menu: 'dessert' }
+              },
+              {
+                label: 'Snacks',
+                routerLink: ['/'],
+                queryParams: { menu: 'snack' }
               }
             ]
           },
@@ -46,7 +74,7 @@ export class AppMenuComponent implements OnInit {
       },
       {
         label: 'Menu Management',
-        items: [{ label: 'Edit Menu', icon: 'pi pi-fw pi-eye', routerLink: ['/menu'], badge: 'NEW' }]
+        items: [{ label: 'Edit Menu', icon: 'pi pi-fw pi-eye', routerLink: ['/menu/edit'], badge: 'NEW' }]
       }
     ];
 
