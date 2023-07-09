@@ -12,9 +12,10 @@ import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { ProductService } from './demo/service/product.service';
 import { AppLayoutModule } from './layout/app.layout.module';
+import { CartComponent } from './component/cart/cart.component';
 
 @NgModule({
-  declarations: [AppComponent, NotfoundComponent, SplashScreenComponent],
+  declarations: [AppComponent, NotfoundComponent, SplashScreenComponent, CartComponent],
   imports: [AppRoutingModule, AppLayoutModule, CommonModule],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },

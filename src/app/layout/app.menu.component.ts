@@ -7,6 +7,7 @@ import { LayoutService } from './service/app.layout.service';
   templateUrl: './app.menu.component.html'
 })
 export class AppMenuComponent implements OnInit {
+  isDevelopment: boolean = environment.production === false;
   model: any[] = [];
 
   constructor(public layoutService: LayoutService) {}
@@ -14,12 +15,38 @@ export class AppMenuComponent implements OnInit {
   ngOnInit() {
     this.model = [
       {
-        label: 'Home',
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
+        label: 'Order',
+        icon: 'pi pi-fw pi-briefcase',
+        expanded: true,
+        items: [
+          {
+            label: 'Menu',
+            icon: 'pi pi-fw pi-check-square',
+            items: [
+              {
+                label: 'All',
+                routerLink: ['/']
+              },
+              {
+                label: 'Dessert',
+                routerLink: ['/dessert']
+              },
+              {
+                label: 'Snack',
+                routerLink: ['/snack']
+              }
+            ]
+          },
+          {
+            label: 'Cart',
+            icon: 'pi pi-fw pi-shopping-cart',
+            routerLink: ['/cart']
+          }
+        ]
       },
       {
         label: 'Menu Management',
-        items: [{ label: 'All Menu', icon: 'pi pi-fw pi-eye', routerLink: ['/menu'], badge: 'NEW' }]
+        items: [{ label: 'Edit Menu', icon: 'pi pi-fw pi-eye', routerLink: ['/menu'], badge: 'NEW' }]
       }
     ];
 
@@ -193,8 +220,6 @@ export class AppMenuComponent implements OnInit {
       }
     ];
 
-    if (!environment.production) {
-      this.model = this.model.concat(demo);
-    }
+    if (this.isDevelopment) this.model = this.model.concat(demo);
   }
 }
