@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from './../../environments/environment';
 import { LayoutService } from './service/app.layout.service';
 
 @Component({
@@ -17,17 +18,12 @@ export class AppMenuComponent implements OnInit {
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
       },
       {
-        label: 'Prime Blocks',
-        items: [
-          { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW' },
-          {
-            label: 'All Blocks',
-            icon: 'pi pi-fw pi-globe',
-            url: ['https://www.primefaces.org/primeblocks-ng'],
-            target: '_blank'
-          }
-        ]
-      },
+        label: 'Menu Management',
+        items: [{ label: 'All Menu', icon: 'pi pi-fw pi-eye', routerLink: ['/menu'], badge: 'NEW' }]
+      }
+    ];
+
+    const demo = [
       {
         label: 'UI Components',
         items: [
@@ -196,5 +192,9 @@ export class AppMenuComponent implements OnInit {
         ]
       }
     ];
+
+    if (!environment.production) {
+      this.model = this.model.concat(demo);
+    }
   }
 }

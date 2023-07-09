@@ -3,7 +3,7 @@
     <img
       src="assets/layout/images/{{ layoutService.config.colorScheme === 'light' ? 'logo-dark' : 'logo-white' }}.svg"
       alt="logo" />
-    <span>MENU</span>
+    <span>Menu</span>
   </a>
 
   <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
@@ -21,10 +21,6 @@
     #topbarmenu
     class="layout-topbar-menu"
     [ngClass]="{ 'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible }">
-    <button class="p-link layout-topbar-button">
-      <i class="pi pi-calendar"></i>
-      <span>Calendar</span>
-    </button>
     <button class="p-link layout-topbar-button">
       <i class="pi pi-user"></i>
       <span>Profile</span>

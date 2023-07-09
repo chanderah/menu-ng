@@ -12,8 +12,7 @@
     "zip": "rm -f menu-ng.zip && zip -r menu-ng.zip dist/menu-ng",
     "format": "prettier --write \"**/**/*.{js,ts,tsx,html}\"",
     "git": "git add . && git commit -m",
-    "postgit": "git push --all",
-    "postinstall": "ng build"
+    "postgit": "git push --all"
   },
   "private": true,
   "dependencies": {
