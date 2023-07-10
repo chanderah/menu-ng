@@ -16,10 +16,10 @@ export class AppMenuComponent implements OnInit {
     public layoutService: LayoutService
   ) {}
 
-  getMenu(url: any) {
-    console.log(url);
-    // this.router.navigate([url]);
-  }
+  // getMenu(url: any) {
+  //   console.log(url);
+  //   // this.router.navigate([url]);
+  // }
 
   ngOnInit() {
     this.model = [
@@ -31,13 +31,6 @@ export class AppMenuComponent implements OnInit {
             icon: 'pi pi-fw pi-check-square',
             label: 'Menu',
             routerLink: ['/'],
-            routerLinkActiveOptions: {
-              paths: 'exact',
-              queryParams: 'ignored',
-              matrixParams: 'ignored',
-              fragment: 'ignored'
-            },
-            // expanded: true,
             items: [
               {
                 label: 'All',
@@ -56,6 +49,7 @@ export class AppMenuComponent implements OnInit {
               {
                 label: 'Desserts',
                 routerLink: ['/'],
+                routerLinkActiveOptions: { exact: true },
                 queryParams: { menu: 'dessert' }
               },
               {
@@ -249,5 +243,10 @@ export class AppMenuComponent implements OnInit {
     ];
 
     if (this.isDevelopment) this.model = this.model.concat(demo);
+  }
+
+  isActiveRoot() {
+    if (this.router.url.split("?")[0] === "/") return "active-route";
+    else return;
   }
 }
