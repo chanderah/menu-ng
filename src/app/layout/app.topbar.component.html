@@ -11,7 +11,13 @@
   </button>
 
   <button #topbarmenubutton class="p-link layout-topbar-menu-button pt-2" routerLink="/cart">
-    <i class="pi pi-shopping-cart p-text-secondary" severity="danger" [value]="'2'" pBadge style="font-size: 2rem"> </i>
+    <i
+      pBadge
+      [value]="getCartItems()"
+      class="pi pi-shopping-cart p-text-secondary"
+      severity="danger"
+      style="font-size: 2rem">
+    </i>
   </button>
 
   <!-- <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
