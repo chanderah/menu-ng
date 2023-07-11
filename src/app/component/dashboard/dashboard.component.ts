@@ -12,7 +12,7 @@ import { ImageDialogComponent } from './../dialog/image-dialog/image-dialog.comp
 export class DashboardComponent implements OnInit, OnDestroy {
   // @ViewChild('imageDialog') imageDialog!: ElementRef;
   // @ViewChild('pDialog') pDialog!: ElementRef;
-
+  hidePaginator: boolean = true;
   subscription!: Subscription;
   carouselResponsiveOptions: any[] = [
     {

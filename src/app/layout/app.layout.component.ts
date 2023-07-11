@@ -7,7 +7,8 @@ import { LayoutService } from './service/app.layout.service';
 
 @Component({
   selector: 'app-layout',
-  templateUrl: './app.layout.component.html'
+  templateUrl: './app.layout.component.html',
+  styleUrls: ['../../assets/styles/user.scss']
 })
 export class AppLayoutComponent implements OnDestroy {
   overlayMenuOpenSubscription: Subscription;
