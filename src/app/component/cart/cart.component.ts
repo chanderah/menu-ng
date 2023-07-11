@@ -11,11 +11,16 @@ export class CartComponent implements OnInit {
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
+    this.initData();
+  }
+
+  initData() {
     const data = this.cartService.getCart();
     if (data) this.cart = data;
   }
 
   onClear() {
     this.cartService.clear();
+    this.initData();
   }
 }
