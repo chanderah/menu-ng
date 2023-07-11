@@ -246,7 +246,7 @@ export class AppMenuComponent implements OnInit {
   }
 
   isActiveRoot() {
-    if (this.router.url.split("?")[0] === "/") return "active-route";
+    if (this.router.url.split('?')[0] === '/') return 'active-route';
     else return;
   }
 }

@@ -1,23 +1,25 @@
 import { CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CarouselModule } from 'primeng/carousel';
+import { ButtonModule } from 'primeng/button';
+import { DialogService } from 'primeng/dynamicdialog';
+import { RippleModule } from 'primeng/ripple';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CartComponent } from './component/cart/cart.component';
-import { SplashScreenComponent } from './component/splash-screen/splash-screen.component';
-import { NotfoundComponent } from './demo/components/notfound/notfound.component';
-import { CountryService } from './demo/service/country.service';
-import { CustomerService } from './demo/service/customer.service';
-import { EventService } from './demo/service/event.service';
-import { IconService } from './demo/service/icon.service';
-import { NodeService } from './demo/service/node.service';
-import { PhotoService } from './demo/service/photo.service';
-import { ProductService } from './demo/service/product.service';
+import { NotfoundComponent } from './component/notfound/notfound.component';
 import { AppLayoutModule } from './layout/app.layout.module';
+import { CartService } from './service/cart.service';
+import { CountryService } from './service/country.service';
+import { CustomerService } from './service/customer.service';
+import { EventService } from './service/event.service';
+import { IconService } from './service/icon.service';
+import { NodeService } from './service/node.service';
+import { PhotoService } from './service/photo.service';
+import { ProductService } from './service/product.service';
 
 @NgModule({
-  declarations: [AppComponent, NotfoundComponent, SplashScreenComponent, CartComponent],
-  imports: [AppRoutingModule, AppLayoutModule, CommonModule, CarouselModule],
+  declarations: [AppComponent, NotfoundComponent, CartComponent],
+  imports: [AppRoutingModule, AppLayoutModule, CommonModule, ButtonModule, RippleModule],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     CountryService,
@@ -26,7 +28,9 @@ import { AppLayoutModule } from './layout/app.layout.module';
     IconService,
     NodeService,
     PhotoService,
-    ProductService
+    ProductService,
+    DialogService,
+    CartService
   ],
   bootstrap: [AppComponent]
 })

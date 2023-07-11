@@ -2,7 +2,13 @@
   <div class="col-12">
     <div class="card">
       <h4>Your Cart</h4>
-      <p>This is cart page.</p>
+
+      <button *ngIf="cart.length > 0" (click)="onClear()">Clear</button>
+      <p *ngIf="cart.length === 0">Empty</p>
+
+      <div *ngFor="let item of cart">
+        <p>{{ item.name }}</p>
+      </div>
     </div>
   </div>
 
