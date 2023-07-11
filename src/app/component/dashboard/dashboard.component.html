@@ -2,13 +2,17 @@
   <div class="col-12">
     <div class="card" *ngIf="showFeatured">
       <h5>Featured</h5>
+      <!-- <div class="keen-slider" #sliderRef>
+        <div class="keen-slider__slide" *ngFor="let product of products">{{ product.name }}</div>
+      </div> -->
+
       <p-carousel
         [value]="products | slice: 0 : 6"
         [circular]="true"
         [responsiveOptions]="carouselResponsiveOptions"
         [autoplayInterval]="2000">
         <ng-template let-product pTemplate="item">
-          <div class="border-round my-10 text-center" style="border: 1px solid var(--surface-d)">
+          <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
             <div class="m-2 mb-3">
               <img
                 src="assets/images/product/{{ product.image }}"
@@ -20,11 +24,11 @@
             <div>
               <h5 class="my-2">{{ product.name }}</h5>
               <p class="mt-0 mb-3 text-primary">Rp{{ product.price }}</p>
-              <!-- <div class="my-3">
+              <div class="my-3">
                 <button pButton pRipple icon="pi pi-search" class="mr-2 p-button-rounded"></button>
                 <button pButton pRipple icon="pi pi-star-fill" class="mr-2 p-button-rounded p-button-success"></button>
                 <button pButton pRipple icon="pi pi-cog" class="p-button-rounded p-button-info"></button>
-              </div> -->
+              </div>
             </div>
           </div>
         </ng-template>

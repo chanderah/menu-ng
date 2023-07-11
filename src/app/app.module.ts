@@ -16,10 +16,11 @@ import { IconService } from './service/icon.service';
 import { NodeService } from './service/node.service';
 import { PhotoService } from './service/photo.service';
 import { ProductService } from './service/product.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, NotfoundComponent, CartComponent],
-  imports: [AppRoutingModule, AppLayoutModule, CommonModule, ButtonModule, RippleModule],
+  imports: [AppRoutingModule, AppLayoutModule, CommonModule, ButtonModule, RippleModule, BrowserAnimationsModule],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     CountryService,
