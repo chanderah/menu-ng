@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import KeenSlider, { KeenSliderInstance } from 'keen-slider';
+import { Carousel } from 'primeng/carousel';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { Product } from 'src/app/api/product';
@@ -47,6 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private dialogService: DialogService
   ) {
+    Carousel.prototype.onTouchMove = () => {};
     this.route.queryParams.subscribe(({ menu }) => {
       this.params = menu || 'root';
       if (!menu) this.showFeatured = true;
