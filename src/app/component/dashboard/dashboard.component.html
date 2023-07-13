@@ -3,11 +3,7 @@
     <div class="card" *ngIf="showFeatured">
       <h5>Featured</h5>
 
-      <p-carousel
-        [value]="products | slice: 0 : 6"
-        [circular]="true"
-        [responsiveOptions]="carouselResponsiveOptions"
-        [autoplayInterval]="2000">
+      <p-carousel [value]="products | slice: 0 : 6" [circular]="true" [responsiveOptions]="carouselResponsiveOptions">
         <ng-template let-product pTemplate="item">
           <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
             <div class="m-2 mb-3">

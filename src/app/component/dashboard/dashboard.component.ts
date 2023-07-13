@@ -48,18 +48,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private dialogService: DialogService
   ) {
-    Carousel.prototype.onTouchMove = () => {};
     this.route.queryParams.subscribe(({ menu }) => {
       this.params = menu || 'root';
       if (!menu) this.showFeatured = true;
       else this.showFeatured = false;
     });
+
+    Carousel.prototype.onTouchMove = () => {};
+    Carousel.prototype.onTouchStart = () => {
+      this.disableAutoPlay();
+    };
+    Carousel.prototype.onTouchEnd = () => {};
   }
 
   async ngOnInit() {
     await this.productService.getProducts().then((res) => {
       this.products = res;
     });
+  }
+
+  enableAutoPlay() {
+    Carousel.prototype.autoplayInterval = 2000;
+    Carousel.prototype.allowAutoplay = true;
+  }
+
+  disableAutoPlay() {
+    Carousel.prototype.allowAutoplay = false;
   }
 
   onClickImage(data: any) {
