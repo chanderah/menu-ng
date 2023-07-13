@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     Carousel.prototype.onTouchMove = () => {};
     Carousel.prototype.onTouchStart = () => {
-      this.disableAutoPlay();
+      // this.disableAutoPlay();
     };
     Carousel.prototype.onTouchEnd = () => {};
   }
