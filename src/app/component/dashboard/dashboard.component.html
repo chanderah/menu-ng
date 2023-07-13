@@ -2,9 +2,6 @@
   <div class="col-12">
     <div class="card" *ngIf="showFeatured">
       <h5>Featured</h5>
-      <!-- <div class="keen-slider" #sliderRef>
-        <div class="keen-slider__slide" *ngFor="let product of products">{{ product.name }}</div>
-      </div> -->
 
       <p-carousel
         [value]="products | slice: 0 : 6"
