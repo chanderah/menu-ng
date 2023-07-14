@@ -12,7 +12,8 @@
     "zip": "rm -f menu-ng.zip && zip -r menu-ng.zip dist/menu-ng",
     "format": "prettier --write \"**/**/*.{js,ts,tsx,html}\"",
     "git": "git add . && git commit -m",
-    "postgit": "git push --all"
+    "postgit": "git push --all",
+    "install-lib": "cd src/app/lib/angular-responsive-carousel && npm install"
   },
   "private": true,
   "dependencies": {
@@ -26,13 +27,9 @@
     "@angular/platform-browser": "^15.1.0",
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
-    "@ng-bootstrap/ng-bootstrap": "^15.1.0",
-    "@popperjs/core": "^2.11.6",
     "axios": "^1.4.0",
-    "bootstrap": "^5.2.3",
     "chart.js": "^3.3.2",
     "jose": "^4.11.2",
-    "keen-slider": "^6.8.6",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.40",
@@ -56,9 +53,9 @@
     "@angular/cli": "^15.1.0",
     "@angular/compiler-cli": "^15.1.0",
     "@angular/localize": "^15.1.0",
-    "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "@typescript-eslint/parser": "5.37.0",
+    "ng-packagr": "~15.0.3",
     "eslint": "^8.23.1",
     "prettier": "^3.0.0",
     "typescript": "~4.8.4"

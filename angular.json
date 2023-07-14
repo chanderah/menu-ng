@@ -101,6 +101,37 @@
           }
         }
       }
+    },
+    "angular-responsive-carousel": {
+      "projectType": "library",
+      "root": "lib/angular-responsive-carousel",
+      "sourceRoot": "lib/angular-responsive-carousel/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "lib/angular-responsive-carousel/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "lib/angular-responsive-carousel/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "lib/angular-responsive-carousel/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "lib/angular-responsive-carousel/src/test.ts",
+            "tsConfig": "lib/angular-responsive-carousel/tsconfig.spec.json",
+            "karmaConfig": "lib/angular-responsive-carousel/karma.conf.js"
+          }
+        }
+      }
     }
   },
   "defaultProject": "menu-ng",

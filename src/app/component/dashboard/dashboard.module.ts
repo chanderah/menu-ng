@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { CarouselModule } from 'primeng/carousel';
 import { ChartModule } from 'primeng/chart';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
@@ -21,6 +20,7 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import { IvyCarouselModule } from './../../lib/angular-responsive-carousel/src/lib/carousel.module';
 import { DashboardsRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
@@ -50,7 +50,7 @@ import { DashboardComponent } from './dashboard.component';
     ConfirmPopupModule,
     ToastModule,
     DialogModule,
-    CarouselModule
+    IvyCarouselModule
   ],
   declarations: [DashboardComponent]
 })

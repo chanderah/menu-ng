@@ -2,21 +2,38 @@
   <div class="col-12">
     <div class="card" *ngIf="showFeatured">
       <h5>Featured</h5>
-
-      <p-carousel
-        [value]="products | slice: 0 : 6"
-        [circular]="true"
-        [responsiveOptions]="carouselResponsiveOptions"
-        [autoplayInterval]="2000">
-        <ng-template let-product pTemplate="item">
+      <carousel>
+        <div class="carousel-cell" *ngFor="let product of products">
+          <img src="assets/images/product/{{ product.image }}" [alt]="product.name" class="shadow-4" />
+          <!-- width="100%"
+            height="auto"  -->
+        </div>
+      </carousel>
+      <!-- <carousel #carousel [loop]="true"> -->
+      <!-- <carousel #carousel [height]="220" [loop]="true" objectFit="contain">
+        <div class="carousel-cell" *ngFor="let product of products">
           <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
             <div class="m-2 mb-3">
               <img
                 src="assets/images/product/{{ product.image }}"
                 [alt]="product.name"
-                (click)="onClickImage(product)"
                 class="shadow-4"
-                width="100%" />
+                width="100%"
+                height="auto" />
+            </div>
+            <div>
+              <h5 class="my-2">{{ product.name }}</h5>
+              <p class="mb-3 text-primary">Rp{{ product.price }}</p>
+            </div>
+          </div>
+        </div>
+      </carousel> -->
+
+      <!-- <carousel [pauseOnHover]="true">
+        <div class="carousel-cell" *ngFor="let product of products | slice: 0 : 6" (click)="onClickImage(product)">
+          <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
+            <div class="m-2 mb-3">
+              <img src="assets/images/product/{{ product.image }}" [alt]="product.name" class="shadow-4" width="100%" />
             </div>
             <div>
               <h5 class="my-2">{{ product.name }}</h5>
@@ -28,8 +45,8 @@
               </div>
             </div>
           </div>
-        </ng-template>
-      </p-carousel>
+        </div>
+      </carousel> -->
     </div>
   </div>
 </div>
