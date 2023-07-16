@@ -1,46 +1,11 @@
 <div class="grid">
   <div class="col-12">
-    <div class="card" *ngIf="params === 'root'">
+    <!-- <div class="card" *ngIf="params === 'root' && featured.length > 0"> -->
+    <div class="card" *ngIf="featuredProducts.length > 0">
       <h5>Featured</h5>
 
-      <owl-carousel-o [options]="customOptions" (change)="getData($event)">
-        <ng-container *ngFor="let slide of images" #owlcontainer>
-          <ng-template carouselSlide>
-            <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
-              <div class="m-2 mb-3">
-                <img class="shadow-4" [src]="slide.path" [alt]="slide.id" [title]="slide.title" />
-              </div>
-              <div class="details">
-                <h5 class="my-2">Product Name</h5>
-                <p class="mt-0 mb-3 text-primary">Rp120000</p>
-              </div>
-            </div>
-          </ng-template>
-        </ng-container>
-      </owl-carousel-o>
-
-      <!-- <carousel
-        [itemsPerSlide]="1"
-        [singleSlideOffset]="singleSlideOffset"
-        [noWrap]="noWrap"
-        (slideRangeChange)="gotRangeChange()"
-        [showIndicators]="false"
-        [interval]="2000">
-        <slide class="animated fadeIn" *ngFor="let img of imagesArray; let i = index">
-          <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
-            <div class="m-2 mb-3">
-              <img src="{{ img }}" alt="bla" class="shadow-4" width="100%" />
-            </div>
-            <div>
-              <h5 class="my-2">Product Name</h5>
-              <p class="mt-0 mb-3 text-primary">Rp120000</p>
-            </div>
-          </div>
-        </slide>
-      </carousel> -->
-
-      <!-- <p-carousel
-        [value]="products | slice: 0 : 6"
+      <p-carousel
+        [value]="featuredProducts"
         [circular]="true"
         [responsiveOptions]="carouselResponsiveOptions"
         [autoplayInterval]="2000">
@@ -65,7 +30,26 @@
             </div>
           </div>
         </ng-template>
-      </p-carousel> -->
+      </p-carousel>
+      <!-- <owl-carousel-o class="owlCarousel" [options]="owlOptions" #owlCarousel>
+        <ng-container *ngFor="let data of featuredProducts">
+          <ng-template carouselSlide>
+            <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
+              <div class="m-2 mb-3">
+                <img
+                  src="assets/images/product/{{ data.image }}"
+                  [alt]="data.name"
+                  (click)="onClickImage(data)"
+                  class="shadow-4" />
+              </div>
+              <div class="details">
+                <h5 class="my-2">{{ data.name }}</h5>
+                <p class="mt-0 mb-3 text-primary">Rp{{ data.price }}</p>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o> -->
     </div>
   </div>
 </div>

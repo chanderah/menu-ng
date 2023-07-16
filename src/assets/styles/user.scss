@@ -1,6 +1,6 @@
 :host ::ng-deep {
-  // .card {
-  //   display: none;
+  // .owl-carousel {
+  //   max-height: 220px;
   // }
 
   // .p-carousel-next {
@@ -30,13 +30,14 @@
   //   content: 'active center';
   // }
 
-  .details {
-    display: none;
-  }
+  // .details {
+  //   // display: none;
+  //   display: block;
+  // }
 
-  .owl-item.active.center .details {
-    display: block;
-  }
+  // .owl-item.active.center .details {
+  //   display: block;
+  // }
 
   // .owl-item.active.center .details {
   //   display: block;
