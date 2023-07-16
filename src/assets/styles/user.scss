@@ -16,4 +16,38 @@
   // .p-carousel-indicators {
   //   display: none !important;
   // }
+
+  // .carouse-item active div {
+  //   display: none;
+  // }
+
+  // owl-item ng-tns-c19-61 ng-trigger ng-trigger-autoHeight active center ng-star-inserted
+  // .owl-carousel .owl-item {
+  //   display: none !important;
+  // }
+
+  // .owl-item.active.center > div:after {
+  //   content: 'active center';
+  // }
+
+  .details {
+    display: none;
+  }
+
+  .owl-item.active.center .details {
+    display: block;
+  }
+
+  // .owl-item.active.center .details {
+  //   display: block;
+  // }
+
+  // .owl-item.active.center > div {
+  //   #details {
+  //     display: unset;
+  //   }
+  // }
+  // .aaa {
+  //   display: none;
+  // }
 }

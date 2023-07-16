@@ -3,14 +3,14 @@
     <div class="card" *ngIf="params === 'root'">
       <h5>Featured</h5>
 
-      <owl-carousel-o [options]="customOptions" #owlCar>
-        <ng-container *ngFor="let slide of images">
+      <owl-carousel-o [options]="customOptions" (change)="getData($event)">
+        <ng-container *ngFor="let slide of images" #owlcontainer>
           <ng-template carouselSlide>
             <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
               <div class="m-2 mb-3">
                 <img class="shadow-4" [src]="slide.path" [alt]="slide.id" [title]="slide.title" />
               </div>
-              <div>
+              <div class="details">
                 <h5 class="my-2">Product Name</h5>
                 <p class="mt-0 mb-3 text-primary">Rp120000</p>
               </div>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -14,7 +14,7 @@ import { ImageDialogComponent } from './../dialog/image-dialog/image-dialog.comp
 export class DashboardComponent implements OnInit {
   // @ViewChild('imageDialog') imageDialog!: ElementRef;
   // @ViewChild('carousel') carousel!: ElementRef;
-  @ViewChild('sliderRef') sliderRef!: ElementRef;
+  // @ViewChild('owl') owl!: ElementRef;
 
   subscription!: Subscription;
   params!: object | string;
@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
     autoplay: true,
     center: true,
     dots: false,
-    stagePadding: 50,
+    stagePadding: 20,
     autoplaySpeed: 1000,
     autoplayTimeout: 2000,
     autoplayHoverPause: true,
@@ -63,6 +63,9 @@ export class DashboardComponent implements OnInit {
     this.images = result;
   }
 
+  getData(e: any) {
+    console.log(e);
+  }
   onClickImage(data: any) {
     this.dialogService
       .open(ImageDialogComponent, {
