@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CartComponent } from './component/cart/cart.component';
 import { NotfoundComponent } from './component/notfound/notfound.component';
+import { TryComponent } from './component/try/try.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 
 @NgModule({
@@ -16,6 +17,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                     { path: 'documentation', loadChildren: () => import('./component/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'pages', loadChildren: () => import('./component/pages/pages.module').then(m => m.PagesModule) },
 
+                    { path: 'try', component: TryComponent },
                     { path: 'cart', component: CartComponent }
                 ]
             },

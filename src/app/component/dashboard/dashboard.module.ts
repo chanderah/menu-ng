@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { NgxTinySliderModule } from 'ngx-tiny-slider';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -51,7 +52,8 @@ import { DashboardComponent } from './dashboard.component';
     ConfirmPopupModule,
     ToastModule,
     DialogModule,
-    CarouselModule
+    CarouselModule,
+    NgxTinySliderModule
   ],
   declarations: [DashboardComponent]
 })

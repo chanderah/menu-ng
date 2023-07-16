@@ -1,5 +1,6 @@
 import { CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { DialogService } from 'primeng/dynamicdialog';
 import { RippleModule } from 'primeng/ripple';
@@ -16,10 +17,10 @@ import { IconService } from './service/icon.service';
 import { NodeService } from './service/node.service';
 import { PhotoService } from './service/photo.service';
 import { ProductService } from './service/product.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TryComponent } from './component/try/try.component';
 
 @NgModule({
-  declarations: [AppComponent, NotfoundComponent, CartComponent],
+  declarations: [AppComponent, NotfoundComponent, CartComponent, TryComponent],
   imports: [AppRoutingModule, AppLayoutModule, CommonModule, ButtonModule, RippleModule, BrowserAnimationsModule],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },

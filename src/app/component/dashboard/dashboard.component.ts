@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -17,29 +17,11 @@ export class DashboardComponent implements OnInit {
 
   owlOptions!: OwlOptions;
   featuredProducts = [] as Product[];
-  carouselResponsiveOptions: any[] = [
-    {
-      breakpoint: '1024px',
-      numVisible: 6,
-      numScroll: 3
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 6,
-      numScroll: 3
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1,
-      numScroll: 1
-    }
-  ];
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private dialogService: DialogService,
-    private ref: ChangeDetectorRef // private deviceService: DeviceDetectorService
+    private dialogService: DialogService
   ) {
     this.route.queryParams.subscribe(({ menu }) => (this.params = menu || 'root'));
   }
@@ -74,9 +56,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  getData(e: any) {
-    console.log(e);
-  }
   onClickImage(data: any) {
     this.dialogService
       .open(ImageDialogComponent, {
