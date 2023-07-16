@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-// import { CarouselModule } from 'ngx-owl-carousel-o';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { ButtonModule } from 'primeng/button';
-import { CarouselModule } from 'primeng/carousel';
 import { ChartModule } from 'primeng/chart';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
@@ -52,7 +51,6 @@ import { DashboardComponent } from './dashboard.component';
     ConfirmPopupModule,
     ToastModule,
     DialogModule,
-    // CarouselModule,
     CarouselModule
   ],
   declarations: [DashboardComponent]

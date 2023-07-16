@@ -20,13 +20,13 @@ export class DashboardComponent implements OnInit {
   carouselResponsiveOptions: any[] = [
     {
       breakpoint: '1024px',
-      numVisible: 3,
+      numVisible: 6,
       numScroll: 3
     },
     {
       breakpoint: '768px',
-      numVisible: 2,
-      numScroll: 2
+      numVisible: 6,
+      numScroll: 3
     },
     {
       breakpoint: '560px',
@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit {
       numScroll: 1
     }
   ];
+
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
