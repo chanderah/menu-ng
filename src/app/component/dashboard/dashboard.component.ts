@@ -39,11 +39,12 @@ export class DashboardComponent implements OnInit {
         autoplayHoverPause: true,
         autoplayMouseleaveTimeout: 1500,
         margin: 0,
-        nav: true,
-        navText: [
-          '<i class="pi pi-angle-left" aria-hidden="true"></i>',
-          '<i class="pi pi-angle-right" aria-hidden="true"></i>'
-        ],
+        // nav: true,
+        // navText: ['Previous', 'Next'],
+        // navText: [
+        //   '<i class="pi pi-fw pi-angle-left" aria-hidden="true"></i>',
+        //   '<i class="pi pi-fw pi-angle-right" aria-hidden="true"></i>'
+        // ],
         navSpeed: 500,
         autoHeight: true,
         autoWidth: true,
