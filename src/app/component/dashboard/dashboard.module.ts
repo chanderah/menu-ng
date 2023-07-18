@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -22,6 +23,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { DashboardsRoutingModule } from './dashboard-routing.module';
+
 import { DashboardComponent } from './dashboard.component';
 
 @NgModule({
@@ -50,7 +52,8 @@ import { DashboardComponent } from './dashboard.component';
     ConfirmPopupModule,
     ToastModule,
     DialogModule,
-    CarouselModule
+    CarouselModule,
+    NgxUsefulSwiperModule
   ],
   declarations: [DashboardComponent]
 })

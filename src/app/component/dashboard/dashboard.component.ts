@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -11,7 +11,7 @@ import { ImageDialogComponent } from './../dialog/image-dialog/image-dialog.comp
   templateUrl: './dashboard.component.html'
   // styleUrls: ['../../../../node_modules/keen-slider/keen-slider.min.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   subscription!: Subscription;
   params!: object | string;
 

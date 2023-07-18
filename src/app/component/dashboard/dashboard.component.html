@@ -2,7 +2,29 @@
   <div class="col-12">
     <div class="card" *ngIf="featuredProducts.length > 0">
       <h5>Featured</h5>
-      <owl-carousel-o class="owlCarousel" [options]="owlOptions" #owlCarousel>
+
+      <my-component>
+        <swiper [config]="config">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">Slide 1</div>
+            <div class="swiper-slide">Slide 2</div>
+            <div class="swiper-slide">Slide 3</div>
+            <div class="swiper-slide">Slide 4</div>
+            <div class="swiper-slide">Slide 5</div>
+            <div class="swiper-slide">Slide 6</div>
+            <div class="swiper-slide">Slide 7</div>
+            <div class="swiper-slide">Slide 8</div>
+            <div class="swiper-slide">Slide 9</div>
+            <div class="swiper-slide">Slide 10</div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+          <!-- Add Arrows -->
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </swiper>
+      </my-component>
+      <!-- <owl-carousel-o class="owlCarousel" [options]="owlOptions" #owlCarousel>
         <ng-container *ngFor="let data of featuredProducts">
           <ng-template carouselSlide>
             <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
@@ -20,7 +42,7 @@
             </div>
           </ng-template>
         </ng-container>
-      </owl-carousel-o>
+      </owl-carousel-o> -->
 
       <!-- <p-carousel
           [value]="featuredProducts"
