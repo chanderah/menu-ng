@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Product } from 'src/app/api/product';
+import { Product } from 'src/app/interface/product';
 import { CartService } from 'src/app/service/cart.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { CartService } from 'src/app/service/cart.service';
             <img
                 #imageDialog
                 [alt]="product.name"
-                src="assets/images/product/{{ product.image }}"
+                src="assets/demo/images/product/{{ product.image }}"
                 class="shadow-4"
                 width="100%" />
             <div>
@@ -42,8 +42,6 @@ export class ImageDialogComponent implements OnInit {
     }
 
     addToCart(data: any) {
-        // console.log(data);
         const res = this.cartService.addToCart(data);
-        // console.log(res);
     }
 }

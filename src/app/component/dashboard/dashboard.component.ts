@@ -1,12 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/productservice';
-import { ImageDialogComponent } from './../dialog/image-dialog/image-dialog.component';
-
-// import Swiper core and required components
 import { ActivatedRoute } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Subscription } from 'rxjs';
 import SwiperCore, {
     A11y,
     Autoplay,
@@ -14,11 +9,15 @@ import SwiperCore, {
     Navigation,
     Pagination,
     Scrollbar,
+    Swiper,
     SwiperOptions,
     Thumbs,
     Virtual,
     Zoom
 } from 'swiper';
+import { Product } from '../../interface/product';
+import { ProductService } from '../../service/productservice';
+import { ImageDialogComponent } from './../dialog/image-dialog/image-dialog.component';
 
 // install Swiper components
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
@@ -41,7 +40,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.route.queryParams.subscribe(({ menu }) => (this.params = menu || 'root'));
     }
 
-    ngAfterViewInit(): void {}
+    ngAfterViewInit(): void {
+        new Swiper('.swiper-container', {
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            },
+            autoplay: {
+                delay: 3000
+            },
+            spaceBetween: 30
+        });
+    }
 
     ngOnInit() {
         if (this.params === 'root') {
@@ -49,16 +59,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             this.swiperOptions = {
                 autoHeight: true,
                 autoplay: {
-                    delay: 3000
-                    // pauseOnMouseEnter: true
+                    delay: 2500,
+                    pauseOnMouseEnter: true
                 },
                 loop: true,
-                slidesPerView: 2,
                 centeredSlides: true,
                 navigation: {
                     nextEl: '.swiper-button-next1',
                     prevEl: '.swiper-button-prev1'
+                },
+                breakpoints: {
+                    0: {
+                        slidesPerView: 1
+                    },
+                    768: {
+                        slidesPerView: 4
+                    }
                 }
+
                 // scrollbar: { draggable: true }
             };
         }

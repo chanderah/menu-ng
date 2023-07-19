@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Customer } from '../api/customer';
+import { Customer } from '../interface/customer';
 
 @Injectable()
 export class CustomerService {

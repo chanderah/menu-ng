@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product } from 'src/app/api/product';
+import { Product } from 'src/app/interface/product';
 import { isEmpty, jsonParse, jsonStringify } from 'src/app/lib/object';
 
 @Injectable({

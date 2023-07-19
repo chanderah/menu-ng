@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="card" *ngIf="featuredProducts.length > 0">
             <h5>Featured</h5>
-            <swiper [config]="config">
+            <swiper [config]="swiperOptions">
                 <ng-template *ngFor="let product of featuredProducts" swiperSlide>
                     <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
                         <div class="m-2 mb-3">
@@ -19,7 +19,6 @@
                         </div>
                     </div>
                 </ng-template>
-                <!-- Add Arrows -->
                 <div class="swiper-button-next1">
                     <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>

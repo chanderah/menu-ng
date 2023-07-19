@@ -17,10 +17,10 @@
 .swiper {
     // width: 100%;
     // height: auto;
-    padding-top: 25px;
+    // padding-top: 25px;
     padding-right: 50px;
     padding-left: 50px;
-    padding-bottom: 50px;
+    // padding-bottom: 50px;
 }
 
 .swiper-slide {
@@ -29,14 +29,14 @@
     text-align: center;
 }
 
-.swiper-slide:hover {
-    z-index: 99999;
-    transition: transform 0.4s;
-    -ms-transform: scale(1.15);
-    -webkit-transform: scale(1.15);
-    transform: scale(1.15);
-    border: 3px solid #7c7d7e;
-}
+// .swiper-slide:hover {
+//     z-index: 99999;
+//     transition: transform 0.4s;
+//     -ms-transform: scale(1.15);
+//     -webkit-transform: scale(1.15);
+//     transform: scale(1.15);
+//     border: 3px solid #7c7d7e;
+// }
 
 .swiper-button-next:after,
 .swiper-button-prev:after {
