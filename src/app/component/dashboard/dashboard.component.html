@@ -65,7 +65,7 @@
 <p class="category-title col-12">{{ params }}</p>
 
 <div class="grid" *ngIf="products.length > 0">
-    <div class="col-6" *ngFor="let data of products">
+    <div class="col-6" *ngFor="let data of products" (click)="onClickImage(data)">
         <div class="card p-fluid text-center">
             <!-- <img
                 src="assets/demo/images/product/{{ data.image }}"
