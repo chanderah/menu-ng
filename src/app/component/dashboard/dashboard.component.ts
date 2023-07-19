@@ -30,7 +30,9 @@ export class DashboardComponent implements OnInit {
     subscription!: Subscription;
     params!: object | string;
 
+    products = [] as Product[];
     featuredProducts = [] as Product[];
+
     swiperOptions!: SwiperOptions;
 
     constructor(
@@ -45,7 +47,15 @@ export class DashboardComponent implements OnInit {
         });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.getProducts();
+    }
+
+    getProducts() {
+        this.productService.getProducts().then((res) => {
+            this.products = res;
+        });
+    }
 
     removeSwiper() {
         this.featuredProducts.length = 0;

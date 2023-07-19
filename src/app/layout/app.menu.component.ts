@@ -49,22 +49,22 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Foods',
                                 routerLink: ['/'],
-                                queryParams: { menu: 'food' }
+                                queryParams: { menu: 'foods' }
                             },
                             {
                                 label: 'Drinks',
                                 routerLink: ['/'],
-                                queryParams: { menu: 'drink' }
+                                queryParams: { menu: 'drinks' }
                             },
                             {
                                 label: 'Desserts',
                                 routerLink: ['/'],
-                                queryParams: { menu: 'dessert' }
+                                queryParams: { menu: 'desserts' }
                             },
                             {
                                 label: 'Snacks',
                                 routerLink: ['/'],
-                                queryParams: { menu: 'snack' }
+                                queryParams: { menu: 'snacks' }
                             }
                         ]
                     },

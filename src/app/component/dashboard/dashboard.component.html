@@ -1,7 +1,7 @@
 <div class="grid">
     <div class="col-12">
         <div class="card" *ngIf="featuredProducts.length > 0">
-            <h5>Featured</h5>
+            <h5 class="category-title">Featured</h5>
             <swiper [config]="swiperOptions" #swiper>
                 <ng-template *ngFor="let product of featuredProducts" swiperSlide>
                     <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
@@ -14,7 +14,7 @@
                                 width="100%" />
                         </div>
                         <div>
-                            <h5 class="my-2">{{ product.name }}</h5>
+                            <h6 class="my-2">{{ product.name }}</h6>
                             <p class="mt-0 mb-3 text-primary">Rp{{ product.price }}</p>
                         </div>
                     </div>
@@ -61,4 +61,19 @@
         </div>
     </div>
 </div>
-<p>Currently viewing : {{ params | json }}</p>
+
+<p class="category-title col-12">{{ params }}</p>
+
+<div class="grid" *ngIf="products.length > 0">
+    <div class="col-6" *ngFor="let data of products">
+        <div class="card p-fluid text-center">
+            <!-- <img
+                src="assets/demo/images/product/{{ data.image }}"
+                [alt]="product.name"
+                (click)="onClickImage(data)"
+                class="shadow-4"
+                width="100%" /> -->
+            <p>{{ data.name }}</p>
+        </div>
+    </div>
+</div>
