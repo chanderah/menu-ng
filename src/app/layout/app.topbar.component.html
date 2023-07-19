@@ -4,30 +4,32 @@
         <span>Menu</span>
     </a>
 
-    <a class="p-link layout-menu-button layout-topbar-button" href="#" (click)="appMain.toggleMenu($event)">
+    <a class="p-link layout-menu-button layout-topbar-button" (click)="appMain.toggleMenu($event)">
         <i class="pi pi-bars"></i>
     </a>
 
-    <a class="p-link layout-topbar-menu-button layout-topbar-button" href="#" (click)="appMain.toggleTopMenu($event)">
+    <!-- <a class="p-link layout-topbar-menu-button layout-topbar-button" href="#" (click)="appMain.toggleTopMenu($event)">
         <i class="pi pi-ellipsis-v"></i>
-    </a>
+    </a> -->
 
-    <div
+    <button class="p-link layout-topbar-menu-button pt-2" routerLink="/cart">
+        <i
+            pBadge
+            [value]="getCartItems()"
+            class="pi pi-shopping-cart p-text-secondary"
+            severity="danger"
+            style="font-size: 2rem">
+        </i>
+    </button>
+
+    <!-- <div
         class="layout-topbar-menu"
         [ngClass]="{
             'layout-topbar-menu-mobile-active': appMain.topMenuActive
         }">
         <a href="#" class="p-link layout-topbar-button">
-            <i class="pi pi-calendar"></i>
-            <span>Calendar</span>
+            <i class="pi pi-shopping-cart"></i>
+            <span>Cart</span>
         </a>
-        <a href="#" class="p-link layout-topbar-button">
-            <i class="pi pi-cog"></i>
-            <span>Settings</span>
-        </a>
-        <a href="#" class="p-link layout-topbar-button">
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
-        </a>
-    </div>
+    </div> -->
 </div>

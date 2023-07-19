@@ -11,13 +11,11 @@ import { AppMainComponent } from '../app.main.component';
     templateUrl: './app.config.component.html'
 })
 export class AppConfigComponent implements OnInit, OnDestroy {
-    scale: number = 14;
-
-    scales: any[] = [12, 13, 14, 15, 16];
+    subscription: Subscription;
 
     config: AppConfig;
-
-    subscription: Subscription;
+    scales: number[] = [12, 13, 14, 15, 16];
+    scale: number = 14;
 
     constructor(
         public app: AppComponent,
@@ -72,8 +70,6 @@ export class AppConfigComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
+        if (this.subscription) this.subscription.unsubscribe();
     }
 }
