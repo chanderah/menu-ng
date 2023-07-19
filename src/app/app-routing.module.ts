@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AppMainComponent } from './app.main.component';
 import { AccessComponent } from './component/access/access.component';
 import { BlocksComponent } from './component/blocks/blocks.component';
 import { ButtonComponent } from './component/button/button.component';
@@ -28,6 +27,7 @@ import { PanelsComponent } from './component/panels/panels.component';
 import { TableComponent } from './component/table/table.component';
 import { TimelineComponent } from './component/timeline/timeline.component';
 import { TreeComponent } from './component/tree/tree.component';
+import { AppMainComponent } from './layout/app.main.component';
 @NgModule({
     imports: [
         RouterModule.forRoot(

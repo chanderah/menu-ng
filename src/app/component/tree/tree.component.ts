@@ -1,21 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { NodeService } from '../../service/nodeservice';
 import { TreeNode } from 'primeng/api';
+import { NodeService } from '../../service/nodeservice';
 
 @Component({
     templateUrl: './tree.component.html'
 })
 export class TreeComponent implements OnInit {
     files1: TreeNode[];
-
     files2: TreeNode[];
-
     files3: TreeNode[];
 
     selectedFiles1: TreeNode;
-
     selectedFiles2: TreeNode[];
-
     selectedFiles3: TreeNode;
 
     cols: any[];

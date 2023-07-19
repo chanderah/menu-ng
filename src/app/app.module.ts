@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { AppTopBarComponent } from './layout/app.topbar.component';
 
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -90,12 +91,6 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { BlockViewer } from './component/blockviewer/blockviewer.component';
 
 import { AppComponent } from './app.component';
-import { AppConfigComponent } from './app.config.component';
-import { AppFooterComponent } from './app.footer.component';
-import { AppMainComponent } from './app.main.component';
-import { AppMenuComponent } from './app.menu.component';
-import { AppMenuitemComponent } from './app.menuitem.component';
-import { AppTopBarComponent } from './app.topbar.component';
 import { AppCodeModule } from './component/app-code/app.code.component';
 
 import { BlocksComponent } from './component/blocks/blocks.component';
@@ -133,8 +128,13 @@ import { AccessComponent } from './component/access/access.component';
 import { ErrorComponent } from './component/error/error.component';
 import { LoginComponent } from './component/login/login.component';
 import { NotfoundComponent } from './component/notfound/notfound.component';
-import { ConfigService } from './service/app.config.service';
-import { MenuService } from './service/app.menu.service';
+import { AppFooterComponent } from './layout/app.footer.component';
+import { AppMainComponent } from './layout/app.main.component';
+import { AppMenuComponent } from './layout/app.menu.component';
+import { AppMenuitemComponent } from './layout/app.menuitem.component';
+import { AppConfigComponent } from './layout/config/app.config.component';
+import { ConfigService } from './layout/service/app.config.service';
+import { MenuService } from './layout/service/app.menu.service';
 import { CartService } from './service/cart.service';
 import { CountryService } from './service/countryservice';
 import { CustomerService } from './service/customerservice';

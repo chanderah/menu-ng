@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AppConfig } from 'src/app/interface/appconfig';
-import { ConfigService } from 'src/app/service/app.config.service';
+import { ConfigService } from 'src/app/layout/service/app.config.service';
 
 @Component({
     templateUrl: './charts.component.html'

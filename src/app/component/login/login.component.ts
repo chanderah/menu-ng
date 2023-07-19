@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AppConfig } from '../../interface/appconfig';
-import { ConfigService } from '../../service/app.config.service';
+import { ConfigService } from '../../layout/service/app.config.service';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',

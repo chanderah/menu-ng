@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AppComponent } from './app.component';
-import { AppMainComponent } from './app.main.component';
-import { AppConfig } from './interface/appconfig';
-import { ConfigService } from './service/app.config.service';
+import { AppComponent } from 'src/app/app.component';
+import { AppConfig } from 'src/app/interface/appconfig';
+import { ConfigService } from 'src/app/layout/service/app.config.service';
+import { AppMainComponent } from '../app.main.component';
 
 @Component({
     selector: 'app-config',

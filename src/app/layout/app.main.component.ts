@@ -1,9 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AppComponent } from './app.component';
-import { AppConfig } from './interface/appconfig';
-import { ConfigService } from './service/app.config.service';
+import { ConfigService } from 'src/app/layout/service/app.config.service';
+import { AppConfig } from '../interface/appconfig';
+import { AppComponent } from './../app.component';
 
 @Component({
     selector: 'app-main',
