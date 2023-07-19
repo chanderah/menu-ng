@@ -1,77 +1,65 @@
 <div class="grid">
-  <div class="col-12">
-    <div class="card" *ngIf="featuredProducts.length > 0">
-      <h5>Featured</h5>
+    <div class="col-12">
+        <div class="card" *ngIf="featuredProducts.length > 0">
+            <h5>Featured</h5>
+            <swiper [config]="config">
+                <ng-template *ngFor="let product of featuredProducts" swiperSlide>
+                    <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
+                        <div class="m-2 mb-3">
+                            <img
+                                src="assets/demo/images/product/{{ product.image }}"
+                                [alt]="product.name"
+                                (click)="onClickImage(product)"
+                                class="shadow-4"
+                                width="100%" />
+                        </div>
+                        <div>
+                            <h5 class="my-2">{{ product.name }}</h5>
+                            <p class="mt-0 mb-3 text-primary">Rp{{ product.price }}</p>
+                        </div>
+                    </div>
+                </ng-template>
+                <!-- Add Arrows -->
+                <div class="swiper-button-next1">
+                    <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                    </svg>
+                </div>
+                <div class="swiper-button-prev1">
+                    <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+                    </svg>
+                </div>
+            </swiper>
 
-      <my-component>
-        <swiper [config]="config">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">Slide 1</div>
-            <div class="swiper-slide">Slide 2</div>
-            <div class="swiper-slide">Slide 3</div>
-            <div class="swiper-slide">Slide 4</div>
-            <div class="swiper-slide">Slide 5</div>
-            <div class="swiper-slide">Slide 6</div>
-            <div class="swiper-slide">Slide 7</div>
-            <div class="swiper-slide">Slide 8</div>
-            <div class="swiper-slide">Slide 9</div>
-            <div class="swiper-slide">Slide 10</div>
-          </div>
-          <!-- Add Pagination -->
-          <div class="swiper-pagination"></div>
-          <!-- Add Arrows -->
-          <div class="swiper-button-next"></div>
-          <div class="swiper-button-prev"></div>
-        </swiper>
-      </my-component>
-      <!-- <owl-carousel-o class="owlCarousel" [options]="owlOptions" #owlCarousel>
-        <ng-container *ngFor="let data of featuredProducts">
-          <ng-template carouselSlide>
+            <!-- <p-carousel
+            [value]="featuredProducts"
+            [circular]="true"
+          [responsiveOptions]="carouselResponsiveOptions"
+          [autoplayInterval]="2000">
+          <ng-template let-product pTemplate="item">
             <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
               <div class="m-2 mb-3">
                 <img
-                  src="assets/images/product/{{ data.image }}"
-                  [alt]="data.name"
-                  (click)="onClickImage(data)"
-                  class="shadow-4" />
+                  src="assets/images/product/{{ product.image }}"
+                  [alt]="product.name"
+                  (click)="onClickImage(product)"
+                  class="shadow-4"
+                  width="100%" />
               </div>
-              <div class="details">
-                <h5 class="my-2">{{ data.name }}</h5>
-                <p class="mt-0 mb-3 text-primary">Rp{{ data.price }}</p>
+              <div>
+                <h5 class="my-2">{{ product.name }}</h5>
+                <p class="mt-0 mb-3 text-primary">Rp{{ product.price }}</p>
+                <div class="my-3">
+                  <button pButton pRipple icon="pi pi-search" class="mr-2 p-button-rounded"></button>
+                  <button pButton pRipple icon="pi pi-star-fill" class="mr-2 p-button-rounded p-button-success"></button>
+                  <button pButton pRipple icon="pi pi-cog" class="p-button-rounded p-button-info"></button>
+                </div>
               </div>
             </div>
           </ng-template>
-        </ng-container>
-      </owl-carousel-o> -->
-
-      <!-- <p-carousel
-          [value]="featuredProducts"
-          [circular]="true"
-        [responsiveOptions]="carouselResponsiveOptions"
-        [autoplayInterval]="2000">
-        <ng-template let-product pTemplate="item">
-          <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
-            <div class="m-2 mb-3">
-              <img
-                src="assets/images/product/{{ product.image }}"
-                [alt]="product.name"
-                (click)="onClickImage(product)"
-                class="shadow-4"
-                width="100%" />
-            </div>
-            <div>
-              <h5 class="my-2">{{ product.name }}</h5>
-              <p class="mt-0 mb-3 text-primary">Rp{{ product.price }}</p>
-              <div class="my-3">
-                <button pButton pRipple icon="pi pi-search" class="mr-2 p-button-rounded"></button>
-                <button pButton pRipple icon="pi pi-star-fill" class="mr-2 p-button-rounded p-button-success"></button>
-                <button pButton pRipple icon="pi pi-cog" class="p-button-rounded p-button-info"></button>
-              </div>
-            </div>
-          </div>
-        </ng-template>
-      </p-carousel> -->
+        </p-carousel> -->
+        </div>
     </div>
-  </div>
 </div>
 <p>Currently viewing : {{ params | json }}</p>
