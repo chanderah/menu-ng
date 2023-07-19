@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,6 @@ import SwiperCore, {
     Navigation,
     Pagination,
     Scrollbar,
-    Swiper,
     SwiperOptions,
     Thumbs,
     Virtual,
@@ -25,7 +24,9 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
 @Component({
     templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit {
+    @ViewChild('swiper') swiper!: ElementRef;
+
     subscription!: Subscription;
     params!: object | string;
 
@@ -37,49 +38,43 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         private productService: ProductService,
         private dialogService: DialogService
     ) {
-        this.route.queryParams.subscribe(({ menu }) => (this.params = menu || 'root'));
-    }
-
-    ngAfterViewInit(): void {
-        new Swiper('.swiper-container', {
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev'
-            },
-            autoplay: {
-                delay: 3000
-            },
-            spaceBetween: 30
+        this.route.queryParams.subscribe(({ menu }) => {
+            this.params = menu || 'root';
+            if (this.params === 'root') this.initSwiper();
+            else this.removeSwiper();
         });
     }
 
-    ngOnInit() {
-        if (this.params === 'root') {
-            this.productService.getProducts().then((res) => (this.featuredProducts = res.slice(0, 6)));
-            this.swiperOptions = {
-                autoHeight: true,
-                autoplay: {
-                    delay: 2500,
-                    pauseOnMouseEnter: true
-                },
-                loop: true,
-                centeredSlides: true,
-                navigation: {
-                    nextEl: '.swiper-button-next1',
-                    prevEl: '.swiper-button-prev1'
-                },
-                breakpoints: {
-                    0: {
-                        slidesPerView: 1
-                    },
-                    768: {
-                        slidesPerView: 4
-                    }
-                }
+    ngOnInit() {}
 
-                // scrollbar: { draggable: true }
-            };
-        }
+    removeSwiper() {
+        this.featuredProducts.length = 0;
+    }
+
+    initSwiper() {
+        this.productService.getProducts().then((res) => (this.featuredProducts = res.slice(0, 6)));
+        this.swiperOptions = {
+            autoHeight: true,
+            autoplay: {
+                delay: 2500,
+                pauseOnMouseEnter: true,
+                disableOnInteraction: false
+            },
+            loop: true,
+            centeredSlides: true,
+            // navigation: {
+            //     nextEl: '.swiper-button-next1',
+            //     prevEl: '.swiper-button-prev1'
+            // },
+            breakpoints: {
+                0: {
+                    slidesPerView: 1
+                },
+                768: {
+                    slidesPerView: 4
+                }
+            }
+        };
     }
 
     onClickImage(data: any) {

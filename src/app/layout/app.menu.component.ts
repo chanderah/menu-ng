@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from './../../environments/environment';
 import { AppMainComponent } from './app.main.component';
 
 @Component({
@@ -32,6 +33,8 @@ import { AppMainComponent } from './app.main.component';
     `
 })
 export class AppMenuComponent implements OnInit {
+    isDevelopment: boolean = environment.production === false;
+
     model: any[];
 
     constructor(public appMain: AppMainComponent) {}
@@ -39,9 +42,55 @@ export class AppMenuComponent implements OnInit {
     ngOnInit() {
         this.model = [
             {
-                label: 'Home',
-                items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
+                label: 'Order',
+                // icon: 'pi pi-fw pi-briefcase',
+                items: [
+                    {
+                        icon: 'pi pi-fw pi-check-square',
+                        label: 'Menu',
+                        routerLink: ['/'],
+                        items: [
+                            {
+                                label: 'All',
+                                routerLink: ['/']
+                            },
+                            {
+                                label: 'Foods',
+                                routerLink: ['/'],
+                                queryParams: { menu: 'food' }
+                            },
+                            {
+                                label: 'Drinks',
+                                routerLink: ['/'],
+                                queryParams: { menu: 'drink' }
+                            },
+                            {
+                                label: 'Desserts',
+                                routerLink: ['/'],
+                                routerLinkActiveOptions: { exact: true },
+                                queryParams: { menu: 'dessert' }
+                            },
+                            {
+                                label: 'Snacks',
+                                routerLink: ['/'],
+                                queryParams: { menu: 'snack' }
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Cart',
+                        icon: 'pi pi-fw pi-shopping-cart',
+                        routerLink: ['/cart']
+                    }
+                ]
             },
+            {
+                label: 'Menu Management',
+                items: [{ label: 'Edit Menu', icon: 'pi pi-fw pi-eye', routerLink: ['/menu/edit'], badge: 'NEW' }]
+            }
+        ];
+
+        const demo = [
             {
                 label: 'UI Components',
                 items: [
@@ -170,6 +219,8 @@ export class AppMenuComponent implements OnInit {
                 ]
             }
         ];
+
+        if (this.isDevelopment) this.model = this.model.concat(demo);
     }
 
     onKeydown(event: KeyboardEvent) {

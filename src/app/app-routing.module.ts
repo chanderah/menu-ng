@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AccessComponent } from './component/access/access.component';
 import { BlocksComponent } from './component/blocks/blocks.component';
 import { ButtonComponent } from './component/button/button.component';
+import { CartComponent } from './component/cart/cart.component';
 import { ChartsComponent } from './component/charts/charts.component';
 import { CrudComponent } from './component/crud/crud.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
@@ -28,6 +29,7 @@ import { TableComponent } from './component/table/table.component';
 import { TimelineComponent } from './component/timeline/timeline.component';
 import { TreeComponent } from './component/tree/tree.component';
 import { AppMainComponent } from './layout/app.main.component';
+
 @NgModule({
     imports: [
         RouterModule.forRoot(
@@ -37,6 +39,7 @@ import { AppMainComponent } from './layout/app.main.component';
                     component: AppMainComponent,
                     children: [
                         { path: '', component: DashboardComponent },
+                        { path: 'cart', component: CartComponent },
                         {
                             path: 'uikit/formlayout',
                             component: FormLayoutComponent,

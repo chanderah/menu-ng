@@ -125,6 +125,7 @@ import { TreeComponent } from './component/tree/tree.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SwiperModule } from 'swiper/angular';
 import { AccessComponent } from './component/access/access.component';
+import { CartComponent } from './component/cart/cart.component';
 import { ErrorComponent } from './component/error/error.component';
 import { LoginComponent } from './component/login/login.component';
 import { NotfoundComponent } from './component/notfound/notfound.component';
@@ -153,7 +154,6 @@ import { ProductService } from './service/productservice';
         AppConfigComponent,
         AppMenuComponent,
         AppMenuitemComponent,
-        DashboardComponent,
         FormLayoutComponent,
         FloatLabelComponent,
         InvalidStateComponent,
@@ -186,7 +186,11 @@ import { ProductService } from './service/productservice';
         LoginComponent,
         ErrorComponent,
         NotfoundComponent,
-        AccessComponent
+        AccessComponent,
+
+        /* USER DEFINED */
+        DashboardComponent,
+        CartComponent
     ],
     imports: [
         BrowserModule,
