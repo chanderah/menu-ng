@@ -1,7 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService, SelectItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
+import { CartService } from 'src/app/service/cart.service';
 import SwiperCore, {
     A11y,
     Autoplay,
@@ -35,10 +37,20 @@ export class DashboardComponent implements OnInit {
 
     swiperOptions!: SwiperOptions;
 
+    // demo
+    sortOptions: SelectItem[];
+    sortOrder: number;
+    sortField: string;
+    sourceCities: any[];
+    targetCities: any[];
+    orderCities: any[];
+
     constructor(
         private route: ActivatedRoute,
         private productService: ProductService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private cartService: CartService,
+        private messageService: MessageService
     ) {
         this.route.queryParams.subscribe(({ menu }) => {
             this.params = menu || 'root';
@@ -49,6 +61,32 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.getProducts();
+
+        this.sourceCities = [
+            { name: 'San Francisco', code: 'SF' },
+            { name: 'London', code: 'LDN' },
+            { name: 'Paris', code: 'PRS' },
+            { name: 'Istanbul', code: 'IST' },
+            { name: 'Berlin', code: 'BRL' },
+            { name: 'Barcelona', code: 'BRC' },
+            { name: 'Rome', code: 'RM' }
+        ];
+        this.targetCities = [];
+
+        this.orderCities = [
+            { name: 'San Francisco', code: 'SF' },
+            { name: 'London', code: 'LDN' },
+            { name: 'Paris', code: 'PRS' },
+            { name: 'Istanbul', code: 'IST' },
+            { name: 'Berlin', code: 'BRL' },
+            { name: 'Barcelona', code: 'BRC' },
+            { name: 'Rome', code: 'RM' }
+        ];
+
+        this.sortOptions = [
+            { label: 'Price High to Low', value: '!price' },
+            { label: 'Price Low to High', value: 'price' }
+        ];
     }
 
     getProducts() {
@@ -72,10 +110,6 @@ export class DashboardComponent implements OnInit {
             },
             loop: true,
             centeredSlides: true,
-            // navigation: {
-            //     nextEl: '.swiper-button-next1',
-            //     prevEl: '.swiper-button-prev1'
-            // },
             breakpoints: {
                 0: {
                     slidesPerView: 1
@@ -99,5 +133,15 @@ export class DashboardComponent implements OnInit {
             .onClose.subscribe((res) => {
                 console.log(res);
             });
+    }
+
+    addToCart(data: Product) {
+        // this.cartService.addToCart(data);
+        this.messageService.add({
+            key: 'tst',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'The product is successfully added to cart.'
+        });
     }
 }

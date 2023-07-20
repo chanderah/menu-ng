@@ -122,6 +122,7 @@ import { TableComponent } from './component/table/table.component';
 import { TimelineComponent } from './component/timeline/timeline.component';
 import { TreeComponent } from './component/tree/tree.component';
 
+import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SwiperModule } from 'swiper/angular';
 import { AccessComponent } from './component/access/access.component';
@@ -300,6 +301,7 @@ import { ProductService } from './service/productservice';
         MenuService,
         ConfigService,
 
+        MessageService,
         DialogService,
         CartService
     ],

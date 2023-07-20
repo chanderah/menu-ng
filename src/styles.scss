@@ -14,9 +14,20 @@
 /* USER DEFINED */
 @import '~swiper/css/bundle';
 
+.card.mat {
+    img {
+        width: 200px;
+        height: 200px;
+        border-radius: 15px 15px 0px 0px;
+        object-fit: cover;
+    }
+    border-radius: 15px;
+    padding: 0;
+}
+
 .category-title {
     font-size: 1.25rem;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: capitalize;
     // margin-bottom: 2rem;
 }
