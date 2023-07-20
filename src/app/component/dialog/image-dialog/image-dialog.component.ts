@@ -7,6 +7,7 @@ import { CartService } from 'src/app/service/cart.service';
     templateUrl: './image-dialog.component.html'
 })
 export class ImageDialogComponent implements OnInit {
+    isLoading: boolean = true;
     product!: Product;
 
     constructor(
@@ -15,12 +16,16 @@ export class ImageDialogComponent implements OnInit {
         private cartService: CartService
     ) {
         const { data } = config;
-        console.log(data);
         this.product = data;
+        console.log(this.product);
     }
 
     ngOnInit(): void {
         console.log('i called');
+    }
+
+    showImage() {
+        this.isLoading = false;
     }
 
     addToCart(data: any) {

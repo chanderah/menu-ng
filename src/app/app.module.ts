@@ -126,6 +126,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { SwiperModule } from 'swiper/angular';
 import { AccessComponent } from './component/access/access.component';
 import { CartComponent } from './component/cart/cart.component';
+import { ImageDialogComponent } from './component/dialog/image-dialog/image-dialog.component';
 import { ErrorComponent } from './component/error/error.component';
 import { LoginComponent } from './component/login/login.component';
 import { NotfoundComponent } from './component/notfound/notfound.component';
@@ -190,7 +191,10 @@ import { ProductService } from './service/productservice';
 
         /* USER DEFINED */
         DashboardComponent,
-        CartComponent
+        CartComponent,
+
+        /* DIALOG */
+        ImageDialogComponent
     ],
     imports: [
         BrowserModule,

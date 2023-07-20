@@ -1,7 +1,10 @@
 <div class="text-center">
+    <p height="200px" *ngIf="isLoading">Loading ...</p>
     <img
         #imageDialog
         [alt]="product.name"
+        (load)="showImage()"
+        [ngStyle]="{ visibility: isLoading ? 'hidden' : ''}"
         src="assets/demo/images/product/{{ product.image }}"
         class="shadow-4"
         width="100%" />
