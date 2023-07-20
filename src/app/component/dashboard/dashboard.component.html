@@ -74,11 +74,12 @@
     [sortOrder]="sortOrder"
     layout="grid">
     <ng-template let-product pTemplate="gridItem">
-        <div class="col-6 md:col-4" (click)="onClickImage(product)">
+        <div class="col-6 md:col-4">
             <div class="card mat m-2 surface-border">
                 <div class="text-center">
                     <img
                         [alt]="product.name"
+                        (click)="onClickImage(product)"
                         src="assets/demo/images/product/{{ product.image }}"
                         class="w-full shadow-2" />
                     <div class="text-md font-semibold mt-3">{{ product.name }}</div>

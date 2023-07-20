@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService, SelectItem } from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { CartService } from 'src/app/service/cart.service';
@@ -49,8 +49,7 @@ export class DashboardComponent implements OnInit {
         private route: ActivatedRoute,
         private productService: ProductService,
         private dialogService: DialogService,
-        private cartService: CartService,
-        private messageService: MessageService
+        private cartService: CartService
     ) {
         this.route.queryParams.subscribe(({ menu }) => {
             this.params = menu || 'root';
@@ -136,12 +135,6 @@ export class DashboardComponent implements OnInit {
     }
 
     addToCart(data: Product) {
-        // this.cartService.addToCart(data);
-        this.messageService.add({
-            key: 'tst',
-            severity: 'success',
-            summary: 'Success!',
-            detail: 'The product is successfully added to cart.'
-        });
+        this.cartService.addToCart(data);
     }
 }

@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HotToastModule } from '@ngneat/hot-toast';
+import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppTopBarComponent } from './layout/app.topbar.component';
 
@@ -287,7 +289,14 @@ import { ProductService } from './service/productservice';
         StyleClassModule,
         // User Defined Modules
         DialogModule,
-        SwiperModule
+        SwiperModule,
+        ToastrModule.forRoot(),
+        HotToastModule.forRoot({
+            dismissible: true,
+            duration: 3000,
+            position: 'top-right',
+            autoClose: true
+        })
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },

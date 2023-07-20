@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { HotToastService } from '@ngneat/hot-toast';
+import { ToastrService } from 'ngx-toastr';
 import { Product } from 'src/app/interface/product';
 import { isEmpty, jsonParse, jsonStringify } from 'src/app/lib/object';
 
@@ -9,7 +10,10 @@ import { isEmpty, jsonParse, jsonStringify } from 'src/app/lib/object';
 export class CartService {
     cart: Product[] = [];
 
-    constructor(public messageService: MessageService) {
+    constructor(
+        private toast: HotToastService,
+        private toastr: ToastrService
+    ) {
         this.cart = jsonParse(localStorage.getItem('cart'));
     }
 
@@ -24,9 +28,16 @@ export class CartService {
             this.cart = [product];
         } else this.cart.push(product);
         localStorage.setItem('cart', jsonStringify(this.cart));
+
+        this.showToast();
     }
 
     clear() {
         localStorage.removeItem('cart');
+    }
+
+    showToast() {
+        this.toast.success('Success!!');
+        this.toastr.success('Your item is successfully added to cart.', 'Success!');
     }
 }
