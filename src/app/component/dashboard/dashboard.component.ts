@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
     subscription!: Subscription;
     params!: object | string;
 
+    categories = [] as any[];
     products = [] as Product[];
     featuredProducts = [] as Product[];
 
@@ -60,33 +61,14 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.categories = [
+            { label: 'New York', value: { id: 1, name: 'New York', code: 'NY' } },
+            { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
+            { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
+            { label: 'Istanbul', value: { id: 4, name: 'Istanbul', code: 'IST' } },
+            { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } }
+        ]
         this.getProducts();
-
-        this.sourceCities = [
-            { name: 'San Francisco', code: 'SF' },
-            { name: 'London', code: 'LDN' },
-            { name: 'Paris', code: 'PRS' },
-            { name: 'Istanbul', code: 'IST' },
-            { name: 'Berlin', code: 'BRL' },
-            { name: 'Barcelona', code: 'BRC' },
-            { name: 'Rome', code: 'RM' }
-        ];
-        this.targetCities = [];
-
-        this.orderCities = [
-            { name: 'San Francisco', code: 'SF' },
-            { name: 'London', code: 'LDN' },
-            { name: 'Paris', code: 'PRS' },
-            { name: 'Istanbul', code: 'IST' },
-            { name: 'Berlin', code: 'BRL' },
-            { name: 'Barcelona', code: 'BRC' },
-            { name: 'Rome', code: 'RM' }
-        ];
-
-        this.sortOptions = [
-            { label: 'Price High to Low', value: '!price' },
-            { label: 'Price Low to High', value: 'price' }
-        ];
     }
 
     getProducts() {
