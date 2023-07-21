@@ -1,4 +1,4 @@
-<div class="grid">
+<div id="featuredProducts" class="grid">
     <div class="col-12">
         <div class="card" *ngIf="featuredProducts.length > 0">
             <h5 class="category-title">Featured</h5>
@@ -81,6 +81,7 @@
 
 <p-dataView
     #dv
+    id="listProducts"
     [value]="products"
     [paginator]="true"
     [rows]="10"
@@ -89,20 +90,29 @@
     [sortOrder]="sortOrder"
     layout="grid">
     <ng-template pTemplate="header">
-        <div class="grid col-12">
-            <div class="flex col-6">
+        <div class="grid">
+            <div class="col-3 p-fluid">
                 <span class="p-input-icon-left">
                     <i class="pi pi-sliders-v"></i>
                     <input pInputText type="text" class="bold-placeholder" placeholder="Filter" />
                 </span>
             </div>
-            <div class="flex col-6">
+            <div class="col"></div>
+            <div class="col-4 p-fluid">
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" placeholder="Search" />
+                    <input pInputText type="text" class="text-sm bold-placeholder" placeholder="Search..." />
                 </span>
             </div>
         </div>
+        <!-- <span class="p-input-icon-left">
+                    <i class="pi pi-sliders-v"></i>
+                    <input pInputText type="text" class="bold-placeholder" placeholder="Filter" />
+                </span>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" placeholder="Search" />
+                </span> -->
     </ng-template>
     <ng-template let-product pTemplate="gridItem">
         <div class="col-6 md:col-4">
