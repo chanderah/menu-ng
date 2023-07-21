@@ -19,50 +19,10 @@
                         </div>
                     </div>
                 </ng-template>
-                <div class="swiper-button-next1">
-                    <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                    </svg>
-                </div>
-                <div class="swiper-button-prev1">
-                    <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                    </svg>
-                </div>
             </swiper>
-
-            <!-- <p-carousel
-            [value]="featuredProducts"
-            [circular]="true"
-          [responsiveOptions]="carouselResponsiveOptions"
-          [autoplayInterval]="2000">
-          <ng-template let-product pTemplate="item">
-            <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
-              <div class="m-2 mb-3">
-                <img
-                  src="assets/images/product/{{ product.image }}"
-                  [alt]="product.name"
-                  (click)="onClickImage(product)"
-                  class="shadow-4"
-                  width="100%" />
-              </div>
-              <div>
-                <h5 class="my-2">{{ product.name }}</h5>
-                <p class="mt-0 mb-3 text-primary">Rp{{ product.price }}</p>
-                <div class="my-3">
-                  <button pButton pRipple icon="pi pi-search" class="mr-2 p-button-rounded"></button>
-                  <button pButton pRipple icon="pi pi-star-fill" class="mr-2 p-button-rounded p-button-success"></button>
-                  <button pButton pRipple icon="pi pi-cog" class="p-button-rounded p-button-info"></button>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </p-carousel> -->
         </div>
     </div>
 </div>
-
-<!-- <p class="category-title col-12 text-center">{{ params }}</p> -->
 
 <p-dataView
     #dv
@@ -76,16 +36,21 @@
     layout="grid">
     <ng-template pTemplate="header">
         <div class="grid">
-            <div class="col-3 p-fluid">
+            <div class="col-4 p-fluid text">
                 <span class="p-input-icon-left">
                     <i class="pi pi-sliders-v"></i>
-                    <input pInputText type="text" class="bold-placeholder" placeholder="Filter" />
+                    <input
+                        pInputText
+                        type="text"
+                        class="bold-placeholder"
+                        [placeholder]="params === 'root' ? 'Filter' : params"
+                        style="text-transform: capitalize" />
                 </span>
             </div>
             <div class="col p-fluid">
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" class="font-semibold" placeholder="Search..." />
+                    <input pInputText type="text" class="font-semibold" placeholder="Search..." clearButton="true" />
                 </span>
             </div>
         </div>
