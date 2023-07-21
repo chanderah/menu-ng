@@ -24,7 +24,8 @@ import { ImageDialogComponent } from './../dialog/image-dialog/image-dialog.comp
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
 
 @Component({
-    templateUrl: './dashboard.component.html'
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['../../../assets/user.styles.scss']
 })
 export class DashboardComponent implements OnInit {
     @ViewChild('swiper') swiper!: ElementRef;

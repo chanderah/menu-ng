@@ -62,7 +62,22 @@
     </div>
 </div>
 
-<p class="category-title col-12 text-center">{{ params }}</p>
+<!-- <p class="category-title col-12 text-center">{{ params }}</p> -->
+<!-- <div class="grid formgrid sticky">
+    <div class="flex flex-col col-12 w-full">
+        <div class="col-4">
+            <span class="p-input-icon-left">
+                <i class="pi icon-filter"></i>
+                <input pInputText type="text" placeholder="Filter" />
+            </span>
+        </div>
+        <div class="col-8">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" placeholder="Search" />
+            </span> </div
+    ></div>
+</div> -->
 
 <p-dataView
     #dv
@@ -73,6 +88,22 @@
     [sortField]="sortField"
     [sortOrder]="sortOrder"
     layout="grid">
+    <ng-template pTemplate="header">
+        <div class="grid col-12">
+            <div class="flex col-6">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-sliders-v"></i>
+                    <input pInputText type="text" class="bold-placeholder" placeholder="Filter" />
+                </span>
+            </div>
+            <div class="flex col-6">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" placeholder="Search" />
+                </span>
+            </div>
+        </div>
+    </ng-template>
     <ng-template let-product pTemplate="gridItem">
         <div class="col-6 md:col-4">
             <div class="card mat m-2 surface-border">

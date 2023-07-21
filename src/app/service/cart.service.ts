@@ -37,7 +37,7 @@ export class CartService {
     }
 
     showToast() {
-        this.toast.success('Success!!');
-        this.toastr.success('Your item is successfully added to cart.', 'Success!');
+        this.toast.success('Your item is successfully added to cart!');
+        // this.toastr.success('Your item is successfully added to cart.', 'Success!');
     }
 }
