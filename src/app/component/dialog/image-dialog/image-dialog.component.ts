@@ -24,10 +24,6 @@ export class ImageDialogComponent implements OnInit {
         console.log('i called');
     }
 
-    showImage() {
-        this.isLoading = false;
-    }
-
     addToCart(data: any) {
         const res = this.cartService.addToCart(data);
     }

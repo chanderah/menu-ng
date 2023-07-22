@@ -41,6 +41,7 @@
                     pButton
                     [label]="params === 'root' ? 'Filter' : params"
                     icon="pi pi-sliders-v"
+                    (click)="appMain.toggleMenu($event)"
                     class="p-button-plain p-button-rounded p-button-outlined"
                     style="height: 100%; text-transform: capitalize"></button>
             </div>

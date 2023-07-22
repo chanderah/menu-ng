@@ -148,6 +148,7 @@ import { IconService } from './service/iconservice';
 import { NodeService } from './service/nodeservice';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
+import { SkeletonComponent } from './component/skeleton/skeleton.component';
 
 @NgModule({
     declarations: [
@@ -197,7 +198,8 @@ import { ProductService } from './service/productservice';
         CartComponent,
 
         /* DIALOG */
-        ImageDialogComponent
+        ImageDialogComponent,
+         SkeletonComponent
     ],
     imports: [
         BrowserModule,

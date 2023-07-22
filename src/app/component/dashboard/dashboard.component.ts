@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
+import { AppMainComponent } from 'src/app/layout/app.main.component';
 import { CartService } from 'src/app/service/cart.service';
 import SwiperCore, {
     A11y,
@@ -48,6 +49,7 @@ export class DashboardComponent implements OnInit {
     orderCities: any[];
 
     constructor(
+        public appMain: AppMainComponent,
         private route: ActivatedRoute,
         private productService: ProductService,
         private dialogService: DialogService,
@@ -62,12 +64,20 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.categories = [
-            { label: 'New York', value: { id: 1, name: 'New York', code: 'NY' } },
-            { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
-            { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
-            { label: 'Istanbul', value: { id: 4, name: 'Istanbul', code: 'IST' } },
-            { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } }
-        ]
+            {
+                label: 'Filter',
+                icon: 'pi pi-fw pi-sliders-v',
+                items: [
+                    [
+                        {
+                            label: 'Categories',
+                            items: [{ label: 'All' }, { label: 'Foods' }, { label: 'Drinks' }]
+                        }
+                    ]
+                ]
+            }
+        ];
+
         this.getProducts();
     }
 
