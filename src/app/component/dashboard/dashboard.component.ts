@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SelectItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
+import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import { CartService } from 'src/app/service/cart.service';
 import SwiperCore, {
@@ -17,7 +17,6 @@ import SwiperCore, {
     Virtual,
     Zoom
 } from 'swiper';
-import { Product } from '../../interface/product';
 import { ProductService } from '../../service/productservice';
 import { ImageDialogComponent } from './../dialog/image-dialog/image-dialog.component';
 
@@ -40,13 +39,8 @@ export class DashboardComponent implements OnInit {
 
     swiperOptions!: SwiperOptions;
 
-    // demo
-    sortOptions: SelectItem[];
-    sortOrder: number;
-    sortField: string;
-    sourceCities: any[];
-    targetCities: any[];
-    orderCities: any[];
+    showProductOptionsDialog: boolean = false;
+    selectedProduct!: Product;
 
     constructor(
         public appMain: AppMainComponent,
@@ -87,6 +81,14 @@ export class DashboardComponent implements OnInit {
         });
     }
 
+    showProductOptions(data: any) {
+        this.selectedProduct = data;
+        this.showProductOptionsDialog = true;
+        console.log(this.selectedProduct);
+
+        // this.cartService.addToCart(data);
+    }
+
     removeSwiper() {
         this.featuredProducts.length = 0;
     }
@@ -125,9 +127,5 @@ export class DashboardComponent implements OnInit {
             .onClose.subscribe((res) => {
                 console.log(res);
             });
-    }
-
-    addToCart(data: Product) {
-        this.cartService.addToCart(data);
     }
 }

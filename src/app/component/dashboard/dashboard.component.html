@@ -24,16 +24,7 @@
     </div>
 </div>
 
-<p-dataView
-    #dv
-    id="listProducts"
-    [value]="products"
-    [paginator]="true"
-    [rows]="10"
-    filterBy="name"
-    [sortField]="sortField"
-    [sortOrder]="sortOrder"
-    layout="grid">
+<p-dataView #dv id="listProducts" [value]="products" [paginator]="true" [rows]="12" layout="grid">
     <ng-template pTemplate="header">
         <div class="grid">
             <div class="col-3 p-fluid" style="width: fit-content">
@@ -73,7 +64,7 @@
                         pRipple
                         icon="pi pi-shopping-cart"
                         class="p-button-rounded"
-                        (click)="addToCart(product)"
+                        (click)="showProductOptions(product)"
                         type="button">
                     </button>
                 </div>
@@ -82,16 +73,30 @@
     </ng-template>
 </p-dataView>
 
-<!-- <div class="grid" *ngIf="products.length > 0">
-    <div class="col-6" *ngFor="let data of products" (click)="onClickImage(data)">
-        <div class="card p-fluid text-center">
-            <img
-                src="assets/demo/images/product/{{ data.image }}"
-                [alt]="product.name"
-                (click)="onClickImage(data)"
-                class="shadow-4"
-                width="100%" />
-            <p>{{ data.name }}</p>
-        </div>
-    </div>
-</div> -->
+<p-sidebar
+    id="productOptionsDialog"
+    *ngIf="selectedProduct"
+    [(visible)]="showProductOptionsDialog"
+    position="bottom"
+    styleClass="h-auto"
+    [dismissible]="true"
+    [showCloseIcon]="true"
+    [closeOnEscape]="true"
+    [baseZIndex]="10000">
+    <!-- <h3 style="font-weight: normal">Bottom Sidebar</h3> -->
+
+    <div class="p-4 pt-0">
+        <h5 class="category-title">{{ selectedProduct.name }}</h5>
+        <div class="text-left">
+            <h6 class="my-4 text-primary font-semibold">Rp{{ selectedProduct.price }}</h6>
+            <p class="my-1">{{ selectedProduct.description }}</p>
+            <div class="text-right mt-4 mb-2">
+                <button
+                    pButton
+                    icon="pi pi-shopping-cart"
+                    label="Add to Cart"
+                    class="p-button-primary p-button-outlined">
+                </button>
+            </div> </div
+    ></div>
+</p-sidebar>
