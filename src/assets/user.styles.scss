@@ -1,9 +1,10 @@
 :host ::ng-deep {
     .layout-topbar {
-        box-shadow: none;
+        // box-shadow: none;
     }
 
     .p-dataview .p-dataview-header {
+        padding-top: 2rem;
         margin-top: -2rem;
         background: var(--surface-card);
         border: none;
@@ -12,15 +13,6 @@
         top: 65px;
         z-index: 998;
     }
-
-    // .p-input-icon-left.input-rounded {
-    //     i:first-of-type {
-    //         left: 1.5rem;
-    //     }
-    //     .p-inputtext {
-    //         padding-left: 3.5rem;
-    //     }
-    // }
 }
 
 .input-rounded {
