@@ -133,6 +133,7 @@ import { ImageDialogComponent } from './component/dialog/image-dialog/image-dial
 import { ErrorComponent } from './component/error/error.component';
 import { LoginComponent } from './component/login/login.component';
 import { NotfoundComponent } from './component/notfound/notfound.component';
+import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { AppFooterComponent } from './layout/app.footer.component';
 import { AppMainComponent } from './layout/app.main.component';
 import { AppMenuComponent } from './layout/app.menu.component';
@@ -148,7 +149,6 @@ import { IconService } from './service/iconservice';
 import { NodeService } from './service/nodeservice';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
-import { SkeletonComponent } from './component/skeleton/skeleton.component';
 
 @NgModule({
     declarations: [
@@ -192,14 +192,13 @@ import { SkeletonComponent } from './component/skeleton/skeleton.component';
         ErrorComponent,
         NotfoundComponent,
         AccessComponent,
-
         /* USER DEFINED */
         DashboardComponent,
         CartComponent,
 
         /* DIALOG */
         ImageDialogComponent,
-         SkeletonComponent
+        SkeletonComponent
     ],
     imports: [
         BrowserModule,
