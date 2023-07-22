@@ -36,32 +36,23 @@
     layout="grid">
     <ng-template pTemplate="header">
         <div class="grid">
-            <div class="col-4 p-fluid text">
-                <span class="p-input-icon-left">
-                    <i class="pi pi-sliders-v"></i>
-                    <input
-                        pInputText
-                        type="text"
-                        class="bold-placeholder"
-                        [placeholder]="params === 'root' ? 'Filter' : params"
-                        style="text-transform: capitalize" />
-                </span>
+            <div class="col-4 p-fluid">
+                <!-- <span class="p-input-icon-left"> -->
+                <!-- <i class="pi pi-sliders-v"></i> -->
+                <button
+                    pButton
+                    [label]="params === 'root' ? 'Filter' : params"
+                    icon="pi pi-sliders-v"
+                    class="p-button-plain p-button-rounded p-button-outlined"
+                    style="height: 100%; text-transform: capitalize"></button>
             </div>
             <div class="col p-fluid">
-                <span class="p-input-icon-left">
+                <span class="p-input-icon-left input-rounded" style="height: 100%">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" class="font-semibold" placeholder="Search..." clearButton="true" />
+                    <input pInputText type="text" placeholder="Search..." class="font-semibold" clearButton="true" />
                 </span>
             </div>
         </div>
-        <!-- <span class="p-input-icon-left">
-                    <i class="pi pi-sliders-v"></i>
-                    <input pInputText type="text" class="bold-placeholder" placeholder="Filter" />
-                </span>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" placeholder="Search" />
-                </span> -->
     </ng-template>
     <ng-template let-product pTemplate="gridItem">
         <div class="col-6 md:col-4">
@@ -76,7 +67,15 @@
                 </div>
                 <div class="flex align-items-center justify-content-between p-3">
                     <span class="text-sm font-semibold ml-2">Rp{{ product.price }}</span>
-                    <p-button icon="pi pi-shopping-cart" (click)="addToCart(product)"></p-button>
+                    <!-- <p-button icon="pi pi-shopping-cart" (click)="addToCart(product)"></p-button> -->
+                    <button
+                        pButton
+                        pRipple
+                        icon="pi pi-shopping-cart"
+                        class="p-button-rounded"
+                        (click)="addToCart(product)"
+                        type="button">
+                    </button>
                 </div>
             </div>
         </div>

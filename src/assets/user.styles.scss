@@ -12,6 +12,26 @@
         top: 65px;
         z-index: 998;
     }
+
+    // .p-input-icon-left.input-rounded {
+    //     i:first-of-type {
+    //         left: 1.5rem;
+    //     }
+    //     .p-inputtext {
+    //         padding-left: 3.5rem;
+    //     }
+    // }
+}
+
+.input-rounded {
+    i {
+        margin-left: 8px;
+    }
+
+    input {
+        padding-left: 3rem;
+        border-radius: 2rem;
+    }
 }
 
 #featuredProducts {
