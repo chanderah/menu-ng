@@ -92,16 +92,43 @@ export class DashboardComponent implements OnInit {
             }
         ];
     }
+
     getProducts() {
         this.productService.getProducts().then((res) => {
             this.products = res;
         });
     }
 
-    orderProduct(data: any) {
+    onAddToCart(data: Product) {
+        //dummy
+        data.options = [
+            {
+                type: 'checkbox',
+                name: 'Sugar',
+                price: 32900,
+                values: ['pake', 'engga', 'dikit'],
+                multiple: true
+            },
+            {
+                type: 'checkbox',
+                name: 'Sugar',
+                price: 32900,
+                values: ['pake', 'engga', 'dikit'],
+                multiple: true
+            },
+            {
+                type: 'checkbox',
+                name: 'Sugar',
+                price: 32900,
+                values: ['pake', 'engga', 'dikit'],
+                multiple: true
+            }
+        ];
         this.selectedProduct = data;
         this.showOrderFormDialog = true;
+    }
 
+    onConfirmAddToCart(data: any) {
         // this.cartService.addToCart(data);
     }
 
