@@ -128,12 +128,9 @@ export class DashboardComponent implements OnInit {
         this.showOrderFormDialog = true;
     }
 
-    onConfirmAddToCart(data: any) {
-        // this.cartService.addToCart(data);
-    }
-
-    addToCart(productForm: any) {
+    insertToCart(productForm: any) {
         this.cartService.addToCart(productForm);
+        this.showOrderFormDialog = false;
     }
 
     removeSwiper() {
