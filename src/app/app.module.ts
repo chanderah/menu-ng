@@ -1,7 +1,7 @@
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HotToastModule } from '@ngneat/hot-toast';
@@ -297,7 +297,8 @@ import { ProductService } from './service/productservice';
             duration: 3000,
             position: 'top-right',
             autoClose: true
-        })
+        }),
+        ReactiveFormsModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },

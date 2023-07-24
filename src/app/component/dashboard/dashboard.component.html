@@ -53,7 +53,9 @@
                         (click)="onClickImage(product)"
                         src="assets/demo/images/product/{{ product.image }}"
                         class="w-full shadow-2" />
-                    <div class="text-md font-semibold mt-3">{{ product.name }}</div>
+                    <div class="product-name text-md font-semibold m-3 mb-0">
+                        <span class="max-lines-2">{{ product.name }}</span>
+                    </div>
                 </div>
                 <p-divider class="my-4"></p-divider>
                 <div class="flex align-items-center justify-content-between pb-3 pr-3 pl-3">
@@ -64,7 +66,7 @@
                         pRipple
                         icon="pi pi-shopping-cart"
                         class="p-button-rounded"
-                        (click)="showProductOptions(product)"
+                        (click)="orderProduct(product)"
                         type="button">
                     </button>
                 </div>
@@ -74,11 +76,12 @@
 </p-dataView>
 
 <p-sidebar
-    id="productOptionsDialog"
+    id="orderFormDialog"
     *ngIf="selectedProduct"
-    [(visible)]="showProductOptionsDialog"
+    [(visible)]="showOrderFormDialog"
     position="bottom"
     styleClass="h-auto"
+    [blockScroll]="true"
     [dismissible]="true"
     [showCloseIcon]="true"
     [closeOnEscape]="true"
@@ -95,6 +98,7 @@
                     pButton
                     icon="pi pi-shopping-cart"
                     label="Add to Cart"
+                    (click)="addToCart(selectedProduct)"
                     class="p-button-primary p-button-outlined">
                 </button>
             </div> </div
