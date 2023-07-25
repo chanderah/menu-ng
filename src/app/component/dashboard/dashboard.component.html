@@ -5,7 +5,7 @@
             <swiper [config]="swiperOptions" #swiper>
                 <ng-template *ngFor="let product of featuredProducts" swiperSlide>
                     <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
-                        <div class="m-2 mb-3">
+                        <div class="m-2 mb-3" style="cursor: pointer">
                             <img
                                 src="assets/demo/images/product/{{ product.image }}"
                                 [alt]="product.name"
@@ -45,9 +45,9 @@
         </div>
     </ng-template>
     <ng-template let-product pTemplate="gridItem">
-        <div class="col-6 md:col-4">
+        <div class="col-6 md:col-3">
             <div class="card mat m-2 surface-border">
-                <div class="text-center">
+                <div class="text-center" style="cursor: pointer">
                     <img
                         [alt]="product.name"
                         (click)="onClickImage(product)"
@@ -59,7 +59,7 @@
                 </div>
                 <!-- <div class="flex align-items-center justify-content-between pb-3 pr-3 pl-3"> -->
                 <p-divider class="my-0"></p-divider>
-                <div class="product-footer px-3">
+                <div class="product-footer px-4">
                     <span class="text-sm font-semibold ml-2">Rp{{ product.price }}</span>
                     <button
                         pButton
