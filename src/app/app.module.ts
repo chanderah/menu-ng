@@ -1,8 +1,8 @@
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerGestureConfig, HammerModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { ToastrModule } from 'ngx-toastr';
@@ -124,6 +124,7 @@ import { TableComponent } from './component/table/table.component';
 import { TimelineComponent } from './component/timeline/timeline.component';
 import { TreeComponent } from './component/tree/tree.component';
 
+import * as Hammer from 'hammerjs';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SwiperModule } from 'swiper/angular';
@@ -149,6 +150,13 @@ import { IconService } from './service/iconservice';
 import { NodeService } from './service/nodeservice';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
+
+@Injectable()
+export class MyHammerConfig extends HammerGestureConfig {
+    overrides = <any>{
+        swipe: { direction: Hammer.DIRECTION_ALL }
+    };
+}
 
 @NgModule({
     declarations: [
@@ -298,10 +306,15 @@ import { ProductService } from './service/productservice';
             position: 'top-right',
             autoClose: true
         }),
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        HammerModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
+        {
+            provide: HAMMER_GESTURE_CONFIG,
+            useClass: MyHammerConfig
+        },
         CountryService,
         CustomerService,
         EventService,

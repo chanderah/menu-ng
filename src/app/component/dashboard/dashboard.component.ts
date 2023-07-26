@@ -72,6 +72,16 @@ export class DashboardComponent implements OnInit {
         this.getProducts();
     }
 
+    onSwipe(evt: any) {
+        // const x = Math.abs(evt.deltaX) > 40 ? (evt.deltaX > 0 ? 'right' : 'left') : '';
+        // const y = Math.abs(evt.deltaY) > 40 ? (evt.deltaY > 0 ? 'down' : 'up') : '';
+        // console.log(evt);
+        // let data = `${x} ${y}<br/>`;
+        // console.log(data);
+
+        this.showOrderFormDialog = false;
+    }
+
     resetForm() {
         this.orderForm.reset();
     }

@@ -88,7 +88,7 @@
     [baseZIndex]="10000">
     <!-- <h3 style="font-weight: normal">Bottom Sidebar</h3> -->
 
-    <div class="p-4 pt-0">
+    <div class="p-4 pt-0" (swipedown)="onSwipe($event)">
         <h5 class="category-title">{{ selectedProduct.name }}</h5>
         <div class="grid">
             <div class="col-12 md:col-4" *ngFor="let option of selectedProduct.options; let i = index">
@@ -110,6 +110,7 @@
                     (click)="insertToCart(selectedProduct)"
                     class="p-button-primary p-button-outlined">
                 </button>
-            </div> </div
-    ></div>
+            </div>
+        </div>
+    </div>
 </p-sidebar>
