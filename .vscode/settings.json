@@ -1,5 +1,4 @@
 {
-    "git.ignoreLimitWarning": true,
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -8,6 +7,6 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "exclude/": true,
-        "**/node_modules": false
+        "**/node_modules": true
     }
 }

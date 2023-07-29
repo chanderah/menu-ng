@@ -1,131 +1,75 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { jsonParse } from 'src/app/lib/object';
-import { MenuService } from '../app.menu.service';
-import { LayoutService } from '../service/app.layout.service';
-import { UserConfig } from './../../interface/user_config';
-import { jsonStringify } from './../../lib/object';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PrimeNGConfig } from 'primeng/api';
+import { Subscription } from 'rxjs';
+import { AppComponent } from 'src/app/app.component';
+import { AppConfig } from 'src/app/interface/appconfig';
+import { ConfigService } from 'src/app/layout/service/app.config.service';
+import { AppMainComponent } from '../app.main.component';
 
 @Component({
-  selector: 'app-config',
-  templateUrl: './app.config.component.html'
+    selector: 'app-config',
+    templateUrl: './app.config.component.html'
 })
-export class AppConfigComponent implements OnInit {
-  @Input() minimal: boolean = false;
+export class AppConfigComponent implements OnInit, OnDestroy {
+    subscription: Subscription;
 
-  scales: number[] = [12, 13, 14, 15, 16];
-  userConfig = {} as UserConfig;
+    config: AppConfig;
+    scales: number[] = [12, 13, 14, 15, 16];
+    scale: number = 14;
 
-  constructor(
-    public menuService: MenuService,
-    public layoutService: LayoutService
-  ) {
-    this.userConfig = jsonParse(this.layoutService.config);
-    this.initScale();
-    this.initTheme();
-  }
+    constructor(
+        public app: AppComponent,
+        public appMain: AppMainComponent,
+        public configService: ConfigService,
+        public primengConfig: PrimeNGConfig
+    ) {}
 
-  ngOnInit() {}
+    ngOnInit() {
+        this.config = this.configService.config;
+        this.subscription = this.configService.configUpdate$.subscribe((config) => {
+            this.config = config;
+            this.scale = 14;
 
-  get visible(): boolean {
-    return this.layoutService.state.configSidebarVisible;
-  }
+            this.applyScale();
+        });
+    }
 
-  set visible(_val: boolean) {
-    this.layoutService.state.configSidebarVisible = _val;
-  }
+    onConfigButtonClick(event) {
+        this.appMain.configActive = !this.appMain.configActive;
+        this.appMain.configClick = true;
+        event.preventDefault();
+    }
 
-  get scale(): number {
-    return this.layoutService.config.scale;
-  }
+    incrementScale() {
+        this.scale++;
+        this.applyScale();
+    }
 
-  set scale(_val: number) {
-    this.layoutService.config.scale = _val;
-  }
+    decrementScale() {
+        this.scale--;
+        this.applyScale();
+    }
 
-  get menuMode(): string {
-    return this.layoutService.config.menuMode;
-  }
+    applyScale() {
+        document.documentElement.style.fontSize = this.scale + 'px';
+    }
 
-  set menuMode(_val: string) {
-    this.layoutService.config.menuMode = _val;
-  }
+    onRippleChange(ripple) {
+        this.primengConfig.ripple = ripple;
+        this.configService.updateConfig({ ...this.config, ...{ ripple } });
+    }
 
-  get inputStyle(): string {
-    return this.layoutService.config.inputStyle;
-  }
+    onInputStyleChange() {
+        this.configService.updateConfig(this.config);
+    }
 
-  set inputStyle(_val: string) {
-    this.layoutService.config.inputStyle = _val;
-  }
+    changeTheme(theme: string, dark: boolean) {
+        let themeElement = document.getElementById('theme-css');
+        themeElement.setAttribute('href', 'assets/theme/' + theme + '/theme.css');
+        this.configService.updateConfig({ ...this.config, ...{ theme, dark } });
+    }
 
-  get ripple(): boolean {
-    return this.layoutService.config.ripple;
-  }
-
-  set ripple(_val: boolean) {
-    this.layoutService.config.ripple = _val;
-  }
-
-  initTheme() {
-    const themeLink = <HTMLLinkElement>document.getElementById('theme-css');
-    themeLink.setAttribute('href', `assets/layout/styles/theme/${this.userConfig.theme}/theme.css`);
-  }
-
-  onConfigButtonClick() {
-    this.layoutService.showConfigSidebar();
-  }
-
-  changeTheme(theme: string, colorScheme: string) {
-    const themeLink = <HTMLLinkElement>document.getElementById('theme-css');
-    const newHref = themeLink.getAttribute('href')!.replace(this.layoutService.config.theme, theme);
-    this.replaceThemeLink(newHref, () => {
-      this.layoutService.config.theme = theme;
-      this.layoutService.config.colorScheme = colorScheme;
-      this.layoutService.onConfigUpdate();
-      this.setLocalStorage();
-    });
-  }
-
-  replaceThemeLink(href: string, onComplete: Function) {
-    const id = 'theme-css';
-    const themeLink = <HTMLLinkElement>document.getElementById(id);
-    const cloneLinkElement = <HTMLLinkElement>themeLink.cloneNode(true);
-
-    cloneLinkElement.setAttribute('href', href);
-    cloneLinkElement.setAttribute('id', id + '-clone');
-
-    themeLink.parentNode!.insertBefore(cloneLinkElement, themeLink.nextSibling);
-
-    cloneLinkElement.addEventListener('load', () => {
-      themeLink.remove();
-      cloneLinkElement.setAttribute('id', id);
-      onComplete();
-    });
-  }
-
-  initScale() {
-    this.scale = this.userConfig.scale;
-    this.applyScale();
-  }
-
-  decrementScale() {
-    this.scale--;
-    this.applyScale();
-    this.setLocalStorage();
-  }
-
-  incrementScale() {
-    this.scale++;
-    this.applyScale();
-    this.setLocalStorage();
-  }
-
-  applyScale() {
-    document.documentElement.style.fontSize = this.scale + 'px';
-  }
-
-  setLocalStorage() {
-    this.layoutService.config.scale = this.scale;
-    localStorage.setItem('userConfig', jsonStringify(this.layoutService.config));
-  }
+    ngOnDestroy() {
+        if (this.subscription) this.subscription.unsubscribe();
+    }
 }

@@ -1,0 +1,46 @@
+<div (swipedown)="hideDialog()">
+    <p-sidebar
+        id="orderFormDialog"
+        [(visible)]="showDialog"
+        (onHide)="hideDialog()"
+        position="bottom"
+        styleClass="h-auto"
+        [blockScroll]="true"
+        [dismissible]="true"
+        [showCloseIcon]="true"
+        [closeOnEscape]="true"
+        [baseZIndex]="10000">
+        <ng-template pTemplate="header" class="bla">
+            <div class="flex justify-content-center w-full">
+                <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-4 pt-0" (swipedown)="hideDialog()">
+                <h5 class="category-title">{{ selectedProduct.name }}</h5>
+                <div class="grid">
+                    <div class="col-12 md:col-4" *ngFor="let option of selectedProduct.options; let i = index">
+                        <div class="field-checkbox mb-0">
+                            <p-checkbox name="group1" value="Chicago" id="ch"></p-checkbox>
+                            <label for="ch">Option {{ i + 1 }}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-left">
+                    <h6 class="my-4 text-primary font-semibold">Rp{{ selectedProduct.price }}</h6>
+                    <p class="my-1">{{ selectedProduct.description }}</p>
+                    <div class="text-right mt-4 mb-2">
+                        <button
+                            pButton
+                            icon="pi pi-shopping-cart"
+                            label="Add to Cart"
+                            (click)="insertToCart(selectedProduct)"
+                            class="p-button-primary p-button-outlined">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-sidebar>
+</div>

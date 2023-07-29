@@ -1,73 +1,159 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { OwlOptions } from 'ngx-owl-carousel-o';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
-import { Product } from 'src/app/api/product';
-import { ProductService } from 'src/app/service/product.service';
+import { Product } from 'src/app/interface/product';
+import { AppMainComponent } from 'src/app/layout/app.main.component';
+import SwiperCore, {
+    A11y,
+    Autoplay,
+    Controller,
+    Navigation,
+    Pagination,
+    Scrollbar,
+    SwiperOptions,
+    Thumbs,
+    Virtual,
+    Zoom
+} from 'swiper';
+import { ProductService } from '../../service/productservice';
 import { ImageDialogComponent } from './../dialog/image-dialog/image-dialog.component';
 
+// install Swiper components
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
+
 @Component({
-  templateUrl: './dashboard.component.html'
-  // styleUrls: ['../../../../node_modules/keen-slider/keen-slider.min.css']
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['../../../assets/user.styles.scss']
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
-  subscription!: Subscription;
-  params!: object | string;
+export class DashboardComponent implements OnInit {
+    // @ViewChild('swiper') swiper!: ElementRef;
 
-  owlOptions!: OwlOptions;
-  featuredProducts = [] as Product[];
+    subscription!: Subscription;
+    params!: object | string;
 
-  constructor(
-    private route: ActivatedRoute,
-    private productService: ProductService,
-    private dialogService: DialogService
-  ) {
-    this.route.queryParams.subscribe(({ menu }) => (this.params = menu || 'root'));
-  }
+    categories = [] as any[];
+    products = [] as Product[];
+    featuredProducts = [] as Product[];
 
-  ngOnInit() {
-    if (this.params === 'root') {
-      this.owlOptions = {
-        loop: true,
-        autoplay: true,
-        center: true,
-        dots: false,
-        stagePadding: 20,
-        autoplaySpeed: 1000,
-        autoplayTimeout: 2000,
-        autoplayHoverPause: true,
-        autoplayMouseleaveTimeout: 1500,
-        margin: 0,
-        // nav: true,
-        // navText: ['Previous', 'Next'],
-        // navText: [
-        //   '<i class="pi pi-fw pi-angle-left" aria-hidden="true"></i>',
-        //   '<i class="pi pi-fw pi-angle-right" aria-hidden="true"></i>'
-        // ],
-        navSpeed: 500,
-        autoHeight: true,
-        autoWidth: true,
-        responsive: {
-          0: { items: 2 },
-          768: { items: 4 }
-        }
-      };
-      this.productService.getProducts().then((res) => (this.featuredProducts = res.slice(0, 6)));
+    swiperOptions!: SwiperOptions;
+
+    showOrderFormDialog: boolean = false;
+    selectedProduct!: Product;
+
+    constructor(
+        public appMain: AppMainComponent,
+        private route: ActivatedRoute,
+        private productService: ProductService,
+        private dialogService: DialogService,
+        private formBuilder: FormBuilder
+    ) {
+        this.route.queryParams.subscribe(({ menu }) => {
+            this.params = menu || 'root';
+            if (this.params === 'root') this.initSwiper();
+            else this.removeSwiper();
+        });
     }
-  }
 
-  onClickImage(data: any) {
-    this.dialogService
-      .open(ImageDialogComponent, {
-        header: data.name,
-        data: data,
-        closeOnEscape: true,
-        dismissableMask: true,
-        maximizable: true
-      })
-      .onClose.subscribe((res) => {
-        console.log(res);
-      });
-  }
+    ngOnInit() {
+        this.getCategories();
+        this.getProducts();
+    }
+
+    getCategories() {
+        this.categories = [
+            {
+                label: 'Filter',
+                icon: 'pi pi-fw pi-sliders-v',
+                items: [
+                    [
+                        {
+                            label: 'Categories',
+                            items: [{ label: 'All' }, { label: 'Foods' }, { label: 'Drinks' }]
+                        }
+                    ]
+                ]
+            }
+        ];
+    }
+
+    getProducts() {
+        this.productService.getProducts().then((res) => {
+            this.products = res;
+        });
+    }
+
+    onShowOrderFormDialogChange(bool: boolean) {
+        this.showOrderFormDialog = bool;
+    }
+
+    onAddToCart(data: Product) {
+        //dummy
+        data.options = [
+            {
+                type: 'checkbox',
+                name: 'Sugar',
+                price: 32900,
+                values: ['pake', 'engga', 'dikit'],
+                multiple: true
+            },
+            {
+                type: 'checkbox',
+                name: 'Sugar',
+                price: 32900,
+                values: ['pake', 'engga', 'dikit'],
+                multiple: true
+            },
+            {
+                type: 'checkbox',
+                name: 'Sugar',
+                price: 32900,
+                values: ['pake', 'engga', 'dikit'],
+                multiple: true
+            }
+        ];
+        this.selectedProduct = data;
+        this.showOrderFormDialog = true;
+    }
+
+    removeSwiper() {
+        this.featuredProducts.length = 0;
+    }
+
+    initSwiper() {
+        this.productService.getProducts().then((res) => (this.featuredProducts = res.slice(0, 6)));
+        this.swiperOptions = {
+            autoHeight: true,
+            autoplay: {
+                delay: 2500,
+                pauseOnMouseEnter: true,
+                disableOnInteraction: false
+            },
+            loop: true,
+            centeredSlides: true,
+            breakpoints: {
+                0: {
+                    slidesPerView: 1
+                },
+                768: {
+                    slidesPerView: 4
+                }
+            }
+        };
+    }
+
+    onClickImage(data: any) {
+        this.dialogService
+            .open(ImageDialogComponent, {
+                header: data.name,
+                data: data,
+                closeOnEscape: true,
+                dismissableMask: true
+                // maximizable: true
+            })
+            .onClose.subscribe((res) => {
+                console.log(res);
+            });
+    }
 }

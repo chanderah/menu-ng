@@ -1,35 +1,44 @@
 import { Injectable } from '@angular/core';
-import { Product } from 'src/app/api/product';
-import { jsonParse } from 'src/app/lib/object';
-import { isEmpty, jsonStringify } from './../lib/object';
+import { HotToastService } from '@ngneat/hot-toast';
+import { ToastrService } from 'ngx-toastr';
+import { Product } from 'src/app/interface/product';
+import { isEmpty, jsonParse, jsonStringify } from 'src/app/lib/object';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class CartService {
-  cart: Product[] = [];
+    cart: Product[] = [];
 
-  constructor() {
-    this.cart = jsonParse(localStorage.getItem('cart'));
-  }
-
-  getCart() {
-    this.cart = jsonParse(localStorage.getItem('cart'));
-    return this.cart;
-  }
-
-  addToCart(product: Product) {
-    this.getCart();
-    if (isEmpty(this.cart)) {
-      this.cart = [product];
-    } else {
-      this.cart.push(product);
+    constructor(
+        private toast: HotToastService,
+        private toastr: ToastrService
+    ) {
+        this.cart = jsonParse(localStorage.getItem('cart'));
     }
 
-    localStorage.setItem('cart', jsonStringify(this.cart));
-  }
+    getCart() {
+        this.cart = jsonParse(localStorage.getItem('cart'));
+        return this.cart;
+    }
 
-  clear() {
-    localStorage.removeItem('cart');
-  }
+    addToCart(product: Product) {
+        this.getCart();
+        if (isEmpty(this.cart)) {
+            this.cart = [product];
+        } else this.cart.push(product);
+        localStorage.setItem('cart', jsonStringify(this.cart));
+
+        this.showToast();
+    }
+
+    clear() {
+        localStorage.removeItem('cart');
+    }
+
+    showToast() {
+        console.log(this.getCart());
+        this.toast.success('Your item is successfully added to cart!');
+        // this.toastr.success('Your item is successfully added to cart.', 'Success!');
+    }
 }
