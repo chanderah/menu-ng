@@ -150,6 +150,7 @@ import { IconService } from './service/iconservice';
 import { NodeService } from './service/nodeservice';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
+import { OrderDialogComponent } from './component/dialog/order-dialog/order-dialog.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -206,7 +207,8 @@ export class MyHammerConfig extends HammerGestureConfig {
 
         /* DIALOG */
         ImageDialogComponent,
-        SkeletonComponent
+        SkeletonComponent,
+        OrderDialogComponent
     ],
     imports: [
         BrowserModule,

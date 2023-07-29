@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
-import { CartService } from 'src/app/service/cart.service';
 import SwiperCore, {
     A11y,
     Autoplay,
@@ -34,8 +33,6 @@ export class DashboardComponent implements OnInit {
     subscription!: Subscription;
     params!: object | string;
 
-    orderForm: FormGroup;
-
     categories = [] as any[];
     products = [] as Product[];
     featuredProducts = [] as Product[];
@@ -50,7 +47,6 @@ export class DashboardComponent implements OnInit {
         private route: ActivatedRoute,
         private productService: ProductService,
         private dialogService: DialogService,
-        private cartService: CartService,
         private formBuilder: FormBuilder
     ) {
         this.route.queryParams.subscribe(({ menu }) => {
@@ -58,32 +54,11 @@ export class DashboardComponent implements OnInit {
             if (this.params === 'root') this.initSwiper();
             else this.removeSwiper();
         });
-
-        this.orderForm = this.formBuilder.group({
-            // categoryId: [{ value: null, disabled: true }],
-            tableId: [{ value: null, disabled: true }, [Validators.required]],
-            notes: ['', [Validators.maxLength(255)]],
-            listProduct: this.formBuilder.array([])
-        });
     }
 
     ngOnInit() {
         this.getCategories();
         this.getProducts();
-    }
-
-    onSwipe(evt: any) {
-        // const x = Math.abs(evt.deltaX) > 40 ? (evt.deltaX > 0 ? 'right' : 'left') : '';
-        // const y = Math.abs(evt.deltaY) > 40 ? (evt.deltaY > 0 ? 'down' : 'up') : '';
-        // console.log(evt);
-        // let data = `${x} ${y}<br/>`;
-        // console.log(data);
-
-        this.showOrderFormDialog = false;
-    }
-
-    resetForm() {
-        this.orderForm.reset();
     }
 
     getCategories() {
@@ -107,6 +82,10 @@ export class DashboardComponent implements OnInit {
         this.productService.getProducts().then((res) => {
             this.products = res;
         });
+    }
+
+    onShowOrderFormDialogChange(bool: boolean) {
+        this.showOrderFormDialog = bool;
     }
 
     onAddToCart(data: Product) {
@@ -136,11 +115,6 @@ export class DashboardComponent implements OnInit {
         ];
         this.selectedProduct = data;
         this.showOrderFormDialog = true;
-    }
-
-    insertToCart(productForm: any) {
-        this.cartService.addToCart(productForm);
-        this.showOrderFormDialog = false;
     }
 
     removeSwiper() {
