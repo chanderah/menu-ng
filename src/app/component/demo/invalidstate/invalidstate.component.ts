@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CountryService } from '../../service/countryservice';
+import { CountryService } from '../../../service/countryservice';
 
 @Component({
-    templateUrl: './floatlabel.component.html'
+    templateUrl: './invalidstate.component.html'
 })
-export class FloatLabelComponent implements OnInit {
+export class InvalidStateComponent implements OnInit {
     countries: any[];
 
     cities: any[];
@@ -31,10 +31,6 @@ export class FloatLabelComponent implements OnInit {
 
     value10: any;
 
-    value11: any;
-
-    value12: any;
-
     constructor(private countryService: CountryService) {
         this.cities = [
             { name: 'New York', code: 'NY' },
@@ -52,8 +48,8 @@ export class FloatLabelComponent implements OnInit {
     }
 
     searchCountry(event) {
-        // in a real application, make a request to a remote url with the query and
-        // return filtered results, for demo we filter at client side
+        // in a real application, make a request to a remote url with the query and return filtered results,
+        // for demo we filter at client side
         const filtered: any[] = [];
         const query = event.query;
         for (let i = 0; i < this.countries.length; i++) {

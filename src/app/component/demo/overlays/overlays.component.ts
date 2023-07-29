@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
-import { Product } from '../../interface/product';
-import { ProductService } from '../../service/productservice';
+import { ProductService } from 'src/app/service/productservice';
 
 @Component({
     templateUrl: './overlays.component.html',

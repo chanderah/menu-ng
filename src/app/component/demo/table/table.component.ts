@@ -1,15 +1,15 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Customer, Representative } from '../../interface/customer';
-import { Product } from '../../interface/product';
-import { CustomerService } from '../../service/customerservice';
-import { ProductService } from '../../service/productservice';
+import { Customer, Representative } from 'src/app/interface/customer';
+import { Product } from 'src/app/interface/product';
+import { CustomerService } from 'src/app/service/customerservice';
+import { ProductService } from 'src/app/service/productservice';
 
 @Component({
     templateUrl: './table.component.html',
     providers: [MessageService, ConfirmationService],
-    styleUrls: ['../../../assets/demo/badges.scss'],
+    styleUrls: ['../../../../assets/demo/badges.scss'],
     styles: [
         `
             :host ::ng-deep .p-frozen-column {

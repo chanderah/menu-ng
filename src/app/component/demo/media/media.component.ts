@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../../interface/product';
-import { PhotoService } from '../../service/photoservice';
-import { ProductService } from '../../service/productservice';
+import { Product } from 'src/app/interface/product';
+import { PhotoService } from 'src/app/service/photoservice';
+import { ProductService } from 'src/app/service/productservice';
 
 @Component({
     selector: 'app-media',
     templateUrl: './media.component.html',
-    styleUrls: ['../../../assets/demo/badges.scss'],
+    styleUrls: ['../../../../assets/demo/badges.scss'],
     styles: [
         `
             :host ::ng-deep .p-carousel-indicators .p-link {

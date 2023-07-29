@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Product } from '../../interface/product';
-import { ProductService } from '../../service/productservice';
+import { Product } from '../../../interface/product';
+import { ProductService } from '../../../service/productservice';
 
 @Component({
     templateUrl: './crud.component.html',
     providers: [MessageService, ConfirmationService],
-    styleUrls: ['../../../assets/demo/badges.scss']
+    styleUrls: ['../../../../assets/demo/badges.scss']
 })
 export class CrudComponent implements OnInit {
     productDialog: boolean;

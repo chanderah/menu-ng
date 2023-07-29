@@ -1,33 +1,33 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AccessComponent } from './component/access/access.component';
-import { BlocksComponent } from './component/blocks/blocks.component';
-import { ButtonComponent } from './component/button/button.component';
 import { CartComponent } from './component/cart/cart.component';
-import { ChartsComponent } from './component/charts/charts.component';
-import { CrudComponent } from './component/crud/crud.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
-import { DocumentationComponent } from './component/documentation/documentation.component';
-import { EmptyComponent } from './component/empty/empty.component';
-import { ErrorComponent } from './component/error/error.component';
-import { FileComponent } from './component/file/file.component';
-import { FloatLabelComponent } from './component/floatlabel/floatlabel.component';
-import { FormLayoutComponent } from './component/formlayout/formlayout.component';
-import { IconsComponent } from './component/icons/icons.component';
-import { InputComponent } from './component/input/input.component';
-import { InvalidStateComponent } from './component/invalidstate/invalidstate.component';
-import { LandingComponent } from './component/landing/landing.component';
-import { ListComponent } from './component/list/list.component';
-import { LoginComponent } from './component/login/login.component';
-import { MediaComponent } from './component/media/media.component';
-import { MessagesComponent } from './component/messages/messages.component';
-import { MiscComponent } from './component/misc/misc.component';
-import { NotfoundComponent } from './component/notfound/notfound.component';
-import { OverlaysComponent } from './component/overlays/overlays.component';
-import { PanelsComponent } from './component/panels/panels.component';
-import { TableComponent } from './component/table/table.component';
-import { TimelineComponent } from './component/timeline/timeline.component';
-import { TreeComponent } from './component/tree/tree.component';
+import { AccessComponent } from './component/demo/access/access.component';
+import { BlocksComponent } from './component/demo/blocks/blocks.component';
+import { ButtonComponent } from './component/demo/button/button.component';
+import { ChartsComponent } from './component/demo/charts/charts.component';
+import { CrudComponent } from './component/demo/crud/crud.component';
+import { DocumentationComponent } from './component/demo/documentation/documentation.component';
+import { EmptyComponent } from './component/demo/empty/empty.component';
+import { ErrorComponent } from './component/demo/error/error.component';
+import { FileComponent } from './component/demo/file/file.component';
+import { FloatLabelComponent } from './component/demo/floatlabel/floatlabel.component';
+import { FormLayoutComponent } from './component/demo/formlayout/formlayout.component';
+import { IconsComponent } from './component/demo/icons/icons.component';
+import { InputComponent } from './component/demo/input/input.component';
+import { InvalidStateComponent } from './component/demo/invalidstate/invalidstate.component';
+import { LandingComponent } from './component/demo/landing/landing.component';
+import { ListComponent } from './component/demo/list/list.component';
+import { LoginComponent } from './component/demo/login/login.component';
+import { MediaComponent } from './component/demo/media/media.component';
+import { MessagesComponent } from './component/demo/messages/messages.component';
+import { MiscComponent } from './component/demo/misc/misc.component';
+import { NotfoundComponent } from './component/demo/notfound/notfound.component';
+import { OverlaysComponent } from './component/demo/overlays/overlays.component';
+import { PanelsComponent } from './component/demo/panels/panels.component';
+import { TableComponent } from './component/demo/table/table.component';
+import { TimelineComponent } from './component/demo/timeline/timeline.component';
+import { TreeComponent } from './component/demo/tree/tree.component';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
@@ -63,7 +63,7 @@ import { AppMainComponent } from './layout/app.main.component';
                         {
                             path: 'uikit/menu',
                             loadChildren: () =>
-                                import('./component/menus/menus.module').then(
+                                import('./component/demo/menus/menus.module').then(
                                     (m) => m.MenusModule
                                 ),
                         },
