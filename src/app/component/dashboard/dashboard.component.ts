@@ -153,7 +153,7 @@ export class DashboardComponent implements OnInit {
                 // maximizable: true
             })
             .onClose.subscribe((res) => {
-                console.log(res);
+                if (res) this.onAddToCart(data);
             });
     }
 }
