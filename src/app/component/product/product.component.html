@@ -1,52 +1,68 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
-            <h5 class="category-title mb-4">Products</h5>
+            <div class="flex align-items-center justify-content-between mb-4">
+                <h5 class="category-title">Products</h5>
+                <div class="flex gap-2">
+                    <button
+                        pButton
+                        pRipple
+                        class="p-button"
+                        (click)="onEditProduct()"
+                        [disabled]="isEmpty(selectedProduct)">
+                        Edit
+                    </button>
+                    <button pButton pRipple class="p-button" (click)="onAddProduct()">Add</button>
+                </div>
+            </div>
             <p-table
-                [value]="data"
                 [loading]="isLoading"
+                [paginator]="true"
+                [rows]="10"
+                [rowHover]="true"
+                [value]="products"
                 [scrollable]="true"
                 scrollDirection="both"
                 scrollHeight="400px"
+                selectionMode="single"
+                [(selection)]="selectedProduct"
+                dataKey="id"
                 responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 200px" pFrozenColumn>Name</th>
-                        <th style="width: 200px">Country</th>
-                        <th style="width: 200px">Date</th>
-                        <th style="width: 200px">Company</th>
-                        <th style="width: 200px">Status</th>
-                        <th style="width: 200px">Activity</th>
-                        <th style="width: 200px">Representative</th>
-                        <th style="width: 200px">Balance</th>
+                        <th style="width: 4rem"></th>
+                        <th pSortableColumn="name" pFrozenColumn> Name <p-sortIcon field="name"></p-sortIcon> </th>
+                        <th>Image</th>
+                        <th>Options</th>
+                        <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                        <th>Category</th>
+                        <th pSortableColumn="inventoryStatus">
+                            Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
+                        </th>
                     </tr>
                 </ng-template>
 
-                <ng-template pTemplate="body" let-customer>
-                    <tr>
-                        <td style="width: 200px" pFrozenColumn>{{ customer.name }}</td>
-                        <td style="width: 200px">
+                <ng-template pTemplate="body" let-product>
+                    <tr [pSelectableRow]="product">
+                        <td>
+                            <p-tableCheckbox [pSelectableRow]="product" [value]="product"></p-tableCheckbox>
+                        </td>
+                        <td pFrozenColumn style="min-width: 12rem">{{ product.name }}</td>
+                        <td>
                             <img
-                                src="assets/demo/flags/flag_placeholder.png"
-                                [class]="'flag flag-' + customer.country.code"
-                                width="30" />
-                            <span class="image-text ml-2">{{ customer.country.name }}</span>
+                                [src]="'assets/demo/images/product/' + product.image"
+                                [alt]="product.name"
+                                width="100"
+                                class="shadow-4" />
                         </td>
-                        <td style="width: 200px">{{ customer.date }}</td>
-                        <td style="width: 200px">{{ customer.company }}</td>
-                        <td style="width: 200px">
-                            <span [class]="'customer-badge status-' + customer.status">{{ customer.status }}</span>
+                        <td style="min-width: 8rem">options...</td>
+                        <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td>
+                        <td style="min-width: 10rem">{{ product.category }}</td>
+                        <td>
+                            <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">
+                                {{ product.inventoryStatus }}
+                            </span>
                         </td>
-                        <td style="width: 200px">{{ customer.activity }}</td>
-                        <td style="width: 200px">
-                            <img
-                                [alt]="customer.representative.name"
-                                src="assets/demo/images/avatar/{{ customer.representative.image }}"
-                                width="32"
-                                style="vertical-align: middle" />
-                            <span class="image-text ml-2">{{ customer.representative.name }}</span>
-                        </td>
-                        <td style="width: 200px">{{ formatCurrency(customer.balance) }}</td>
                     </tr>
                 </ng-template>
 
@@ -69,60 +85,117 @@
                         pRipple
                         class="p-button"
                         (click)="onEditCategory()"
-                        [disabled]="selectedNode.length === 0">
+                        [disabled]="selectedCategory.length === 0 || selectedCategory.length > 1">
                         Edit
                     </button>
                     <button pButton pRipple class="p-button" (click)="onAddCategory()">Add</button>
                 </div>
             </div>
-            <p-tree [value]="nodes" selectionMode="checkbox" [(selection)]="selectedNode"></p-tree>
+            <p-tree [value]="categories" selectionMode="checkbox" [(selection)]="selectedCategory"></p-tree>
         </div>
     </div>
 </div>
 
 <p-dialog
-    [header]="selectedNode.length === 0 ? 'Add Category' : 'Edit Category'"
-    [(visible)]="showCategoryDialog"
+    [header]="isEmpty(selectedProduct) ? 'Add Product' : 'Edit Product'"
+    [(visible)]="showProductDialog"
+    [style]="{ width: '40vw' }"
+    [breakpoints]="dialogBreakpoints"
+    [blockScroll]="true"
+    dismissableMask="true"
     modal="modal"
-    showEffect="fade"
-    [style]="{ width: '30vw' }"
-    [breakpoints]="{ '960px': '75vw' }">
-    <!-- <p class="line-height-3 m-0">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum.
-    </p> -->
-    <form class="p-fluid">
+    showEffect="fade">
+    <div [formGroup]="productForm" class="p-fluid px-2 mt-3">
         <div class="grid field">
             <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0">Name</label>
             <div class="col-12 md:col-10">
-                <input pInputText id="name" type="text" placeholder="Name" [value]="selectedNode[0]?.label" />
+                <input pInputText id="name" type="text" placeholder="Name" formControlName="label" />
             </div>
         </div>
         <div class="grid field">
             <label htmlFor="email3" class="col-12 mb-2 md:col-2 md:mb-0">Order</label>
             <div class="col-12 md:col-10">
-                <input pInputText id="email3" type="number" placeholder="Order" />
+                <input pInputText id="email3" type="number" placeholder="Order" formControlName="order" />
             </div>
         </div>
-
-        <div class="flex justify-content-end gap-2 mt-4">
+        <div class="flex justify-content-between mt-5">
             <button
                 pButton
-                icon="pi pi-times"
-                (click)="showCategoryDialog = false"
-                label="Cancel"
-                class="w-auto p-button-danger p-button-outlined">
+                pRipple
+                icon="pi pi-trash"
+                (click)="showProductDialog = false"
+                class="p-button-danger p-button-outlined">
             </button>
-            <button
-                pButton
-                icon="pi pi-check"
-                (click)="showCategoryDialog = false"
-                label="Save"
-                class="w-auto p-button-outlined">
-            </button>
+            <div class="flex justify-content-end gap-2">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    (click)="showProductDialog = false"
+                    label="Cancel"
+                    class="w-auto p-button-danger p-button-outlined">
+                </button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    (click)="onSaveProduct()"
+                    label="Save"
+                    class="w-auto p-button-outlined">
+                </button
+            ></div>
         </div>
-    </form>
+    </div>
+</p-dialog>
+
+<p-dialog
+    [header]="selectedCategory.length === 0 ? 'Add Category' : 'Edit Category'"
+    [(visible)]="showCategoryDialog"
+    [style]="{ width: '40vw' }"
+    [breakpoints]="dialogBreakpoints"
+    [blockScroll]="true"
+    dismissableMask="true"
+    modal="modal"
+    showEffect="fade">
+    <div [formGroup]="categoryForm" class="p-fluid px-2 mt-3">
+        <div class="grid field">
+            <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0">Name</label>
+            <div class="col-12 md:col-10">
+                <input pInputText id="name" type="text" placeholder="Name" formControlName="label" />
+            </div>
+        </div>
+        <div class="grid field">
+            <label htmlFor="email3" class="col-12 mb-2 md:col-2 md:mb-0">Order</label>
+            <div class="col-12 md:col-10">
+                <input pInputText id="email3" type="number" placeholder="Order" formControlName="order" />
+            </div>
+        </div>
+        <div class="flex justify-content-between mt-5">
+            <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                (click)="showCategoryDialog = false"
+                class="p-button-danger p-button-outlined">
+            </button>
+            <div class="flex justify-content-end gap-2">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    (click)="showCategoryDialog = false"
+                    label="Cancel"
+                    class="w-auto p-button-danger p-button-outlined">
+                </button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    (click)="showCategoryDialog = false"
+                    label="Save"
+                    class="w-auto p-button-outlined">
+                </button
+            ></div>
+        </div>
+    </div>
 </p-dialog>

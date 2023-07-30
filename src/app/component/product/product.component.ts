@@ -2,7 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Customer } from 'src/app/interface/customer';
+import { Product } from 'src/app/interface/product';
+import { isEmpty } from 'src/app/lib/object';
 import { CustomerService } from 'src/app/service/customerservice';
 import { ProductService } from 'src/app/service/productservice';
 import { NodeService } from './../../service/nodeservice';
@@ -20,6 +21,10 @@ import { NodeService } from './../../service/nodeservice';
                 // .p-frozen-column {
                 //     font-weight: bold;
                 // }
+                // .p-dialog .p-dialog-header {
+                //     padding: 1rem 1.5rem;
+                //     border: none;
+                // }
 
                 .p-progressbar {
                     height: 0.5rem;
@@ -30,13 +35,16 @@ import { NodeService } from './../../service/nodeservice';
 })
 export class ProductComponent implements OnInit {
     isLoading: boolean = true;
+    dialogBreakpoints = { '768px': '90vw' };
 
-    showCategoryDialogg: string = 'aaa';
+    showProductDialog: boolean = false;
     showCategoryDialog: boolean = false;
-    data: Customer[];
 
-    nodes: TreeNode[] = [];
-    selectedNode: TreeNode[] = [];
+    categories: TreeNode[] = [];
+    selectedCategory: TreeNode[] = [];
+
+    products = [] as Product[];
+    selectedProduct = {} as Product;
 
     productForm: FormGroup;
     categoryForm: FormGroup;
@@ -52,16 +60,17 @@ export class ProductComponent implements OnInit {
         private cd: ChangeDetectorRef
     ) {
         this.productForm = this.formBuilder.group({
-            itemGroup: [null],
-            categoryId: [{ value: null, disabled: true }],
-            categoryItem: [null],
-            status: [null],
-            listSubCategory: this.formBuilder.array([])
+            id: [{ value: null, disabled: true }],
+            icon: ['', Validators.maxLength(255)],
+            order: [null, [Validators.maxLength(2), Validators.required]],
+            label: ['', [Validators.maxLength(255), Validators.required]],
+            children: this.formBuilder.array([])
         });
 
         this.categoryForm = this.formBuilder.group({
             id: [{ value: null, disabled: true }],
             icon: ['', Validators.maxLength(255)],
+            order: [null, [Validators.maxLength(2), Validators.required]],
             label: ['', [Validators.maxLength(255), Validators.required]],
             children: this.formBuilder.array([])
         });
@@ -73,44 +82,76 @@ export class ProductComponent implements OnInit {
 
     getData() {
         this.generateNode();
-        this.customerService.getCustomersLarge().then((customers) => {
-            // this.data = customers;
+        this.productService.getProducts().then((res) => {
+            this.products = res;
             this.isLoading = false;
         });
     }
 
+    resetCategoryForm() {
+        this.categoryForm.reset();
+    }
+
+    resetProductForm() {
+        this.productForm.reset();
+    }
+
+    onAddProduct() {
+        this.selectedProduct = null;
+        this.resetProductForm();
+        this.showProductDialog = true;
+    }
+
+    onEditProduct() {
+        if (isEmpty(this.selectedProduct)) return;
+        // const category = this.selectedProduct[0];
+        // this.categoryForm.get('label').setValue(category.label);
+        // this.categoryForm.get('icon').setValue(category.icon);
+        this.showProductDialog = true;
+    }
+
+    onDeleteProduct() {
+        // if (isEmpty(this.selectedProduct)) return;
+        // const category = this.selectedProduct[0];
+        // this.categoryForm.get('label').setValue(category.label);
+        // this.categoryForm.get('icon').setValue(category.icon);
+        this.showProductDialog = true;
+    }
+
+    onSaveProduct() {
+        this.showProductDialog = false;
+    }
+
     onAddCategory() {
         this.resetNode();
+        this.resetCategoryForm();
         this.showCategoryDialog = true;
     }
 
     onEditCategory() {
-        if (this.selectedNode.length === 0) return;
+        if (this.selectedCategory.length === 0) return;
+        const category = this.selectedCategory[0];
+        this.categoryForm.get('label').setValue(category.label);
+        this.categoryForm.get('icon').setValue(category.icon);
         this.showCategoryDialog = true;
     }
 
     generateNode() {
-        this.nodes = [
+        this.categories = [
             {
-                label: 'Categories',
-                icon: 'pi pi-fw pi-check-square',
-                children: [
-                    {
-                        label: 'All'
-                    },
-                    {
-                        label: 'Foods'
-                    },
-                    {
-                        label: 'Drinks'
-                    },
-                    {
-                        label: 'Desserts'
-                    },
-                    {
-                        label: 'Snacks'
-                    }
-                ]
+                label: 'All'
+            },
+            {
+                label: 'Foods'
+            },
+            {
+                label: 'Drinks'
+            },
+            {
+                label: 'Desserts'
+            },
+            {
+                label: 'Snacks'
             }
         ];
 
@@ -118,8 +159,8 @@ export class ProductComponent implements OnInit {
     }
 
     resetNode() {
-        this.selectedNode.length = 0;
-        this.nodes.forEach((node) => {
+        this.selectedCategory.length = 0;
+        this.categories.forEach((node) => {
             if (node.partialSelected) node.partialSelected = false;
             if (node.children) {
                 node.expanded = true;
@@ -133,5 +174,9 @@ export class ProductComponent implements OnInit {
 
     formatCurrency(value: any) {
         return value.toLocaleString('en-US', { style: 'currency', currency: 'IDR' });
+    }
+
+    isEmpty(data: any) {
+        return isEmpty(data);
     }
 }
