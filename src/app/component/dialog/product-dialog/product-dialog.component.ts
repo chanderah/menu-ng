@@ -4,9 +4,9 @@ import { Product } from 'src/app/interface/product';
 import { CartService } from 'src/app/service/cart.service';
 
 @Component({
-    templateUrl: './image-dialog.component.html'
+    templateUrl: './product-dialog.component.html'
 })
-export class ImageDialogComponent implements OnInit {
+export class ProductDialogComponent implements OnInit {
     isLoading: boolean = true;
     product!: Product;
 

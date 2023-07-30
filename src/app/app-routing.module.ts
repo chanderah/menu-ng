@@ -28,6 +28,7 @@ import { PanelsComponent } from './component/demo/panels/panels.component';
 import { TableComponent } from './component/demo/table/table.component';
 import { TimelineComponent } from './component/demo/timeline/timeline.component';
 import { TreeComponent } from './component/demo/tree/tree.component';
+import { ProductComponent } from './component/product/product.component';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
@@ -40,6 +41,8 @@ import { AppMainComponent } from './layout/app.main.component';
                     children: [
                         { path: '', component: DashboardComponent },
                         { path: 'cart', component: CartComponent },
+                        // { path: 'menu', component: MenuComponent },
+                        { path: 'product', component: ProductComponent },
                         {
                             path: 'uikit/formlayout',
                             component: FormLayoutComponent,

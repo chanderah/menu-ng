@@ -39,7 +39,7 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     {
                         icon: 'pi pi-fw pi-check-square',
-                        label: 'Menu',
+                        label: 'Categories',
                         routerLink: ['/'],
                         items: [
                             {
@@ -76,8 +76,11 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'Menu Management',
-                items: [{ label: 'Edit Menu', icon: 'pi pi-fw pi-eye', routerLink: ['/menu/edit'], badge: 'ADMIN' }]
+                label: 'Product Management',
+                items: [
+                    // { label: 'Edit Categories', icon: 'pi pi-fw pi-eye', routerLink: ['/menu'], badge: 'ADMIN' },
+                    { label: 'Edit Products', icon: 'pi pi-fw pi-eye', routerLink: ['/product'], badge: 'ADMIN' }
+                ]
             }
         ];
 

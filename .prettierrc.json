@@ -1,11 +1,12 @@
 {
-  "useTabs": false,
-  "trailingComma": "none",
-  "semi": true,
-  "singleQuote": true,
-  "jsxSingleQuote": true,
-  "printWidth": 120,
-  "bracketSameLine": true,
-  "quoteProps": "consistent",
-  "htmlWhitespaceSensitivity": "strict"
+    "useTabs": false,
+    "trailingComma": "none",
+    "semi": true,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "printWidth": 120,
+    "bracketSameLine": true,
+    "quoteProps": "consistent",
+    "htmlWhitespaceSensitivity": "strict",
+    "bracketSpacing": true
 }

@@ -134,8 +134,10 @@ import { PanelsComponent } from './component/demo/panels/panels.component';
 import { TableComponent } from './component/demo/table/table.component';
 import { TimelineComponent } from './component/demo/timeline/timeline.component';
 import { TreeComponent } from './component/demo/tree/tree.component';
-import { ImageDialogComponent } from './component/dialog/image-dialog/image-dialog.component';
+import { CategoryDialogComponent } from './component/dialog/category-dialog/category-dialog.component';
 import { OrderDialogComponent } from './component/dialog/order-dialog/order-dialog.component';
+import { ProductDialogComponent } from './component/dialog/product-dialog/product-dialog.component';
+import { ProductComponent } from './component/product/product.component';
 import { AppFooterComponent } from './layout/app.footer.component';
 import { AppMainComponent } from './layout/app.main.component';
 import { AppMenuComponent } from './layout/app.menu.component';
@@ -206,9 +208,11 @@ export class MyHammerConfig extends HammerGestureConfig {
         CartComponent,
 
         /* DIALOG */
-        ImageDialogComponent,
+        ProductDialogComponent,
         SkeletonComponent,
-        OrderDialogComponent
+        OrderDialogComponent,
+        ProductComponent,
+        CategoryDialogComponent
     ],
     imports: [
         BrowserModule,

@@ -18,7 +18,7 @@ import SwiperCore, {
     Zoom
 } from 'swiper';
 import { ProductService } from '../../service/productservice';
-import { ImageDialogComponent } from './../dialog/image-dialog/image-dialog.component';
+import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
 
 // install Swiper components
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit {
 
     onClickImage(data: any) {
         this.dialogService
-            .open(ImageDialogComponent, {
+            .open(ProductDialogComponent, {
                 header: data.name,
                 data: data,
                 closeOnEscape: true,
