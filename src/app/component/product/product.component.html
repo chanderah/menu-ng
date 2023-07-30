@@ -64,11 +64,65 @@
             <div class="flex align-items-center justify-content-between mb-4">
                 <h5 class="category-title">Categories</h5>
                 <div class="flex gap-2">
-                    <div class="p-button" (click)="onEditCategory()">Edit</div>
-                    <div class="p-button" (click)="onAddCategory()">Add</div>
+                    <button
+                        pButton
+                        pRipple
+                        class="p-button"
+                        (click)="onEditCategory()"
+                        [disabled]="selectedNode.length === 0">
+                        Edit
+                    </button>
+                    <button pButton pRipple class="p-button" (click)="onAddCategory()">Add</button>
                 </div>
             </div>
             <p-tree [value]="nodes" selectionMode="checkbox" [(selection)]="selectedNode"></p-tree>
         </div>
     </div>
 </div>
+
+<p-dialog
+    [header]="selectedNode.length === 0 ? 'Add Category' : 'Edit Category'"
+    [(visible)]="showCategoryDialog"
+    modal="modal"
+    showEffect="fade"
+    [style]="{ width: '30vw' }"
+    [breakpoints]="{ '960px': '75vw' }">
+    <!-- <p class="line-height-3 m-0">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+    </p> -->
+    <form class="p-fluid">
+        <div class="grid field">
+            <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0">Name</label>
+            <div class="col-12 md:col-10">
+                <input pInputText id="name" type="text" placeholder="Name" [value]="selectedNode[0]?.label" />
+            </div>
+        </div>
+        <div class="grid field">
+            <label htmlFor="email3" class="col-12 mb-2 md:col-2 md:mb-0">Order</label>
+            <div class="col-12 md:col-10">
+                <input pInputText id="email3" type="number" placeholder="Order" />
+            </div>
+        </div>
+
+        <div class="flex justify-content-end gap-2 mt-4">
+            <button
+                pButton
+                icon="pi pi-times"
+                (click)="showCategoryDialog = false"
+                label="Cancel"
+                class="w-auto p-button-danger p-button-outlined">
+            </button>
+            <button
+                pButton
+                icon="pi pi-check"
+                (click)="showCategoryDialog = false"
+                label="Save"
+                class="w-auto p-button-outlined">
+            </button>
+        </div>
+    </form>
+</p-dialog>

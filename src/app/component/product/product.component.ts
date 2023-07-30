@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 import { Customer } from 'src/app/interface/customer';
 import { CustomerService } from 'src/app/service/customerservice';
 import { ProductService } from 'src/app/service/productservice';
@@ -27,23 +29,49 @@ import { NodeService } from './../../service/nodeservice';
     ]
 })
 export class ProductComponent implements OnInit {
-    data: Customer[];
-
     isLoading: boolean = true;
 
+    showCategoryDialogg: string = 'aaa';
+    showCategoryDialog: boolean = false;
+    data: Customer[];
+
     nodes: TreeNode[] = [];
-    selectedNode: TreeNode;
+    selectedNode: TreeNode[] = [];
+
+    productForm: FormGroup;
+    categoryForm: FormGroup;
 
     constructor(
+        private formBuilder: FormBuilder,
+        private dialogService: DialogService,
         private nodeService: NodeService,
         private customerService: CustomerService,
         private productService: ProductService,
         private messageService: MessageService,
         private confirmService: ConfirmationService,
         private cd: ChangeDetectorRef
-    ) {}
+    ) {
+        this.productForm = this.formBuilder.group({
+            itemGroup: [null],
+            categoryId: [{ value: null, disabled: true }],
+            categoryItem: [null],
+            status: [null],
+            listSubCategory: this.formBuilder.array([])
+        });
+
+        this.categoryForm = this.formBuilder.group({
+            id: [{ value: null, disabled: true }],
+            icon: ['', Validators.maxLength(255)],
+            label: ['', [Validators.maxLength(255), Validators.required]],
+            children: this.formBuilder.array([])
+        });
+    }
 
     ngOnInit() {
+        this.getData();
+    }
+
+    getData() {
         this.generateNode();
         this.customerService.getCustomersLarge().then((customers) => {
             // this.data = customers;
@@ -52,11 +80,13 @@ export class ProductComponent implements OnInit {
     }
 
     onAddCategory() {
-        console.log(this.selectedNode);
+        this.resetNode();
+        this.showCategoryDialog = true;
     }
 
     onEditCategory() {
-        console.log(this.selectedNode);
+        if (this.selectedNode.length === 0) return;
+        this.showCategoryDialog = true;
     }
 
     generateNode() {
@@ -84,10 +114,19 @@ export class ProductComponent implements OnInit {
             }
         ];
 
+        this.resetNode();
+    }
+
+    resetNode() {
+        this.selectedNode.length = 0;
         this.nodes.forEach((node) => {
+            if (node.partialSelected) node.partialSelected = false;
             if (node.children) {
                 node.expanded = true;
-                for (let subChildren of node.children) subChildren.expanded = true;
+                for (let subChildren of node.children) {
+                    subChildren.expanded = true;
+                    if (subChildren.partialSelected) subChildren.partialSelected = false;
+                }
             }
         });
     }
