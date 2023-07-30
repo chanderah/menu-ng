@@ -40,10 +40,10 @@ export class ProductComponent implements OnInit {
     showProductDialog: boolean = false;
     showCategoryDialog: boolean = false;
 
-    categories: TreeNode[] = [];
-    selectedCategory: TreeNode[] = [];
-
+    categories = [] as TreeNode[];
     products = [] as Product[];
+
+    selectedCategory = {} as TreeNode;
     selectedProduct = {} as Product;
 
     productForm: FormGroup;
@@ -123,16 +123,16 @@ export class ProductComponent implements OnInit {
     }
 
     onAddCategory() {
+        this.selectedProduct = null;
         this.resetNode();
         this.resetCategoryForm();
         this.showCategoryDialog = true;
     }
 
     onEditCategory() {
-        if (this.selectedCategory.length === 0) return;
-        const category = this.selectedCategory[0];
-        this.categoryForm.get('label').setValue(category.label);
-        this.categoryForm.get('icon').setValue(category.icon);
+        if (isEmpty(this.selectedCategory)) return;
+        this.categoryForm.get('label').setValue(this.selectedCategory.label);
+        this.categoryForm.get('icon').setValue(this.selectedCategory.icon);
         this.showCategoryDialog = true;
     }
 
@@ -159,7 +159,7 @@ export class ProductComponent implements OnInit {
     }
 
     resetNode() {
-        this.selectedCategory.length = 0;
+        this.selectedCategory = null;
         this.categories.forEach((node) => {
             if (node.partialSelected) node.partialSelected = false;
             if (node.children) {

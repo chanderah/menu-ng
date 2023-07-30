@@ -85,13 +85,13 @@
                         pRipple
                         class="p-button"
                         (click)="onEditCategory()"
-                        [disabled]="selectedCategory.length === 0 || selectedCategory.length > 1">
+                        [disabled]="isEmpty(selectedCategory)">
                         Edit
                     </button>
                     <button pButton pRipple class="p-button" (click)="onAddCategory()">Add</button>
                 </div>
             </div>
-            <p-tree [value]="categories" selectionMode="checkbox" [(selection)]="selectedCategory"></p-tree>
+            <p-tree [value]="categories" selectionMode="single" [(selection)]="selectedCategory"></p-tree>
         </div>
     </div>
 </div>
@@ -119,7 +119,9 @@
             </div>
         </div>
         <div class="flex justify-content-between mt-5">
+            <div *ngIf="isEmpty(selectedProduct)"></div>
             <button
+                *ngIf="!isEmpty(selectedProduct)"
                 pButton
                 pRipple
                 icon="pi pi-trash"
@@ -149,7 +151,7 @@
 </p-dialog>
 
 <p-dialog
-    [header]="selectedCategory.length === 0 ? 'Add Category' : 'Edit Category'"
+    [header]="isEmpty(selectedCategory) ? 'Add Category' : 'Edit Category'"
     [(visible)]="showCategoryDialog"
     [style]="{ width: '40vw' }"
     [breakpoints]="dialogBreakpoints"
@@ -171,12 +173,14 @@
             </div>
         </div>
         <div class="flex justify-content-between mt-5">
+            <div *ngIf="isEmpty(selectedCategory)"></div>
             <button
+                *ngIf="!isEmpty(selectedCategory)"
                 pButton
                 pRipple
                 icon="pi pi-trash"
-                (click)="showCategoryDialog = false"
-                class="p-button-danger p-button-outlined">
+                class="p-button-danger p-button-outlined"
+                (click)="showCategoryDialog = false">
             </button>
             <div class="flex justify-content-end gap-2">
                 <button
@@ -194,8 +198,8 @@
                     (click)="showCategoryDialog = false"
                     label="Save"
                     class="w-auto p-button-outlined">
-                </button
-            ></div>
+                </button>
+            </div>
         </div>
     </div>
 </p-dialog>
