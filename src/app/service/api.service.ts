@@ -39,32 +39,43 @@ export class ApiService implements HttpInterceptor {
             url: this.baseUrl + req.url,
             headers: new HttpHeaders({
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'User': this.encrypt(localStorage.getItem('test'))
             })
         });
         console.log(req.url);
+        // console.log(req.headers);
         return next.handle(req);
     }
 
     constructor(
         private httpClient: HttpClient,
         private toastr: ToastrService
-    ) {
-        console.log('am i called');
+    ) {}
+
+    encrypt(data: any): string {
+        return data;
+    }
+
+    decrypt(data: any) {
+        return data;
     }
 
     // getJokes() {
     //     return this.httpClient.get('https://api.chucknorris.io/jokes/random');
     // }
 
+    /* USER */
     getUsers(pagingInfo: PagingInfo) {
         return this.httpClient.post('/user/findAll', pagingInfo);
     }
 
+    /* CATEGORY */
     getCategories(pagingInfo: PagingInfo) {
         return this.httpClient.post('/category/findAll', pagingInfo);
     }
 
+    /* PRODUCT */
     getProducts(pagingInfo: PagingInfo) {
         return this.httpClient.post('/product/findAll', pagingInfo);
     }
