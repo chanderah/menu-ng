@@ -19,6 +19,8 @@ import SwiperCore, {
 } from 'swiper';
 import { ProductService } from '../../service/productservice';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
+import { PagingInfo } from './../../interface/paging_info';
+import { ApiService } from './../../service/api.service';
 
 // install Swiper components
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
@@ -29,9 +31,9 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
 })
 export class DashboardComponent implements OnInit {
     // @ViewChild('swiper') swiper!: ElementRef;
-
     subscription!: Subscription;
     params!: object | string;
+    pagingInfo = {} as PagingInfo;
 
     categories = [] as any[];
     products = [] as Product[];
@@ -47,7 +49,8 @@ export class DashboardComponent implements OnInit {
         private route: ActivatedRoute,
         private productService: ProductService,
         private dialogService: DialogService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private apiService: ApiService
     ) {
         this.route.queryParams.subscribe(({ menu }) => {
             this.params = menu || 'root';
@@ -57,8 +60,19 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getCategories();
-        this.getProducts();
+        // this.getCategories();
+        // this.getProducts();
+
+        this.pagingInfo = {
+            filter: '',
+            limit: 10,
+            offset: 0,
+            sortField: 'ID',
+            sortOrder: 'ASC'
+        };
+        this.apiService.getProducts(this.pagingInfo).subscribe((res) => {
+            console.log(res);
+        });
     }
 
     getCategories() {

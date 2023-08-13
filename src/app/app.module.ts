@@ -1,5 +1,5 @@
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injectable, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, HammerGestureConfig, HammerModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
@@ -145,6 +145,7 @@ import { AppMenuitemComponent } from './layout/app.menuitem.component';
 import { AppConfigComponent } from './layout/config/app.config.component';
 import { ConfigService } from './layout/service/app.config.service';
 import { MenuService } from './layout/service/app.menu.service';
+import { ApiService } from './service/api.service';
 import { CartService } from './service/cart.service';
 import { CountryService } from './service/countryservice';
 import { CustomerService } from './service/customerservice';
@@ -320,6 +321,11 @@ export class MyHammerConfig extends HammerGestureConfig {
         {
             provide: HAMMER_GESTURE_CONFIG,
             useClass: MyHammerConfig
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ApiService,
+            multi: true
         },
         CountryService,
         CustomerService,
