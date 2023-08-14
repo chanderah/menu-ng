@@ -101,6 +101,8 @@ import * as Hammer from 'hammerjs';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SwiperModule } from 'swiper/angular';
+import { LoginComponent } from './component/auth/login/login.component';
+import { RegisterComponent } from './component/auth/register/register.component';
 import { CartComponent } from './component/cart/cart.component';
 import { AccessComponent } from './component/demo/access/access.component';
 import { AppCodeModule } from './component/demo/app-code/app.code.component';
@@ -119,7 +121,6 @@ import { InputComponent } from './component/demo/input/input.component';
 import { InvalidStateComponent } from './component/demo/invalidstate/invalidstate.component';
 import { LandingComponent } from './component/demo/landing/landing.component';
 import { ListComponent } from './component/demo/list/list.component';
-import { LoginComponent } from './component/demo/login/login.component';
 import { MediaComponent } from './component/demo/media/media.component';
 import { ConfirmationComponent } from './component/demo/menus/confirmation.component';
 import { MenusComponent } from './component/demo/menus/menus.component';
@@ -200,20 +201,21 @@ export class MyHammerConfig extends HammerGestureConfig {
         PersonalComponent,
         SeatComponent,
         LandingComponent,
-        LoginComponent,
         ErrorComponent,
         NotfoundComponent,
         AccessComponent,
         /* USER DEFINED */
         DashboardComponent,
         CartComponent,
-
+        RegisterComponent,
+        LoginComponent,
         /* DIALOG */
         ProductDialogComponent,
         SkeletonComponent,
         OrderDialogComponent,
         ProductComponent,
-        CategoryDialogComponent
+        CategoryDialogComponent,
+        RegisterComponent
     ],
     imports: [
         BrowserModule,

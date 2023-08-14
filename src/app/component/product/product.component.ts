@@ -6,6 +6,10 @@ import { Product } from 'src/app/interface/product';
 import { isEmpty } from 'src/app/lib/object';
 import { CustomerService } from 'src/app/service/customerservice';
 import { ProductService } from 'src/app/service/productservice';
+import { Category } from './../../interface/category';
+import { PagingInfo } from './../../interface/paging_info';
+import { jsonParse } from './../../lib/object';
+import { ApiService } from './../../service/api.service';
 import { NodeService } from './../../service/nodeservice';
 
 @Component({
@@ -37,6 +41,8 @@ export class ProductComponent implements OnInit {
     isLoading: boolean = true;
     dialogBreakpoints = { '768px': '90vw' };
 
+    pagingInfo = {} as PagingInfo;
+
     showProductDialog: boolean = false;
     showCategoryDialog: boolean = false;
 
@@ -49,8 +55,12 @@ export class ProductComponent implements OnInit {
     productForm: FormGroup;
     categoryForm: FormGroup;
 
+    category = {} as Category;
+    product = {} as Product;
+
     constructor(
         private formBuilder: FormBuilder,
+        private apiService: ApiService,
         private dialogService: DialogService,
         private nodeService: NodeService,
         private customerService: CustomerService,
@@ -77,15 +87,92 @@ export class ProductComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.pagingInfo = {
+            filter: '',
+            limit: 10,
+            offset: 0,
+            sortField: 'ID',
+            sortOrder: 'ASC'
+        };
         this.getData();
     }
 
     getData() {
         this.generateNode();
-        this.productService.getProducts().then((res) => {
-            this.products = res;
+
+        this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
+            if (res.status === 200) {
+                console.log(res);
+            } else {
+                alert(res.message);
+            }
             this.isLoading = false;
         });
+
+        this.apiService.getCategories(this.pagingInfo).subscribe((res: any) => {
+            if (res.status === 200) {
+                console.log(res);
+            } else {
+                alert(res.message);
+            }
+            this.isLoading = false;
+        });
+
+        // this.productService.getProducts().then((res) => {
+        //     this.products = res;
+        // });
+    }
+
+    onSubmit() {
+        if (this.showProductDialog) {
+            return this.submitProduct();
+        } else {
+            return this.submitCategory();
+        }
+    }
+
+    async submitProduct() {
+        this.product = jsonParse(this.productForm.value);
+        if (isEmpty(this.selectedProduct)) {
+            this.apiService.createProduct(this.product).subscribe((res: any) => {
+                if (res.status === 200) {
+                    console.log(res);
+                } else {
+                    alert(res.message);
+                }
+            });
+        } else {
+            //edit
+            this.apiService.updateProduct(this.product).subscribe((res: any) => {
+                if (res.status === 200) {
+                    console.log(res);
+                } else {
+                    alert(res.message);
+                }
+            });
+        }
+    }
+
+    async submitCategory() {
+        this.category = jsonParse(this.categoryForm.value);
+        if (isEmpty(this.selectedCategory)) {
+            this.apiService.createCategory(this.category).subscribe((res: any) => {
+                if (res.status === 200) {
+                    console.log(res);
+                } else {
+                    alert(res.message);
+                }
+            });
+        } else {
+            //edit
+            this.apiService.updateCategory(this.category).subscribe((res: any) => {
+                if (res.status === 200) {
+                    console.log(res);
+                } else {
+                    alert(res.message);
+                }
+            });
+        }
     }
 
     resetCategoryForm() {
@@ -154,7 +241,6 @@ export class ProductComponent implements OnInit {
                 label: 'Snacks'
             }
         ];
-
         this.resetNode();
     }
 

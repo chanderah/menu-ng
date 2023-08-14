@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { LoginComponent } from './component/auth/login/login.component';
+import { RegisterComponent } from './component/auth/register/register.component';
 import { CartComponent } from './component/cart/cart.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { AccessComponent } from './component/demo/access/access.component';
@@ -18,7 +20,6 @@ import { InputComponent } from './component/demo/input/input.component';
 import { InvalidStateComponent } from './component/demo/invalidstate/invalidstate.component';
 import { LandingComponent } from './component/demo/landing/landing.component';
 import { ListComponent } from './component/demo/list/list.component';
-import { LoginComponent } from './component/demo/login/login.component';
 import { MediaComponent } from './component/demo/media/media.component';
 import { MessagesComponent } from './component/demo/messages/messages.component';
 import { MiscComponent } from './component/demo/misc/misc.component';
@@ -40,9 +41,11 @@ import { AppMainComponent } from './layout/app.main.component';
                     component: AppMainComponent,
                     children: [
                         { path: '', component: DashboardComponent },
-                        { path: 'cart', component: CartComponent },
-                        // { path: 'menu', component: MenuComponent },
                         { path: 'product', component: ProductComponent },
+                        { path: 'cart', component: CartComponent },
+                        { path: 'product', component: ProductComponent },
+
+                        /*** DEMO ***/
                         {
                             path: 'uikit/formlayout',
                             component: FormLayoutComponent,
@@ -88,12 +91,16 @@ import { AppMainComponent } from './layout/app.main.component';
                         },
                     ],
                 },
+
+                { path: 'login', component: LoginComponent },
+                { path: 'register', component: RegisterComponent },
+
                 { path: 'pages/landing', component: LandingComponent },
-                { path: 'pages/login', component: LoginComponent },
+                // { path: 'pages/login', component: LoginComponent },
                 { path: 'pages/error', component: ErrorComponent },
-                { path: 'pages/notfound', component: NotfoundComponent },
                 { path: 'pages/access', component: AccessComponent },
-                { path: '**', redirectTo: 'pages/notfound' },
+                { path: 'notfound', component: NotfoundComponent },
+                { path: '**', redirectTo: 'notfound' },
             ],
             { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }
         ),

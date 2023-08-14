@@ -31,7 +31,8 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 4rem"></th>
-                        <th pSortableColumn="name" pFrozenColumn> Name <p-sortIcon field="name"></p-sortIcon> </th>
+                        <!-- <th pSortableColumn="name" pFrozenColumn> Name <p-sortIcon field="name"></p-sortIcon> </th> -->
+                        <th pSortableColumn="name"> Name <p-sortIcon field="name"></p-sortIcon> </th>
                         <th>Image</th>
                         <th>Options</th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
@@ -47,7 +48,8 @@
                         <td>
                             <p-tableCheckbox [pSelectableRow]="product" [value]="product"></p-tableCheckbox>
                         </td>
-                        <td pFrozenColumn style="min-width: 12rem">{{ product.name }}</td>
+                        <!-- <td pFrozenColumn style="min-width: 12rem">{{ product.name }}</td> -->
+                        <td style="min-width: 12rem">{{ product.name }}</td>
                         <td>
                             <img
                                 [src]="'assets/demo/images/product/' + product.image"
@@ -159,7 +161,7 @@
     dismissableMask="true"
     modal="modal"
     showEffect="fade">
-    <div [formGroup]="categoryForm" class="p-fluid px-2 mt-3">
+    <div [formGroup]="categoryForm" (keyup.enter)="onSubmit()" class="p-fluid px-2 mt-3">
         <div class="grid field">
             <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0">Name</label>
             <div class="col-12 md:col-10">
@@ -195,7 +197,7 @@
                     pButton
                     pRipple
                     icon="pi pi-check"
-                    (click)="showCategoryDialog = false"
+                    (click)="onSubmit()"
                     label="Save"
                     class="w-auto p-button-outlined">
                 </button>
