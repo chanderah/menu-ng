@@ -70,9 +70,7 @@ export class DashboardComponent implements OnInit {
             sortField: 'ID',
             sortOrder: 'ASC'
         };
-        this.apiService.getProducts(this.pagingInfo).subscribe((res) => {
-            console.log(res);
-        });
+        this.apiService.getProducts(this.pagingInfo).subscribe((res) => {});
     }
 
     getCategories() {

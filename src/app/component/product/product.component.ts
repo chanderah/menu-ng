@@ -102,7 +102,6 @@ export class ProductComponent implements OnInit {
 
         this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
             if (res.status === 200) {
-                console.log(res);
             } else {
                 alert(res.message);
             }
@@ -111,7 +110,6 @@ export class ProductComponent implements OnInit {
 
         this.apiService.getCategories(this.pagingInfo).subscribe((res: any) => {
             if (res.status === 200) {
-                console.log(res);
             } else {
                 alert(res.message);
             }
@@ -136,7 +134,6 @@ export class ProductComponent implements OnInit {
         if (isEmpty(this.selectedProduct)) {
             this.apiService.createProduct(this.product).subscribe((res: any) => {
                 if (res.status === 200) {
-                    console.log(res);
                 } else {
                     alert(res.message);
                 }
@@ -145,7 +142,6 @@ export class ProductComponent implements OnInit {
             //edit
             this.apiService.updateProduct(this.product).subscribe((res: any) => {
                 if (res.status === 200) {
-                    console.log(res);
                 } else {
                     alert(res.message);
                 }
@@ -158,7 +154,6 @@ export class ProductComponent implements OnInit {
         if (isEmpty(this.selectedCategory)) {
             this.apiService.createCategory(this.category).subscribe((res: any) => {
                 if (res.status === 200) {
-                    console.log(res);
                 } else {
                     alert(res.message);
                 }
@@ -167,7 +162,6 @@ export class ProductComponent implements OnInit {
             //edit
             this.apiService.updateCategory(this.category).subscribe((res: any) => {
                 if (res.status === 200) {
-                    console.log(res);
                 } else {
                     alert(res.message);
                 }
