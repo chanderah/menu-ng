@@ -4,12 +4,7 @@
             <div class="flex align-items-center justify-content-between mb-4">
                 <h5 class="category-title">Products</h5>
                 <div class="flex gap-2">
-                    <button
-                        pButton
-                        pRipple
-                        class="p-button"
-                        (click)="onEditProduct()"
-                        [disabled]="isEmpty(selectedProduct)">
+                    <button pButton pRipple class="p-button" (click)="onEditProduct()" [disabled]="!selectedProduct">
                         Edit
                     </button>
                     <button pButton pRipple class="p-button" (click)="onAddProduct()">Add</button>
@@ -101,7 +96,7 @@
 </div>
 
 <p-dialog
-    [header]="isEmpty(selectedProduct) ? 'Add Product' : 'Edit Product'"
+    [header]="selectedProduct ? 'Add Product' : 'Edit Product'"
     [(visible)]="showProductDialog"
     [style]="{ width: '40vw' }"
     [breakpoints]="dialogBreakpoints"
@@ -164,7 +159,7 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-content-between mt-3">
+        <div class="flex mt-3" [ngClass]="selectedProduct ? 'justify-content-between' : 'justify-content-end'">
             <div *ngIf="selectedProduct">
                 <button
                     pButton
@@ -174,7 +169,7 @@
                     class="p-button-danger p-button-outlined">
                 </button>
             </div>
-            <div class="flex justify-content-end gap-2">
+            <div class="flex gap-2">
                 <button
                     pButton
                     pRipple
@@ -197,7 +192,7 @@
 </p-dialog>
 
 <p-dialog
-    [header]="isEmpty(selectedCategory) ? 'Add Category' : 'Edit Category'"
+    [header]="selectedCategory ? 'Add Category' : 'Edit Category'"
     [(visible)]="showCategoryDialog"
     [style]="{ width: '40vw' }"
     [breakpoints]="dialogBreakpoints"
