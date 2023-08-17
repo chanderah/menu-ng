@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AppConfig } from 'src/app/interface/appconfig';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
 import { User } from './../../../interface/user';
+import { jsonStringify } from './../../../lib/object';
 import { ApiService } from './../../../service/api.service';
 
 @Component({
@@ -43,7 +44,7 @@ export class LoginComponent implements OnInit {
         this.apiService.login(this.user).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
-                localStorage.setItem('user', this.form.value);
+                localStorage.setItem('user', jsonStringify(res.data));
                 this.router.navigate(['/']);
             } else alert(res.message);
         });

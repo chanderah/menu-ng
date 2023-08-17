@@ -107,29 +107,34 @@
     dismissableMask="true"
     modal="modal"
     showEffect="fade">
-    <div [formGroup]="productForm" class="p-fluid px-2 mt-3">
-        <div class="grid field">
-            <label htmlFor="name" class="col-12 mb-2 md:col-2 md:mb-0">Name</label>
-            <div class="col-12 md:col-10">
-                <input pInputText id="name" type="text" placeholder="Name" formControlName="label" />
+    <div [formGroup]="productForm" class="p-fluid px-2">
+        <div class="grid my-3">
+            <div class="col-12">
+                <input pInputText type="text" placeholder="Image" formControlName="image" />
+            </div>
+            <div class="col-12">
+                <input pInputText type="text" placeholder="Name" formControlName="name" />
+            </div>
+            <div class="col-12">
+                <input pInputText type="text" placeholder="Code" formControlName="code" />
+            </div>
+            <div class="col-12">
+                <input pInputText type="text" placeholder="Description" formControlName="description" />
+            </div>
+            <div class="col-12">
+                <input pInputText type="number" placeholder="Price" formControlName="price" />
             </div>
         </div>
-        <div class="grid field">
-            <label htmlFor="email3" class="col-12 mb-2 md:col-2 md:mb-0">Order</label>
-            <div class="col-12 md:col-10">
-                <input pInputText id="email3" type="number" placeholder="Order" formControlName="order" />
-            </div>
-        </div>
-        <div class="flex justify-content-between mt-5">
-            <div *ngIf="isEmpty(selectedProduct)"></div>
-            <button
+        <div class="flex justify-content-end mt-3">
+            <!-- <div *ngIf="isEmpty(selectedProduct)"></div> -->
+            <!-- <button
                 *ngIf="!isEmpty(selectedProduct)"
                 pButton
                 pRipple
                 icon="pi pi-trash"
                 (click)="showProductDialog = false"
                 class="p-button-danger p-button-outlined">
-            </button>
+            </button> -->
             <div class="flex justify-content-end gap-2">
                 <button
                     pButton
@@ -143,7 +148,7 @@
                     pButton
                     pRipple
                     icon="pi pi-check"
-                    (click)="onSaveProduct()"
+                    (click)="onSubmit()"
                     label="Save"
                     class="w-auto p-button-outlined">
                 </button

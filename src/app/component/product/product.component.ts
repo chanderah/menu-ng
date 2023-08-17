@@ -2,7 +2,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { lastValueFrom } from 'rxjs';
 import { Product } from 'src/app/interface/product';
+import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/object';
 import { CustomerService } from 'src/app/service/customerservice';
 import { ProductService } from 'src/app/service/productservice';
@@ -41,6 +43,7 @@ export class ProductComponent implements OnInit {
     isLoading: boolean = true;
     dialogBreakpoints = { '768px': '90vw' };
 
+    user: User = jsonParse(localStorage.getItem('user'));
     pagingInfo = {} as PagingInfo;
 
     showProductDialog: boolean = false;
@@ -70,11 +73,13 @@ export class ProductComponent implements OnInit {
         private cd: ChangeDetectorRef
     ) {
         this.productForm = this.formBuilder.group({
-            id: [{ value: null, disabled: true }],
-            icon: ['', Validators.maxLength(255)],
-            order: [null, [Validators.maxLength(2), Validators.required]],
-            label: ['', [Validators.maxLength(255), Validators.required]],
-            children: this.formBuilder.array([])
+            id: [0],
+            image: [null, []],
+            name: ['', [Validators.required]],
+            code: ['', []],
+            description: ['', []],
+            price: ['', [Validators.required]],
+            userCreated: ['', [Validators.required]]
         });
 
         this.categoryForm = this.formBuilder.group({
@@ -94,59 +99,61 @@ export class ProductComponent implements OnInit {
             sortField: 'ID',
             sortOrder: 'ASC'
         };
-        this.getData();
+
+        this.getProducts();
+        this.getCategories();
+
+        this.generateNode();
     }
 
-    getData() {
-        this.generateNode();
-
+    getProducts() {
+        this.isLoading = true;
+        this.resetProductDialog();
         this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
                 this.products = res.data;
             } else alert(res.message);
         });
+    }
 
+    getCategories() {
+        this.isLoading = true;
+        this.resetCategoryDialog();
         this.apiService.getCategories(this.pagingInfo).subscribe((res: any) => {
+            this.isLoading = false;
             if (res.status === 200) {
             } else {
                 alert(res.message);
             }
-            this.isLoading = false;
         });
-
-        // this.productService.getProducts().then((res) => {
-        //     this.products = res;
-        // });
     }
 
     onSubmit() {
+        this.isLoading = true;
         if (this.showProductDialog) {
             return this.submitProduct();
-        } else {
-            return this.submitCategory();
-        }
+        } else return this.submitCategory();
     }
 
     async submitProduct() {
         this.product = jsonParse(this.productForm.value);
         if (isEmpty(this.selectedProduct)) {
             //add
-            this.apiService.createProduct(this.product).subscribe((res: any) => {
+            this.product.userCreated = this.user.id;
+            await lastValueFrom(this.apiService.createProduct(this.product)).then((res: any) => {
                 if (res.status === 200) {
+                    this.getProducts();
                     console.log('success create product');
-                } else {
-                    alert(res.message);
-                }
+                } else alert(res.message);
             });
         } else {
             //edit
-            this.apiService.updateProduct(this.product).subscribe((res: any) => {
+            await lastValueFrom(this.apiService.updateProduct(this.product)).then((res: any) => {
                 if (res.status === 200) {
+                    this.getProducts();
                     console.log('success update product');
-                } else {
-                    alert(res.message);
-                }
+                } else alert(res.message);
             });
         }
     }
@@ -173,22 +180,38 @@ export class ProductComponent implements OnInit {
         }
     }
 
-    resetCategoryForm() {
+    resetCategoryDialog() {
+        this.showCategoryDialog = false;
         this.categoryForm.reset();
     }
 
-    resetProductForm() {
+    resetProductDialog() {
+        this.showProductDialog = false;
         this.productForm.reset();
     }
 
     onAddProduct() {
         this.selectedProduct = null;
-        this.resetProductForm();
+        this.resetProductDialog();
         this.showProductDialog = true;
     }
 
     onEditProduct() {
         if (isEmpty(this.selectedProduct)) return;
+
+        this.productForm.setValue({
+            id: this.selectedProduct.id,
+            image: this.selectedProduct.image,
+            name: this.selectedProduct.image,
+            code: this.selectedProduct.image,
+            description: this.selectedProduct.description,
+            price: this.selectedProduct.price,
+            userCreated: this.selectedProduct.userCreated
+        });
+
+        console.log(this.selectedProduct.id);
+        console.log(this.productForm.value);
+
         // const category = this.selectedProduct[0];
         // this.categoryForm.get('label').setValue(category.label);
         // this.categoryForm.get('icon').setValue(category.icon);
@@ -203,14 +226,14 @@ export class ProductComponent implements OnInit {
         this.showProductDialog = true;
     }
 
-    onSaveProduct() {
-        this.showProductDialog = false;
-    }
+    // onSaveProduct() {
+    //     this.showProductDialog = false;
+    // }
 
     onAddCategory() {
         this.selectedProduct = null;
         this.resetNode();
-        this.resetCategoryForm();
+        this.resetCategoryDialog();
         this.showCategoryDialog = true;
     }
 

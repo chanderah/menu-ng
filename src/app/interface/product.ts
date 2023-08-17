@@ -10,6 +10,7 @@ export interface Product {
     category?: string;
     image?: string;
     rating?: number;
+    userCreated?: number;
 
     options?: ProductOptions[];
 }
