@@ -200,7 +200,7 @@
     dismissableMask="true"
     modal="modal"
     showEffect="fade">
-    <div [formGroup]="categoryForm" (keyup.enter)="onSubmit()" class="p-fluid px-2 mt-3">
+    <div [formGroup]="categoryForm" class="p-fluid px-2 mt-3">
         <div class="grid field mb-2">
             <label htmlFor="name" class="col-2 md:col-2">Name</label>
             <div class="col-10 md:col-10">
@@ -219,10 +219,19 @@
                 <input pInputText id="order" type="number" placeholder="Order" formControlName="order" />
             </div>
         </div>
-        <div class="grid field mb-2">
-            <label htmlFor="order" class="col-2 md:col-2">Description</label>
-            <div class="col-10 md:col-10">
-                <input pInputText id="order" type="number" placeholder="Description" formControlName="order" />
+
+        <div class="grid field mx-2">
+            <!-- <label htmlFor="order" class="col-2 md:col-2">Description</label> -->
+            <div class="col-12">
+                <textarea
+                    pInputTextarea
+                    placeholder="Description"
+                    autoResize
+                    rows="3"
+                    cols="30"
+                    formControlName="order">
+                </textarea>
+                <!-- <input pInputText id="order" type="number" placeholder="Description" formControlName="order" /> -->
             </div>
         </div>
 
