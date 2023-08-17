@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
+import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
 import { PagingInfo } from './../interface/paging_info';
 import { User } from './../interface/user';
@@ -25,13 +26,13 @@ export class ApiService implements HttpInterceptor {
     private isDevelopment = true;
     // public baseUrl = environment.apiUrl;
     // public baseUrl = 'https://go.chandrasa.fun/api';
-    public baseUrl = 'http://localhost:3000/api';
+    public apiUrl = environment.apiUrl;
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (req.url.includes('demo') || req.url.includes('.json')) return next.handle(req);
         if (this.isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
         req = req.clone({
-            url: this.baseUrl + req.url,
+            url: this.apiUrl + req.url,
             headers: new HttpHeaders({
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

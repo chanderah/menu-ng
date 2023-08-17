@@ -1,8 +1,11 @@
 export interface ProductOptions {
-    id?: number;
+    name: string;
+    multiple: boolean;
+    required: boolean;
+    values: ProductOptionValues[];
+}
+
+export interface ProductOptionValues {
     name: string;
     price: number;
-    type: 'radio' | 'checkbox' | 'number' | 'text';
-    values: string[];
-    multiple: boolean;
 }

@@ -4,6 +4,7 @@
     "scripts": {
         "3000": "ng serve --port 3000",
         "ng": "ng",
+        "prod": "ng serve --configuration=production",
         "dev": "ng serve",
         "predev": "npm install",
         "start": "ng serve",

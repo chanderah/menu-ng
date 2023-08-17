@@ -8,6 +8,7 @@ import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/object';
 import { CustomerService } from 'src/app/service/customerservice';
 import { ProductService } from 'src/app/service/productservice';
+import { environment } from './../../../environments/environment';
 import { Category } from './../../interface/category';
 import { PagingInfo } from './../../interface/paging_info';
 import { UploadEvent } from './../../interface/upload_event';
@@ -18,7 +19,6 @@ import { NodeService } from './../../service/nodeservice';
 
 @Component({
     templateUrl: './product.component.html',
-    providers: [MessageService, ConfirmationService],
     styleUrls: ['../../../assets/demo/badges.scss'],
     styles: [
         `
@@ -39,10 +39,13 @@ import { NodeService } from './../../service/nodeservice';
                 }
             }
         `
-    ]
+    ],
+    providers: [MessageService, ConfirmationService]
 })
 export class ProductComponent implements OnInit {
     isLoading: boolean = true;
+    basePath: string = environment.basePath;
+
     dialogBreakpoints = { '768px': '90vw' };
 
     user: User = jsonParse(localStorage.getItem('user'));
@@ -79,6 +82,7 @@ export class ProductComponent implements OnInit {
             image: [null, []],
             name: ['', [Validators.required]],
             code: ['', []],
+            category: ['', []],
             description: ['', []],
             price: ['', [Validators.required]],
             userCreated: ['', [Validators.required]]
@@ -133,7 +137,7 @@ export class ProductComponent implements OnInit {
 
     getPreviewImg() {
         const img: string = this.productForm.get('image').value;
-        if (img.includes('assets')) return `https://chandrasa.fun/public/${img}`;
+        if (img.includes('assets')) return `${this.basePath}${img}`;
         return img;
     }
 
@@ -219,23 +223,7 @@ export class ProductComponent implements OnInit {
 
     onEditProduct() {
         if (isEmpty(this.selectedProduct)) return;
-
-        this.productForm.setValue({
-            id: this.selectedProduct.id,
-            image: this.selectedProduct.image,
-            name: this.selectedProduct.name,
-            code: this.selectedProduct.code,
-            description: this.selectedProduct.description,
-            price: this.selectedProduct.price,
-            userCreated: this.selectedProduct.userCreated
-        });
-
-        console.log(this.selectedProduct.id);
-        console.log(this.productForm.value);
-
-        // const category = this.selectedProduct[0];
-        // this.categoryForm.get('label').setValue(category.label);
-        // this.categoryForm.get('icon').setValue(category.icon);
+        this.productForm.patchValue(this.selectedProduct);
         this.showProductDialog = true;
     }
 

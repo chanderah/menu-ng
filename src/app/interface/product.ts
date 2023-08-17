@@ -1,4 +1,5 @@
 import { ProductOptions } from './product_options';
+
 export interface Product {
     id?: string;
     code?: string;

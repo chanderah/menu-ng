@@ -106,25 +106,23 @@ export class DashboardComponent implements OnInit {
         //dummy
         data.options = [
             {
-                type: 'checkbox',
                 name: 'Sugar',
-                price: 32900,
-                values: ['pake', 'engga', 'dikit'],
-                multiple: true
-            },
-            {
-                type: 'checkbox',
-                name: 'Sugar',
-                price: 32900,
-                values: ['pake', 'engga', 'dikit'],
-                multiple: true
-            },
-            {
-                type: 'checkbox',
-                name: 'Sugar',
-                price: 32900,
-                values: ['pake', 'engga', 'dikit'],
-                multiple: true
+                multiple: true,
+                required: true,
+                values: [
+                    {
+                        name: 'pake ini',
+                        price: 200000
+                    },
+                    {
+                        name: 'pake itu',
+                        price: 300000
+                    },
+                    {
+                        name: 'pake ini pake itu',
+                        price: 500000
+                    }
+                ]
             }
         ];
         this.selectedProduct = data;

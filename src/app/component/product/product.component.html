@@ -52,10 +52,12 @@
                         <td style="min-width: 12rem">{{ product.name }}</td>
                         <td>
                             <img
-                                src="https://chandrasa.fun/public/{{ product.image }}"
+                                src="{{ basePath }}{{ product.image }}"
                                 [alt]="product.name"
-                                width="100"
-                                class="shadow-4" />
+                                class="shadow-4"
+                                style="object-fit: cover"
+                                width="80px"
+                                height="80px" />
                         </td>
                         <td style="min-width: 8rem">options...</td>
                         <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td>
@@ -110,7 +112,13 @@
     <div [formGroup]="productForm" class="p-fluid px-2">
         <div class="grid my-3">
             <div class="col-12 flex justify-content-center" *ngIf="productForm.controls['image'].value">
-                <img class="shadow-4" alt="preview" [src]="getPreviewImg()" height="200px" />
+                <img
+                    [src]="getPreviewImg()"
+                    class="shadow-4"
+                    alt="preview"
+                    style="object-fit: cover"
+                    width="200px"
+                    height="200px" />
             </div>
             <div class="col-12 flex justify-content-end mb-2">
                 <!-- <input pInputText type="text" placeholder="Image" formControlName="image" /> -->
@@ -140,6 +148,12 @@
             <div class="col-12">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input pInputText type="text" placeholder="Category" formControlName="category" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
                     <input pInputText type="text" placeholder="Description" formControlName="description" />
                 </div>
             </div>
@@ -150,16 +164,16 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-content-end mt-3">
-            <!-- <div *ngIf="isEmpty(selectedProduct)"></div> -->
-            <!-- <button
-                *ngIf="!isEmpty(selectedProduct)"
-                pButton
-                pRipple
-                icon="pi pi-trash"
-                (click)="showProductDialog = false"
-                class="p-button-danger p-button-outlined">
-            </button> -->
+        <div class="flex justify-content-between mt-3">
+            <div *ngIf="selectedProduct">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-trash"
+                    (click)="showProductDialog = false"
+                    class="p-button-danger p-button-outlined">
+                </button>
+            </div>
             <div class="flex justify-content-end gap-2">
                 <button
                     pButton
