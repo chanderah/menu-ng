@@ -22,7 +22,6 @@ import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.
 import { PagingInfo } from './../../interface/paging_info';
 import { ApiService } from './../../service/api.service';
 
-// install Swiper components
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
 
 @Component({
@@ -30,7 +29,6 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
     styleUrls: ['../../../assets/user.styles.scss']
 })
 export class DashboardComponent implements OnInit {
-    // @ViewChild('swiper') swiper!: ElementRef;
     subscription!: Subscription;
     params!: object | string;
     pagingInfo = {} as PagingInfo;
@@ -70,7 +68,11 @@ export class DashboardComponent implements OnInit {
             sortField: 'ID',
             sortOrder: 'ASC'
         };
-        this.apiService.getProducts(this.pagingInfo).subscribe((res) => {});
+        this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
+            if (res.status === 200) {
+                this.products = res.data;
+            } else alert(res.message);
+        });
     }
 
     getCategories() {
