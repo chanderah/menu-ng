@@ -52,7 +52,7 @@
                         <td style="min-width: 12rem">{{ product.name }}</td>
                         <td>
                             <img
-                                [src]="'assets/demo/images/product/' + product.image"
+                                src="https://chandrasa.fun/public/{{ product.image }}"
                                 [alt]="product.name"
                                 width="100"
                                 class="shadow-4" />
@@ -109,20 +109,45 @@
     showEffect="fade">
     <div [formGroup]="productForm" class="p-fluid px-2">
         <div class="grid my-3">
-            <div class="col-12">
-                <input pInputText type="text" placeholder="Image" formControlName="image" />
+            <div class="col-12 flex justify-content-center" *ngIf="productForm.controls['image'].value">
+                <img class="shadow-4" alt="preview" [src]="getPreviewImg()" height="200px" />
+            </div>
+            <div class="col-12 flex justify-content-end mb-2">
+                <!-- <input pInputText type="text" placeholder="Image" formControlName="image" /> -->
+                <!-- formControlName="image" -->
+                <p-fileUpload
+                    #fileUpload
+                    mode="basic"
+                    accept="image/*"
+                    [customUpload]="true"
+                    (uploadHandler)="onSelectImage($event, fileUpload)"
+                    [auto]="true"
+                    chooseLabel="Choose Image">
+                </p-fileUpload>
             </div>
             <div class="col-12">
-                <input pInputText type="text" placeholder="Name" formControlName="name" />
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input pInputText type="text" placeholder="Name" formControlName="name" />
+                </div>
             </div>
             <div class="col-12">
-                <input pInputText type="text" placeholder="Code" formControlName="code" />
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input pInputText type="text" placeholder="Code" formControlName="code" />
+                </div>
             </div>
             <div class="col-12">
-                <input pInputText type="text" placeholder="Description" formControlName="description" />
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input pInputText type="text" placeholder="Description" formControlName="description" />
+                </div>
             </div>
             <div class="col-12">
-                <input pInputText type="number" placeholder="Price" formControlName="price" />
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">Rp</span>
+                    <input pInputText type="number" placeholder="Price" step="10000" formControlName="price" />
+                </div>
             </div>
         </div>
         <div class="flex justify-content-end mt-3">

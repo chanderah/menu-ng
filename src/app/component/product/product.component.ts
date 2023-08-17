@@ -10,6 +10,8 @@ import { CustomerService } from 'src/app/service/customerservice';
 import { ProductService } from 'src/app/service/productservice';
 import { Category } from './../../interface/category';
 import { PagingInfo } from './../../interface/paging_info';
+import { UploadEvent } from './../../interface/upload_event';
+import { resizeImg } from './../../lib/image_resizer';
 import { jsonParse } from './../../lib/object';
 import { ApiService } from './../../service/api.service';
 import { NodeService } from './../../service/nodeservice';
@@ -129,6 +131,25 @@ export class ProductComponent implements OnInit {
         });
     }
 
+    getPreviewImg() {
+        const img: string = this.productForm.get('image').value;
+        if (img.includes('assets')) return `https://chandrasa.fun/public/${img}`;
+        return img;
+    }
+
+    async onSelectImage(e: UploadEvent, fileUpload) {
+        console.log(e.files);
+        console.log(typeof fileUpload);
+        try {
+            const img = await resizeImg(e.files[0]);
+            this.productForm.get('image').setValue(img);
+        } catch (err) {
+            alert(err);
+        } finally {
+            fileUpload.clear();
+        }
+    }
+
     onSubmit() {
         this.isLoading = true;
         if (this.showProductDialog) {
@@ -202,8 +223,8 @@ export class ProductComponent implements OnInit {
         this.productForm.setValue({
             id: this.selectedProduct.id,
             image: this.selectedProduct.image,
-            name: this.selectedProduct.image,
-            code: this.selectedProduct.image,
+            name: this.selectedProduct.name,
+            code: this.selectedProduct.code,
             description: this.selectedProduct.description,
             price: this.selectedProduct.price,
             userCreated: this.selectedProduct.userCreated
