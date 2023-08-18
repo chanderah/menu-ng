@@ -44,9 +44,9 @@ import { NodeService } from './../../service/nodeservice';
 })
 export class ProductComponent implements OnInit {
     isLoading: boolean = true;
-    basePath: string = environment.basePath;
-
     dialogBreakpoints = { '768px': '90vw' };
+
+    env = environment;
 
     user: User = jsonParse(localStorage.getItem('user'));
     pagingInfo = {} as PagingInfo;
@@ -84,7 +84,7 @@ export class ProductComponent implements OnInit {
             code: ['', []],
             category: ['', []],
             description: ['', []],
-            price: ['', [Validators.required]],
+            price: [0, [Validators.required]],
             userCreated: ['', [Validators.required]]
         });
 
@@ -137,7 +137,8 @@ export class ProductComponent implements OnInit {
 
     getPreviewImg() {
         const img: string = this.productForm.get('image').value;
-        if (img.includes('assets')) return `${this.basePath}${img}`;
+        if (isEmpty(img)) return `${this.env.imagePath}/default_product_image.png`;
+        if (img.includes('assets')) return `${this.env.publicPath}/${img}`;
         return img;
     }
 

@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Product } from 'src/app/interface/product';
 import { CartService } from 'src/app/service/cart.service';
+import { environment } from './../../../../environments/environment';
 
 @Component({
     templateUrl: './product-dialog.component.html'
 })
 export class ProductDialogComponent implements OnInit {
+    @ViewChild('imageDialog') imageDialog: ElementRef;
+
+    env = environment;
+
     isLoading: boolean = true;
     product!: Product;
 
@@ -27,5 +32,9 @@ export class ProductDialogComponent implements OnInit {
     addToCart(data: any) {
         // const res = this.cartService.addToCart(data);
         this.ref.close(data);
+    }
+
+    onErrorImg() {
+        this.imageDialog.nativeElement.src = 'assets/images/default_product.png';
     }
 }

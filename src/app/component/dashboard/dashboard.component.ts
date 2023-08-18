@@ -19,6 +19,7 @@ import SwiperCore, {
 } from 'swiper';
 import { ProductService } from '../../service/productservice';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
+import { environment } from './../../../environments/environment';
 import { PagingInfo } from './../../interface/paging_info';
 import { ApiService } from './../../service/api.service';
 
@@ -30,6 +31,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
 })
 export class DashboardComponent implements OnInit {
     subscription!: Subscription;
+    env = environment;
     params!: object | string;
     pagingInfo = {} as PagingInfo;
 

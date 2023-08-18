@@ -312,7 +312,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         HotToastModule.forRoot({
             dismissible: true,
             duration: 3000,
-            position: 'top-right',
+            position: 'bottom-left',
             autoClose: true
         }),
         ReactiveFormsModule,

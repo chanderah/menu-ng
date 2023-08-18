@@ -46,7 +46,10 @@ export class LoginComponent implements OnInit {
             if (res.status === 200) {
                 localStorage.setItem('user', jsonStringify(res.data));
                 this.router.navigate(['/']);
-            } else alert(res.message);
+            } else {
+                console.log(res.message);
+                alert(res.message);
+            }
         });
     }
 }

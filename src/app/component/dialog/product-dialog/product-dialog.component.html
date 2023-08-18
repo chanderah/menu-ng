@@ -16,10 +16,10 @@
 <div class="text-center" [ngStyle]="{ visibility: isLoading ? 'hidden' : '' }">
     <img
         #imageDialog
-        class="shadow-4"
         (load)="isLoading = false"
+        class="shadow-4"
         [alt]="product.name"
-        src="assets/demo/images/product/{{ product.image }}"
+        [src]="product.image ? env.publicPath + product.image : env.imagePath + '/default_product.png'"
         width="100%" />
     <div>
         <h6 class="my-4 text-primary font-semibold">Rp{{ product.price }}</h6>

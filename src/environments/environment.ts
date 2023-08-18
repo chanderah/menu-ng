@@ -5,7 +5,8 @@
 export const environment = {
     production: false,
     apiUrl: 'http://localhost:3000/api',
-    basePath: 'http://chandrasa.fun/public'
+    publicPath: 'https://chandrasa.fun/public',
+    imagePath: 'assets/images'
 };
 
 /*

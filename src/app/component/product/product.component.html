@@ -4,7 +4,12 @@
             <div class="flex align-items-center justify-content-between mb-4">
                 <h5 class="category-title">Products</h5>
                 <div class="flex gap-2">
-                    <button pButton pRipple class="p-button" (click)="onEditProduct()" [disabled]="!selectedProduct">
+                    <button
+                        pButton
+                        pRipple
+                        class="p-button"
+                        (click)="onEditProduct()"
+                        [disabled]="isEmpty(selectedProduct)">
                         Edit
                     </button>
                     <button pButton pRipple class="p-button" (click)="onAddProduct()">Add</button>
@@ -43,11 +48,15 @@
                         <td>
                             <p-tableCheckbox [pSelectableRow]="product" [value]="product"></p-tableCheckbox>
                         </td>
-                        <!-- <td pFrozenColumn style="min-width: 12rem">{{ product.name }}</td> -->
-                        <td style="min-width: 12rem">{{ product.name }}</td>
+                        <td style="min-width: 100px">{{ product.name }}</td>
                         <td>
                             <img
-                                src="{{ basePath }}{{ product.image }}"
+                                onerror="this.src='assets/images/default_product.png'"
+                                [src]="
+                                    product.image
+                                        ? env.publicPath + product.image
+                                        : env.imagePath + '/default_product.png'
+                                "
                                 [alt]="product.name"
                                 class="shadow-4"
                                 style="object-fit: cover"
@@ -128,34 +137,52 @@
                     <input pInputText type="text" placeholder="Name" formControlName="name" />
                 </div>
             </div> -->
+
             <div class="col-12">
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
                     <input pInputText type="text" placeholder="Name" formControlName="name" />
                 </div>
             </div>
             <div class="col-12">
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input pInputText type="text" placeholder="Code" formControlName="code" />
+                    <span class="p-inputgroup-addon"><i class="pi pi-hashtag"></i></span>
+                    <input
+                        pInputText
+                        type="text"
+                        onInput="this.value = this.value.toUpperCase()"
+                        formControlName="code"
+                        placeholder="Code" />
                 </div>
             </div>
             <div class="col-12">
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <span class="p-inputgroup-addon"><i class="pi pi-tags"></i></span>
                     <input pInputText type="text" placeholder="Category" formControlName="category" />
                 </div>
             </div>
             <div class="col-12">
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input pInputText type="text" placeholder="Description" formControlName="description" />
+                    <span class="p-inputgroup-addon"><i class="pi pi-comment"></i></span>
+                    <!-- <input pInputText type="text" placeholder="Description" formControlName="description" /> -->
+                    <textarea
+                        pInputTextarea
+                        placeholder="Description"
+                        autoResize
+                        rows="3"
+                        formControlName="description">
+                    </textarea>
                 </div>
             </div>
             <div class="col-12">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon">Rp</span>
-                    <input pInputText type="number" placeholder="Price" step="10000" formControlName="price" />
+                    <!-- <input pInputText type="number" placeholder="Price" step="10000" formControlName="price" /> -->
+                    <p-inputNumber
+                        inputId="locale-user"
+                        placeholder="Price"
+                        step="10000"
+                        formControlName="price"></p-inputNumber>
                 </div>
             </div>
         </div>
@@ -208,30 +235,9 @@
             </div>
         </div>
         <div class="grid field mb-2">
-            <label htmlFor="order" class="col-2 md:col-2">Parent</label>
-            <div class="col-10 md:col-10">
-                <input pInputText id="order" type="number" placeholder="Parent" formControlName="order" />
-            </div>
-        </div>
-        <div class="grid field mb-2">
             <label htmlFor="order" class="col-2 md:col-2">Order</label>
             <div class="col-10 md:col-10">
                 <input pInputText id="order" type="number" placeholder="Order" formControlName="order" />
-            </div>
-        </div>
-
-        <div class="grid field my-2">
-            <!-- <label htmlFor="order" class="col-2 md:col-2">Description</label> -->
-            <div class="col-12">
-                <textarea
-                    pInputTextarea
-                    placeholder="Description"
-                    autoResize
-                    rows="3"
-                    cols="30"
-                    formControlName="order">
-                </textarea>
-                <!-- <input pInputText id="order" type="number" placeholder="Description" formControlName="order" /> -->
             </div>
         </div>
 
