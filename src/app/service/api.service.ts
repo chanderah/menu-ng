@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
+import { jsonParse } from 'src/app/lib/object';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
 import { PagingInfo } from './../interface/paging_info';
@@ -37,7 +38,8 @@ export class ApiService implements HttpInterceptor {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'User': this.encrypt(localStorage.getItem('test'))
-            })
+            }),
+            body: { ...req.body, userCreated: jsonParse(localStorage.getItem('user')).id }
             // body: this.validator.encrypt(req.body),
         });
 

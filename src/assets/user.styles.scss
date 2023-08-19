@@ -6,6 +6,12 @@
     // padding: 1rem 1.5rem !important;
     // }
 
+    .p-inputgroup p-dropdown {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .p-datatable {
         margin-top: 1rem;
     }

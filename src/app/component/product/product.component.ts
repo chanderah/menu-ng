@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { lastValueFrom } from 'rxjs';
 import { Product } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/object';
@@ -19,7 +18,7 @@ import { NodeService } from './../../service/nodeservice';
 
 @Component({
     templateUrl: './product.component.html',
-    styleUrls: ['../../../assets/demo/badges.scss'],
+    styleUrls: ['../../../assets/user.styles.scss', '../../../assets/demo/badges.scss'],
     styles: [
         `
             :host ::ng-deep {
@@ -82,17 +81,17 @@ export class ProductComponent implements OnInit {
             image: [null, []],
             name: ['', [Validators.required]],
             code: ['', []],
-            category: ['', []],
+            categoryId: [0, []],
             description: ['', []],
             price: [0, [Validators.required]],
             userCreated: ['', [Validators.required]]
         });
 
         this.categoryForm = this.formBuilder.group({
-            id: [{ value: null, disabled: true }],
-            icon: ['', Validators.maxLength(255)],
-            order: [null, [Validators.maxLength(2), Validators.required]],
+            id: [0],
             label: ['', [Validators.maxLength(255), Validators.required]],
+            order: [0, [Validators.maxLength(2), Validators.required]],
+            icon: ['', Validators.maxLength(255)],
             children: this.formBuilder.array([])
         });
     }
@@ -109,7 +108,7 @@ export class ProductComponent implements OnInit {
         this.getProducts();
         this.getCategories();
 
-        this.generateNode();
+        // this.generateNode();
     }
 
     getProducts() {
@@ -129,6 +128,8 @@ export class ProductComponent implements OnInit {
         this.apiService.getCategories(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
+                this.categories = res.data;
+                this.generateCategoryOrderDropdown();
             } else {
                 alert(res.message);
             }
@@ -155,11 +156,11 @@ export class ProductComponent implements OnInit {
         }
     }
 
-    onSubmit() {
+    async onSubmit() {
         this.isLoading = true;
-        if (this.showProductDialog) {
-            return this.submitProduct();
-        } else return this.submitCategory();
+        if (this.showProductDialog) await this.submitProduct();
+        else await this.submitCategory();
+        this.isLoading = false;
     }
 
     async submitProduct() {
@@ -167,7 +168,7 @@ export class ProductComponent implements OnInit {
         if (isEmpty(this.selectedProduct)) {
             //add
             this.product.userCreated = this.user.id;
-            await lastValueFrom(this.apiService.createProduct(this.product)).then((res: any) => {
+            this.apiService.createProduct(this.product).subscribe((res: any) => {
                 if (res.status === 200) {
                     this.getProducts();
                     console.log('success create product');
@@ -175,7 +176,7 @@ export class ProductComponent implements OnInit {
             });
         } else {
             //edit
-            await lastValueFrom(this.apiService.updateProduct(this.product)).then((res: any) => {
+            this.apiService.updateProduct(this.product).subscribe((res: any) => {
                 if (res.status === 200) {
                     this.getProducts();
                     console.log('success update product');
@@ -190,6 +191,8 @@ export class ProductComponent implements OnInit {
             this.apiService.createCategory(this.category).subscribe((res: any) => {
                 if (res.status === 200) {
                     console.log('success create category');
+                    this.getCategories();
+                    this.resetCategoryDialog();
                 } else {
                     alert(res.message);
                 }
@@ -199,6 +202,8 @@ export class ProductComponent implements OnInit {
             this.apiService.updateCategory(this.category).subscribe((res: any) => {
                 if (res.status === 200) {
                     console.log('success update category');
+                    this.getCategories();
+                    this.resetCategoryDialog();
                 } else {
                     alert(res.message);
                 }
@@ -216,6 +221,10 @@ export class ProductComponent implements OnInit {
         this.productForm.reset();
     }
 
+    generateCategoryOrderDropdown() {
+        console.log(this.categories.length);
+    }
+
     onAddProduct() {
         this.selectedProduct = null;
         this.resetProductDialog();
@@ -229,16 +238,32 @@ export class ProductComponent implements OnInit {
     }
 
     onDeleteProduct() {
-        // if (isEmpty(this.selectedProduct)) return;
-        // const category = this.selectedProduct[0];
-        // this.categoryForm.get('label').setValue(category.label);
-        // this.categoryForm.get('icon').setValue(category.icon);
-        this.showProductDialog = true;
+        if (isEmpty(this.selectedProduct)) return;
+        this.isLoading = true;
+        this.apiService.deleteProduct(this.selectedProduct).subscribe((res:any) => {
+            if (res.status === 200) {
+                this.getCategories()
+                this.resetProductDialog()
+                this.showProductDialog = false;
+            } else {
+                alert(res.message)
+            }
+        })
     }
 
-    // onSaveProduct() {
-    //     this.showProductDialog = false;
-    // }
+    onDeleteCategory() {
+        if (isEmpty(this.selectedCategory)) return;
+        this.isLoading = true;
+        this.apiService.deleteCategory(this.categoryForm.value).subscribe((res:any) => {
+            if (res.status === 200) {
+                this.getCategories()
+                this.resetCategoryDialog()
+            } else {
+                alert(res.message)
+            }
+        })
+    }
+
 
     onAddCategory() {
         this.selectedProduct = null;
@@ -249,30 +274,12 @@ export class ProductComponent implements OnInit {
 
     onEditCategory() {
         if (isEmpty(this.selectedCategory)) return;
-        this.categoryForm.get('label').setValue(this.selectedCategory.label);
-        this.categoryForm.get('icon').setValue(this.selectedCategory.icon);
+        this.categoryForm.patchValue(this.selectedCategory);
         this.showCategoryDialog = true;
     }
 
     generateNode() {
-        this.categories = [
-            {
-                label: 'All'
-            },
-            {
-                label: 'Foods'
-            },
-            {
-                label: 'Drinks'
-            },
-            {
-                label: 'Desserts'
-            },
-            {
-                label: 'Snacks'
-            }
-        ];
-        this.resetNode();
+        // this.resetNode();
     }
 
     resetNode() {
