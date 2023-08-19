@@ -1,20 +1,16 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
 import { Product } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/object';
-import { CustomerService } from 'src/app/service/customerservice';
-import { ProductService } from 'src/app/service/productservice';
 import { environment } from './../../../environments/environment';
 import { Category } from './../../interface/category';
 import { PagingInfo } from './../../interface/paging_info';
 import { UploadEvent } from './../../interface/upload_event';
 import { resizeImg } from './../../lib/image_resizer';
-import { jsonParse } from './../../lib/object';
+import { jsonParse, sortArrayByLabelProperty } from './../../lib/object';
 import { ApiService } from './../../service/api.service';
-import { NodeService } from './../../service/nodeservice';
 
 @Component({
     templateUrl: './product.component.html',
@@ -47,13 +43,13 @@ export class ProductComponent implements OnInit {
 
     env = environment;
 
-    user: User = jsonParse(localStorage.getItem('user'));
+    user = {} as User;
     pagingInfo = {} as PagingInfo;
 
     showProductDialog: boolean = false;
     showCategoryDialog: boolean = false;
 
-    categories = [] as TreeNode[];
+    categories = [] as Category[];
     products = [] as Product[];
 
     selectedCategory = {} as TreeNode;
@@ -62,18 +58,15 @@ export class ProductComponent implements OnInit {
     productForm: FormGroup;
     categoryForm: FormGroup;
 
-    category = {} as Category;
-    product = {} as Product;
-
     constructor(
         private formBuilder: FormBuilder,
         private apiService: ApiService,
-        private dialogService: DialogService,
-        private nodeService: NodeService,
-        private customerService: CustomerService,
-        private productService: ProductService,
-        private messageService: MessageService,
-        private confirmService: ConfirmationService,
+        // private dialogService: DialogService,
+        // private nodeService: NodeService,
+        // private customerService: CustomerService,
+        // private productService: ProductService,
+        // private messageService: MessageService,
+        // private confirmService: ConfirmationService,
         private cd: ChangeDetectorRef
     ) {
         this.productForm = this.formBuilder.group({
@@ -84,6 +77,7 @@ export class ProductComponent implements OnInit {
             categoryId: [0, []],
             description: ['', []],
             price: [0, [Validators.required]],
+            status: [true, [Validators.required]],
             userCreated: ['', [Validators.required]]
         });
 
@@ -97,6 +91,7 @@ export class ProductComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.user = jsonParse(localStorage.getItem('user'));
         this.pagingInfo = {
             filter: '',
             limit: 10,
@@ -104,11 +99,8 @@ export class ProductComponent implements OnInit {
             sortField: 'ID',
             sortOrder: 'ASC'
         };
-
         this.getProducts();
         this.getCategories();
-
-        // this.generateNode();
     }
 
     getProducts() {
@@ -118,7 +110,9 @@ export class ProductComponent implements OnInit {
             this.isLoading = false;
             if (res.status === 200) {
                 this.products = res.data;
-            } else alert(res.message);
+            } else {
+                alert(res.message);
+            }
         });
     }
 
@@ -128,12 +122,17 @@ export class ProductComponent implements OnInit {
         this.apiService.getCategories(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
+                res.data.sort(sortArrayByLabelProperty);
                 this.categories = res.data;
-                this.generateCategoryOrderDropdown();
             } else {
                 alert(res.message);
             }
         });
+    }
+
+    getCategoryOfProduct(categoryId: number) {
+        if (!categoryId) return;
+        return this.categories.find((d) => d.id === categoryId)?.label;
     }
 
     getPreviewImg() {
@@ -164,11 +163,8 @@ export class ProductComponent implements OnInit {
     }
 
     async submitProduct() {
-        this.product = jsonParse(this.productForm.value);
         if (isEmpty(this.selectedProduct)) {
-            //add
-            this.product.userCreated = this.user.id;
-            this.apiService.createProduct(this.product).subscribe((res: any) => {
+            this.apiService.createProduct(this.productForm.value).subscribe((res: any) => {
                 if (res.status === 200) {
                     this.getProducts();
                     console.log('success create product');
@@ -176,7 +172,7 @@ export class ProductComponent implements OnInit {
             });
         } else {
             //edit
-            this.apiService.updateProduct(this.product).subscribe((res: any) => {
+            this.apiService.updateProduct(this.productForm.value).subscribe((res: any) => {
                 if (res.status === 200) {
                     this.getProducts();
                     console.log('success update product');
@@ -186,24 +182,21 @@ export class ProductComponent implements OnInit {
     }
 
     async submitCategory() {
-        this.category = jsonParse(this.categoryForm.value);
         if (isEmpty(this.selectedCategory)) {
-            this.apiService.createCategory(this.category).subscribe((res: any) => {
+            this.apiService.createCategory(this.categoryForm.value).subscribe((res: any) => {
                 if (res.status === 200) {
                     console.log('success create category');
                     this.getCategories();
-                    this.resetCategoryDialog();
                 } else {
                     alert(res.message);
                 }
             });
         } else {
             //edit
-            this.apiService.updateCategory(this.category).subscribe((res: any) => {
+            this.apiService.updateCategory(this.categoryForm.value).subscribe((res: any) => {
                 if (res.status === 200) {
                     console.log('success update category');
                     this.getCategories();
-                    this.resetCategoryDialog();
                 } else {
                     alert(res.message);
                 }
@@ -213,16 +206,14 @@ export class ProductComponent implements OnInit {
 
     resetCategoryDialog() {
         this.showCategoryDialog = false;
+        this.selectedCategory = null;
         this.categoryForm.reset();
     }
 
     resetProductDialog() {
         this.showProductDialog = false;
+        this.selectedProduct = null;
         this.productForm.reset();
-    }
-
-    generateCategoryOrderDropdown() {
-        console.log(this.categories.length);
     }
 
     onAddProduct() {
@@ -240,30 +231,26 @@ export class ProductComponent implements OnInit {
     onDeleteProduct() {
         if (isEmpty(this.selectedProduct)) return;
         this.isLoading = true;
-        this.apiService.deleteProduct(this.selectedProduct).subscribe((res:any) => {
+        this.apiService.deleteProduct(this.selectedProduct).subscribe((res: any) => {
             if (res.status === 200) {
-                this.getCategories()
-                this.resetProductDialog()
-                this.showProductDialog = false;
+                this.getCategories();
             } else {
-                alert(res.message)
+                alert(res.message);
             }
-        })
+        });
     }
 
     onDeleteCategory() {
         if (isEmpty(this.selectedCategory)) return;
         this.isLoading = true;
-        this.apiService.deleteCategory(this.categoryForm.value).subscribe((res:any) => {
+        this.apiService.deleteCategory(this.categoryForm.value).subscribe((res: any) => {
             if (res.status === 200) {
-                this.getCategories()
-                this.resetCategoryDialog()
+                this.getCategories();
             } else {
-                alert(res.message)
+                alert(res.message);
             }
-        })
+        });
     }
-
 
     onAddCategory() {
         this.selectedProduct = null;
@@ -278,13 +265,9 @@ export class ProductComponent implements OnInit {
         this.showCategoryDialog = true;
     }
 
-    generateNode() {
-        // this.resetNode();
-    }
-
     resetNode() {
-        this.selectedCategory = null;
-        this.categories.forEach((node) => {
+        const nodes: TreeNode[] = jsonParse(this.categories);
+        nodes.forEach((node) => {
             if (node.partialSelected) node.partialSelected = false;
             if (node.children) {
                 node.expanded = true;
@@ -294,6 +277,7 @@ export class ProductComponent implements OnInit {
                 }
             }
         });
+        this.selectedCategory = null;
     }
 
     formatCurrency(value: any) {

@@ -13,3 +13,9 @@ export const jsonParse = (obj: any) => {
 export const jsonStringify = (obj: any) => {
     return JSON.stringify(obj);
 };
+
+export const sortArrayByLabelProperty = (a: any, b: any) => {
+    if (a.label > b.label) return 1;
+    if (a.label < b.label) return -1;
+    return 0;
+};

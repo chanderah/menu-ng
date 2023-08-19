@@ -36,13 +36,14 @@
     }
 }
 
+.object-fit-cover {
+    object-fit: cover;
+}
+
 .d-none {
     display: none !important;
 }
 
-.haha {
-    vertical-align: top;
-}
 .border-red {
     border-color: red;
 }
@@ -62,10 +63,6 @@
         padding-left: 3rem;
         border-radius: 2rem;
     }
-}
-
-#listProducts {
-    // margin-bottom: 1rem;
 }
 
 .sticky {

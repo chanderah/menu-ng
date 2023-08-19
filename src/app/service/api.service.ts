@@ -59,7 +59,7 @@ export class ApiService implements HttpInterceptor {
                           status: error.status === 0 ? HttpStatusCode.InternalServerError : error.status,
                           message: error.message ? error.message : 'Something went wrong.'
                       };
-                if (this.isDevelopment) console.error('ERROR:', req.method, req.url, error);
+                if (this.isDevelopment) console.error('ERROR:', req.method, req.url, error, req.body);
                 return of(new HttpResponse({ body: error }));
             })
         );

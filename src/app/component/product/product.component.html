@@ -15,6 +15,7 @@
                     <button pButton pRipple class="p-button" (click)="onAddProduct()">Add</button>
                 </div>
             </div>
+            <!-- scrollHeight="400px" -->
             <p-table
                 [loading]="isLoading"
                 [paginator]="true"
@@ -23,7 +24,6 @@
                 [value]="products"
                 [scrollable]="true"
                 scrollDirection="both"
-                scrollHeight="400px"
                 selectionMode="single"
                 [(selection)]="selectedProduct"
                 dataKey="id"
@@ -37,9 +37,6 @@
                         <th>Options</th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th>Category</th>
-                        <th pSortableColumn="inventoryStatus">
-                            Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
-                        </th>
                     </tr>
                 </ng-template>
 
@@ -52,20 +49,19 @@
                         <td>
                             <img
                                 onerror="this.src='assets/images/default_product.png'"
+                                [alt]="product.name"
                                 [src]="
                                     product.image
                                         ? env.publicPath + product.image
                                         : env.imagePath + '/default_product.png'
                                 "
-                                [alt]="product.name"
-                                class="shadow-4"
-                                style="object-fit: cover"
+                                class="shadow-4 object-fit-cover"
                                 width="80px"
                                 height="80px" />
                         </td>
                         <td style="min-width: 8rem">options...</td>
                         <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td>
-                        <td style="min-width: 10rem">{{ product.category }}</td>
+                        <td style="min-width: 10rem">{{ getCategoryOfProduct(product.categoryId) }}</td>
                         <!-- <td>
                             <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">
                                 {{ product.inventoryStatus }}
@@ -118,9 +114,8 @@
             <div class="col-12 flex justify-content-center" *ngIf="productForm.controls['image'].value">
                 <img
                     [src]="getPreviewImg()"
-                    class="shadow-4"
                     alt="preview"
-                    style="object-fit: cover"
+                    class="shadow-4 object-fit-cover"
                     width="200px"
                     height="200px" />
             </div>
@@ -164,6 +159,7 @@
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-tags"></i></span>
                     <p-dropdown
+                        *ngIf="showProductDialog"
                         [options]="categories"
                         placeholder="Category"
                         optionLabel="label"
@@ -237,6 +233,7 @@
 <p-dialog
     [header]="selectedCategory ? 'Edit Category' : 'Add Category'"
     [(visible)]="showCategoryDialog"
+    [contentStyle]="{ overflow: 'visible' }"
     [style]="{ width: '40vw' }"
     [breakpoints]="dialogBreakpoints"
     [blockScroll]="true"
@@ -248,13 +245,6 @@
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
                 <input pInputText type="text" placeholder="Name" formControlName="label" />
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-sort-alt" style="line-height: 1.25"></i></span>
-                <input pInputText id="order" type="number" placeholder="Order" formControlName="order" />
-                <!-- <p-dropdown [options]="categories" placeholder="Select a Category" [showClear]="true"> </p-dropdown> -->
             </div>
         </div>
 

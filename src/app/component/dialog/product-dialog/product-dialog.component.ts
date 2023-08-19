@@ -33,8 +33,4 @@ export class ProductDialogComponent implements OnInit {
         // const res = this.cartService.addToCart(data);
         this.ref.close(data);
     }
-
-    onErrorImg() {
-        this.imageDialog.nativeElement.src = 'assets/images/default_product.png';
-    }
 }
