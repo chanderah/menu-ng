@@ -219,6 +219,7 @@ export class ProductComponent implements OnInit {
     onAddProduct() {
         this.selectedProduct = null;
         this.resetProductDialog();
+        this.productForm.patchValue({ status: true });
         this.showProductDialog = true;
     }
 

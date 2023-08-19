@@ -36,7 +36,8 @@
                         <th>Image</th>
                         <th>Options</th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-                        <th>Category</th>
+                        <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
+                        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
                     </tr>
                 </ng-template>
 
@@ -45,7 +46,7 @@
                         <td>
                             <p-tableCheckbox [pSelectableRow]="product" [value]="product"></p-tableCheckbox>
                         </td>
-                        <td style="min-width: 100px">{{ product.name }}</td>
+                        <td style="min-width: 100px" class="product-badge">{{ product.name }}</td>
                         <td>
                             <img
                                 onerror="this.src='assets/images/default_product.png'"
@@ -62,11 +63,11 @@
                         <td style="min-width: 8rem">options...</td>
                         <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td>
                         <td style="min-width: 10rem">{{ getCategoryOfProduct(product.categoryId) }}</td>
-                        <!-- <td>
-                            <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">
-                                {{ product.inventoryStatus }}
+                        <td>
+                            <span class="product-badge">
+                                {{ product.status ? 'Active' : 'Inactive' }}
                             </span>
-                        </td> -->
+                        </td>
                     </tr>
                 </ng-template>
 
@@ -130,14 +131,17 @@
                     chooseLabel="Choose Image">
                 </p-fileUpload>
             </div>
-
-            <!-- <div class="grid field">
-                <label htmlFor="name">Name</label>
-                <div class="col-12 md:col-10">
-                    <input pInputText type="text" placeholder="Name" formControlName="name" />
-                </div>
+            <!-- <div class="col-12 flex align-items-center">
+                <p-inputSwitch onLabel="Enabled" offLabel="Disabled" formControlName="status"></p-inputSwitch>
+                <span class="font-semibold text-sm ml-2">Enabled</span>
             </div> -->
-
+            <div class="col-12">
+                <div class="field-checkbox mb-1">
+                    <!-- <p-checkbox label="Active" formControlName="status" binary="true"></p-checkbox> -->
+                    <p-checkbox label="Active" formControlName="status" binary="true"></p-checkbox>
+                    <!-- <label for="ch">Enabled</label> -->
+                </div>
+            </div>
             <div class="col-12">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
@@ -167,7 +171,6 @@
                         formControlName="categoryId"
                         [showClear]="true">
                     </p-dropdown>
-                    <!-- <input pInputText type="text" placeholder="Category" formControlName="category" /> -->
                 </div>
             </div>
             <div class="col-12">
@@ -240,7 +243,7 @@
     dismissableMask="true"
     modal="modal"
     showEffect="fade">
-    <div [formGroup]="categoryForm" class="p-fluid px-2">
+    <div [formGroup]="categoryForm" (keyup.enter)="onSubmit()" class="p-fluid px-2">
         <div class="col-12">
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
