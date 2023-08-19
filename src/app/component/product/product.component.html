@@ -16,8 +16,8 @@
                 </div>
             </div>
             <!-- scrollHeight="400px" -->
+            <!-- [loading]="isLoading" -->
             <p-table
-                [loading]="isLoading"
                 [paginator]="true"
                 [rows]="10"
                 [rowHover]="true"
@@ -60,7 +60,7 @@
                                 width="80px"
                                 height="80px" />
                         </td>
-                        <td style="min-width: 8rem">options...</td>
+                        <td style="min-width: 8rem">Sugar, Toppings</td>
                         <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td>
                         <td style="min-width: 10rem">{{ getCategoryOfProduct(product.categoryId) }}</td>
                         <td>
@@ -103,8 +103,9 @@
 
 <p-dialog
     [header]="selectedProduct ? 'Edit Product' : 'Add Product'"
+    (onHide)="this.productForm.reset()"
     [(visible)]="showProductDialog"
-    [style]="{ width: '40vw' }"
+    [style]="{ width: '40vw', height: 'auto' }"
     [breakpoints]="dialogBreakpoints"
     [blockScroll]="true"
     dismissableMask="true"
@@ -131,21 +132,20 @@
                     chooseLabel="Choose Image">
                 </p-fileUpload>
             </div>
-            <!-- <div class="col-12 flex align-items-center">
-                <p-inputSwitch onLabel="Enabled" offLabel="Disabled" formControlName="status"></p-inputSwitch>
-                <span class="font-semibold text-sm ml-2">Enabled</span>
-            </div> -->
-            <div class="col-12">
-                <div class="field-checkbox mb-1">
-                    <!-- <p-checkbox label="Active" formControlName="status" binary="true"></p-checkbox> -->
+            <div class="col-12 flex justify-content-between">
+                <div class="field-checkbox mb-0">
                     <p-checkbox label="Active" formControlName="status" binary="true"></p-checkbox>
-                    <!-- <label for="ch">Enabled</label> -->
                 </div>
             </div>
             <div class="col-12">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
-                    <input pInputText type="text" placeholder="Name" formControlName="name" />
+                    <input
+                        pInputText
+                        type="text"
+                        placeholder="Name"
+                        formControlName="name"
+                        style="text-transform: capitalize" />
                 </div>
             </div>
             <div class="col-12">
@@ -154,9 +154,10 @@
                     <input
                         pInputText
                         type="text"
-                        onInput="this.value = this.value.toUpperCase()"
+                        placeholder="Code"
                         formControlName="code"
-                        placeholder="Code" />
+                        (keydown.space)="$event.preventDefault()"
+                        class="text-uppercase" />
                 </div>
             </div>
             <div class="col-12">
@@ -181,6 +182,7 @@
                         pInputTextarea
                         placeholder="Description"
                         autoResize
+                        class="text-capitalize"
                         rows="3"
                         formControlName="description">
                     </textarea>
@@ -194,6 +196,7 @@
                         [min]="0"
                         [showButtons]="true"
                         formControlName="price"
+                        required
                         placeholder="Price"
                         inputId="locale-user"
                         step="10000">
@@ -236,6 +239,7 @@
 <p-dialog
     [header]="selectedCategory ? 'Edit Category' : 'Add Category'"
     [(visible)]="showCategoryDialog"
+    (onHide)="this.categoryForm.reset()"
     [contentStyle]="{ overflow: 'visible' }"
     [style]="{ width: '40vw' }"
     [breakpoints]="dialogBreakpoints"

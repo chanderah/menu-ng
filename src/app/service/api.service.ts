@@ -24,10 +24,8 @@ import { User } from './../interface/user';
     providedIn: 'root'
 })
 export class ApiService implements HttpInterceptor {
-    private isDevelopment = true;
-    // public baseUrl = environment.apiUrl;
-    // public baseUrl = 'https://go.chandrasa.fun/api';
-    public apiUrl = environment.apiUrl;
+    private isDevelopment: boolean = environment.production === false;
+    private apiUrl: string = environment.apiUrl;
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (req.url.includes('demo') || req.url.includes('.json')) return next.handle(req);

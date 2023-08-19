@@ -217,16 +217,25 @@ export class ProductComponent implements OnInit {
     }
 
     onAddProduct() {
-        this.selectedProduct = null;
+        this.getCategories();
         this.resetProductDialog();
-        this.productForm.patchValue({ status: true });
+        this.selectedProduct = null;
+        this.productForm.get('status').setValue(true);
         this.showProductDialog = true;
     }
 
     onEditProduct() {
         if (isEmpty(this.selectedProduct)) return;
-        this.productForm.patchValue(this.selectedProduct);
-        this.showProductDialog = true;
+        this.apiService.findProductById(this.selectedProduct).subscribe((res: any) => {
+            if (res.status === 200) {
+                this.productForm.patchValue(res.data);
+                this.showProductDialog = true;
+            } else {
+                alert('Invalid session!');
+                return this.getProducts();
+            }
+        });
+        this.getCategories();
     }
 
     onDeleteProduct() {
@@ -262,8 +271,15 @@ export class ProductComponent implements OnInit {
 
     onEditCategory() {
         if (isEmpty(this.selectedCategory)) return;
-        this.categoryForm.patchValue(this.selectedCategory);
-        this.showCategoryDialog = true;
+        this.apiService.findCategoryById(jsonParse(this.selectedCategory)).subscribe((res: any) => {
+            if (res.status === 200) {
+                this.categoryForm.patchValue(res.data);
+                this.showCategoryDialog = true;
+            } else {
+                alert('Invalid session!');
+                return this.getCategories();
+            }
+        });
     }
 
     resetNode() {
