@@ -260,41 +260,54 @@
     <p-dialog
         header="Add Options"
         [(visible)]="showAddProductOptionsDialog"
-        [contentStyle]="{ overflow: 'visible' }"
+        [contentStyle]="{ overflow: 'scroll' }"
         [style]="{ width: '40vw', height: 'auto' }"
         [breakpoints]="dialogBreakpoints"
         [blockScroll]="true"
         [dismissableMask]="false"
         modal="true"
         showEffect="fade">
-        <div class="p-fluid px-2">
-            <button (click)="addOption()">Add</button>
-            <div formArrayName="options" class="grid my-3">
-                <div *ngFor="let option of options().controls; index as i" [formGroupName]="i">
-                    <div class="col-12">
-                        <div class="p-inputgroup">
-                            <span class="p-inputgroup-addon">
-                                <i class="pi pi-pencil" style="line-height: 1.25"></i>
-                            </span>
-                            <input pInputText type="text" placeholder="Name, e.g Milk" formControlName="name" />
-                        </div>
+        <div formArrayName="options" class="p-fluid px-2">
+            <!-- <button (click)="addOption()" class="my-2">Add</button> -->
+            <div class="flex gap-3 justify-content-between my-4">
+                <button pButton pRipple class="p-button-outlined" type="button" label="Copy From" (click)="addOption()">
+                </button>
+                <button pButton pRipple class="p-button-outlined" type="button" label="Add" (click)="addOption()">
+                </button>
+            </div>
+
+            <div *ngFor="let option of options().controls; index as i" [formGroupName]="i" class="grid mb-3">
+                <div class="col-12">
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon font-semibold">
+                            {{ i + 1 }}
+                        </span>
+                        <input pInputText type="text" placeholder="Name, e.g Milk" formControlName="name" />
+                        <button
+                            pButton
+                            pRipple
+                            icon="pi pi-trash"
+                            class="p-button-danger"
+                            (click)="deleteOption(i)"
+                            [disabled]="options().length === 1">
+                        </button>
                     </div>
-                    <div class="col-6">
-                        <input pInputText type="text" placeholder="Type, e.g Extra Milk" formControlName="value" />
-                    </div>
-                    <div class="col-6">
-                        <p-inputNumber
-                            [min]="0"
-                            formControlName="price"
-                            placeholder="Price, free = 0"
-                            inputId="locale-user"
-                            step="10000">
-                        </p-inputNumber>
-                    </div>
+                </div>
+                <div class="col-6">
+                    <input pInputText type="text" placeholder="Type, e.g Extra Milk" formControlName="value" />
+                </div>
+                <div class="col-6">
+                    <p-inputNumber
+                        [min]="0"
+                        formControlName="price"
+                        placeholder="Price, free = 0"
+                        inputId="locale-user"
+                        step="10000">
+                    </p-inputNumber>
                 </div>
             </div>
 
-            <div class="flex justify-content-end gap-2 mr-2 mt-3">
+            <div class="flex justify-content-end gap-2 mt-3">
                 <button
                     pButton
                     pRipple
@@ -307,9 +320,9 @@
                     pButton
                     pRipple
                     icon="pi pi-check"
-                    label="Save"
+                    class="w-auto p-button-outlined"
                     (click)="showAddProductOptionsDialog = false"
-                    class="w-auto p-button-outlined">
+                    label="Save">
                 </button>
             </div>
         </div>

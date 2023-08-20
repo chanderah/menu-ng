@@ -62,8 +62,8 @@ export class ProductComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private apiService: ApiService // private dialogService: DialogService,
-        // private nodeService: NodeService,
-    ) // private customerService: CustomerService,
+        // private customerService: CustomerService,
+    ) // private nodeService: NodeService,
     // private productService: ProductService,
     // private messageService: MessageService,
     // private confirmService: ConfirmationService,
@@ -160,6 +160,7 @@ export class ProductComponent implements OnInit {
     }
 
     openProductOptionsDialog() {
+        this.addOption();
         this.showAddProductOptionsDialog = true;
     }
 
