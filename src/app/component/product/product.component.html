@@ -110,7 +110,6 @@
 <p-dialog
     [header]="selectedProduct ? 'Edit Product' : 'Add Product'"
     (onHide)="this.productForm.reset()"
-    (onShow)="desc.focus(); name.focus()"
     [(visible)]="showProductDialog"
     [style]="{ width: '40vw', height: '100%' }"
     [breakpoints]="dialogBreakpoints"
@@ -149,7 +148,6 @@
                     <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
                     <input
                         pInputText
-                        #name
                         type="text"
                         placeholder="Name"
                         formControlName="name"
@@ -195,14 +193,17 @@
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-comment"></i></span>
                     <!-- <input pInputText type="text" placeholder="Description" formControlName="description" /> -->
+                    <!-- <textarea pInputTextarea placeholder="Description" autoSize formControlName="description">
+                    </textarea> -->
                     <textarea
-                        #desc
                         pInputTextarea
+                        type="text"
                         placeholder="Description"
-                        class="text-capitalize"
                         rows="2"
+                        formControlName="description"
                         autoResize="autoResize"
-                        formControlName="description">
+                        class="text-capitalize"
+                        >
                     </textarea>
                 </div>
             </div>

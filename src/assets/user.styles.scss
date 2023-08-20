@@ -12,6 +12,10 @@
         justify-content: center;
     }
 
+    .p-inputgroup textarea {
+        min-height: 54px !important;
+    }
+
     .p-datatable {
         margin-top: 1rem;
     }
