@@ -38,16 +38,13 @@ export class LoginComponent implements OnInit {
 
     onSubmit() {
         this.isLoading = true;
-        const { username, password } = this.form.value;
-        this.user.username = username;
-        this.user.password = password;
-        this.apiService.login(this.user).subscribe((res: any) => {
+        this.apiService.login(this.form.value).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
                 localStorage.setItem('user', jsonStringify(res.data));
                 this.router.navigate(['/']);
             } else {
-                console.log(res.message);
+                console.log(res);
                 alert(res.message);
             }
         });
