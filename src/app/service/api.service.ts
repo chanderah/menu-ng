@@ -33,8 +33,8 @@ export class ApiService implements HttpInterceptor {
             url: this.apiUrl + req.url,
             headers: new HttpHeaders({
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'User': this.encrypt(localStorage.getItem('test'))
+                'Content-Type': 'application/json'
+                // 'User': this.encrypt(localStorage.getItem('test'))
             })
             // body: { ...req.body, userCreated: jsonParse(localStorage.getItem('user'))?.id }
             // body: this.validator.encrypt(req.body),
