@@ -87,12 +87,12 @@ export class ProductComponent implements OnInit {
         });
     }
 
-    listProductOption(): FormArray {
+    options(): FormArray {
         return this.productForm.get('options') as FormArray;
     }
 
-    addProductOption() {
-        this.listProductOption().push(
+    addOption() {
+        this.options().push(
             this.formBuilder.group({
                 name: ['', [Validators.required]],
                 value: ['', [Validators.required]],
@@ -101,8 +101,8 @@ export class ProductComponent implements OnInit {
         );
     }
 
-    deleteProductOption(index: number) {
-        this.listProductOption().removeAt(index);
+    deleteOption(index: number) {
+        this.options().removeAt(index);
     }
 
     ngOnInit() {
@@ -159,7 +159,7 @@ export class ProductComponent implements OnInit {
         return img;
     }
 
-    onClickAddOptions() {
+    openProductOptionsDialog() {
         this.showAddProductOptionsDialog = true;
     }
 
