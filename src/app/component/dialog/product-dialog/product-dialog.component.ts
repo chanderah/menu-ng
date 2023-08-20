@@ -9,7 +9,6 @@ import { environment } from './../../../../environments/environment';
 })
 export class ProductDialogComponent implements OnInit {
     @ViewChild('imageDialog') imageDialog: ElementRef;
-
     env = environment;
 
     isLoading: boolean = true;

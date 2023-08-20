@@ -6,7 +6,7 @@ export const isEmpty = (obj: any) => {
 };
 
 export const jsonParse = (obj: any) => {
-    if (typeof obj != 'string') obj = jsonStringify(obj);
+    if (typeof obj != 'string') return JSON.parse(jsonStringify(obj));
     return JSON.parse(obj);
 };
 

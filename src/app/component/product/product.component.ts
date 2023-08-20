@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'primeng/api';
 import { Product } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
@@ -56,20 +56,18 @@ export class ProductComponent implements OnInit {
     selectedCategory = {} as TreeNode;
     selectedProduct = {} as Product;
 
-    productForm: FormGroup;
     categoryForm: FormGroup;
+    productForm: FormGroup;
 
     constructor(
         private formBuilder: FormBuilder,
-        private apiService: ApiService,
-        // private dialogService: DialogService,
+        private apiService: ApiService // private dialogService: DialogService,
         // private nodeService: NodeService,
-        // private customerService: CustomerService,
-        // private productService: ProductService,
-        // private messageService: MessageService,
-        // private confirmService: ConfirmationService,
-        private cd: ChangeDetectorRef
-    ) {
+    ) // private customerService: CustomerService,
+    // private productService: ProductService,
+    // private messageService: MessageService,
+    // private confirmService: ConfirmationService,
+    {
         this.productForm = this.formBuilder.group({
             id: [null, []],
             image: [null, []],
@@ -77,19 +75,34 @@ export class ProductComponent implements OnInit {
             code: ['', []],
             categoryId: [null, []],
             description: ['', []],
-            options: [{ value: null, disabled: true }],
             price: [0, [Validators.required]],
             status: [true, [Validators.required]],
-            userCreated: ['', [Validators.required]]
+            userCreated: ['', [Validators.required]],
+            options: this.formBuilder.array([])
         });
 
         this.categoryForm = this.formBuilder.group({
             id: [0],
-            label: ['', [Validators.maxLength(255), Validators.required]],
-            order: [0, [Validators.maxLength(2), Validators.required]],
-            icon: ['', Validators.maxLength(255)],
-            children: this.formBuilder.array([])
+            label: ['', [Validators.maxLength(255), Validators.required]]
         });
+    }
+
+    listProductOption(): FormArray {
+        return this.productForm.get('options') as FormArray;
+    }
+
+    addProductOption() {
+        this.listProductOption().push(
+            this.formBuilder.group({
+                name: ['', [Validators.required]],
+                value: ['', [Validators.required]],
+                price: [0, [Validators.required]]
+            })
+        );
+    }
+
+    deleteProductOption(index: number) {
+        this.listProductOption().removeAt(index);
     }
 
     ngOnInit() {

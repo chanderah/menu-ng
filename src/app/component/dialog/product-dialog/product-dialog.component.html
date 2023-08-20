@@ -15,11 +15,12 @@
 </div>
 <div class="text-center" [ngStyle]="{ visibility: isLoading ? 'hidden' : '' }">
     <img
-        class="shadow-4"
         [alt]="product.name"
         [src]="product.image ? env.publicPath + product.image : env.imagePath + '/default_product.png'"
         (load)="isLoading = false"
-        width="100%" />
+        class="shadow-4 object-fit-cover"
+        width="300px"
+        height="300px" />
     <div>
         <h6 class="my-4 text-primary font-semibold">Rp{{ product.price }}</h6>
         <p class="my-1">{{ product.description }}</p>

@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
+import { jsonParse } from 'src/app/lib/object';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
 import { PagingInfo } from './../interface/paging_info';
@@ -29,23 +30,22 @@ export class ApiService implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (req.url.includes('demo') || req.url.includes('.json')) return next.handle(req);
         if (this.isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
+
+        const user = jsonParse(localStorage.getItem('user'));
         req = req.clone({
             url: this.apiUrl + req.url,
             headers: new HttpHeaders({
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                // 'User': this.encrypt(localStorage.getItem('test'))
-            })
-            // body: { ...req.body, userCreated: jsonParse(localStorage.getItem('user'))?.id }
+                'Content-Type': 'application/json',
+                'User': 'Unauthorized'
+            }),
+            body: { ...req.body, userCreated: user.id ? user.id : 'Unauthorized' }
             // body: this.validator.encrypt(req.body),
         });
-
         return next.handle(req).pipe(
             map((res: HttpEvent<any>) => {
                 if (res instanceof HttpResponse) {
-                    if (this.isDevelopment) {
-                        console.log('RESPONSE:', res.body.status, req.method, req.url, res.body);
-                    }
+                    if (this.isDevelopment) console.log('RESPONSE:', res.body.status, req.method, req.url, res.body);
                     return res;
                 }
             }),
