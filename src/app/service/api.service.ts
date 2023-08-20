@@ -107,8 +107,8 @@ export class ApiService implements HttpInterceptor {
     }
 
     /* CATEGORY */
-    getCategories(pagingInfo: PagingInfo) {
-        return this.httpClient.post('/category/findAll', pagingInfo);
+    getCategories() {
+        return this.httpClient.post('/category/findAll', {});
     }
 
     findCategoryById(category: Category) {

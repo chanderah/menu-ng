@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
+import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'primeng/api';
 import { Product } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/object';
@@ -48,6 +48,7 @@ export class ProductComponent implements OnInit {
 
     showProductDialog: boolean = false;
     showCategoryDialog: boolean = false;
+    showAddProductOptionsDialog: boolean = false;
 
     categories = [] as Category[];
     products = [] as Product[];
@@ -70,12 +71,13 @@ export class ProductComponent implements OnInit {
         private cd: ChangeDetectorRef
     ) {
         this.productForm = this.formBuilder.group({
-            id: [0],
+            id: [null, []],
             image: [null, []],
             name: ['', [Validators.required]],
             code: ['', []],
-            categoryId: [0, []],
+            categoryId: [null, []],
             description: ['', []],
+            options: [{ value: null, disabled: true }],
             price: [0, [Validators.required]],
             status: [true, [Validators.required]],
             userCreated: ['', [Validators.required]]
@@ -92,24 +94,26 @@ export class ProductComponent implements OnInit {
 
     ngOnInit() {
         this.user = jsonParse(localStorage.getItem('user'));
-        this.pagingInfo = {
-            filter: '',
-            limit: 10,
-            offset: 0,
-            sortField: 'ID',
-            sortOrder: 'ASC'
-        };
-        this.getProducts();
+        // this.getProducts();
         this.getCategories();
     }
 
-    getProducts() {
+    getProducts(e?: LazyLoadEvent) {
         this.isLoading = true;
         this.resetProductDialog();
+        console.log(e);
+        this.pagingInfo = {
+            filter: '',
+            limit: e.rows ?? 10,
+            offset: e.first ?? 0,
+            sortField: e.sortField ?? 'ID',
+            sortOrder: e.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
+        };
         this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
                 this.products = res.data;
+                if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
             } else {
                 alert(res.message);
             }
@@ -119,7 +123,7 @@ export class ProductComponent implements OnInit {
     getCategories() {
         this.isLoading = true;
         this.resetCategoryDialog();
-        this.apiService.getCategories(this.pagingInfo).subscribe((res: any) => {
+        this.apiService.getCategories().subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
                 res.data.sort(sortArrayByLabelProperty);
@@ -140,6 +144,10 @@ export class ProductComponent implements OnInit {
         if (isEmpty(img)) return `${this.env.imagePath}/default_product_image.png`;
         if (img.includes('assets')) return `${this.env.publicPath}/${img}`;
         return img;
+    }
+
+    onClickAddOptions() {
+        this.showAddProductOptionsDialog = true;
     }
 
     async onSelectImage(e: UploadEvent, fileUpload) {
