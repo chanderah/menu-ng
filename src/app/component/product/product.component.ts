@@ -60,14 +60,15 @@ export class ProductComponent implements OnInit {
     productForm: FormGroup;
 
     constructor(
-        private formBuilder: FormBuilder,
-        private apiService: ApiService // private dialogService: DialogService,
+        // private dialogService: DialogService,
+        // private nodeService: NodeService,
+        // private productService: ProductService,
+        // private messageService: MessageService,
+        // private confirmService: ConfirmationService,
         // private customerService: CustomerService,
-    ) // private nodeService: NodeService,
-    // private productService: ProductService,
-    // private messageService: MessageService,
-    // private confirmService: ConfirmationService,
-    {
+        private formBuilder: FormBuilder,
+        private apiService: ApiService
+    ) {
         this.productForm = this.formBuilder.group({
             id: [null, []],
             image: [null, []],
@@ -95,14 +96,35 @@ export class ProductComponent implements OnInit {
         this.options().push(
             this.formBuilder.group({
                 name: ['', [Validators.required]],
-                value: ['', [Validators.required]],
-                price: [0, [Validators.required]]
+                multiple: [false, [Validators.required]],
+                required: [true, [Validators.required]],
+                values: this.formBuilder.array([])
+                // value: ['', [Validators.required]],
+                // price: [null, [Validators.required]]
             })
         );
+        this.addOptionValues(this.options().length - 1);
     }
 
     deleteOption(index: number) {
         this.options().removeAt(index);
+    }
+
+    optionValues(optionIndex: number): FormArray {
+        return this.options().at(optionIndex).get('values') as FormArray;
+    }
+
+    addOptionValues(optionIndex: number) {
+        this.optionValues(optionIndex).push(
+            this.formBuilder.group({
+                name: ['', [Validators.required]],
+                price: [null, [Validators.required]]
+            })
+        );
+    }
+
+    deleteOptionValues(optionIndex: number, optionValuesIndex: number) {
+        this.optionValues(optionIndex).removeAt(optionValuesIndex);
     }
 
     ngOnInit() {
@@ -160,7 +182,7 @@ export class ProductComponent implements OnInit {
     }
 
     openProductOptionsDialog() {
-        this.addOption();
+        if (this.options().length == 0) this.addOption();
         this.showAddProductOptionsDialog = true;
     }
 
