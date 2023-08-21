@@ -313,7 +313,11 @@
                 <div formArrayName="values" class="col-12">
                     <div *ngFor="let value of optionValues(i).controls; index as j" [formGroupName]="j">
                         <div class="col-12">
-                            <input pInputText type="text" placeholder="Vary, e.g Extra Milk" formControlName="vary" />
+                            <input
+                                pInputText
+                                type="text"
+                                placeholder="Variant, e.g Extra Milk"
+                                formControlName="variant" />
                         </div>
                         <div class="col-12">
                             <div class="p-inputgroup">

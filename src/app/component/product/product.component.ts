@@ -115,7 +115,7 @@ export class ProductComponent implements OnInit {
     addOptionValues(optionIndex: number) {
         this.optionValues(optionIndex).push(
             this.formBuilder.group({
-                vary: ['', [Validators.required]],
+                variant: ['', [Validators.required]],
                 price: [null, [Validators.required]]
             })
         );
