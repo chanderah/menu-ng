@@ -99,8 +99,6 @@ export class ProductComponent implements OnInit {
                 multiple: [false, [Validators.required]],
                 required: [true, [Validators.required]],
                 values: this.formBuilder.array([])
-                // value: ['', [Validators.required]],
-                // price: [null, [Validators.required]]
             })
         );
         this.addOptionValues(this.options().length - 1);
@@ -117,7 +115,7 @@ export class ProductComponent implements OnInit {
     addOptionValues(optionIndex: number) {
         this.optionValues(optionIndex).push(
             this.formBuilder.group({
-                name: ['', [Validators.required]],
+                vary: ['', [Validators.required]],
                 price: [null, [Validators.required]]
             })
         );

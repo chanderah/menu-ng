@@ -294,7 +294,7 @@
                     </div>
                 </div>
 
-                <div class="col-12">
+                <div class="col-12 pb-0">
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon font-semibold">
                             {{ i + 1 }}
@@ -311,14 +311,32 @@
                     </div>
                 </div>
                 <div formArrayName="values" class="col-12">
-                    <div
-                        *ngFor="let value of optionValues(i).controls; index as j"
-                        [formGroupName]="j"
-                        class="grid mb-0">
-                        <div class="col-6">
-                            <input pInputText type="text" placeholder="Vary, e.g Extra Milk" formControlName="name" />
+                    <div *ngFor="let value of optionValues(i).controls; index as j" [formGroupName]="j">
+                        <div class="col-12">
+                            <input pInputText type="text" placeholder="Vary, e.g Extra Milk" formControlName="vary" />
                         </div>
-                        <div class="col-6">
+                        <div class="col-12">
+                            <div class="p-inputgroup">
+                                <p-inputNumber
+                                    [min]="0"
+                                    placeholder="Price, free = 0"
+                                    formControlName="price"
+                                    mode="currency"
+                                    currency="IDR"
+                                    inputId="locale-user"
+                                    step="10000">
+                                </p-inputNumber>
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-minus"
+                                    class="p-button-danger"
+                                    (click)="deleteOptionValues(i, j)"
+                                    [disabled]="optionValues(i).length === 1">
+                                </button>
+                            </div>
+                        </div>
+                        <!-- <div class="col-12">
                             <p-inputNumber
                                 [min]="0"
                                 placeholder="Price, free = 0"
@@ -328,7 +346,7 @@
                                 inputId="locale-user"
                                 step="10000">
                             </p-inputNumber>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <button
