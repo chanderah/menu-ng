@@ -125,6 +125,12 @@ export class ProductComponent implements OnInit {
         this.optionValues(optionIndex).removeAt(optionValuesIndex);
     }
 
+    onCancelProductOptionsDialog() {
+        this.showAddProductOptionsDialog = false;
+        this.options().reset();
+        while (this.options().length > 0) this.options().removeAt(0);
+    }
+
     ngOnInit() {
         this.user = jsonParse(localStorage.getItem('user'));
         // this.getProducts();

@@ -11,7 +11,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, catchError, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
 import { jsonParse } from 'src/app/lib/object';
@@ -50,7 +50,7 @@ export class ApiService implements HttpInterceptor {
                 }
             }),
             catchError((error: HttpErrorResponse) => {
-                error = error.error
+                error = error.error?.message
                     ? error.error
                     : {
                           status: error.status === 0 ? HttpStatusCode.InternalServerError : error.status,

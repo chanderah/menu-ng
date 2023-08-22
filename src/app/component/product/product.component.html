@@ -186,7 +186,7 @@
                     <!-- <div class="p-inputgroup flex justify-content-between"> -->
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon"><i class="pi pi-user-edit"></i></span>
-                        <input pInputText type="text" placeholder="No options" />
+                        <input pInputText type="text" placeholder="No Options" />
                         <button pButton pRipple class="p-button" (click)="openProductOptionsDialog()">Add</button>
                     </div>
                 </div>
@@ -299,7 +299,7 @@
                         <span class="p-inputgroup-addon font-semibold">
                             {{ i + 1 }}
                         </span>
-                        <input pInputText type="text" placeholder="Name, e.g Milk" formControlName="name" />
+                        <input pInputText type="text" formControlName="name" placeholder="Name, e.g Milk" />
                         <button
                             pButton
                             pRipple
@@ -359,7 +359,7 @@
                     label="Variant"
                     icon="pi pi-plus"
                     (click)="addOptionValues(i)"
-                    class="w-auto p-button-text text-sm ml-2 mb-2"></button>
+                    class="w-auto p-button-text text-sm ml-4 mb-2"></button>
             </div>
 
             <div class="flex justify-content-end gap-2 mt-4">
@@ -367,7 +367,7 @@
                     pButton
                     pRipple
                     icon="pi pi-times"
-                    (click)="showAddProductOptionsDialog = false"
+                    (click)="onCancelProductOptionsDialog()"
                     label="Cancel"
                     class="w-auto p-button-danger p-button-outlined">
                 </button>
