@@ -7,7 +7,7 @@ export interface ProductOptions {
 }
 
 export interface ProductOptionValues {
-    vary: string;
+    variant: string;
     price: number;
 }
 
