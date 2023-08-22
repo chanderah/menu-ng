@@ -113,15 +113,15 @@ export class DashboardComponent implements OnInit {
                 required: true,
                 values: [
                     {
-                        variant: 'pake ini',
+                        value: 'pake ini',
                         price: 200000
                     },
                     {
-                        variant: 'pake itu',
+                        value: 'pake itu',
                         price: 300000
                     },
                     {
-                        variant: 'pake ini pake itu',
+                        value: 'pake ini pake itu',
                         price: 500000
                     }
                 ]

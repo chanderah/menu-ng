@@ -172,7 +172,7 @@ export class ProductComponent implements OnInit {
     addOptionValues(optionIndex: number) {
         this.optionValues(optionIndex).push(
             this.formBuilder.group({
-                variant: ['', [Validators.required]],
+                value: ['', [Validators.required]],
                 price: [null, [Validators.required]]
             })
         );
