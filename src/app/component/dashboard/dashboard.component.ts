@@ -30,8 +30,9 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
     styleUrls: ['../../../assets/user.styles.scss']
 })
 export class DashboardComponent implements OnInit {
-    subscription!: Subscription;
     env = environment;
+    subscription!: Subscription;
+    isLoading: boolean = true;
     params!: object | string;
     pagingInfo = {} as PagingInfo;
 
@@ -62,7 +63,6 @@ export class DashboardComponent implements OnInit {
     ngOnInit() {
         // this.getCategories();
         // this.getProducts();
-
         this.pagingInfo = {
             filter: '',
             limit: 10,
@@ -71,6 +71,7 @@ export class DashboardComponent implements OnInit {
             sortOrder: 'ASC'
         };
         this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
+            this.isLoading = false;
             if (res.status === 200) {
                 this.products = res.data;
             } else alert(res.message);

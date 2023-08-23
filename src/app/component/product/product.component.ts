@@ -182,22 +182,24 @@ export class ProductComponent implements OnInit {
     }
 
     openProductOptionsDialog() {
-        this.selectedProductOptions = this.selectedProduct?.options;
+        // this.selectedProductOptions = this.selectedProduct?.options;
         this.saveProductOptions = false;
         if (this.options().length === 0) this.addOption();
         this.showProductOptionsDialog = true;
     }
 
     onHideProductOptionsDialog() {
-        if (!this.saveProductOptions) {
+        if (this.saveProductOptions) {
+            this.selectedProductOptions = this.options().value;
+        } else {
             while (this.options().length > 0) this.deleteOption(0);
+            this.selectedProductOptions.forEach(() => this.addOption());
             this.options().patchValue(this.selectedProductOptions);
         }
     }
 
     onSaveProductOptions() {
         // TODO: validate, change flag when done
-        this.selectedProductOptions = this.options().value;
         this.saveProductOptions = true;
         this.showProductOptionsDialog = false;
     }

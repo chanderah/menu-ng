@@ -27,7 +27,7 @@
     </div>
 </div>
 
-<p-dataView #dv id="listProducts" [value]="products" [paginator]="true" [rows]="12" layout="grid">
+<p-dataView #dv id="listProducts" [value]="products" [paginator]="true" [rows]="12" layout="grid" [loading]="isLoading">
     <ng-template pTemplate="header">
         <div class="grid">
             <div class="col-3 p-fluid" style="width: fit-content">
