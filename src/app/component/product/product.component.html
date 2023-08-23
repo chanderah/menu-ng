@@ -51,7 +51,7 @@
                         <td>
                             <p-tableCheckbox [pSelectableRow]="product" [value]="product"></p-tableCheckbox>
                         </td>
-                        <td style="min-width: 100px" class="product-badge">{{ product.name }}</td>
+                        <td style="min-width: 100px" class="product-badge text-capitalize">{{ product.name }}</td>
                         <td>
                             <img
                                 onerror="this.src='assets/images/default_product.png'"
@@ -111,7 +111,7 @@
     <p-dialog
         [header]="selectedProduct ? 'Edit Product' : 'Add Product'"
         [(visible)]="showProductDialog"
-        (onHide)="this.productForm.reset()"
+        (onHide)="resetProductDialog()"
         [style]="{ width: '40vw', height: '100%' }"
         [breakpoints]="dialogBreakpoints"
         [dismissableMask]="false"
@@ -300,7 +300,12 @@
                         <span class="p-inputgroup-addon font-semibold">
                             {{ i + 1 }}
                         </span>
-                        <input pInputText type="text" formControlName="name" placeholder="Name, e.g Milk" />
+                        <input
+                            pInputText
+                            type="text"
+                            formControlName="name"
+                            placeholder="Name, e.g Milk"
+                            class="text-capitalize" />
                         <button
                             pButton
                             pRipple
@@ -318,7 +323,8 @@
                                 pInputText
                                 type="text"
                                 placeholder="Variant, e.g Extra Milk"
-                                formControlName="value" />
+                                formControlName="value"
+                                class="text-capitalize" />
                         </div>
                         <div class="col-12">
                             <div class="p-inputgroup">

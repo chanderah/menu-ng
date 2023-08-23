@@ -192,11 +192,16 @@ export class ProductComponent implements OnInit {
         if (this.saveProductOptions) {
             this.selectedProductOptions = this.options().value;
         } else {
-            while (this.options().length > 0) this.deleteOption(0);
-            this.selectedProductOptions.forEach(() => this.addOption());
+            this.options().clear();
+            for (let i = 0; i < this.selectedProductOptions.length; i++) this.addOption();
             this.options().patchValue(this.selectedProductOptions);
         }
     }
+
+    // onHideProductDialog() {
+    //     this.selectedProduct
+    //     this.productForm.reset();
+    // }
 
     onSaveProductOptions() {
         // TODO: validate, change flag when done
@@ -285,12 +290,12 @@ export class ProductComponent implements OnInit {
         this.showProductDialog = false;
         this.selectedProduct = null;
         this.productForm.reset();
+        this.options().clear();
     }
 
     onAddProduct() {
         this.getCategories();
         this.resetProductDialog();
-        this.selectedProduct = null;
         this.productForm.get('status').setValue(true);
         this.showProductDialog = true;
     }
