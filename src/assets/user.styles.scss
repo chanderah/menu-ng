@@ -14,6 +14,10 @@
 
     .p-inputgroup textarea {
         min-height: 54px !important;
+
+        .text-first::first-letter {
+            text-transform: capitalize;
+        }
     }
 
     .p-datatable {
@@ -42,18 +46,23 @@
 
 .text-lowercase {
     text-transform: lowercase;
+    ::placeholder {
+        text-transform: initial;
+    }
 }
 
 .text-uppercase {
     text-transform: uppercase;
+    ::placeholder {
+        text-transform: initial;
+    }
 }
 
 .text-capitalize {
     text-transform: capitalize !important;
-}
-
-.text-capitalize::placeholder {
-    text-transform: initial;
+    ::placeholder {
+        text-transform: initial;
+    }
 }
 
 .object-fit-cover {
