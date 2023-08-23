@@ -125,8 +125,7 @@ export class ProductComponent implements OnInit {
         this.apiService.getCategories().subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
-                res.data.sort(sortArrayByLabelProperty);
-                this.categories = res.data;
+                this.categories = res.data.sort(sortArrayByLabelProperty);
             } else {
                 alert(res.message);
             }
@@ -198,6 +197,7 @@ export class ProductComponent implements OnInit {
 
     onSaveProductOptions() {
         // TODO: validate, change flag when done
+        this.selectedProductOptions = this.options().value;
         this.saveProductOptions = true;
         this.showProductOptionsDialog = false;
     }
