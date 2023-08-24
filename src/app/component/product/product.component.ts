@@ -239,16 +239,17 @@ export class ProductComponent implements OnInit {
     }
 
     async submitProduct() {
+        let product: Product = this.productForm.value
         if (isEmpty(this.selectedProduct)) {
-            this.apiService.createProduct(this.productForm.value).subscribe((res: any) => {
+            this.apiService.createProduct(product).subscribe((res: any) => {
                 if (res.status === 200) {
+                    console.log(res.message);
                     this.getProducts();
-                    console.log('success create product');
                 } else alert(res.message);
             });
         } else {
             //edit
-            this.apiService.updateProduct(this.productForm.value).subscribe((res: any) => {
+            this.apiService.updateProduct(product).subscribe((res: any) => {
                 if (res.status === 200) {
                     this.getProducts();
                     console.log('success update product');

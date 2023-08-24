@@ -13,5 +13,5 @@ export interface Product {
     rating?: number;
     userCreated?: number;
 
-    options?: ProductOptions[];
+    options?: ProductOptions[] | string;
 }

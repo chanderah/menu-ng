@@ -11,7 +11,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, Observable, of } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
 import { jsonParse } from 'src/app/lib/object';
@@ -140,10 +140,12 @@ export class ApiService implements HttpInterceptor {
     }
 
     createProduct(product: Product) {
+        // product.options = JSON.stringify(product.options);
         return this.httpClient.post('/product/create', product);
     }
 
     updateProduct(product: Product) {
+        // product.options = JSON.stringify(product.options);
         return this.httpClient.post('/product/update', product);
     }
 
