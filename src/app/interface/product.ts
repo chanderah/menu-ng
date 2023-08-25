@@ -1,4 +1,3 @@
-import { ProductOptions } from './product_options';
 
 export interface Product {
     id?: string;
@@ -12,6 +11,18 @@ export interface Product {
     image?: string;
     rating?: number;
     userCreated?: number;
-
     options?: ProductOptions[] | string;
 }
+
+export interface ProductOptions {
+    name: string;
+    multiple: boolean;
+    required: boolean;
+    values: ProductOptionValues[];
+}
+
+export interface ProductOptionValues {
+    value: string;
+    price: number;
+}
+
