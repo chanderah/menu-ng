@@ -39,7 +39,7 @@ export class ApiService implements HttpInterceptor {
                 'Content-Type': 'application/json',
                 'User': 'Unauthorized'
             }),
-            body: { ...req.body, userCreated: user?.id || 'Unauthorized' }
+            body: { ...req.body, userCreated: user?.id || 0 }
             // body: this.validator.encrypt(req.body),
         });
         return next.handle(req).pipe(

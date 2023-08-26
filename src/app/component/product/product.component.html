@@ -18,13 +18,15 @@
             <!-- scrollHeight="400px" -->
             <!-- [loading]="isLoading" -->
             <p-table
+                #tb
                 dataKey="id"
                 [paginator]="true"
+                [pageLinks]="3"
                 [rows]="10"
-                pageLinks="3"
                 [rowsPerPageOptions]="[10, 20, 50, 100]"
                 [totalRecords]="pagingInfo.rowCount"
                 [lazy]="true"
+                [filterDelay]="1000"
                 (onLazyLoad)="getProducts($event)"
                 [value]="products"
                 [rowHover]="true"
@@ -33,6 +35,19 @@
                 selectionMode="single"
                 [(selection)]="selectedProduct"
                 responsiveLayout="scroll">
+                <ng-template pTemplate="caption">
+                    <div class="flex justify-content-end flex-column sm:flex-row">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="search"
+                                (input)="tb.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Search ..."
+                                class="w-full" />
+                        </span>
+                    </div>
+                </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 4rem"></th>
@@ -113,8 +128,9 @@
         [style]="{ width: '40vw', height: '100%' }"
         [breakpoints]="dialogBreakpoints"
         [dismissableMask]="false"
-        modal="true"
+        [closeOnEscape]="false"
         [blockScroll]="true"
+        modal="true"
         showEffect="fade">
         <!-- <div class="flex align-items-center justify-content-center w-full h-full" *ngIf="isLoading">
             <span class="font-semibold">Loading...</span>
@@ -267,6 +283,7 @@
         [style]="{ width: '40vw', height: 'auto' }"
         [breakpoints]="dialogBreakpoints"
         [dismissableMask]="false"
+        [closeOnEscape]="false"
         modal="true"
         [blockScroll]="true"
         showEffect="fade">
@@ -308,13 +325,7 @@
                             formControlName="name"
                             placeholder="Name, e.g Milk"
                             class="text-capitalize" />
-                        <button
-                            pButton
-                            pRipple
-                            icon="pi pi-trash"
-                            class="p-button-danger"
-                            (click)="deleteOption(i)"
-                            [disabled]="options().length === 1">
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteOption(i)">
                         </button>
                     </div>
                 </div>
@@ -391,6 +402,7 @@
     [contentStyle]="{ overflow: 'visible' }"
     [style]="{ width: '40vw', height: 'auto' }"
     [dismissableMask]="false"
+    [closeOnEscape]="false"
     [breakpoints]="dialogBreakpoints"
     modal="true"
     [blockScroll]="true"
@@ -399,7 +411,7 @@
         <div class="col-12">
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
-                <input pInputText type="text" placeholder="Name" formControlName="label" />
+                <input pInputText type="text" placeholder="Name" formControlName="label" class="text-capitalize" />
             </div>
         </div>
 

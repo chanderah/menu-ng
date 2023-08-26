@@ -97,10 +97,11 @@ export class ProductComponent implements OnInit {
     }
 
     getProducts(e?: LazyLoadEvent) {
+        console.log(e);
         this.isLoading = true;
         this.resetProductDialog();
         this.pagingInfo = {
-            filter: '',
+            filter: e?.filters?.global?.value || '',
             limit: e?.rows || 10,
             offset: e?.first || 0,
             sortField: e?.sortField || 'ID',
