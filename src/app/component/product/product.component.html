@@ -26,7 +26,7 @@
                 [rowsPerPageOptions]="[10, 20, 50, 100]"
                 [totalRecords]="pagingInfo.rowCount"
                 [lazy]="true"
-                [filterDelay]="1000"
+                [filterDelay]="500"
                 (onLazyLoad)="getProducts($event)"
                 [value]="products"
                 [rowHover]="true"
