@@ -1,4 +1,3 @@
-
 export interface Product {
     id?: string;
     code?: string;
@@ -11,13 +10,15 @@ export interface Product {
     image?: string;
     rating?: number;
     userCreated?: number;
-    options?: ProductOptions[] | string;
+
+    options?: ProductOptions[];
 }
 
 export interface ProductOptions {
     name: string;
     multiple: boolean;
     required: boolean;
+
     values: ProductOptionValues[];
 }
 
@@ -25,4 +26,3 @@ export interface ProductOptionValues {
     value: string;
     price: number;
 }
-

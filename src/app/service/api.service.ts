@@ -128,11 +128,29 @@ export class ApiService implements HttpInterceptor {
 
     /* PRODUCT */
     getProducts(pagingInfo: PagingInfo) {
-        return this.httpClient.post('/product/findAll', pagingInfo);
+        return this.httpClient.post('/product/findAll', pagingInfo).pipe(
+            map((res: any) => {
+                if (res.status === 200) {
+                    // const data: Product[] = res.data;
+                    // data.forEach((product: Product) => {
+                    //     product.options = isEmpty(product.options) ? [] : jsonParse(product.options);
+                    // });
+                }
+                return res;
+            })
+        );
     }
 
     findProductById(product: Product) {
-        return this.httpClient.post('/product/findById', product);
+        return this.httpClient.post('/product/findById', product).pipe(
+            map((res: any) => {
+                if (res.status === 200) {
+                    // const data: Product = res.data;
+                    // data.options = isEmpty(data.options) ? [] : jsonParse(data.options);
+                }
+                return res;
+            })
+        );
     }
 
     findProductByCategory(product: Product) {
@@ -140,12 +158,12 @@ export class ApiService implements HttpInterceptor {
     }
 
     createProduct(product: Product) {
-        product.options = JSON.stringify(product.options);
+        // const p = { ...product, options: JSON.stringify(product.options) };
         return this.httpClient.post('/product/create', product);
     }
 
     updateProduct(product: Product) {
-        product.options = JSON.stringify(product.options);
+        // const p = { ...product, options: JSON.stringify(product.options) };
         return this.httpClient.post('/product/update', product);
     }
 

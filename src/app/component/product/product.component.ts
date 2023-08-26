@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'primeng/api';
-import { Product } from 'src/app/interface/product';
+import { Product, ProductOptions } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/object';
 import { environment } from './../../../environments/environment';
 import { Category } from './../../interface/category';
 import { PagingInfo } from './../../interface/paging_info';
-import { ProductOptions } from './../../interface/product_options';
 import { UploadEvent } from './../../interface/upload_event';
 import { resizeImg } from './../../lib/image_resizer';
 import { jsonParse, sortArrayByLabelProperty } from './../../lib/object';
@@ -100,13 +99,12 @@ export class ProductComponent implements OnInit {
     getProducts(e?: LazyLoadEvent) {
         this.isLoading = true;
         this.resetProductDialog();
-        console.log(e);
         this.pagingInfo = {
             filter: '',
-            limit: e.rows ?? 10,
-            offset: e.first ?? 0,
-            sortField: e.sortField ?? 'ID',
-            sortOrder: e.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
+            limit: e?.rows || 10,
+            offset: e?.first || 0,
+            sortField: e?.sortField || 'ID',
+            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
         };
         this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
@@ -142,6 +140,13 @@ export class ProductComponent implements OnInit {
         if (isEmpty(img)) return `${this.env.imagePath}/default_product_image.png`;
         if (img.includes('assets')) return `${this.env.publicPath}/${img}`;
         return img;
+    }
+
+    getOptionsName(productOptions: ProductOptions[]) {
+        // if (isEmpty(productOptions)) return '';
+        // const optionsName: string[] = [];
+        // productOptions.forEach((d) => optionsName.push(d.name));
+        // return optionsName.join(', ');
     }
 
     options(): FormArray {
@@ -182,9 +187,9 @@ export class ProductComponent implements OnInit {
     }
 
     openProductOptionsDialog() {
-        // this.selectedProductOptions = this.selectedProduct?.options;
-        this.saveProductOptions = false;
+        if (isEmpty(this.selectedProductOptions)) this.selectedProductOptions = this.selectedProduct?.options;
         if (this.options().length === 0) this.addOption();
+        this.saveProductOptions = false;
         this.showProductOptionsDialog = true;
     }
 
@@ -197,11 +202,6 @@ export class ProductComponent implements OnInit {
             this.options().patchValue(this.selectedProductOptions);
         }
     }
-
-    // onHideProductDialog() {
-    //     this.selectedProduct
-    //     this.productForm.reset();
-    // }
 
     onSaveProductOptions() {
         // TODO: validate, change flag when done
@@ -240,19 +240,18 @@ export class ProductComponent implements OnInit {
 
     async submitProduct() {
         let product: Product = this.productForm.value;
-        console.log(product);
         if (isEmpty(this.selectedProduct)) {
             this.apiService.createProduct(product).subscribe((res: any) => {
                 if (res.status === 200) {
                     console.log(res.message);
-                    // this.getProducts();
+                    return this.getProducts();
                 } else alert(res.message);
             });
         } else {
             //edit
             this.apiService.updateProduct(product).subscribe((res: any) => {
                 if (res.status === 200) {
-                    this.getProducts();
+                    return this.getProducts();
                     console.log('success update product');
                 } else alert(res.message);
             });
@@ -304,16 +303,22 @@ export class ProductComponent implements OnInit {
 
     onEditProduct() {
         if (isEmpty(this.selectedProduct)) return;
+        this.isLoading = true;
+        this.showProductDialog = true;
         this.apiService.findProductById(this.selectedProduct).subscribe((res: any) => {
             if (res.status === 200) {
-                this.productForm.patchValue(res.data);
-                this.showProductDialog = true;
+                this.setProductForm(res.data);
             } else {
-                alert('Invalid session!');
-                return this.getProducts();
+                this.showProductDialog = false;
+                alert('Failed to get product!');
             }
         });
         this.getCategories();
+    }
+
+    setProductForm(data: Product) {
+        if (data.options) data.options.forEach(() => this.addOption());
+        this.productForm.patchValue(data);
     }
 
     onDeleteProduct() {

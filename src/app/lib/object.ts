@@ -1,7 +1,5 @@
-// import FileResizer from 'react-image-file-resizer';
-
 export const isEmpty = (obj: any) => {
-    if (obj == null || obj === '' || obj.length === 0 || JSON.stringify(obj) === '{}') return true;
+    if (!obj || obj == null || obj == '' || obj?.length === 0 || JSON.stringify(obj) === '{}') return true;
     else return false;
 };
 

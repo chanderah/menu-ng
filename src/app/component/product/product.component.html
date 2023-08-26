@@ -39,9 +39,8 @@
                         <!-- <th pSortableColumn="name" pFrozenColumn> Name <p-sortIcon field="name"></p-sortIcon> </th> -->
                         <th pSortableColumn="name"> Name <p-sortIcon field="name"></p-sortIcon> </th>
                         <th>Image</th>
-                        <th>Options</th>
+                        <th>Category</th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-                        <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
                         <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
                     </tr>
                 </ng-template>
@@ -65,9 +64,8 @@
                                 width="80px"
                                 height="80px" />
                         </td>
-                        <td style="min-width: 8rem">Sugar, Toppings</td>
-                        <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td>
                         <td style="min-width: 10rem">{{ getCategoryOfProduct(product.categoryId) }}</td>
+                        <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td>
                         <td>
                             <span class="product-badge">
                                 {{ product.status ? 'Active' : 'Inactive' }}
@@ -116,13 +114,17 @@
         [breakpoints]="dialogBreakpoints"
         [dismissableMask]="false"
         modal="true"
-        blockScroll="true"
+        [blockScroll]="true"
         showEffect="fade">
-        <div class="p-fluid px-2">
+        <!-- <div class="flex align-items-center justify-content-center w-full h-full" *ngIf="isLoading">
+            <span class="font-semibold">Loading...</span>
+        </div> -->
+        <div class="p-fluid px-2" *ngIf="!isLoading">
             <div class="grid my-3">
                 <div class="col-12 flex justify-content-center" *ngIf="productForm.controls['image'].value">
                     <img
                         [src]="getPreviewImg()"
+                        (load)="isLoading = false"
                         alt="preview"
                         class="shadow-4 object-fit-cover"
                         width="200px"
@@ -266,7 +268,7 @@
         [breakpoints]="dialogBreakpoints"
         [dismissableMask]="false"
         modal="true"
-        blockScroll="true"
+        [blockScroll]="true"
         showEffect="fade">
         <div formArrayName="options" class="p-fluid px-2">
             <!-- <button (click)="addOption()" class="my-2">Add</button> -->
@@ -391,7 +393,7 @@
     [dismissableMask]="false"
     [breakpoints]="dialogBreakpoints"
     modal="true"
-    blockScroll="true"
+    [blockScroll]="true"
     showEffect="fade">
     <div [formGroup]="categoryForm" (keyup.enter)="onSubmit()" class="p-fluid px-2">
         <div class="col-12">
