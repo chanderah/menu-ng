@@ -57,6 +57,7 @@
                         <th>Category</th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                        <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
                     </tr>
                 </ng-template>
 
@@ -80,12 +81,14 @@
                                 height="80px" />
                         </td>
                         <td style="min-width: 10rem">{{ getCategoryOfProduct(product.categoryId) }}</td>
-                        <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td>
+                        <!-- <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td> -->
+                        <td style="min-width: 8rem">{{ product.price | custom }}</td>
                         <td>
                             <span class="product-badge">
                                 {{ product.status ? 'Active' : 'Inactive' }}
                             </span>
                         </td>
+                        <td style="min-width: 8rem">{{ product.createdAt | date: 'MMM d, y' }}</td>
                     </tr>
                 </ng-template>
 

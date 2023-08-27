@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
+import { CustomCurrencyPipe } from './component/pipe/currency.pipe';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { AppTopBarComponent } from './layout/app.topbar.component';
 
@@ -215,7 +216,10 @@ export class MyHammerConfig extends HammerGestureConfig {
         OrderDialogComponent,
         ProductComponent,
         CategoryDialogComponent,
-        RegisterComponent
+        RegisterComponent,
+
+        /* PIPE */
+        CustomCurrencyPipe
     ],
     imports: [
         BrowserModule,
@@ -320,6 +324,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
+        // { provide: LOCALE_ID, useValue: 'id-ID' },
         {
             provide: HAMMER_GESTURE_CONFIG,
             useClass: MyHammerConfig
