@@ -291,9 +291,8 @@ export class ProductComponent implements OnInit {
     resetProductDialog() {
         this.showProductDialog = false;
         this.selectedProduct = null;
-        this.productForm.reset();
-        this.options().reset();
         this.options().clear();
+        this.productForm.reset();
     }
 
     onAddProduct() {
