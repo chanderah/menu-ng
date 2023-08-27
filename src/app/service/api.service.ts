@@ -128,33 +128,23 @@ export class ApiService implements HttpInterceptor {
 
     /* PRODUCT */
     getProducts(pagingInfo: PagingInfo) {
-        return this.httpClient.post('/product/findAll', pagingInfo).pipe(
-            map((res: any) => {
-                if (res.status === 200) {
-                    // const data: Product[] = res.data;
-                    // data.forEach((product: Product) => {
-                    //     product.options = isEmpty(product.options) ? [] : jsonParse(product.options);
-                    // });
-                }
-                return res;
-            })
-        );
+        return this.httpClient.post('/product/findAll', pagingInfo);
+    }
+
+    getActiveProducts(pagingInfo: PagingInfo) {
+        return this.httpClient.post('/product/findActive', pagingInfo);
     }
 
     findProductById(product: Product) {
-        return this.httpClient.post('/product/findById', product).pipe(
-            map((res: any) => {
-                if (res.status === 200) {
-                    // const data: Product = res.data;
-                    // data.options = isEmpty(data.options) ? [] : jsonParse(data.options);
-                }
-                return res;
-            })
-        );
+        return this.httpClient.post('/product/findById', product);
     }
 
     findProductByCategory(product: Product) {
         return this.httpClient.post('/product/findByCategory', product);
+    }
+
+    findActiveProductByCategory(product: Product) {
+        return this.httpClient.post('/product/findActiveByCategory', product);
     }
 
     createProduct(product: Product) {

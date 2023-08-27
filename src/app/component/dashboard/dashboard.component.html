@@ -27,7 +27,19 @@
     </div>
 </div>
 
-<p-dataView #dv id="listProducts" [value]="products" [paginator]="true" [rows]="12" layout="grid" [loading]="isLoading">
+<p-dataView
+    #dv
+    id="listProducts"
+    layout="grid"
+    [value]="products"
+    [paginator]="true"
+    [loading]="isLoading"
+    [lazy]="true"
+    (onLazyLoad)="getProducts($event)"
+    [rows]="20"
+    [totalRecords]="pagingInfo.rowCount"
+    [pageLinks]="5"
+    [alwaysShowPaginator]="true">
     <ng-template pTemplate="header">
         <div class="grid">
             <div class="col-3 p-fluid" style="width: fit-content">
@@ -39,10 +51,16 @@
                     class="p-button-plain p-button-rounded p-button-outlined"
                     style="height: 100%; text-transform: capitalize"></button>
             </div>
-            <div class="col p-fluid">
+            <div [formGroup]="filter" class="col p-fluid">
                 <span class="p-input-icon-left input-rounded" style="height: 100%">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" placeholder="Search..." class="font-semibold" clearButton="true" />
+                    <input
+                        pInputText
+                        type="search"
+                        placeholder="Search..."
+                        class="font-semibold"
+                        formControlName="value" />
+                    <!-- (input)="filterProduct($event.target.value)"  -->
                 </span>
             </div>
         </div>

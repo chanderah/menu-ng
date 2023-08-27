@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from './../../environments/environment';
+import { Category } from './../interface/category';
+import { ApiService } from './../service/api.service';
 import { AppMainComponent } from './app.main.component';
 
 @Component({
@@ -10,7 +12,7 @@ import { AppMainComponent } from './app.main.component';
                 <li
                     app-menu
                     class="layout-menuitem-category"
-                    *ngFor="let item of model; let i = index"
+                    *ngFor="let item of menus; let i = index"
                     [item]="item"
                     [index]="i"
                     [root]="true"
@@ -26,13 +28,19 @@ import { AppMainComponent } from './app.main.component';
 })
 export class AppMenuComponent implements OnInit {
     isDevelopment: boolean = environment.production === false;
+    menus: any[];
+    categories: Category[];
 
-    model: any[];
-
-    constructor(public appMain: AppMainComponent) {}
+    constructor(
+        public appMain: AppMainComponent,
+        public apiService: ApiService
+    ) {}
 
     ngOnInit() {
-        this.model = [
+        this.apiService.getCategories().subscribe((res: any) => {
+            this.categories = res.data;
+        });
+        this.menus = [
             {
                 label: 'Order',
                 // icon: 'pi pi-fw pi-briefcase',
@@ -213,8 +221,7 @@ export class AppMenuComponent implements OnInit {
                 ]
             }
         ];
-
-        if (this.isDevelopment) this.model = this.model.concat(demo);
+        if (this.isDevelopment) this.menus = this.menus.concat(demo);
     }
 
     onKeydown(event: KeyboardEvent) {

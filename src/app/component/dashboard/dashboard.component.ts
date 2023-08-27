@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SwiperCore, {
@@ -32,9 +33,9 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
 export class DashboardComponent implements OnInit {
     env = environment;
     subscription!: Subscription;
-    isLoading: boolean = true;
     params!: object | string;
     pagingInfo = {} as PagingInfo;
+    isLoading: boolean = true;
 
     categories = [] as any[];
     products = [] as Product[];
@@ -42,8 +43,12 @@ export class DashboardComponent implements OnInit {
 
     swiperOptions!: SwiperOptions;
 
-    showOrderFormDialog: boolean = false;
     selectedProduct!: Product;
+    showOrderFormDialog: boolean = false;
+
+    filter: FormGroup = this.formBuilder.group({
+        value: ['']
+    });
 
     constructor(
         public appMain: AppMainComponent,
@@ -58,24 +63,21 @@ export class DashboardComponent implements OnInit {
             if (this.params === 'root') this.initSwiper();
             else this.removeSwiper();
         });
+        //prettier-ignore
+        this.filter.get('value').valueChanges.pipe(debounceTime(500)).subscribe((v: string) => {
+            this.getProducts({
+                filters: {
+                    global: {
+                        value: v.trim()
+                    }
+                }
+            });
+        })
     }
 
     ngOnInit() {
         // this.getCategories();
-        // this.getProducts();
-        this.pagingInfo = {
-            filter: '',
-            limit: 10,
-            offset: 0,
-            sortField: 'ID',
-            sortOrder: 'ASC'
-        };
-        this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
-            this.isLoading = false;
-            if (res.status === 200) {
-                this.products = res.data;
-            } else alert(res.message);
-        });
+        this.getProducts();
     }
 
     getCategories() {
@@ -95,9 +97,21 @@ export class DashboardComponent implements OnInit {
         ];
     }
 
-    getProducts() {
-        this.productService.getProducts().then((res) => {
-            this.products = res;
+    getProducts(e?: LazyLoadEvent) {
+        this.isLoading = true;
+        this.pagingInfo = {
+            filter: e?.filters?.global?.value || '',
+            limit: e?.rows || 20,
+            offset: e?.first || 0,
+            sortField: e?.sortField || 'NAME',
+            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
+        };
+        this.apiService.getActiveProducts(this.pagingInfo).subscribe((res: any) => {
+            this.isLoading = false;
+            if (res.status === 200) {
+                this.products = res.data;
+                if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
+            } else alert(res.message);
         });
     }
 
@@ -170,5 +184,9 @@ export class DashboardComponent implements OnInit {
             .onClose.subscribe((res) => {
                 if (res) this.onAddToCart(data);
             });
+    }
+
+    ngOnDestroy() {
+        // this.subscription.unsubscribe();
     }
 }

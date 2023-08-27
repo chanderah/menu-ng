@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'primeng/api';
+import { FileUpload } from 'primeng/fileupload';
 import { Product, ProductOptions } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/object';
@@ -219,9 +220,8 @@ export class ProductComponent implements OnInit {
         return data.length === 0 ? 'No Options' : data.join(', ');
     }
 
-    async onSelectImage(e: UploadEvent, fileUpload) {
+    async onSelectImage(e: UploadEvent, fileUpload: FileUpload) {
         console.log(e.files);
-        console.log(typeof fileUpload);
         try {
             const img = await resizeImg(e.files[0]);
             this.productForm.get('image').setValue(img);
@@ -235,7 +235,7 @@ export class ProductComponent implements OnInit {
     async onSubmit() {
         this.isLoading = true;
         if (this.showProductDialog) await this.submitProduct();
-        else await this.submitCategory();
+        else if (this.showCategoryDialog) await this.submitCategory();
         this.isLoading = false;
     }
 
@@ -252,8 +252,8 @@ export class ProductComponent implements OnInit {
             //edit
             this.apiService.updateProduct(product).subscribe((res: any) => {
                 if (res.status === 200) {
-                    return this.getProducts();
                     console.log('success update product');
+                    return this.getProducts();
                 } else alert(res.message);
             });
         }

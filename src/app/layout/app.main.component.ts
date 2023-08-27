@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
 import { AppConfig } from '../interface/appconfig';
 import { AppComponent } from './../app.component';
+import { Category } from './../interface/category';
+import { ApiService } from './../service/api.service';
 
 @Component({
     selector: 'app-main',
@@ -46,15 +48,26 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     configClick: boolean;
     config: AppConfig;
 
+    categories = [] as Category[];
+
     constructor(
         public renderer: Renderer2,
         public app: AppComponent,
-        public configService: ConfigService
+        public configService: ConfigService,
+        public apiService: ApiService
     ) {}
 
     ngOnInit() {
         this.config = this.configService.config;
         this.subscription = this.configService.configUpdate$.subscribe((config) => (this.config = config));
+
+        this.getMenu();
+    }
+
+    getMenu() {
+        // this.apiService.getCategories().subscribe((res: any) => {
+        //     this.categories = res.data;
+        // });
     }
 
     ngAfterViewInit() {
