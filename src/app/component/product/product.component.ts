@@ -199,7 +199,7 @@ export class ProductComponent implements OnInit {
             this.selectedProductOptions = this.options().value;
         } else {
             this.options().clear();
-            for (let i = 0; i < this.selectedProductOptions.length; i++) this.addOption();
+            for (let i = 0; i < this.selectedProductOptions?.length; i++) this.addOption();
             this.options().patchValue(this.selectedProductOptions);
         }
     }
