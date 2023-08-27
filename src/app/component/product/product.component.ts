@@ -309,6 +309,7 @@ export class ProductComponent implements OnInit {
         this.showProductDialog = true;
         this.apiService.findProductById(this.selectedProduct).subscribe((res: any) => {
             if (res.status === 200) {
+                console.log(res.data);
                 this.setProductForm(res.data);
             } else {
                 this.showProductDialog = false;
