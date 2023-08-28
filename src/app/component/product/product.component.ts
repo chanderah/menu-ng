@@ -328,7 +328,7 @@ export class ProductComponent implements OnInit {
         this.isLoading = true;
         this.apiService.deleteProduct(this.selectedProduct).subscribe((res: any) => {
             if (res.status === 200) {
-                this.getCategories();
+                this.getProducts();
             } else {
                 alert(res.message);
             }
