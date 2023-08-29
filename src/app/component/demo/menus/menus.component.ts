@@ -7,25 +7,15 @@ import { MegaMenuItem, MenuItem } from 'primeng/api';
 })
 export class MenusComponent implements OnInit {
     breadcrumbItems: MenuItem[];
-
     tieredItems: MenuItem[];
-
     items: MenuItem[];
-
     routeItems: MenuItem[];
-
     megaMenuItems: MegaMenuItem[];
-
     panelMenuItems: MenuItem[];
-
     stepsItems: MenuItem[];
-
     slideItems: MenuItem[];
-
     menuItems: MenuItem[];
-
     plainMenuItems: MenuItem[];
-
     pageIndex: number = 0;
 
     ngOnInit() {

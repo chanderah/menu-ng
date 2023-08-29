@@ -77,6 +77,7 @@
                         <th>Image</th>
                         <th>Category</th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                        <th pSortableColumn="featured">Featured <p-sortIcon field="status"></p-sortIcon></th>
                         <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
                         <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
                     </tr>
@@ -104,6 +105,11 @@
                         <td style="min-width: 10rem">{{ getCategoryOfProduct(product.categoryId) }}</td>
                         <!-- <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td> -->
                         <td style="min-width: 8rem">{{ product.price | custom }}</td>
+                        <td>
+                            <span class="product-badge">
+                                {{ product.featured ? 'Featured' : '' }}
+                            </span>
+                        </td>
                         <td>
                             <span class="product-badge">
                                 {{ product.status ? 'Active' : 'Inactive' }}
@@ -150,7 +156,7 @@
                         width="200px"
                         height="200px" />
                 </div>
-                <div class="col-12 flex justify-content-end mb-2">
+                <div class="col-12 flex justify-content-end mb-3">
                     <p-fileUpload
                         #fileUpload
                         mode="basic"
@@ -164,6 +170,9 @@
                 <div class="col-12 flex justify-content-between">
                     <div class="field-checkbox mb-0">
                         <p-checkbox label="Active" formControlName="status" binary="true"></p-checkbox>
+                    </div>
+                    <div class="field-checkbox mb-0">
+                        <p-checkbox label="Featured" formControlName="featured" binary="true"></p-checkbox>
                     </div>
                 </div>
                 <div class="col-12">
@@ -215,9 +224,6 @@
                 <div class="col-12">
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon"><i class="pi pi-comment"></i></span>
-                        <!-- <input pInputText type="text" placeholder="Description" formControlName="description" /> -->
-                        <!-- <textarea pInputTextarea placeholder="Description" autoSize formControlName="description">
-                    </textarea> -->
                         <textarea
                             pInputTextarea
                             type="text"
@@ -232,7 +238,6 @@
                 <div class="col-12">
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon">Rp</span>
-                        <!-- <input pInputText type="number" placeholder="Price" step="10000" formControlName="price" /> -->
                         <p-inputNumber
                             [min]="0"
                             [showButtons]="true"
@@ -245,7 +250,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex mt-3" [ngClass]="selectedProduct ? 'justify-content-between' : 'justify-content-end'">
+            <div class="flex mt-4" [ngClass]="selectedProduct ? 'justify-content-between' : 'justify-content-end'">
                 <div *ngIf="selectedProduct">
                     <button
                         pButton
@@ -421,7 +426,7 @@
             </div>
         </div>
 
-        <div class="flex mt-3" [ngClass]="selectedCategory ? 'justify-content-between' : 'justify-content-end'">
+        <div class="flex mt-4" [ngClass]="selectedCategory ? 'justify-content-between' : 'justify-content-end'">
             <button
                 *ngIf="selectedCategory"
                 pButton

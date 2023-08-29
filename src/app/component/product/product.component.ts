@@ -80,6 +80,7 @@ export class ProductComponent implements OnInit {
             categoryId: [null, []],
             description: ['', []],
             price: [0, [Validators.required]],
+            featured: [false, [Validators.required]],
             status: [true, [Validators.required]],
             userCreated: ['', [Validators.required]],
             options: this.formBuilder.array([])

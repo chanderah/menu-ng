@@ -1,6 +1,6 @@
 <div id="featuredProducts" class="grid">
     <div class="col-12">
-        <div class="card" *ngIf="featuredProducts.length > 0">
+        <div class="card" *ngIf="featuredProducts.length > 1">
             <h5 class="category-title">Featured</h5>
             <swiper [config]="swiperOptions" #swiper>
                 <ng-template *ngFor="let product of featuredProducts" swiperSlide>
@@ -9,16 +9,21 @@
                             <!-- [src]=" product.image ? env.publicPath + product.image : env.imagePath +
                             '/default_product.png' " -->
                             <img
-                                src="assets/demo/images/product/{{ product.image }}"
-                                onerror="this.src='assets/images/default_product.png'"
                                 [alt]="product.name"
+                                [src]="
+                                    product.image
+                                        ? env.publicPath + product.image
+                                        : env.imagePath + '/default_product.png'
+                                "
                                 (click)="onClickImage(product)"
                                 class="shadow-4"
                                 width="100%" />
                         </div>
                         <div>
-                            <h6 class="my-2">{{ product.name }}</h6>
-                            <p class="mt-0 mb-3 text-primary">{{ product.price | custom }}</p>
+                            <h6 class="text-capitalize my-2">{{ product.name }}</h6>
+                            <p class="text-primary text-sm font-semibold mt-0 mb-3">
+                                {{ product.price | custom }}
+                            </p>
                         </div>
                     </div>
                 </ng-template>
@@ -79,10 +84,12 @@
                             (click)="onClickImage(product)" />
                     </div>
                     <div class="col-12 mx-4">
-                        <span class="text-left text-capitalize font-semibold max-lines-2">{{ product.name }}</span>
+                        <span class="text-left text-lg text-capitalize font-semibold max-lines-2">
+                            {{ product.name }}
+                        </span>
                     </div>
                     <div class="col-12 mx-4 no-pt">
-                        <span class="text-left text-sm">{{ product.price | custom }}</span>
+                        <span class="text-left text-md">{{ product.price | custom }}</span>
                     </div>
                     <div class="col-12 text-center mt-2">
                         <button

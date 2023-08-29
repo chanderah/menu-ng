@@ -6,14 +6,7 @@ import { environment } from './../../../../environments/environment';
 
 @Component({
     templateUrl: './product-dialog.component.html',
-    // styleUrls: ['../../../../assets/user.styles.scss']
-    styles: [
-        `
-            .p-dialog-title {
-                text-transform: capitalize !important;
-            }
-        `
-    ]
+    styleUrls: ['../../../../assets/user.styles.scss']
 })
 export class ProductDialogComponent implements OnInit {
     @ViewChild('imageDialog') imageDialog: ElementRef;

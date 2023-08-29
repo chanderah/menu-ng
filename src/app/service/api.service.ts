@@ -135,6 +135,10 @@ export class ApiService implements HttpInterceptor {
         return this.httpClient.post('/product/findActive', pagingInfo);
     }
 
+    getFeaturedProducts() {
+        return this.httpClient.post('/product/findFeatured', {});
+    }
+
     findProductById(product: Product) {
         return this.httpClient.post('/product/findById', product);
     }

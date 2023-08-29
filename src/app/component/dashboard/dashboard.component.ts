@@ -60,6 +60,7 @@ export class DashboardComponent implements OnInit {
     ) {
         this.route.queryParams.subscribe(({ menu }) => {
             this.params = menu || 'root';
+            console.log(this.params);
             if (this.params === 'root') this.initSwiper();
             else this.removeSwiper();
         });
@@ -76,8 +77,16 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.getCategories();
         this.getProducts();
+    }
+
+    getFeaturedProducts() {
+        this.apiService.getFeaturedProducts().subscribe((res: any) => {
+            if (res.status === 200) {
+                // this.featuredProducts = res.data.slice(0, 6);
+                this.featuredProducts = res.data;
+            }
+        });
     }
 
     getCategories() {
@@ -151,7 +160,7 @@ export class DashboardComponent implements OnInit {
     }
 
     initSwiper() {
-        this.productService.getProducts().then((res) => (this.featuredProducts = res.slice(0, 6)));
+        this.getFeaturedProducts(); //await ??
         this.swiperOptions = {
             autoHeight: true,
             autoplay: {
@@ -176,7 +185,6 @@ export class DashboardComponent implements OnInit {
         this.dialogService
             .open(ProductDialogComponent, {
                 header: data.name,
-                style: 'text-transform: capitalize',
                 data: data,
                 closeOnEscape: true,
                 dismissableMask: true
