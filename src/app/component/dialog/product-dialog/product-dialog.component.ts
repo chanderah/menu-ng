@@ -5,7 +5,15 @@ import { CartService } from 'src/app/service/cart.service';
 import { environment } from './../../../../environments/environment';
 
 @Component({
-    templateUrl: './product-dialog.component.html'
+    templateUrl: './product-dialog.component.html',
+    // styleUrls: ['../../../../assets/user.styles.scss']
+    styles: [
+        `
+            .p-dialog-title {
+                text-transform: capitalize !important;
+            }
+        `
+    ]
 })
 export class ProductDialogComponent implements OnInit {
     @ViewChild('imageDialog') imageDialog: ElementRef;

@@ -176,6 +176,7 @@ export class DashboardComponent implements OnInit {
         this.dialogService
             .open(ProductDialogComponent, {
                 header: data.name,
+                style: 'text-transform: capitalize',
                 data: data,
                 closeOnEscape: true,
                 dismissableMask: true

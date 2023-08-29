@@ -4336,6 +4336,7 @@ p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
 .p-dialog .p-dialog-header .p-dialog-title {
     font-weight: 700;
     font-size: 1.25rem;
+    text-transform: capitalize;
 }
 .p-dialog .p-dialog-header .p-dialog-header-icon {
     width: 2rem;
