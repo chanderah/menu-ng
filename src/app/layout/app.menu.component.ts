@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Menu } from '../interface/menu';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
-import { ApiService } from './../service/api.service';
+import { SharedService } from './../service/shared.service';
 import { AppMainComponent } from './app.main.component';
 
 @Component({
@@ -28,69 +29,30 @@ import { AppMainComponent } from './app.main.component';
 })
 export class AppMenuComponent implements OnInit {
     isDevelopment: boolean = environment.production === false;
-    menus: any[];
+    menus: Menu[];
     categories: Category[];
+    static categories: string | number;
 
     constructor(
         public appMain: AppMainComponent,
-        public apiService: ApiService
+        public sharedService: SharedService
     ) {}
 
-    ngOnInit() {
-        this.apiService.getCategories().subscribe((res: any) => {
-            this.categories = res.data;
+    getCategories() {
+        return this.categories;
+    }
+
+    async ngOnInit() {
+        this.getDefaultMenu();
+        this.categories = await this.sharedService.getCategories();
+        this.categories.forEach((data: Category) => {
+            this.menus[0].items[0].items.push({
+                id: data.id,
+                label: data.label,
+                routerLink: ['/'],
+                queryParams: { menu: data.param }
+            });
         });
-        this.menus = [
-            {
-                label: 'Order',
-                // icon: 'pi pi-fw pi-briefcase',
-                items: [
-                    {
-                        icon: 'pi pi-fw pi-check-square',
-                        label: 'Categories',
-                        routerLink: ['/'],
-                        items: [
-                            {
-                                label: 'All',
-                                routerLink: ['/']
-                            },
-                            {
-                                label: 'Foods',
-                                routerLink: ['/'],
-                                queryParams: { menu: 'foods' }
-                            },
-                            {
-                                label: 'Drinks',
-                                routerLink: ['/'],
-                                queryParams: { menu: 'drinks' }
-                            },
-                            {
-                                label: 'Desserts',
-                                routerLink: ['/'],
-                                queryParams: { menu: 'desserts' }
-                            },
-                            {
-                                label: 'Snacks',
-                                routerLink: ['/'],
-                                queryParams: { menu: 'snacks' }
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Cart',
-                        icon: 'pi pi-fw pi-shopping-cart',
-                        routerLink: ['/cart']
-                    }
-                ]
-            },
-            {
-                label: 'Product Management',
-                items: [
-                    // { label: 'Edit Categories', icon: 'pi pi-fw pi-eye', routerLink: ['/menu'], badge: 'ADMIN' },
-                    { label: 'Edit Products', icon: 'pi pi-fw pi-eye', routerLink: ['/product'], badge: 'ADMIN' }
-                ]
-            }
-        ];
 
         const demo = [
             {
@@ -222,6 +184,37 @@ export class AppMenuComponent implements OnInit {
             }
         ];
         if (this.isDevelopment) this.menus = this.menus.concat(demo);
+    }
+
+    getDefaultMenu() {
+        this.menus = [
+            {
+                label: 'Order',
+                // icon: 'pi pi-fw pi-briefcase',
+                items: [
+                    {
+                        icon: 'pi pi-fw pi-check-square',
+                        label: 'Categories',
+                        routerLink: ['/'],
+                        items: [
+                            {
+                                label: 'All',
+                                routerLink: ['/']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Cart',
+                        icon: 'pi pi-fw pi-shopping-cart',
+                        routerLink: ['/cart']
+                    }
+                ]
+            },
+            {
+                label: 'Product Management',
+                items: [{ label: 'Edit Products', icon: 'pi pi-fw pi-eye', routerLink: ['/product'], badge: 'ADMIN' }]
+            }
+        ];
     }
 
     onKeydown(event: KeyboardEvent) {

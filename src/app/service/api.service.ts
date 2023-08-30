@@ -5,6 +5,7 @@ import {
     HttpHandler,
     HttpHeaders,
     HttpInterceptor,
+    HttpParams,
     HttpRequest,
     HttpResponse,
     HttpStatusCode
@@ -147,8 +148,15 @@ export class ApiService implements HttpInterceptor {
         return this.httpClient.post('/product/findByCategory', product);
     }
 
-    findActiveProductByCategory(product: Product) {
-        return this.httpClient.post('/product/findActiveByCategory', product);
+    findActiveProductByCategory(pagingInfo: PagingInfo) {
+        return this.httpClient.post('/product/findActiveByCategory', pagingInfo);
+    }
+
+    findActiveProductByParam(param: string | object) {
+        let params = new HttpParams();
+        params = params.append('format', 'json');
+        params = params.append('menu', param.toString());
+        return this.httpClient.post('/product', { param: params });
     }
 
     createProduct(product: Product) {

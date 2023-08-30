@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CustomCurrencyPipe } from './component/pipe/currency.pipe';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { AppTopBarComponent } from './layout/app.topbar.component';
+import { SharedService } from './service/shared.service';
 
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -346,7 +347,10 @@ export class MyHammerConfig extends HammerGestureConfig {
 
         MessageService,
         DialogService,
-        CartService
+        CartService,
+
+        /* SHARED */
+        SharedService
     ],
     bootstrap: [AppComponent]
 })

@@ -60,14 +60,6 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     ngOnInit() {
         this.config = this.configService.config;
         this.subscription = this.configService.configUpdate$.subscribe((config) => (this.config = config));
-
-        this.getMenu();
-    }
-
-    getMenu() {
-        // this.apiService.getCategories().subscribe((res: any) => {
-        //     this.categories = res.data;
-        // });
     }
 
     ngAfterViewInit() {
