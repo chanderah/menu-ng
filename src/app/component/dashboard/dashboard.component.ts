@@ -5,6 +5,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { debounceTime, Subscription } from 'rxjs';
 import { Product } from 'src/app/interface/product';
+import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SwiperCore, {
     A11y,
     Autoplay,
@@ -20,8 +21,6 @@ import SwiperCore, {
 import { ProductService } from '../../service/productservice';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
 import { environment } from './../../../environments/environment';
-import { Category } from './../../interface/category';
-import { Menu } from './../../interface/menu';
 import { PagingInfo } from './../../interface/paging_info';
 import { ApiService } from './../../service/api.service';
 import { SharedService } from './../../service/shared.service';
@@ -37,9 +36,7 @@ export class DashboardComponent implements OnInit {
     init: boolean = true;
     subscription!: Subscription;
 
-    currentMenu: Menu = {
-        label: 'root'
-    };
+    param: string;
 
     pagingInfo = {} as PagingInfo;
     isLoading: boolean = true;
@@ -58,23 +55,20 @@ export class DashboardComponent implements OnInit {
     });
 
     constructor(
+        public appMain: AppMainComponent,
+        public sharedService: SharedService,
         private route: ActivatedRoute,
         private productService: ProductService,
         private dialogService: DialogService,
         private formBuilder: FormBuilder,
-        private apiService: ApiService,
-        public sharedService: SharedService
+        private apiService: ApiService
     ) {
         this.route.queryParams.subscribe(async ({ menu }) => {
-            this.currentMenu = { label: menu || 'root' };
-            this.categories = await this.sharedService.getCategories();
+            this.param = menu || 'root';
 
-            if (this.currentMenu.label === 'root') this.initSwiper();
-            else {
-                const category: Category = this.categories.find((d: Category) => d.param === this.currentMenu.label);
-                this.pagingInfo.field.value = category.id;
-                this.featuredProducts.length = 0;
-            }
+            if (this.param === 'root') this.initSwiper();
+            else this.featuredProducts.length = 0;
+
             if (!this.init) this.getProducts();
         });
         //prettier-ignore
@@ -129,8 +123,8 @@ export class DashboardComponent implements OnInit {
             sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
         };
 
-        if (this.currentMenu.label === 'root') return this.getActiveProducts();
-        else return this.getActiveProductsByCategory();
+        if (this.param === 'root') return this.getActiveProducts();
+        else return this.getActiveProductsByCategoryParam();
     }
 
     getActiveProducts() {
@@ -143,15 +137,15 @@ export class DashboardComponent implements OnInit {
         });
     }
 
-    getActiveProductsByCategory() {
-        (this.pagingInfo.field = { column: null, value: this.currentMenu.id }),
-            this.apiService.findActiveProductByCategory(this.pagingInfo).subscribe((res: any) => {
-                this.isLoading = false;
-                if (res.status === 200) {
-                    this.products = res.data;
-                    if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
-                } else alert(res.message);
-            });
+    getActiveProductsByCategoryParam() {
+        this.pagingInfo.field = { column: null, value: this.param };
+        this.apiService.findActiveProductByCategoryParam(this.pagingInfo).subscribe((res: any) => {
+            this.isLoading = false;
+            if (res.status === 200) {
+                this.products = res.data;
+                if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
+            } else alert(res.message);
+        });
     }
 
     onShowOrderFormDialogChange(bool: boolean) {
