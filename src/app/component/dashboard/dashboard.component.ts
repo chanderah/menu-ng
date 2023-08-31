@@ -118,6 +118,8 @@ export class DashboardComponent implements OnInit {
     }
 
     getProducts(e?: LazyLoadEvent) {
+        const bla = 'asdas dasdasdsa';
+        console.log(bla.slice(1));
         this.isLoading = true;
         this.pagingInfo = {
             filter: e?.filters?.global?.value || '',
@@ -126,7 +128,6 @@ export class DashboardComponent implements OnInit {
             sortField: e?.sortField || 'NAME',
             sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
         };
-
         if (this.param === 'root') return this.getActiveProducts();
         else return this.getActiveProductsByCategoryParam();
     }
