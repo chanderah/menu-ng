@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Product } from './../../../interface/product';
 import { CartService } from './../../../service/cart.service';
+import { SharedService } from './../../../service/shared.service';
 
 @Component({
     selector: 'app-order-dialog',
@@ -17,7 +18,8 @@ export class OrderDialogComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private cartService: CartService
+        private cartService: CartService,
+        private sharedService: SharedService
     ) {
         this.orderForm = this.formBuilder.group({
             // categoryId: [{ value: null, disabled: true }],
@@ -30,23 +32,17 @@ export class OrderDialogComponent implements OnInit {
     ngOnInit(): void {
         console.log(this.selectedProduct);
     }
-
-    // ngOnChanges(changes: SimpleChanges) {
-    //     for (const change in changes) {
-    //         const prop = changes[change];
-    //         if (!prop.firstChange) {
-    //             console.log(prop);
-    //         }
-    //     }
-    // }
-
     hideDialog() {
         this.onChange.emit((this.showDialog = false));
     }
 
     insertToCart(productForm: any) {
-        this.cartService.addToCart(productForm);
-        this.hideDialog();
+        this.sharedService.showConfirm().then((res) => {
+            if (res) {
+                this.cartService.addToCart(productForm);
+                this.hideDialog();
+            }
+        });
     }
 
     resetForm() {

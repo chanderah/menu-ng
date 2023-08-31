@@ -75,7 +75,7 @@
                         <!-- <th pSortableColumn="name" pFrozenColumn> Name <p-sortIcon field="name"></p-sortIcon> </th> -->
                         <th pSortableColumn="name"> Name <p-sortIcon field="name"></p-sortIcon> </th>
                         <th>Image</th>
-                        <th>Category</th>
+                        <th pSortableColumn="category_id">Category <p-sortIcon field="category_id"></p-sortIcon></th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="featured">Featured <p-sortIcon field="status"></p-sortIcon></th>
                         <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
@@ -132,6 +132,7 @@
 <!-- PRODUCT DIALOG -->
 <div [formGroup]="productForm">
     <p-dialog
+        [maximizable]="true"
         [header]="selectedProduct ? 'Edit Product' : 'Add Product'"
         [(visible)]="showProductDialog"
         (onHide)="resetProductDialog()"
@@ -286,6 +287,7 @@
 
     <!-- OPTION DIALOG -->
     <p-dialog
+        [maximizable]="true"
         header="Add Options"
         [(visible)]="showProductOptionsDialog"
         (onHide)="onHideProductOptionsDialog()"
@@ -407,6 +409,7 @@
 
 <!-- CATEGORY DIALOG -->
 <p-dialog
+    [maximizable]="true"
     [header]="selectedCategory ? 'Edit Category' : 'Add Category'"
     [(visible)]="showCategoryDialog"
     (onHide)="this.categoryForm.reset()"

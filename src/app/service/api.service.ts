@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
-import { jsonParse } from 'src/app/lib/object';
+import CommonUtil from '../lib/shared.util';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
 import { PagingInfo } from './../interface/paging_info';
@@ -23,7 +23,7 @@ import { User } from './../interface/user';
 @Injectable({
     providedIn: 'root'
 })
-export class ApiService implements HttpInterceptor {
+export class ApiService extends CommonUtil implements HttpInterceptor {
     private isDevelopment: boolean = environment.production === false;
     private apiUrl: string = environment.apiUrl;
 
@@ -31,7 +31,7 @@ export class ApiService implements HttpInterceptor {
         if (req.url.includes('demo') || req.url.includes('.json')) return next.handle(req);
         if (this.isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
-        const user = jsonParse(localStorage.getItem('user'));
+        const user = this.jsonParse(localStorage.getItem('user'));
         req = req.clone({
             url: this.apiUrl + req.url,
             headers: new HttpHeaders({
@@ -65,7 +65,9 @@ export class ApiService implements HttpInterceptor {
     constructor(
         private httpClient: HttpClient,
         private toastr: ToastrService
-    ) {}
+    ) {
+        super();
+    }
 
     encrypt(data: any): string {
         return data;

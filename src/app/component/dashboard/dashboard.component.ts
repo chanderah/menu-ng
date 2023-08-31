@@ -6,7 +6,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { debounceTime, Subscription } from 'rxjs';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
-import { isEmpty } from 'src/app/lib/object';
+import CommonUtil from 'src/app/lib/shared.util';
 import SwiperCore, {
     A11y,
     Autoplay,
@@ -20,11 +20,11 @@ import SwiperCore, {
     Zoom
 } from 'swiper';
 import { ProductService } from '../../service/productservice';
+import { SharedService } from '../../service/shared.service';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
 import { environment } from './../../../environments/environment';
 import { PagingInfo } from './../../interface/paging_info';
 import { ApiService } from './../../service/api.service';
-import { SharedService } from './../../service/shared.service';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
 
@@ -32,7 +32,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
     templateUrl: './dashboard.component.html',
     styleUrls: ['../../../assets/user.styles.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent extends CommonUtil implements OnInit {
     env = environment;
     init: boolean = true;
     subscription!: Subscription;
@@ -64,6 +64,7 @@ export class DashboardComponent implements OnInit {
         private formBuilder: FormBuilder,
         private apiService: ApiService
     ) {
+        super();
         this.route.queryParams.subscribe(async ({ menu }) => {
             this.param = menu || 'root';
 
@@ -71,20 +72,12 @@ export class DashboardComponent implements OnInit {
             else this.featuredProducts.length = 0;
 
             if (!this.init) {
-                this.filter.reset();
+                // this.filter.reset();
                 this.getProducts();
             }
         });
         //prettier-ignore
-        this.filter.get('value').valueChanges.pipe(debounceTime(500)).subscribe((v: string) => {
-            this.getProducts({
-                filters: {
-                    global: {
-                        value: isEmpty(v) ? "" : v.trim()
-                    }
-                }
-            });
-        })
+        this.filter.get('value').valueChanges.pipe(debounceTime(500)).subscribe(() => this.getProducts())
     }
 
     ngOnInit() {
@@ -118,11 +111,9 @@ export class DashboardComponent implements OnInit {
     }
 
     getProducts(e?: LazyLoadEvent) {
-        const bla = 'asdas dasdasdsa';
-        console.log(bla.slice(1));
         this.isLoading = true;
         this.pagingInfo = {
-            filter: e?.filters?.global?.value || '',
+            filter: this.filter.get('value').value,
             limit: e?.rows || 20,
             offset: e?.first || 0,
             sortField: e?.sortField || 'NAME',

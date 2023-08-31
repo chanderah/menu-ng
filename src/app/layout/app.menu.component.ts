@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Menu } from '../interface/menu';
+import { SharedService } from '../service/shared.service';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
-import { SharedService } from './../service/shared.service';
 import { AppMainComponent } from './app.main.component';
 
 @Component({

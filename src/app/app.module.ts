@@ -4,7 +4,6 @@ import { Injectable, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, HammerGestureConfig, HammerModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HotToastModule } from '@ngneat/hot-toast';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { CustomCurrencyPipe } from './component/pipe/currency.pipe';
@@ -100,7 +99,7 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { EmptyComponent } from './component/demo/empty/empty.component';
 
 import * as Hammer from 'hammerjs';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SwiperModule } from 'swiper/angular';
 import { LoginComponent } from './component/auth/login/login.component';
@@ -314,12 +313,12 @@ export class MyHammerConfig extends HammerGestureConfig {
         DialogModule,
         SwiperModule,
         ToastrModule.forRoot(),
-        HotToastModule.forRoot({
-            dismissible: true,
-            duration: 3000,
-            position: 'bottom-left',
-            autoClose: true
-        }),
+        // HotToastModule.forRoot({
+        //     dismissible: true,
+        //     duration: 3000,
+        //     position: 'bottom-left',
+        //     autoClose: true
+        // }),
         ReactiveFormsModule,
         HammerModule
     ],
@@ -345,6 +344,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         MenuService,
         ConfigService,
 
+        ConfirmationService,
         MessageService,
         DialogService,
         CartService,

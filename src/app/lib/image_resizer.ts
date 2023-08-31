@@ -1,5 +1,5 @@
 import Resizer from 'react-image-file-resizer';
-import { isEmpty } from 'src/app/lib/object';
+import { isEmpty } from 'src/app/lib/shared.util';
 
 export const resizeImg = (file: File, width?: number, height?: number) => {
     if (isEmpty(width)) width = 600;

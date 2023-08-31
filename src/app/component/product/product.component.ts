@@ -4,13 +4,12 @@ import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'pr
 import { FileUpload } from 'primeng/fileupload';
 import { Product, ProductOptions } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
-import { isEmpty } from 'src/app/lib/object';
+import CommonUtil from 'src/app/lib/shared.util';
 import { environment } from './../../../environments/environment';
 import { Category } from './../../interface/category';
 import { PagingInfo } from './../../interface/paging_info';
 import { UploadEvent } from './../../interface/upload_event';
 import { resizeImg } from './../../lib/image_resizer';
-import { jsonParse, sortArrayByLabelProperty } from './../../lib/object';
 import { ApiService } from './../../service/api.service';
 
 @Component({
@@ -38,7 +37,7 @@ import { ApiService } from './../../service/api.service';
     ],
     providers: [MessageService, ConfirmationService]
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent extends CommonUtil implements OnInit {
     isLoading: boolean = true;
     dialogBreakpoints = { '768px': '90vw' };
 
@@ -72,6 +71,7 @@ export class ProductComponent implements OnInit {
         private formBuilder: FormBuilder,
         private apiService: ApiService
     ) {
+        super();
         this.productForm = this.formBuilder.group({
             id: [null, []],
             image: [null, []],
@@ -93,7 +93,7 @@ export class ProductComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.user = jsonParse(localStorage.getItem('user'));
+        this.user = this.jsonParse(localStorage.getItem('user'));
         // this.getProducts();
         this.getCategories();
     }
@@ -126,7 +126,7 @@ export class ProductComponent implements OnInit {
         this.apiService.getCategories().subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
-                this.categories = res.data.sort(sortArrayByLabelProperty);
+                this.categories = res.data.sort(this.sortArrayByLabelProperty);
             } else {
                 alert(res.message);
             }
@@ -140,16 +140,9 @@ export class ProductComponent implements OnInit {
 
     getPreviewImg() {
         const img: string = this.productForm.get('image').value;
-        if (isEmpty(img)) return `${this.env.imagePath}/default_product_image.png`;
+        if (this.isEmpty(img)) return `${this.env.imagePath}/default_product_image.png`;
         if (img.includes('assets')) return `${this.env.publicPath}/${img}`;
         return img;
-    }
-
-    getOptionsName(productOptions: ProductOptions[]) {
-        // if (isEmpty(productOptions)) return '';
-        // const optionsName: string[] = [];
-        // productOptions.forEach((d) => optionsName.push(d.name));
-        // return optionsName.join(', ');
     }
 
     options(): FormArray {
@@ -190,7 +183,7 @@ export class ProductComponent implements OnInit {
     }
 
     openProductOptionsDialog() {
-        if (isEmpty(this.selectedProductOptions)) this.selectedProductOptions = this.selectedProduct?.options;
+        if (this.isEmpty(this.selectedProductOptions)) this.selectedProductOptions = this.selectedProduct?.options;
         if (this.options().length === 0) this.addOption();
         this.saveProductOptions = false;
         this.showProductOptionsDialog = true;
@@ -242,7 +235,7 @@ export class ProductComponent implements OnInit {
 
     async submitProduct() {
         let product: Product = this.productForm.value;
-        if (isEmpty(this.selectedProduct)) {
+        if (this.isEmpty(this.selectedProduct)) {
             this.apiService.createProduct(product).subscribe((res: any) => {
                 if (res.status === 200) {
                     console.log(res.message);
@@ -261,7 +254,7 @@ export class ProductComponent implements OnInit {
     }
 
     async submitCategory() {
-        if (isEmpty(this.selectedCategory)) {
+        if (this.isEmpty(this.selectedCategory)) {
             this.apiService.createCategory(this.categoryForm.value).subscribe((res: any) => {
                 if (res.status === 200) {
                     console.log('success create category');
@@ -304,7 +297,7 @@ export class ProductComponent implements OnInit {
     }
 
     onEditProduct() {
-        if (isEmpty(this.selectedProduct)) return;
+        if (this.isEmpty(this.selectedProduct)) return;
         this.isLoading = true;
         this.showProductDialog = true;
         this.apiService.findProductById(this.selectedProduct).subscribe((res: any) => {
@@ -325,7 +318,7 @@ export class ProductComponent implements OnInit {
     }
 
     onDeleteProduct() {
-        if (isEmpty(this.selectedProduct)) return;
+        if (this.isEmpty(this.selectedProduct)) return;
         this.isLoading = true;
         this.apiService.deleteProduct(this.selectedProduct).subscribe((res: any) => {
             if (res.status === 200) {
@@ -337,7 +330,7 @@ export class ProductComponent implements OnInit {
     }
 
     onDeleteCategory() {
-        if (isEmpty(this.selectedCategory)) return;
+        if (this.isEmpty(this.selectedCategory)) return;
         this.isLoading = true;
         this.apiService.deleteCategory(this.categoryForm.value).subscribe((res: any) => {
             if (res.status === 200) {
@@ -356,8 +349,8 @@ export class ProductComponent implements OnInit {
     }
 
     onEditCategory() {
-        if (isEmpty(this.selectedCategory)) return;
-        this.apiService.findCategoryById(jsonParse(this.selectedCategory)).subscribe((res: any) => {
+        if (this.isEmpty(this.selectedCategory)) return;
+        this.apiService.findCategoryById(this.jsonParse(this.selectedCategory)).subscribe((res: any) => {
             if (res.status === 200) {
                 this.categoryForm.patchValue(res.data);
                 this.showCategoryDialog = true;
@@ -369,7 +362,7 @@ export class ProductComponent implements OnInit {
     }
 
     resetNode() {
-        const nodes: TreeNode[] = jsonParse(this.categories);
+        const nodes: TreeNode[] = this.jsonParse(this.categories);
         nodes.forEach((node) => {
             if (node.partialSelected) node.partialSelected = false;
             if (node.children) {
@@ -385,9 +378,5 @@ export class ProductComponent implements OnInit {
 
     formatCurrency(value: any) {
         return value.toLocaleString('en-US', { style: 'currency', currency: 'IDR' });
-    }
-
-    isEmpty(data: any) {
-        return isEmpty(data);
     }
 }
