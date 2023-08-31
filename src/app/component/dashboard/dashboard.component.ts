@@ -6,6 +6,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { debounceTime, Subscription } from 'rxjs';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
+import { isEmpty } from 'src/app/lib/object';
 import SwiperCore, {
     A11y,
     Autoplay,
@@ -69,14 +70,17 @@ export class DashboardComponent implements OnInit {
             if (this.param === 'root') this.initSwiper();
             else this.featuredProducts.length = 0;
 
-            if (!this.init) this.getProducts();
+            if (!this.init) {
+                this.filter.reset();
+                this.getProducts();
+            }
         });
         //prettier-ignore
         this.filter.get('value').valueChanges.pipe(debounceTime(500)).subscribe((v: string) => {
             this.getProducts({
                 filters: {
                     global: {
-                        value: v.trim()
+                        value: isEmpty(v) ? "" : v.trim()
                     }
                 }
             });
