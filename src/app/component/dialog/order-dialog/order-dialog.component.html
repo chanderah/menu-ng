@@ -16,21 +16,22 @@
             </div>
         </ng-template>
         <ng-template pTemplate="content">
-            <div class="grid px-4">
+            <div class="grid formgrid px-4">
                 <div class="col-12">
-                    <p-scrollPanel [style]="{ width: '100%', height: '60vh' }">
+                    <p-scrollPanel [style]="{ width: '100%', height: 'auto', maxHeight: '60vh' }">
                         <h5 class="category-title">{{ selectedProduct.name }}</h5>
                         <p class="my-1">{{ selectedProduct.description }}</p>
                     </p-scrollPanel>
                 </div>
 
-                <div class="col-2">
+                <div class="flex flex-col col-12 gap-3" style="padding-top: 12px">
                     <button pButton icon="pi pi-whatsapp" class="p-button-outlined p-button-rounded"> </button>
-                </div>
-                <div class="col flex align-items-center justify-content-between bg-primary" style="border-radius: 50px">
-                    <h6>+ Add to Cart</h6>
-                    <h6>Rp50.000</h6>
-                    <!-- <button pButton label="Add to Cart" class="p-button-rounded" style="width: fit-content"> </button> -->
+                    <div
+                        class="col flex align-items-center justify-content-between bg-primary"
+                        style="border-radius: 50px">
+                        <button pButton label="+ Add to Cart" class="p-button-rounded"> </button>
+                        <button pButton label="Rp50.000" class="p-button-rounded"> </button>
+                    </div>
                 </div>
             </div>
 
@@ -51,16 +52,5 @@
                 </div>
             </div> -->
         </ng-template>
-
-        <!-- <ng-template pTemplate="footer">
-            <div class="flex flex-column justify-content-center align-items-center gap-2 mb-3">
-                <button
-                    pButton
-                    icon="pi pi-whatsapp"
-                    class="p-button-outlined p-button-rounded"
-                    style="font-size: 10rem">
-                </button>
-            </div> -->
-        <!-- </ng-template> -->
     </p-sidebar>
 </div>
