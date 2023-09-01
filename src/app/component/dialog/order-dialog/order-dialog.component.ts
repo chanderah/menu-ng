@@ -32,6 +32,7 @@ export class OrderDialogComponent implements OnInit {
     ngOnInit(): void {
         console.log(this.selectedProduct);
     }
+
     hideDialog() {
         this.onChange.emit((this.showDialog = false));
     }

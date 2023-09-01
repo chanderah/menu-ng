@@ -1,7 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Product } from 'src/app/interface/product';
-import { CartService } from 'src/app/service/cart.service';
 import { environment } from './../../../../environments/environment';
 
 @Component({
@@ -9,7 +8,6 @@ import { environment } from './../../../../environments/environment';
     styleUrls: ['../../../../assets/user.styles.scss']
 })
 export class ProductDialogComponent implements OnInit {
-    @ViewChild('imageDialog') imageDialog: ElementRef;
     env = environment;
 
     isLoading: boolean = true;
@@ -17,20 +15,14 @@ export class ProductDialogComponent implements OnInit {
 
     constructor(
         public ref: DynamicDialogRef,
-        public config: DynamicDialogConfig,
-        private cartService: CartService
-    ) {
-        const { data } = config;
-        this.product = data;
-        console.log(this.product);
+        public config: DynamicDialogConfig
+    ) {}
+
+    ngOnInit() {
+        this.product = this.config.data;
     }
 
-    ngOnInit(): void {
-        console.log('i called');
-    }
-
-    addToCart(data: any) {
-        // const res = this.cartService.addToCart(data);
+    addToCart(data: Product) {
         this.ref.close(data);
     }
 }

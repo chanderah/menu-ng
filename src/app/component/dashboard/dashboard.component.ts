@@ -149,28 +149,6 @@ export class DashboardComponent extends CommonUtil implements OnInit {
     }
 
     onAddToCart(data: Product) {
-        //dummy
-        data.options = [
-            {
-                name: 'Sugar',
-                multiple: true,
-                required: true,
-                values: [
-                    {
-                        value: 'pake ini',
-                        price: 200000
-                    },
-                    {
-                        value: 'pake itu',
-                        price: 300000
-                    },
-                    {
-                        value: 'pake ini pake itu',
-                        price: 500000
-                    }
-                ]
-            }
-        ];
         this.selectedProduct = data;
         this.showOrderFormDialog = true;
     }
@@ -203,7 +181,8 @@ export class DashboardComponent extends CommonUtil implements OnInit {
                 header: data.name,
                 data: data,
                 closeOnEscape: true,
-                dismissableMask: true
+                dismissableMask: true,
+                height: 'auto'
                 // maximizable: true
             })
             .onClose.subscribe((res) => {
