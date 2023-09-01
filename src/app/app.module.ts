@@ -320,7 +320,8 @@ export class MyHammerConfig extends HammerGestureConfig {
         //     autoClose: true
         // }),
         ReactiveFormsModule,
-        HammerModule
+        HammerModule,
+        ScrollPanelModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
