@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment.prod';
 export const isEmpty = (obj: any) => {
     if (!obj || obj == null || obj == '' || obj?.length === 0 || JSON.stringify(obj) === '{}') return true;
     else return false;
@@ -17,6 +18,7 @@ export const capitalizeFirstLetter = (data: string) => {
 };
 
 export default class SharedUtil {
+    env = environment;
     constructor() {}
 
     isEmpty = (obj: any) => {
