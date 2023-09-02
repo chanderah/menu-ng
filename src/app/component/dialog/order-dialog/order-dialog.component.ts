@@ -44,7 +44,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     onClickWa() {
         let url =
             'https://api.whatsapp.com/send?phone=6287798992777&text=Halo,%20saya%20ingin%20menanyakan%20tentang%20';
-        window.open(url + this.selectedProduct.name, '_blank');
+        window.open(url + this.selectedProduct.name + '.', '_blank');
     }
 
     insertToCart() {
