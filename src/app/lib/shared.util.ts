@@ -12,7 +12,11 @@ export const jsonStringify = (obj: any) => {
     return JSON.stringify(obj);
 };
 
-export default class CommonUtil {
+export const capitalizeFirstLetter = (data: string) => {
+    return data.charAt(0).toUpperCase() + data.slice(1);
+};
+
+export default class SharedUtil {
     constructor() {}
 
     isEmpty = (obj: any) => {

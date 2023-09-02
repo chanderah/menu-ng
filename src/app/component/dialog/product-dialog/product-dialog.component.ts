@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Product } from 'src/app/interface/product';
+import SharedUtil from 'src/app/lib/shared.util';
 import { environment } from './../../../../environments/environment';
 
 @Component({
     templateUrl: './product-dialog.component.html',
     styleUrls: ['../../../../assets/user.styles.scss']
 })
-export class ProductDialogComponent implements OnInit {
+export class ProductDialogComponent extends SharedUtil implements OnInit {
     env = environment;
 
     isLoading: boolean = true;
@@ -16,7 +17,9 @@ export class ProductDialogComponent implements OnInit {
     constructor(
         public ref: DynamicDialogRef,
         public config: DynamicDialogConfig
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.product = this.config.data;

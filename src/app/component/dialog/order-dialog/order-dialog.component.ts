@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import SharedUtil from 'src/app/lib/shared.util';
 import { Product } from './../../../interface/product';
 import { CartService } from './../../../service/cart.service';
 import { SharedService } from './../../../service/shared.service';
@@ -9,7 +11,7 @@ import { SharedService } from './../../../service/shared.service';
     templateUrl: './order-dialog.component.html',
     styleUrls: ['./order-dialog.component.scss']
 })
-export class OrderDialogComponent implements OnInit {
+export class OrderDialogComponent extends SharedUtil implements OnInit {
     @Output() onChange = new EventEmitter<boolean>();
     @Input() selectedProduct: Product;
     @Input() showDialog: boolean;
@@ -17,10 +19,12 @@ export class OrderDialogComponent implements OnInit {
     orderForm: FormGroup;
 
     constructor(
+        private router: Router,
         private formBuilder: FormBuilder,
         private cartService: CartService,
         private sharedService: SharedService
     ) {
+        super();
         this.orderForm = this.formBuilder.group({
             // categoryId: [{ value: null, disabled: true }],
             tableId: [{ value: null, disabled: true }, [Validators.required]],
@@ -37,13 +41,19 @@ export class OrderDialogComponent implements OnInit {
         this.onChange.emit((this.showDialog = false));
     }
 
-    insertToCart(productForm: any) {
-        this.sharedService.showConfirm().then((res) => {
-            if (res) {
-                this.cartService.addToCart(productForm);
-                this.hideDialog();
-            }
-        });
+    onClickWa() {
+        let url =
+            'https://api.whatsapp.com/send?phone=6287798992777&text=Halo,%20saya%20ingin%20menanyakan%20tentang%20';
+        window.open(url + this.selectedProduct.name, '_blank');
+    }
+
+    insertToCart() {
+        // this.sharedService.showConfirm().then((res) => {
+        //     if (res) {
+        this.cartService.addToCart(this.selectedProduct);
+        this.hideDialog();
+        // }
+        // });
     }
 
     resetForm() {

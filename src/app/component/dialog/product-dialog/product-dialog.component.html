@@ -23,7 +23,7 @@
         height="300px" />
     <div>
         <h6 class="my-4 text-primary text-lg font-semibold">{{ product.price | custom }}</h6>
-        <p class="my-1" style="width: 300px; text-align: justify">{{ product.description }}</p>
+        <p class="my-1" style="width: 300px; text-align: justify">{{ capitalizeFirstLetter(product.description) }}</p>
         <div class="mt-4 mb-2">
             <button
                 pButton
