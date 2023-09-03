@@ -13,6 +13,13 @@ export const jsonStringify = (obj: any) => {
     return JSON.stringify(obj);
 };
 
+export const capitalize = (data: string) => {
+    data.split(' ').forEach((c: string) => {
+        c = c.charAt(0).toUpperCase() + (c.length === 1 ? '' : c.slice(1));
+    });
+    return data;
+};
+
 export const capitalizeFirstLetter = (data: string) => {
     return data.charAt(0).toUpperCase() + data.slice(1);
 };

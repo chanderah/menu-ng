@@ -12,6 +12,11 @@ export interface Product {
     userCreated?: number;
 
     options?: ProductOptions[];
+
+    //for order
+    notes?: string;
+    qty?: string;
+    totalPrice?: number;
 }
 
 export interface ProductOptions {
@@ -25,4 +30,5 @@ export interface ProductOptions {
 export interface ProductOptionValues {
     value: string;
     price: number;
+    selected?: boolean;
 }

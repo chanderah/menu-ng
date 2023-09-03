@@ -140,6 +140,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     isMobile() {
+        console.log('yes');
         return window.innerWidth < 1024;
     }
 

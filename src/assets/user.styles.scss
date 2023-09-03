@@ -61,6 +61,10 @@
 
 // }
 
+.row-reversed {
+    flex-direction: row-reverse !important;
+}
+
 .no-pt {
     padding-top: 0px !important;
 }
