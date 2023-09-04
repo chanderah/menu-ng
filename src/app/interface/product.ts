@@ -15,7 +15,7 @@ export interface Product {
 
     //for order
     notes?: string;
-    qty?: string;
+    qty?: number;
 }
 
 export interface ProductOptions {
