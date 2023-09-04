@@ -91,7 +91,7 @@ import { AppMainComponent } from './layout/app.main.component';
                         },
                     ],
                 },
-
+                { path: 'portfolio', redirectTo: 'public/assets/portfolio.pdf'},
                 { path: 'login', component: LoginComponent },
                 { path: 'register', component: RegisterComponent },
 

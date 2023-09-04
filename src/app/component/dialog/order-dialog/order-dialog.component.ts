@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
-import { Product } from './../../../interface/product';
+import { Product, ProductOptions, ProductOptionValues } from './../../../interface/product';
 import { capitalize } from './../../../lib/shared.util';
 import { CartService } from './../../../service/cart.service';
 import { SharedService } from './../../../service/shared.service';
@@ -18,9 +18,9 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     @Input() selectedProduct: Product;
     @Input() showDialog: boolean;
 
-    count: number = 1;
-
     orderForm: FormGroup;
+    productPrice: number = 0;
+    addonPrice: number = 0;
 
     constructor(
         public app: AppMainComponent,
@@ -50,6 +50,25 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
             notes: ['', []],
             qty: [1, []]
         });
+
+        // this.orderForm.valueChanges.subscribe((data: Product) => {
+        //     // const productPrice = this.orderForm.get("price").value
+        //     console.log(data);
+        // });
+
+        this.orderForm.get('qty').valueChanges.subscribe((qty: number) => {
+            this.productPrice = this.orderForm.get('price').value * qty;
+        });
+
+        this.orderForm.get('options').valueChanges.subscribe((options: ProductOptions[]) => {
+            let price = 0;
+            options.forEach((option) => {
+                option.values.forEach((data) => {
+                    price += data.selected ? data.price : 0;
+                });
+            });
+            this.addonPrice = price;
+        });
     }
 
     ngOnInit(): void {
@@ -59,6 +78,11 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         }
         this.orderForm.patchValue(this.selectedProduct);
         console.log(this.orderForm.value);
+    }
+
+    getOptionValuePrice(option: ProductOptionValues) {
+        if (this.isEmpty(option.price)) return 'Free';
+        // else
     }
 
     options(): FormArray {

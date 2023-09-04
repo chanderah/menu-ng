@@ -6,8 +6,6 @@
                 <ng-template *ngFor="let product of featuredProducts" swiperSlide>
                     <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
                         <div class="m-2 mb-3" style="cursor: pointer">
-                            <!-- [src]=" product.image ? env.publicPath + product.image : env.imagePath +
-                            '/default_product.png' " -->
                             <img
                                 [alt]="product.name"
                                 [src]="
