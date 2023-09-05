@@ -98,6 +98,7 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { EmptyComponent } from './component/demo/empty/empty.component';
 
+import { CustomCheckboxModule } from 'angular-custom-checkbox';
 import * as Hammer from 'hammerjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -321,7 +322,8 @@ export class MyHammerConfig extends HammerGestureConfig {
         // }),
         ReactiveFormsModule,
         HammerModule,
-        ScrollPanelModule
+        ScrollPanelModule,
+        CustomCheckboxModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },

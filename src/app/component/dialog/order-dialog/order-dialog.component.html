@@ -41,15 +41,17 @@
                                     </p>
                                 </div>
 
-                                <div formArrayName="values">
+                                <div formArrayName="values" class="cursor-pointer">
                                     <div
                                         *ngFor="let optionValue of optionValues(i).controls; index as j"
                                         [formGroupName]="j"
                                         class="flex flex-col align-items-center justify-content-between mt-0">
-                                        <!-- (click)="onClickOptionValuesRow(i, j)" -->
-                                        <span class="text-sm">{{ optionValue.value.value }}</span>
+                                        <!-- <span class="text-sm">{{ optionValue.value.value }}</span> -->
+                                        <label [for]="'selected' + i + j" class="text-sm w-full">
+                                            {{ optionValue.value.value }}
+                                        </label>
                                         <div class="flex align-items-center gap-2">
-                                            <label class="text-xs font-semibold">
+                                            <label [for]="'selected' + i + j" class="text-xs font-semibold">
                                                 {{
                                                     optionValue.value.price === 0
                                                         ? 'Free'
@@ -57,7 +59,7 @@
                                                 }}
                                             </label>
                                             <p-checkbox
-                                                id="selected"
+                                                [inputId]="'selected' + i + j"
                                                 binary="true"
                                                 formControlName="selected"
                                                 class="text-sm mr-2"></p-checkbox>
