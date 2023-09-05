@@ -19,14 +19,9 @@
         <ng-template pTemplate="content" [formGroup]="orderForm">
             <div class="grid formgrid px-4">
                 <div class="col-12" style="display: inline-block">
-                    <p-scrollPanel [style]="{ width: '100%', height: 'auto', maxHeight: '60vh' }">
-                        <h5 class="category-title">{{ orderForm.get('name').value }}</h5>
-
-                        <p class="my-1" style="text-align: justify">
-                            <!-- {{ capitalizeFirstLetter(orderForm.get('description').value) }} -->
-                        </p>
-                        <p-divider></p-divider>
-
+                    <h5 class="category-title mb-2">{{ orderForm.get('name').value }}</h5>
+                    <!-- <p-divider></p-divider> -->
+                    <p-scrollPanel [style]="{ width: '100%', maxHeight: '60vh' }">
                         <div formArrayName="options">
                             <div
                                 *ngFor="let option of options().controls; index as i"
@@ -69,7 +64,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 flex align-items-center justify-content-between py-2">
+                        <div class="col-12 flex align-items-center justify-content-between py-2" style="height: auto">
                             <label class="font-semibold">Quantity</label>
                             <div class="flex flex-col align-items-center gap-3">
                                 <button
@@ -92,7 +87,7 @@
                     </p-scrollPanel>
                 </div>
 
-                <div class="flex flex-col col-12 gap-3 pb-3">
+                <div class="flex flex-col col-12 gap-3 py-3" style="height: auto; z-index: 10000">
                     <button
                         pButton
                         icon="pi pi-whatsapp"
