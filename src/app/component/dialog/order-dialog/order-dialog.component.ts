@@ -76,6 +76,16 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         this.orderForm.get('qty').setValue(1);
     }
 
+    onClickOptionValuesRow(optionIndex: number, optionValuesIndex: number) {
+        // this.optionValues(optionIndex).get('selected').setValue(!this.optionValues(optionIndex).get('selected').value);
+        this.optionValues(optionIndex)
+            .at(optionValuesIndex)
+            .get('selected')
+            .setValue(!this.optionValues(optionIndex).at(optionValuesIndex).get('selected').value);
+        // console.log(optionIndex, optionValuesIndex);
+        // this.optionValues(optionIndex)
+    }
+
     getOptionValuePrice(option: ProductOptionValues) {
         if (this.isEmpty(option.price)) return 'Free';
         // else

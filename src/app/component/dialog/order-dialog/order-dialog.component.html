@@ -46,10 +46,9 @@
                                         *ngFor="let optionValue of optionValues(i).controls; index as j"
                                         [formGroupName]="j"
                                         class="flex flex-col align-items-center justify-content-between mt-0">
+                                        <!-- (click)="onClickOptionValuesRow(i, j)" -->
                                         <span class="text-sm">{{ optionValue.value.value }}</span>
-                                        <!-- <div class="field-checkbox mb-0"> -->
                                         <div class="flex align-items-center gap-2">
-                                            <!-- <label class="text-sm">{{ getOptionValuePrice(optionValue.value) }}</label> -->
                                             <label class="text-xs font-semibold">
                                                 {{
                                                     optionValue.value.price === 0
@@ -63,7 +62,6 @@
                                                 formControlName="selected"
                                                 class="text-sm mr-2"></p-checkbox>
                                         </div>
-                                        <!-- </div> -->
                                     </div>
                                 </div>
                             </div>
