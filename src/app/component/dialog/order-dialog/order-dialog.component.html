@@ -19,7 +19,7 @@
         <ng-template pTemplate="content" [formGroup]="orderForm">
             <div class="grid formgrid px-4">
                 <div class="col-12" style="display: inline-block">
-                    <h5 class="category-title mb-2">{{ orderForm.get('name').value }}</h5>
+                    <h5 class="category-title mb-4">{{ orderForm.get('name').value }}</h5>
                     <!-- <p-divider></p-divider> -->
                     <p-scrollPanel [style]="{ width: '100%', maxHeight: '60vh' }">
                         <div formArrayName="options">
@@ -40,7 +40,7 @@
                                     <div
                                         *ngFor="let optionValue of optionValues(i).controls; index as j"
                                         [formGroupName]="j"
-                                        class="flex flex-col align-items-center justify-content-between mt-0">
+                                        class="flex flex-col align-items-center justify-content-between py-2">
                                         <!-- <span class="text-sm">{{ optionValue.value.value }}</span> -->
                                         <label [for]="'selected' + i + j" class="text-sm w-full">
                                             {{ optionValue.value.value }}
@@ -63,30 +63,29 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-12 flex align-items-center justify-content-between py-2" style="height: auto">
-                            <label class="font-semibold">Quantity</label>
-                            <div class="flex flex-col align-items-center gap-3">
-                                <button
-                                    pButton
-                                    icon="pi pi-minus"
-                                    class="p-button-outlined p-button-rounded"
-                                    [disabled]="orderForm.get('qty').value === 1"
-                                    (click)="decrement()">
-                                </button>
-
-                                <label class="font-bold">{{ orderForm.get('qty').value }}</label>
-                                <button
-                                    pButton
-                                    icon="pi pi-plus"
-                                    class="p-button-outlined p-button-rounded p-button-qty"
-                                    (click)="increment()">
-                                </button>
-                            </div>
-                        </div>
                     </p-scrollPanel>
                 </div>
 
+                <div class="col-12 flex align-items-center justify-content-between py-2" style="height: auto">
+                    <label class="font-semibold">Quantity</label>
+                    <div class="flex flex-col align-items-center gap-3">
+                        <button
+                            pButton
+                            icon="pi pi-minus"
+                            class="p-button-outlined p-button-rounded"
+                            [disabled]="orderForm.get('qty').value === 1"
+                            (click)="decrement()">
+                        </button>
+
+                        <label class="font-bold">{{ orderForm.get('qty').value }}</label>
+                        <button
+                            pButton
+                            icon="pi pi-plus"
+                            class="p-button-outlined p-button-rounded p-button-qty"
+                            (click)="increment()">
+                        </button>
+                    </div>
+                </div>
                 <div class="flex flex-col col-12 gap-3 py-3" style="height: auto; z-index: 10000">
                     <button
                         pButton

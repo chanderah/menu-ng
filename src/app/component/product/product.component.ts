@@ -80,8 +80,8 @@ export class ProductComponent extends CommonUtil implements OnInit {
             categoryId: [null, []],
             description: ['', []],
             price: [0, [Validators.required]],
-            featured: [false, [Validators.required]],
-            status: [true, [Validators.required]],
+            featured: [false],
+            status: [true],
             userCreated: ['', [Validators.required]],
             options: this.formBuilder.array([])
         });
@@ -153,8 +153,8 @@ export class ProductComponent extends CommonUtil implements OnInit {
         this.options().push(
             this.formBuilder.group({
                 name: ['', [Validators.required]],
-                multiple: [false, [Validators.required]],
-                required: [true, [Validators.required]],
+                multiple: [false],
+                required: [false],
                 values: this.formBuilder.array([])
             })
         );
