@@ -22,7 +22,6 @@ export class CartService extends CommonUtil {
         private apiService: ApiService
     ) {
         super();
-        this.cart = this.jsonParse(localStorage.getItem('cart'));
     }
 
     getCustomerInfo() {

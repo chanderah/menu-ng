@@ -5,12 +5,14 @@
         (onHide)="hideDialog()"
         position="bottom"
         styleClass="h-auto"
+        [modal]="true"
         [blockScroll]="true"
         [dismissible]="true"
         [showCloseIcon]="true"
         [closeOnEscape]="true"
         [style]="getSidebarStyle()"
         [baseZIndex]="1000">
+        <!-- [style]="getSidebarStyle()" -->
         <ng-template pTemplate="header">
             <div class="flex justify-content-center w-full">
                 <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
@@ -21,7 +23,7 @@
                 <div class="col-12" style="display: inline-block">
                     <h5 class="category-title mb-4">{{ orderForm.get('name').value }}</h5>
                     <!-- <p-divider></p-divider> -->
-                    <p-scrollPanel [style]="{ width: '100%', maxHeight: '60vh' }">
+                    <p-scrollPanel [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'scroll' }">
                         <div formArrayName="options">
                             <div
                                 *ngFor="let option of options().controls; index as i"
@@ -29,7 +31,7 @@
                                 class="card my-3">
                                 <!-- <p>{{ option.value.name }}</p> -->
 
-                                <div class="flex justify-content-between mb-3">
+                                <div class="flex justify-content-between pb-3">
                                     <span class="text-md font-semibold">{{ option.value.name }}</span>
                                     <p class="text-xs font-semibold" style="color: grey">
                                         {{ option.value.required === true ? '*required' : '*optional' }}
@@ -40,7 +42,7 @@
                                     <div
                                         *ngFor="let optionValue of optionValues(i).controls; index as j"
                                         [formGroupName]="j"
-                                        class="flex flex-col align-items-center justify-content-between py-2">
+                                        class="flex flex-col align-items-center justify-content-between py-1">
                                         <!-- <span class="text-sm">{{ optionValue.value.value }}</span> -->
                                         <label [for]="'selected' + i + j" class="text-sm w-full">
                                             {{ optionValue.value.value }}

@@ -149,7 +149,8 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     getSidebarStyle() {
         return {
             width: this.app.isDesktop() ? '50vw' : '100vw',
-            left: this.app.isDesktop() ? 'unset' : 0
+            left: this.app.isDesktop() ? 'unset' : 0,
+            overflow: 'scroll'
         };
     }
 
