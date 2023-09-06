@@ -78,7 +78,7 @@ export class ProductComponent extends CommonUtil implements OnInit {
             name: ['', [Validators.required]],
             code: ['', []],
             categoryId: [null, []],
-            description: ['', []],
+            description: ['', [Validators.maxLength(100)]],
             price: [0, [Validators.required]],
             featured: [false],
             status: [true],

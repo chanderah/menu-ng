@@ -31,7 +31,7 @@
                                 class="card my-3">
                                 <!-- <p>{{ option.value.name }}</p> -->
 
-                                <div class="flex justify-content-between pb-3">
+                                <div class="flex justify-content-between pb-2">
                                     <span class="text-md font-semibold">{{ option.value.name }}</span>
                                     <p class="text-xs font-semibold" style="color: grey">
                                         {{ option.value.required === true ? '*required' : '*optional' }}
@@ -42,7 +42,8 @@
                                     <div
                                         *ngFor="let optionValue of optionValues(i).controls; index as j"
                                         [formGroupName]="j"
-                                        class="flex flex-col align-items-center justify-content-between py-1">
+                                        class="flex flex-col align-items-center justify-content-between"
+                                        style="padding-top: 10px">
                                         <!-- <span class="text-sm">{{ optionValue.value.value }}</span> -->
                                         <label [for]="'selected' + i + j" class="text-sm w-full">
                                             {{ optionValue.value.value }}

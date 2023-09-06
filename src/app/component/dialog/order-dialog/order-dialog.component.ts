@@ -3,9 +3,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
+import { OrderService } from '../../../service/order.service';
 import { Product, ProductOptionValues } from './../../../interface/product';
 import { capitalize } from './../../../lib/shared.util';
-import { CartService } from './../../../service/cart.service';
 import { SharedService } from './../../../service/shared.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         public app: AppMainComponent,
         private router: Router,
         private formBuilder: FormBuilder,
-        private cartService: CartService,
+        private orderService: OrderService,
         private sharedService: SharedService
     ) {
         super();
@@ -140,7 +140,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     insertToCart() {
         // this.sharedService.showConfirm().then((res) => {
         //     if (res) {
-        this.cartService.addToCart(this.selectedProduct);
+        this.orderService.addToCart(this.selectedProduct);
         this.hideDialog();
         // }
         // });

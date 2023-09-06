@@ -11,7 +11,7 @@ import { SharedService } from './shared.service';
 @Injectable({
     providedIn: 'root'
 })
-export class CartService extends CommonUtil {
+export class OrderService extends CommonUtil {
     customerInfo = {} as CustomerInfo;
     cart: Product[] = [];
 
@@ -29,7 +29,7 @@ export class CartService extends CommonUtil {
     }
 
     async getOrders() {
-        this.customerInfo.tableId = 1;
+        this.customerInfo.tableId = 'Table 1';
         await lastValueFrom(this.apiService.getOrders(this.customerInfo)).then((res: any) => {
             return res;
         });
@@ -45,8 +45,8 @@ export class CartService extends CommonUtil {
         if (this.isEmpty(this.cart)) {
             this.cart = [product];
         } else this.cart.push(product);
-        localStorage.setItem('cart', this.jsonStringify(this.cart));
 
+        localStorage.setItem('cart', this.jsonStringify(this.cart));
         localStorage.setItem('customer', this.jsonStringify('aaa'));
 
         this.sharedService.showSuccess('Your item is successfully added to cart!');

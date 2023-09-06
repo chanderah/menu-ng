@@ -149,12 +149,12 @@ import { AppConfigComponent } from './layout/config/app.config.component';
 import { ConfigService } from './layout/service/app.config.service';
 import { MenuService } from './layout/service/app.menu.service';
 import { ApiService } from './service/api.service';
-import { CartService } from './service/cart.service';
 import { CountryService } from './service/countryservice';
 import { CustomerService } from './service/customerservice';
 import { EventService } from './service/eventservice';
 import { IconService } from './service/iconservice';
 import { NodeService } from './service/nodeservice';
+import { OrderService } from './service/order.service';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
 
@@ -350,7 +350,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         ConfirmationService,
         MessageService,
         DialogService,
-        CartService,
+        OrderService,
 
         /* SHARED */
         SharedService

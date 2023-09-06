@@ -26,7 +26,7 @@ export class CategoryDialogComponent implements OnInit {
     }
 
     addToCart(data: any) {
-        // const res = this.cartService.addToCart(data);
+        // const res = this.orderService.addToCart(data);
         this.ref.close(data);
     }
 }
