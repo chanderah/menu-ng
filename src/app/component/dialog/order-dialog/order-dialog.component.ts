@@ -31,6 +31,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         private sharedService: SharedService
     ) {
         super();
+
         // this.orderForm = this.formBuilder.group({
         //     // categoryId: [{ value: null, disabled: true }],
         //     tableId: [{ value: null, disabled: true }, [Validators.required]],
@@ -54,10 +55,12 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
 
         this.orderForm.valueChanges.subscribe((product: Product) => {
             if (!this.init) {
-                console.log('am i called');
+                // count total
                 let price = product.price;
                 product.options.forEach((option) => {
-                    option.values.forEach((data) => (price += data.selected ? data.price : 0));
+                    option.values.forEach((data) => {
+                        if (data.selected) price += data.price;
+                    });
                 });
                 this.totalPrice = price * product.qty;
             }

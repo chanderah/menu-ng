@@ -11,9 +11,10 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, Observable, of } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
+import { CustomerInfo } from '../interface/customer_info';
 import CommonUtil from '../lib/shared.util';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
@@ -169,5 +170,22 @@ export class ApiService extends CommonUtil implements HttpInterceptor {
 
     deleteProduct(product: Product) {
         return this.httpClient.post('/product/delete', product);
+    }
+
+    /* ORDER */
+    getOrders(customerInfo: CustomerInfo) {
+        return this.httpClient.post('/order/findAll', {});
+    }
+
+    getOrderById(orderId: number) {
+        return this.httpClient.post('/order/findById', { orderId: orderId });
+    }
+
+    updateOrder(orderId: number) {
+        return this.httpClient.post('/order/update', { orderId: orderId });
+    }
+
+    deleteOrder(orderId: number) {
+        return this.httpClient.post('/order/delete', { orderId: orderId });
     }
 }
