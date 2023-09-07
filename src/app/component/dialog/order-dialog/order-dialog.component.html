@@ -1,6 +1,6 @@
 <div (swipedown)="hideDialog()">
     <p-sidebar
-        id="orderFormDialog"
+        id="formDialog"
         [(visible)]="showDialog"
         (onHide)="hideDialog()"
         position="bottom"
@@ -9,9 +9,7 @@
         [showCloseIcon]="true"
         [closeOnEscape]="true"
         [style]="getSidebarStyle()"
-        style
         [baseZIndex]="1000">
-        <!-- [style]="getSidebarStyle()" -->
         <ng-template pTemplate="header">
             <div class="flex justify-content-center w-full">
                 <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>

@@ -19,15 +19,17 @@
         </i>
     </a> -->
 
-    <a class="p-link layout-topbar-menu-button pt-2" routerLink="/cart">
+    <!-- <a class="p-link layout-topbar-menu-button pt-2" routerLink="/cart"> -->
+    <a class="p-link layout-topbar-menu-button pt-2">
         <i
             pBadge
-            class="pi pi-shopping-cart p-text-secondary"
             severity="danger"
+            class="pi pi-shopping-cart p-text-secondary"
             style="font-size: 2rem"
-            routerLink="/cart"
-            [value]="getCartItems()">
+            (click)="onClickCart()"
+            [value]="getCountCartItems()">
         </i>
+        <!-- routerLink="/cart" -->
     </a>
 
     <!-- <div

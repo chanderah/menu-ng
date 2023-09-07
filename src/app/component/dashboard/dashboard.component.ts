@@ -49,7 +49,7 @@ export class DashboardComponent extends CommonUtil implements OnInit {
     swiperOptions!: SwiperOptions;
 
     selectedProduct!: Product;
-    showOrderFormDialog: boolean = false;
+    showOrderDialog: boolean = false;
 
     filter: FormGroup = this.formBuilder.group({
         value: ['']
@@ -144,13 +144,13 @@ export class DashboardComponent extends CommonUtil implements OnInit {
         });
     }
 
-    onShowOrderFormDialogChange(bool: boolean) {
-        this.showOrderFormDialog = bool;
+    onShowOrderDialogChange(bool: boolean) {
+        this.showOrderDialog = bool;
     }
 
     onAddToCart(data: Product) {
         this.selectedProduct = data;
-        this.showOrderFormDialog = true;
+        this.showOrderDialog = true;
     }
 
     initSwiper() {

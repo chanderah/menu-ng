@@ -1,0 +1,88 @@
+<div (swipedown)="hideDialog()">
+    <p-sidebar
+        id="formDialog"
+        [(visible)]="showDialog"
+        (onHide)="hideDialog()"
+        position="bottom"
+        [blockScroll]="true"
+        [dismissible]="true"
+        [showCloseIcon]="true"
+        [closeOnEscape]="true"
+        [style]="getSidebarStyle()"
+        [baseZIndex]="1000">
+        <ng-template pTemplate="header">
+            <div class="flex justify-content-center w-full">
+                <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="content" [formGroup]="cartForm">
+            <div class="grid formgrid px-4">
+                <h5 class="category-title mb-4">Your Cart</h5>
+                <p-scrollPanel [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'scroll' }">
+                    <div formArrayName="products">
+                        <div
+                            [formGroupName]="i"
+                            *ngFor="let product of products().controls; index as i"
+                            class="card my-3">
+                            <div formArrayName="options" class="cursor-pointer">
+                                <div
+                                    [formGroupName]="j"
+                                    *ngFor="let option of options(i).controls; index as j"
+                                    class="flex flex-col align-items-center justify-content-between"
+                                    style="padding-top: 10px">
+                                    <div formArrayName="values">
+                                        <div
+                                            [formGroupName]="k"
+                                            *ngFor="let optionValue of optionValues(i, j).controls; index as k"
+                                            class="flex flex-col align-items-center justify-content-between"
+                                            style="padding-top: 10px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p-scrollPanel>
+
+                <div class="col-12 flex align-items-center justify-content-between py-2" style="height: auto">
+                    <label class="font-semibold">Quantity</label>
+                    <!-- <div class="flex flex-col align-items-center gap-3">
+                        <button
+                            pButton
+                            icon="pi pi-minus"
+                            class="p-button-outlined p-button-rounded"
+                            [disabled]="cartForm.get('qty').value === 1"
+                            (click)="decrement()">
+                        </button>
+
+                        <label class="font-bold">{{ cartForm.get('qty').value }}</label>
+                        <button
+                            pButton
+                            icon="pi pi-plus"
+                            class="p-button-outlined p-button-rounded p-button-qty"
+                            (click)="increment()">
+                        </button>
+                    </div> -->
+                </div>
+                <div class="flex flex-col col-12 gap-3 py-3" style="height: auto; z-index: 10000">
+                    <button
+                        pButton
+                        icon="pi pi-whatsapp"
+                        class="p-button-sm p-button-outlined p-button-rounded"
+                        (click)="onClickWa()">
+                    </button>
+                    <div
+                        class="col flex align-items-center justify-content-between bg-primary px-4"
+                        style="border-radius: 50px"
+                        (click)="insertToCart()">
+                        <label class="font-semibold">+ Add to Cart</label>
+                        <label class="font-bold">
+                            {{ totalPrice | custom }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-sidebar>
+</div>

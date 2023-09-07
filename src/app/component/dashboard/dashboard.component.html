@@ -135,8 +135,8 @@
 </p-dataView>
 
 <app-order-dialog
-    *ngIf="showOrderFormDialog"
-    (onChange)="onShowOrderFormDialogChange($event)"
-    [showDialog]="showOrderFormDialog"
+    *ngIf="showOrderDialog"
+    (onChange)="onShowOrderDialogChange($event)"
+    [showDialog]="showOrderDialog"
     [selectedProduct]="selectedProduct">
 </app-order-dialog>

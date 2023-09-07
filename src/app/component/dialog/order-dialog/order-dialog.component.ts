@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import { OrderService } from '../../../service/order.service';
-import { Product, ProductOptionValues } from './../../../interface/product';
+import { Product } from './../../../interface/product';
 import { capitalize } from './../../../lib/shared.util';
 import { SharedService } from './../../../service/shared.service';
 
@@ -80,18 +80,10 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     }
 
     onClickOptionValuesRow(optionIndex: number, optionValuesIndex: number) {
-        // this.optionValues(optionIndex).get('selected').setValue(!this.optionValues(optionIndex).get('selected').value);
         this.optionValues(optionIndex)
             .at(optionValuesIndex)
             .get('selected')
             .setValue(!this.optionValues(optionIndex).at(optionValuesIndex).get('selected').value);
-        // console.log(optionIndex, optionValuesIndex);
-        // this.optionValues(optionIndex)
-    }
-
-    getOptionValuePrice(option: ProductOptionValues) {
-        if (this.isEmpty(option.price)) return 'Free';
-        // else
     }
 
     options(): FormArray {
@@ -161,6 +153,10 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
 
     resetForm() {
         this.orderForm.reset();
+    }
+
+    ngOnDestroy() {
+        this.onChange.unsubscribe();
     }
 
     // @HostListener('window:scroll')

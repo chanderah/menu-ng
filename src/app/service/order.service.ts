@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
 import { ToastrService } from 'ngx-toastr';
-import { lastValueFrom } from 'rxjs';
 import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
 import CommonUtil from '../lib/shared.util';
+import { Order } from './../interface/order';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
 
@@ -13,7 +13,8 @@ import { SharedService } from './shared.service';
 })
 export class OrderService extends CommonUtil {
     customerInfo = {} as CustomerInfo;
-    cart: Product[] = [];
+    order = {} as Order;
+    cart = [] as Product[];
 
     constructor(
         private toast: HotToastService,
@@ -24,30 +25,42 @@ export class OrderService extends CommonUtil {
         super();
     }
 
-    getCustomerInfo() {
-        return this.jsonParse(localStorage.getItem('customer'));
+    getIssuedOrders(): Order {
+        const data = this.jsonParse(localStorage.getItem('order'));
+        if (!this.isEmpty(data)) this.order = data;
+        return this.order;
+
+        // SHOULD BE DB!!
     }
 
-    async getOrders() {
-        this.customerInfo.tableId = 'Table 1';
-        await lastValueFrom(this.apiService.getOrders(this.customerInfo)).then((res: any) => {
-            return res;
-        });
+    getMyOrders(): Order {
+        const data = this.jsonParse(localStorage.getItem('order'));
+        if (!this.isEmpty(data)) this.order = data;
+        return this.order;
+    }
+
+    getCustomerInfo(): CustomerInfo {
+        const data = this.jsonParse(localStorage.getItem('customer'));
+        if (!this.isEmpty(data)) this.customerInfo = data;
+        return this.customerInfo;
+    }
+
+    setCustomerInfo(data: CustomerInfo) {
+        localStorage.setItem('customer', this.jsonStringify(data));
     }
 
     getCart(): Product[] {
-        this.cart = this.jsonParse(localStorage.getItem('cart'));
+        const data = this.jsonParse(localStorage.getItem('cart'));
+        if (!this.isEmpty(data)) this.cart = data;
         return this.cart;
     }
 
     addToCart(product: Product) {
         this.getCart();
-        if (this.isEmpty(this.cart)) {
-            this.cart = [product];
-        } else this.cart.push(product);
+        this.cart.push(product);
 
-        localStorage.setItem('cart', this.jsonStringify(this.cart));
-        localStorage.setItem('customer', this.jsonStringify('aaa'));
+        localStorage.setItem('cart', this.jsonStringify(this.getCart()));
+        localStorage.setItem('customer', this.jsonStringify(this.getCustomerInfo()));
 
         this.sharedService.showSuccess('Your item is successfully added to cart!');
     }

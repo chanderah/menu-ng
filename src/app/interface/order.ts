@@ -1,5 +1,10 @@
+import { Product } from 'src/app/interface/product';
+
 export interface Order {
-  productId: number;
-  name: string;
-  price: number;
+    id?: number;
+    tableId: string;
+    totalPrice: number;
+    createdAt: Date;
+
+    products: Product[];
 }

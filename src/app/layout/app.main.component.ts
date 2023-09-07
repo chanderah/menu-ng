@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
 import { AppConfig } from '../interface/appconfig';
 import { AppComponent } from './../app.component';
-import { Category } from './../interface/category';
 import { ApiService } from './../service/api.service';
 
 @Component({
@@ -48,7 +47,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     configClick: boolean;
     config: AppConfig;
 
-    categories = [] as Category[];
+    showCartDialog: boolean = false;
 
     constructor(
         public renderer: Renderer2,
@@ -60,6 +59,10 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     ngOnInit() {
         this.config = this.configService.config;
         this.subscription = this.configService.configUpdate$.subscribe((config) => (this.config = config));
+    }
+
+    onShowCartDialogChange(bool: boolean) {
+        this.showCartDialog = bool;
     }
 
     ngAfterViewInit() {

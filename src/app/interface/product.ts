@@ -14,6 +14,7 @@ export interface Product {
     options?: ProductOptions[];
 
     //for order
+    totalPrice?: number;
     notes?: string;
     qty?: number;
 }

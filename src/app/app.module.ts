@@ -157,6 +157,7 @@ import { NodeService } from './service/nodeservice';
 import { OrderService } from './service/order.service';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
+import { CartDialogComponent } from './component/dialog/cart-dialog/cart-dialog.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -220,7 +221,8 @@ export class MyHammerConfig extends HammerGestureConfig {
         RegisterComponent,
 
         /* PIPE */
-        CustomCurrencyPipe
+        CustomCurrencyPipe,
+         CartDialogComponent
     ],
     imports: [
         BrowserModule,
