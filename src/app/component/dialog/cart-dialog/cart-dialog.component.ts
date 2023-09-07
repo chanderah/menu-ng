@@ -39,11 +39,12 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
 
         this.products().valueChanges.subscribe((product: Product) => {
             if (!this.init) {
+                console.log('am i called');
                 // count total
                 let price = product.price;
-                product.options.forEach((option) => {
-                    option.values.forEach((data) => {
-                        if (data.selected) price += data.price;
+                product?.options?.forEach((option) => {
+                    option?.values?.forEach((data) => {
+                        if (data?.selected) price += data?.price;
                     });
                 });
                 this.cartForm.get('totalPrice').setValue(price * product.qty);
@@ -61,12 +62,8 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
                 data[i].options.forEach(() => this.addOptionValues(i, j));
             }
         }
-
-        this.products().patchValue(data);
-        console.log(this.cartForm.value);
-
         this.init = false;
-        this.cartForm.get('createdAt').setValue(new Date());
+        this.products().patchValue(data);
     }
 
     increment(productIndex: number) {

@@ -19,31 +19,34 @@
         <ng-template pTemplate="content" [formGroup]="cartForm">
             <div class="grid formgrid px-4">
                 <h5 class="category-title mb-4">Your Cart</h5>
-                <p-scrollPanel [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'scroll' }">
-                    <div formArrayName="products">
-                        <div
-                            [formGroupName]="i"
-                            *ngFor="let product of products().controls; index as i"
-                            class="card my-3">
-                            <div formArrayName="options" class="cursor-pointer">
-                                <div
-                                    [formGroupName]="j"
-                                    *ngFor="let option of options(i).controls; index as j"
-                                    class="flex flex-col align-items-center justify-content-between"
-                                    style="padding-top: 10px">
-                                    <div formArrayName="values">
-                                        <div
-                                            [formGroupName]="k"
-                                            *ngFor="let optionValue of optionValues(i, j).controls; index as k"
-                                            class="flex flex-col align-items-center justify-content-between"
-                                            style="padding-top: 10px">
+                <div class="col-12">
+                    <p-scrollPanel [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'scroll' }">
+                        <div formArrayName="products">
+                            <div
+                                [formGroupName]="i"
+                                *ngFor="let product of products().controls; index as i"
+                                class="card my-3">
+                                {{ product.value.name }}
+                                <div formArrayName="options" class="cursor-pointer">
+                                    <div
+                                        [formGroupName]="j"
+                                        *ngFor="let option of options(i).controls; index as j"
+                                        class="flex flex-col align-items-center justify-content-between"
+                                        style="padding-top: 10px">
+                                        <div formArrayName="values">
+                                            <div
+                                                [formGroupName]="k"
+                                                *ngFor="let optionValue of optionValues(i, j).controls; index as k"
+                                                class="flex flex-col align-items-center justify-content-between"
+                                                style="padding-top: 10px">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </p-scrollPanel>
+                    </p-scrollPanel>
+                </div>
 
                 <div class="col-12 flex align-items-center justify-content-between py-2" style="height: auto">
                     <label class="font-semibold">Quantity</label>
@@ -78,7 +81,7 @@
                         (click)="insertToCart()">
                         <label class="font-semibold">+ Add to Cart</label>
                         <label class="font-bold">
-                            {{ totalPrice | custom }}
+                            {{ cartForm.get('totalPrice').value | custom }}
                         </label>
                     </div>
                 </div>
