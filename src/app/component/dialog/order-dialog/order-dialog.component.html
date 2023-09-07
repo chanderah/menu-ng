@@ -4,13 +4,12 @@
         [(visible)]="showDialog"
         (onHide)="hideDialog()"
         position="bottom"
-        styleClass="h-auto"
-        [modal]="true"
         [blockScroll]="true"
         [dismissible]="true"
         [showCloseIcon]="true"
         [closeOnEscape]="true"
         [style]="getSidebarStyle()"
+        style
         [baseZIndex]="1000">
         <!-- [style]="getSidebarStyle()" -->
         <ng-template pTemplate="header">
