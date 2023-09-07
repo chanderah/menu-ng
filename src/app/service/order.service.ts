@@ -35,7 +35,7 @@ export class OrderService extends CommonUtil {
         });
     }
 
-    getCart() {
+    getCart(): Product[] {
         this.cart = this.jsonParse(localStorage.getItem('cart'));
         return this.cart;
     }
