@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppConfig } from 'src/app/interface/appconfig';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
-import CommonUtil from 'src/app/lib/shared.util';
+import SharedUtil from 'src/app/lib/shared.util';
 import { User } from '../../../interface/user';
 import { ApiService } from '../../../service/api.service';
 
@@ -12,7 +12,7 @@ import { ApiService } from '../../../service/api.service';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent extends CommonUtil implements OnInit {
+export class LoginComponent extends SharedUtil implements OnInit {
     config: AppConfig;
 
     isLoading: boolean = false;

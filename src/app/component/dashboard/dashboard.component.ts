@@ -6,7 +6,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { debounceTime, Subscription } from 'rxjs';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
-import CommonUtil from 'src/app/lib/shared.util';
+import SharedUtil from 'src/app/lib/shared.util';
 import SwiperCore, {
     A11y,
     Autoplay,
@@ -22,7 +22,6 @@ import SwiperCore, {
 import { ProductService } from '../../service/productservice';
 import { SharedService } from '../../service/shared.service';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
-import { environment } from './../../../environments/environment';
 import { PagingInfo } from './../../interface/paging_info';
 import { ApiService } from './../../service/api.service';
 
@@ -32,8 +31,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
     templateUrl: './dashboard.component.html',
     styleUrls: ['../../../assets/user.styles.scss']
 })
-export class DashboardComponent extends CommonUtil implements OnInit {
-    env = environment;
+export class DashboardComponent extends SharedUtil implements OnInit {
     init: boolean = true;
     subscription!: Subscription;
 

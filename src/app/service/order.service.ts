@@ -3,7 +3,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
-import CommonUtil from '../lib/shared.util';
+import SharedUtil from '../lib/shared.util';
 import { Order } from './../interface/order';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
@@ -11,7 +11,7 @@ import { SharedService } from './shared.service';
 @Injectable({
     providedIn: 'root'
 })
-export class OrderService extends CommonUtil {
+export class OrderService extends SharedUtil {
     customerInfo = {} as CustomerInfo;
     order = {} as Order;
     cart = [] as Product[];

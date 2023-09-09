@@ -9,8 +9,6 @@ import { environment } from './../../../../environments/environment';
     styleUrls: ['../../../../assets/user.styles.scss']
 })
 export class ProductDialogComponent extends SharedUtil implements OnInit {
-    env = environment;
-
     isLoading: boolean = true;
     product!: Product;
 

@@ -11,11 +11,11 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, catchError, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
-import CommonUtil from '../lib/shared.util';
+import SharedUtil from '../lib/shared.util';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
 import { PagingInfo } from './../interface/paging_info';
@@ -24,7 +24,7 @@ import { User } from './../interface/user';
 @Injectable({
     providedIn: 'root'
 })
-export class ApiService extends CommonUtil implements HttpInterceptor {
+export class ApiService extends SharedUtil implements HttpInterceptor {
     private isDevelopment: boolean = environment.production === false;
     private apiUrl: string = environment.apiUrl;
 

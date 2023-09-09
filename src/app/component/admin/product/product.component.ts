@@ -4,8 +4,7 @@ import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'pr
 import { FileUpload } from 'primeng/fileupload';
 import { Product, ProductOptions } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
-import CommonUtil from 'src/app/lib/shared.util';
-import { environment } from '../../../../environments/environment';
+import SharedUtil from 'src/app/lib/shared.util';
 import { Category } from '../../../interface/category';
 import { PagingInfo } from '../../../interface/paging_info';
 import { UploadEvent } from '../../../interface/upload_event';
@@ -37,11 +36,9 @@ import { ApiService } from '../../../service/api.service';
     ],
     providers: [MessageService, ConfirmationService]
 })
-export class ProductComponent extends CommonUtil implements OnInit {
+export class ProductComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
     dialogBreakpoints = { '768px': '90vw' };
-
-    env = environment;
 
     user = {} as User;
     pagingInfo = {} as PagingInfo;
