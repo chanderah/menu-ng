@@ -6,6 +6,7 @@ import { BrowserModule, HammerGestureConfig, HammerModule, HAMMER_GESTURE_CONFIG
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
+import { CartDialogComponent } from './component/dialog/cart-dialog/cart-dialog.component';
 import { CustomCurrencyPipe } from './component/pipe/currency.pipe';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { AppTopBarComponent } from './layout/app.topbar.component';
@@ -207,17 +208,18 @@ export class MyHammerConfig extends HammerGestureConfig {
         NotfoundComponent,
         AccessComponent,
         /* USER DEFINED */
-        DashboardComponent,
-        CartComponent,
+        SkeletonComponent,
         RegisterComponent,
         LoginComponent,
+        DashboardComponent,
+        CartComponent,
         /* DIALOG */
         ProductDialogComponent,
-        SkeletonComponent,
         OrderDialogComponent,
-        ProductComponent,
         CategoryDialogComponent,
-        RegisterComponent,
+        CartDialogComponent,
+        /* ADMIN */
+        ProductComponent,
 
         /* PIPE */
         CustomCurrencyPipe
