@@ -42,6 +42,7 @@ export class OrderService extends CommonUtil {
     getCustomerInfo(): CustomerInfo {
         const data = this.jsonParse(localStorage.getItem('customer'));
         if (!this.isEmpty(data)) this.customerInfo = data;
+        else this.customerInfo = {};
         return this.customerInfo;
     }
 
@@ -51,7 +52,9 @@ export class OrderService extends CommonUtil {
 
     getCart(): Product[] {
         const data = this.jsonParse(localStorage.getItem('cart'));
-        if (!this.isEmpty(data)) this.cart = data;
+        if (!this.isEmpty(data)) {
+            this.cart = data;
+        } else this.cart = [];
         return this.cart;
     }
 

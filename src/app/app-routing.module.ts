@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LoginComponent } from './component/auth/login/login.component';
-import { RegisterComponent } from './component/auth/register/register.component';
+import { LoginComponent } from './component/admin/login/login.component';
+import { ProductComponent } from './component/admin/product/product.component';
+import { RegisterComponent } from './component/admin/register/register.component';
 import { CartComponent } from './component/cart/cart.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { AccessComponent } from './component/demo/access/access.component';
@@ -29,7 +30,6 @@ import { PanelsComponent } from './component/demo/panels/panels.component';
 import { TableComponent } from './component/demo/table/table.component';
 import { TimelineComponent } from './component/demo/timeline/timeline.component';
 import { TreeComponent } from './component/demo/tree/tree.component';
-import { ProductComponent } from './component/product/product.component';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({

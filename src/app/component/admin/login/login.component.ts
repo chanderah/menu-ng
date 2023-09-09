@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AppConfig } from './../../../interface/appconfig';
-import { User } from './../../../interface/user';
-import { ConfigService } from './../../../layout/service/app.config.service';
-import { ApiService } from './../../../service/api.service';
+import { AppConfig } from 'src/app/interface/appconfig';
+import { ConfigService } from 'src/app/layout/service/app.config.service';
+import CommonUtil from 'src/app/lib/shared.util';
+import { User } from '../../../interface/user';
+import { ApiService } from '../../../service/api.service';
 
 @Component({
-    selector: 'app-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class LoginComponent extends CommonUtil implements OnInit {
     config: AppConfig;
 
     isLoading: boolean = false;
@@ -25,6 +26,7 @@ export class RegisterComponent implements OnInit {
 
         private formBuilder: FormBuilder
     ) {
+        super();
         this.form = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', [Validators.minLength(8), Validators.required]]
@@ -37,15 +39,15 @@ export class RegisterComponent implements OnInit {
 
     onSubmit() {
         this.isLoading = true;
-        const { username, password } = this.form.value;
-        this.user.username = username;
-        this.user.password = password;
-        this.apiService.register(this.user).subscribe((res: any) => {
+        this.apiService.login(this.form.value).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
-                localStorage.setItem('user', this.form.value);
+                localStorage.setItem('user', this.jsonStringify(res.data));
                 this.router.navigate(['/']);
-            } else alert(res.message);
+            } else {
+                console.log(res);
+                alert(res.message);
+            }
         });
     }
 }

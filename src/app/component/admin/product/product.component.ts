@@ -5,16 +5,16 @@ import { FileUpload } from 'primeng/fileupload';
 import { Product, ProductOptions } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
 import CommonUtil from 'src/app/lib/shared.util';
-import { environment } from './../../../environments/environment';
-import { Category } from './../../interface/category';
-import { PagingInfo } from './../../interface/paging_info';
-import { UploadEvent } from './../../interface/upload_event';
-import { resizeImg } from './../../lib/image_resizer';
-import { ApiService } from './../../service/api.service';
+import { environment } from '../../../../environments/environment';
+import { Category } from '../../../interface/category';
+import { PagingInfo } from '../../../interface/paging_info';
+import { UploadEvent } from '../../../interface/upload_event';
+import { resizeImg } from '../../../lib/image_resizer';
+import { ApiService } from '../../../service/api.service';
 
 @Component({
     templateUrl: './product.component.html',
-    styleUrls: ['../../../assets/user.styles.scss', '../../../assets/demo/badges.scss'],
+    styleUrls: ['../../../../assets/user.styles.scss', '../../../../assets/demo/badges.scss'],
     styles: [
         `
             :host ::ng-deep {

@@ -98,13 +98,14 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { EmptyComponent } from './component/demo/empty/empty.component';
 
-import { CustomCheckboxModule } from 'angular-custom-checkbox';
+import { QRCodeModule } from 'angularx-qrcode';
 import * as Hammer from 'hammerjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SwiperModule } from 'swiper/angular';
-import { LoginComponent } from './component/auth/login/login.component';
-import { RegisterComponent } from './component/auth/register/register.component';
+import { LoginComponent } from './component/admin/login/login.component';
+import { ProductComponent } from './component/admin/product/product.component';
+import { RegisterComponent } from './component/admin/register/register.component';
 import { CartComponent } from './component/cart/cart.component';
 import { AccessComponent } from './component/demo/access/access.component';
 import { AppCodeModule } from './component/demo/app-code/app.code.component';
@@ -140,7 +141,6 @@ import { TreeComponent } from './component/demo/tree/tree.component';
 import { CategoryDialogComponent } from './component/dialog/category-dialog/category-dialog.component';
 import { OrderDialogComponent } from './component/dialog/order-dialog/order-dialog.component';
 import { ProductDialogComponent } from './component/dialog/product-dialog/product-dialog.component';
-import { ProductComponent } from './component/product/product.component';
 import { AppFooterComponent } from './layout/app.footer.component';
 import { AppMainComponent } from './layout/app.main.component';
 import { AppMenuComponent } from './layout/app.menu.component';
@@ -157,7 +157,6 @@ import { NodeService } from './service/nodeservice';
 import { OrderService } from './service/order.service';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
-import { CartDialogComponent } from './component/dialog/cart-dialog/cart-dialog.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -221,8 +220,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         RegisterComponent,
 
         /* PIPE */
-        CustomCurrencyPipe,
-         CartDialogComponent
+        CustomCurrencyPipe
     ],
     imports: [
         BrowserModule,
@@ -325,7 +323,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         ReactiveFormsModule,
         HammerModule,
         ScrollPanelModule,
-        CustomCheckboxModule
+        QRCodeModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
