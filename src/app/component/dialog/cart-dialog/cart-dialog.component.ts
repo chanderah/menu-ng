@@ -88,7 +88,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     getSidebarStyle() {
         return {
             width: this.app.isDesktop() ? '50vw' : '100vw',
-            height: 'auto',
+            height: '100vh',
             left: this.app.isDesktop() ? 'unset' : 0,
             overflow: 'scroll'
         };

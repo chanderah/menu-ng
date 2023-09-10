@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { AppConfig } from 'src/app/interface/appconfig';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
 import SharedUtil from 'src/app/lib/shared.util';
-import { User } from '../../../interface/user';
-import { ApiService } from '../../../service/api.service';
+import { User } from '../../../../interface/user';
+import { ApiService } from '../../../../service/api.service';
 
 @Component({
     selector: 'app-login',

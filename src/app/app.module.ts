@@ -104,9 +104,9 @@ import * as Hammer from 'hammerjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SwiperModule } from 'swiper/angular';
-import { LoginComponent } from './component/admin/login/login.component';
+import { LoginComponent } from './component/admin/auth/login/login.component';
+import { RegisterComponent } from './component/admin/auth/register/register.component';
 import { ProductComponent } from './component/admin/product/product.component';
-import { RegisterComponent } from './component/admin/register/register.component';
 import { CartComponent } from './component/cart/cart.component';
 import { AccessComponent } from './component/demo/access/access.component';
 import { AppCodeModule } from './component/demo/app-code/app.code.component';
@@ -220,6 +220,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         CartDialogComponent,
         /* ADMIN */
         ProductComponent,
+        TableComponent,
 
         /* PIPE */
         CustomCurrencyPipe

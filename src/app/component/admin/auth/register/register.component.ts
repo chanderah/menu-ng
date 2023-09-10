@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AppConfig } from '../../../interface/appconfig';
-import { User } from '../../../interface/user';
-import { ConfigService } from '../../../layout/service/app.config.service';
-import { ApiService } from '../../../service/api.service';
+import { AppConfig } from 'src/app/interface/appconfig';
+import { User } from 'src/app/interface/user';
+import { ConfigService } from 'src/app/layout/service/app.config.service';
+import { ApiService } from './../../../../service/api.service';
 
 @Component({
     selector: 'app-register',
