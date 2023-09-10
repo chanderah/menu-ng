@@ -1,4 +1,4 @@
-<div (swipedown)="hideDialog()">
+<div>
     <p-sidebar
         id="formDialog"
         [(visible)]="showDialog"
@@ -11,12 +11,12 @@
         [style]="getSidebarStyle()"
         [baseZIndex]="1000">
         <ng-template pTemplate="header">
-            <div class="flex justify-content-center w-full">
+            <div class="flex justify-content-center w-full" (swipedown)="hideDialog()">
                 <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
             </div>
         </ng-template>
 
-        <ng-template pTemplate="content" [formGroup]="cartForm" style="height: 100%">
+        <ng-template pTemplate="content" [formGroup]="cartForm">
             <div class="grid formgrid px-4">
                 <h5 class="category-title mb-4">Your Cart</h5>
                 <div class="col-12">
@@ -48,7 +48,7 @@
                     </p-scrollPanel>
                 </div>
 
-                <div class="col-12 flex flex-col justify-content-end gap-3 py-3" style="z-index: 10000">
+                <div class="col-12 flex flex-col gap-3 py-3">
                     <button
                         pButton
                         icon="pi pi-whatsapp"
