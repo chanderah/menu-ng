@@ -99,7 +99,7 @@
 .text-capitalize {
     text-transform: capitalize !important;
     ::placeholder {
-        text-transform: initial;
+        text-transform: initial !important;
     }
 }
 

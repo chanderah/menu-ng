@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './component/admin/auth/login/login.component';
 import { RegisterComponent } from './component/admin/auth/register/register.component';
+import { CategoryComponent } from './component/admin/category/category.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
 import { CartComponent } from './component/cart/cart.component';
@@ -42,6 +43,7 @@ import { AppMainComponent } from './layout/app.main.component';
                     children: [
                         { path: '', component: DashboardComponent },
                         { path: 'product', component: ProductComponent },
+                        { path: 'category', component: CategoryComponent },
                         { path: 'table', component: TableComponent },
                         { path: 'cart', component: CartComponent },
 

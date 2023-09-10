@@ -19,6 +19,7 @@ import SharedUtil from '../lib/shared.util';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
 import { PagingInfo } from './../interface/paging_info';
+import { Table } from './../interface/table';
 import { User } from './../interface/user';
 
 @Injectable({
@@ -70,14 +71,6 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         super();
     }
 
-    encrypt(data: any): string {
-        return data;
-    }
-
-    decrypt(data: any) {
-        return data;
-    }
-
     /* AUTH */
     register(user: User) {
         return this.httpClient.post('/user/register', user);
@@ -127,6 +120,27 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
 
     deleteCategory(category: Category) {
         return this.httpClient.post('/category/delete', category);
+    }
+
+    /* TABLE */
+    getTables(pagingInfo: PagingInfo) {
+        return this.httpClient.post('/table/findAll', pagingInfo);
+    }
+
+    findTableById(table: Table) {
+        return this.httpClient.post('/table/findById', table);
+    }
+
+    createTable(table: Table) {
+        return this.httpClient.post('/table/create', table);
+    }
+
+    updateTable(table: Table) {
+        return this.httpClient.post('/table/update', table);
+    }
+
+    deleteTable(table: Table) {
+        return this.httpClient.post('/table/delete', table);
     }
 
     /* PRODUCT */

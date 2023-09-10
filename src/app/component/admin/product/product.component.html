@@ -2,26 +2,6 @@
     <div class="col-12">
         <div class="card">
             <div class="flex align-items-center justify-content-between mb-4">
-                <h5 class="category-title">Categories</h5>
-                <div class="flex gap-2">
-                    <button
-                        pButton
-                        pRipple
-                        class="p-button"
-                        (click)="onEditCategory()"
-                        [disabled]="isEmpty(selectedCategory)">
-                        Edit
-                    </button>
-                    <button pButton pRipple class="p-button" (click)="onAddCategory()">Add</button>
-                </div>
-            </div>
-            <p-tree [value]="categories" selectionMode="single" [(selection)]="selectedCategory"></p-tree>
-        </div>
-    </div>
-
-    <div class="col-12">
-        <div class="card">
-            <div class="flex align-items-center justify-content-between mb-4">
                 <h5 class="category-title">Products</h5>
                 <div class="flex gap-2">
                     <button
@@ -72,7 +52,6 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 4rem"></th>
-                        <!-- <th pSortableColumn="name" pFrozenColumn> Name <p-sortIcon field="name"></p-sortIcon> </th> -->
                         <th pSortableColumn="name"> Name <p-sortIcon field="name"></p-sortIcon> </th>
                         <th>Image</th>
                         <th pSortableColumn="category_id">Category <p-sortIcon field="category_id"></p-sortIcon></th>
@@ -407,58 +386,3 @@
     </p-dialog>
     <!-- OPTION DIALOG -->
 </div>
-
-<!-- CATEGORY DIALOG -->
-<p-dialog
-    [maximizable]="true"
-    [header]="selectedCategory ? 'Edit Category' : 'Add Category'"
-    [(visible)]="showCategoryDialog"
-    (onHide)="this.categoryForm.reset()"
-    [contentStyle]="{ overflow: 'visible' }"
-    [style]="{ width: '40vw', height: 'auto' }"
-    [dismissableMask]="false"
-    [closeOnEscape]="false"
-    [breakpoints]="dialogBreakpoints"
-    modal="true"
-    [blockScroll]="true"
-    showEffect="fade">
-    <div [formGroup]="categoryForm" (keyup.enter)="onSubmit()" class="p-fluid px-2">
-        <div class="col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
-                <input pInputText type="text" placeholder="Name" formControlName="label" class="text-capitalize" />
-            </div>
-        </div>
-
-        <div class="flex mt-4" [ngClass]="selectedCategory ? 'justify-content-between' : 'justify-content-end'">
-            <button
-                *ngIf="selectedCategory"
-                pButton
-                pRipple
-                (click)="onDeleteCategory()"
-                class="p-button-danger p-button-outlined"
-                icon="pi pi-trash">
-            </button>
-            <div class="flex gap-2">
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-times"
-                    (click)="showCategoryDialog = false"
-                    label="Cancel"
-                    class="w-auto p-button-danger p-button-outlined">
-                </button>
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-check"
-                    (click)="onSubmit()"
-                    label="Save"
-                    [disabled]="isLoading"
-                    class="w-auto p-button-outlined">
-                </button>
-            </div>
-        </div>
-    </div>
-</p-dialog>
-<!-- CATEGORY DIALOG -->

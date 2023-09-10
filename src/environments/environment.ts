@@ -4,6 +4,7 @@
 
 export const environment = {
     production: false,
+    appUrl: 'http://localhost:3000',
     apiUrl: 'http://localhost:3000/api',
     publicPath: 'https://chandrasa.fun/public',
     imagePath: 'assets/images'

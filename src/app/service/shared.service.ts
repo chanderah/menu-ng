@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { lastValueFrom } from 'rxjs';
+import { sortArrayByLabelProperty } from './../lib/shared.util';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -13,15 +14,19 @@ export class SharedService {
         public messageService: MessageService,
         public confirmationService: ConfirmationService,
         private apiService: ApiService
-    ) {}
+    ) {
+        // super();
+    }
 
     async getCategories() {
-        if (!this.categories) {
-            await lastValueFrom(this.apiService.getCategories()).then((res: any) => {
-                if (res.status === 200) this.categories = res.data;
-            });
-        }
+        await lastValueFrom(this.apiService.getCategories()).then((res: any) => {
+            if (res.status === 200) this.categories = res.data.sort(sortArrayByLabelProperty);
+        });
         return this.categories;
+    }
+
+    refreshPage() {
+        window.location.reload();
     }
 
     /* TOAST */

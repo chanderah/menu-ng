@@ -5,6 +5,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { debounceTime, Subscription } from 'rxjs';
 import { Product } from 'src/app/interface/product';
+import { Table } from 'src/app/interface/table';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import SwiperCore, {
@@ -24,6 +25,7 @@ import { SharedService } from '../../service/shared.service';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
 import { PagingInfo } from './../../interface/paging_info';
 import { ApiService } from './../../service/api.service';
+import { OrderService } from './../../service/order.service';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
 
@@ -35,7 +37,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     init: boolean = true;
     subscription!: Subscription;
 
-    param: string;
+    currentMenu: string;
 
     pagingInfo = {} as PagingInfo;
     isLoading: boolean = true;
@@ -59,14 +61,21 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         private route: ActivatedRoute,
         private productService: ProductService,
         private dialogService: DialogService,
+        private orderService: OrderService,
         private formBuilder: FormBuilder,
         private apiService: ApiService
     ) {
         super();
-        this.route.queryParams.subscribe(async ({ menu }) => {
-            this.param = menu || 'root';
+        this.route.queryParams.subscribe((params: any) => {
+            if (!this.isEmpty(params.table)) {
+                const table: Table = { id: params.table };
+                orderService.setCustomerInfo(table);
+                console.log(params.table);
+            }
 
-            if (this.param === 'root') this.initSwiper();
+            this.currentMenu = params.menu || 'root';
+
+            if (this.currentMenu === 'root') this.initSwiper();
             else this.featuredProducts.length = 0;
 
             if (!this.init) {
@@ -117,7 +126,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
             sortField: e?.sortField || 'NAME',
             sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
         };
-        if (this.param === 'root') return this.getActiveProducts();
+        if (this.currentMenu === 'root') return this.getActiveProducts();
         else return this.getActiveProductsByCategoryParam();
     }
 
@@ -132,7 +141,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     }
 
     getActiveProductsByCategoryParam() {
-        this.pagingInfo.field = { column: null, value: this.param };
+        this.pagingInfo.field = { column: null, value: this.currentMenu };
         this.apiService.findActiveProductByCategoryParam(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {

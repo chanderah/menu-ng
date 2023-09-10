@@ -4,6 +4,7 @@ import { Injectable, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, HammerGestureConfig, HammerModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { QrCodeModule } from 'ng-qrcode';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { CartDialogComponent } from './component/dialog/cart-dialog/cart-dialog.component';
@@ -99,14 +100,15 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { EmptyComponent } from './component/demo/empty/empty.component';
 
-import { QRCodeModule } from 'angularx-qrcode';
 import * as Hammer from 'hammerjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SwiperModule } from 'swiper/angular';
 import { LoginComponent } from './component/admin/auth/login/login.component';
 import { RegisterComponent } from './component/admin/auth/register/register.component';
+import { CategoryComponent } from './component/admin/category/category.component';
 import { ProductComponent } from './component/admin/product/product.component';
+import { TableComponent } from './component/admin/table/table.component';
 import { CartComponent } from './component/cart/cart.component';
 import { AccessComponent } from './component/demo/access/access.component';
 import { AppCodeModule } from './component/demo/app-code/app.code.component';
@@ -136,7 +138,6 @@ import { MiscComponent } from './component/demo/misc/misc.component';
 import { NotfoundComponent } from './component/demo/notfound/notfound.component';
 import { OverlaysComponent } from './component/demo/overlays/overlays.component';
 import { PanelsComponent } from './component/demo/panels/panels.component';
-import { TableComponent } from './component/demo/table/table.component';
 import { TimelineComponent } from './component/demo/timeline/timeline.component';
 import { TreeComponent } from './component/demo/tree/tree.component';
 import { CategoryDialogComponent } from './component/dialog/category-dialog/category-dialog.component';
@@ -158,7 +159,6 @@ import { NodeService } from './service/nodeservice';
 import { OrderService } from './service/order.service';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
-
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
     overrides = <any>{
@@ -180,7 +180,6 @@ export class MyHammerConfig extends HammerGestureConfig {
         InvalidStateComponent,
         InputComponent,
         ButtonComponent,
-        TableComponent,
         ListComponent,
         TreeComponent,
         PanelsComponent,
@@ -207,23 +206,23 @@ export class MyHammerConfig extends HammerGestureConfig {
         ErrorComponent,
         NotfoundComponent,
         AccessComponent,
-        /* USER DEFINED */
-        SkeletonComponent,
-        RegisterComponent,
-        LoginComponent,
-        DashboardComponent,
-        CartComponent,
+        /* PIPE */
+        CustomCurrencyPipe,
         /* DIALOG */
         ProductDialogComponent,
         OrderDialogComponent,
         CategoryDialogComponent,
         CartDialogComponent,
+        /* USER */
+        SkeletonComponent,
+        RegisterComponent,
+        LoginComponent,
+        DashboardComponent,
+        CartComponent,
         /* ADMIN */
         ProductComponent,
-        TableComponent,
-
-        /* PIPE */
-        CustomCurrencyPipe
+        CategoryComponent,
+        TableComponent
     ],
     imports: [
         BrowserModule,
@@ -326,7 +325,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         ReactiveFormsModule,
         HammerModule,
         ScrollPanelModule,
-        QRCodeModule
+        QrCodeModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },

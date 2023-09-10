@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'primeng/api';
+import { LazyLoadEvent, TreeNode } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { Product, ProductOptions } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
@@ -10,6 +10,7 @@ import { PagingInfo } from '../../../interface/paging_info';
 import { UploadEvent } from '../../../interface/upload_event';
 import { resizeImg } from '../../../lib/image_resizer';
 import { ApiService } from '../../../service/api.service';
+import { SharedService } from './../../../service/shared.service';
 
 @Component({
     templateUrl: './product.component.html',
@@ -33,8 +34,7 @@ import { ApiService } from '../../../service/api.service';
                 }
             }
         `
-    ],
-    providers: [MessageService, ConfirmationService]
+    ]
 })
 export class ProductComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
@@ -59,13 +59,8 @@ export class ProductComponent extends SharedUtil implements OnInit {
     productForm: FormGroup;
 
     constructor(
-        // private dialogService: DialogService,
-        // private nodeService: NodeService,
-        // private productService: ProductService,
-        // private messageService: MessageService,
-        // private confirmService: ConfirmationService,
-        // private customerService: CustomerService,
         private formBuilder: FormBuilder,
+        private sharedService: SharedService,
         private apiService: ApiService
     ) {
         super();
@@ -96,7 +91,6 @@ export class ProductComponent extends SharedUtil implements OnInit {
     }
 
     getProducts(e?: LazyLoadEvent) {
-        console.log(e);
         this.isLoading = true;
         this.resetProductDialog();
         this.pagingInfo = {
@@ -119,7 +113,6 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
     getCategories() {
         this.isLoading = true;
-        this.resetCategoryDialog();
         this.apiService.getCategories().subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
@@ -180,7 +173,9 @@ export class ProductComponent extends SharedUtil implements OnInit {
     }
 
     openProductOptionsDialog() {
-        if (this.isEmpty(this.selectedProductOptions)) this.selectedProductOptions = this.selectedProduct?.options;
+        if (this.isEmpty(this.selectedProductOptions)) {
+            this.selectedProductOptions = this.selectedProduct?.options;
+        }
         if (this.options().length === 0) this.addOption();
         this.saveProductOptions = false;
         this.showProductOptionsDialog = true;
@@ -225,58 +220,26 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
     async onSubmit() {
         this.isLoading = true;
-        if (this.showProductDialog) await this.submitProduct();
-        else if (this.showCategoryDialog) await this.submitCategory();
-        this.isLoading = false;
-    }
-
-    async submitProduct() {
-        let product: Product = this.productForm.value;
-        if (this.isEmpty(this.selectedProduct)) {
-            this.apiService.createProduct(product).subscribe((res: any) => {
-                if (res.status === 200) {
-                    console.log(res.message);
-                    return this.getProducts();
-                } else alert(res.message);
-            });
-        } else {
-            //edit
-            this.apiService.updateProduct(product).subscribe((res: any) => {
-                if (res.status === 200) {
-                    console.log('success update product');
-                    return this.getProducts();
-                } else alert(res.message);
-            });
+        try {
+            if (this.isEmpty(this.selectedProduct)) {
+                this.apiService.createProduct(this.productForm.value).subscribe((res: any) => {
+                    if (res.status === 200) {
+                        console.log(res.message);
+                        return this.getProducts();
+                    } else alert(res.message);
+                });
+            } else {
+                //edit
+                this.apiService.updateProduct(this.productForm.value).subscribe((res: any) => {
+                    if (res.status === 200) {
+                        console.log('success update product');
+                        return this.getProducts();
+                    } else alert(res.message);
+                });
+            }
+        } finally {
+            this.isLoading = false;
         }
-    }
-
-    async submitCategory() {
-        if (this.isEmpty(this.selectedCategory)) {
-            this.apiService.createCategory(this.categoryForm.value).subscribe((res: any) => {
-                if (res.status === 200) {
-                    console.log('success create category');
-                    this.getCategories();
-                } else {
-                    alert(res.message);
-                }
-            });
-        } else {
-            //edit
-            this.apiService.updateCategory(this.categoryForm.value).subscribe((res: any) => {
-                if (res.status === 200) {
-                    console.log('success update category');
-                    this.getCategories();
-                } else {
-                    alert(res.message);
-                }
-            });
-        }
-    }
-
-    resetCategoryDialog() {
-        this.showCategoryDialog = false;
-        this.selectedCategory = null;
-        this.categoryForm.reset();
     }
 
     resetProductDialog() {
@@ -296,14 +259,12 @@ export class ProductComponent extends SharedUtil implements OnInit {
     onEditProduct() {
         if (this.isEmpty(this.selectedProduct)) return;
         this.isLoading = true;
-        this.showProductDialog = true;
         this.apiService.findProductById(this.selectedProduct).subscribe((res: any) => {
             if (res.status === 200) {
-                console.log(res.data);
+                this.showProductDialog = true;
                 this.setProductForm(res.data);
             } else {
-                this.showProductDialog = false;
-                alert('Failed to get product!');
+                this.sharedService.showError('Failed to get product!');
             }
         });
         this.getCategories();
@@ -326,38 +287,6 @@ export class ProductComponent extends SharedUtil implements OnInit {
         });
     }
 
-    onDeleteCategory() {
-        if (this.isEmpty(this.selectedCategory)) return;
-        this.isLoading = true;
-        this.apiService.deleteCategory(this.categoryForm.value).subscribe((res: any) => {
-            if (res.status === 200) {
-                this.getCategories();
-            } else {
-                alert(res.message);
-            }
-        });
-    }
-
-    onAddCategory() {
-        this.selectedProduct = null;
-        this.resetNode();
-        this.resetCategoryDialog();
-        this.showCategoryDialog = true;
-    }
-
-    onEditCategory() {
-        if (this.isEmpty(this.selectedCategory)) return;
-        this.apiService.findCategoryById(this.jsonParse(this.selectedCategory)).subscribe((res: any) => {
-            if (res.status === 200) {
-                this.categoryForm.patchValue(res.data);
-                this.showCategoryDialog = true;
-            } else {
-                alert('Invalid session!');
-                return this.getCategories();
-            }
-        });
-    }
-
     resetNode() {
         const nodes: TreeNode[] = this.jsonParse(this.categories);
         nodes.forEach((node) => {
@@ -371,9 +300,5 @@ export class ProductComponent extends SharedUtil implements OnInit {
             }
         });
         this.selectedCategory = null;
-    }
-
-    formatCurrency(value: any) {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'IDR' });
     }
 }

@@ -31,19 +31,58 @@ export class AppMenuComponent implements OnInit {
     isDevelopment: boolean = environment.production === false;
     menus: Menu[];
     categories: Category[];
-    static categories: string | number;
 
     constructor(
         public appMain: AppMainComponent,
         public sharedService: SharedService
     ) {}
 
-    getCategories() {
-        return this.categories;
+    ngOnInit() {
+        this.getMenus();
     }
 
-    async ngOnInit() {
+    getMenus() {
         this.getDefaultMenu();
+        this.getDBMenu();
+        if (this.isDevelopment) this.getDemoMenu();
+    }
+
+    getDefaultMenu() {
+        this.menus = [
+            {
+                label: 'Order',
+                // icon: 'pi pi-fw pi-briefcase',
+                items: [
+                    {
+                        icon: 'pi pi-fw pi-check-square',
+                        label: 'Categories',
+                        routerLink: ['/'],
+                        items: [
+                            {
+                                label: 'All',
+                                routerLink: ['/']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Cart',
+                        icon: 'pi pi-fw pi-shopping-cart',
+                        routerLink: ['/cart']
+                    }
+                ]
+            },
+            {
+                label: 'Management',
+                items: [
+                    { label: 'Manage Category', icon: 'pi pi-fw pi-eye', routerLink: ['/category'], badge: 'ADMIN' },
+                    { label: 'Manage Products', icon: 'pi pi-fw pi-eye', routerLink: ['/product'], badge: 'ADMIN' },
+                    { label: 'Manage Tables', icon: 'pi pi-fw pi-eye', routerLink: ['/table'], badge: 'ADMIN' }
+                ]
+            }
+        ];
+    }
+
+    async getDBMenu() {
         this.categories = await this.sharedService.getCategories();
         this.categories.forEach((data: Category) => {
             this.menus[0].items[0].items.push({
@@ -53,7 +92,9 @@ export class AppMenuComponent implements OnInit {
                 queryParams: { menu: data.param }
             });
         });
+    }
 
+    getDemoMenu() {
         const demo = [
             {
                 label: 'UI Components',
@@ -183,41 +224,7 @@ export class AppMenuComponent implements OnInit {
                 ]
             }
         ];
-        if (this.isDevelopment) this.menus = this.menus.concat(demo);
-    }
-
-    getDefaultMenu() {
-        this.menus = [
-            {
-                label: 'Order',
-                // icon: 'pi pi-fw pi-briefcase',
-                items: [
-                    {
-                        icon: 'pi pi-fw pi-check-square',
-                        label: 'Categories',
-                        routerLink: ['/'],
-                        items: [
-                            {
-                                label: 'All',
-                                routerLink: ['/']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Cart',
-                        icon: 'pi pi-fw pi-shopping-cart',
-                        routerLink: ['/cart']
-                    }
-                ]
-            },
-            {
-                label: 'Management',
-                items: [
-                    { label: 'Manage Products', icon: 'pi pi-fw pi-eye', routerLink: ['/product'], badge: 'ADMIN' },
-                    { label: 'Manage Tables', icon: 'pi pi-fw pi-eye', routerLink: ['/table'], badge: 'ADMIN' }
-                ]
-            }
-        ];
+        this.menus = this.menus.concat(demo);
     }
 
     onKeydown(event: KeyboardEvent) {
