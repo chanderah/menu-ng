@@ -69,6 +69,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         }
         this.init = false;
         this.products().patchValue(data);
+        console.log(this.cartForm.value);
     }
 
     increment(productIndex: number) {
@@ -88,7 +89,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     getSidebarStyle() {
         return {
             width: this.app.isDesktop() ? '50vw' : '100vw',
-            height: '95vh',
+            height: 'auto',
             left: this.app.isDesktop() ? 'unset' : 0,
             overflow: 'scroll'
         };

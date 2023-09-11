@@ -60,10 +60,11 @@ export class OrderService extends SharedUtil {
 
     addToCart(product: Product) {
         this.getCart();
+        this.getCustomerInfo();
         this.cart.push(product);
 
-        localStorage.setItem('cart', this.jsonStringify(this.getCart()));
-        localStorage.setItem('customer', this.jsonStringify(this.getCustomerInfo()));
+        localStorage.setItem('cart', this.jsonStringify(this.cart));
+        localStorage.setItem('customer', this.jsonStringify(this.customerInfo));
 
         this.sharedService.showSuccess('Your item is successfully added to cart!');
     }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { debounceTime, Subscription } from 'rxjs';
@@ -59,6 +59,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         public appMain: AppMainComponent,
         public sharedService: SharedService,
         private route: ActivatedRoute,
+        private router: Router,
         private productService: ProductService,
         private dialogService: DialogService,
         private orderService: OrderService,
@@ -70,18 +71,15 @@ export class DashboardComponent extends SharedUtil implements OnInit {
             if (!this.isEmpty(params.table)) {
                 const table: Table = { id: params.table };
                 orderService.setCustomerInfo(table);
-                console.log(params.table);
+
+                router.navigate(['/']);
             }
 
             this.currentMenu = params.menu || 'root';
-
             if (this.currentMenu === 'root') this.initSwiper();
             else this.featuredProducts.length = 0;
 
-            if (!this.init) {
-                // this.filter.reset();
-                this.getProducts();
-            }
+            if (!this.init) this.getProducts();
         });
         //prettier-ignore
         this.filter.get('value').valueChanges.pipe(debounceTime(500)).subscribe(() => this.getProducts())
