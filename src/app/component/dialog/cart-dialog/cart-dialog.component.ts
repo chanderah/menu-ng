@@ -118,8 +118,6 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         this.products().removeAt(productIndex);
         this.orderService.clearCart();
         this.orderService.setCart(this.products().value);
-        // this.orderService.removeFromCart(productIndex);
-        // this.getProductsInCart();
     }
 
     addProduct() {
