@@ -72,6 +72,10 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         console.log(this.products().length);
     }
 
+    onCheckout() {
+        console.log(this.cartForm.value);
+    }
+
     increment(productIndex: number) {
         this.products()
             .at(productIndex)

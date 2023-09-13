@@ -23,6 +23,11 @@
                     <p-scrollPanel
                         formArrayName="products"
                         [style]="{ width: '100%', height: '60vh', overflow: 'scroll' }">
+                        <div
+                            *ngIf="products().length === 0"
+                            class="flex justify-content-center align-items-center w-full h-full">
+                            <p class="text-md">EMPTY</p>
+                        </div>
                         <div *ngFor="let product of products().controls; index as i" [formGroupName]="i" class="my-3">
                             <div class="flex gap-3 align-items-start justify-content-start">
                                 <img
@@ -118,11 +123,11 @@
                     </p-scrollPanel>
                 </div>
 
-                <div class="col-12 flex flex-col gap-3 py-3 h-auto">
+                <div class="col-12 flex flex-col gap-3 py-3 h-auto" *ngIf="products().length > 0">
                     <div
                         class="col flex align-items-center justify-content-between bg-primary px-4"
                         style="height: 3rem; border-radius: 50px"
-                        (click)="insertToCart()">
+                        (click)="onCheckout()">
                         <div>
                             <i class="pi pi-check mr-2"></i>
                             <label class="font-semibold">Checkout</label>
