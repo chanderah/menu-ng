@@ -11,7 +11,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, Observable, of } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
@@ -26,7 +26,6 @@ import { User } from './../interface/user';
     providedIn: 'root'
 })
 export class ApiService extends SharedUtil implements HttpInterceptor {
-    private isDevelopment: boolean = environment.production === false;
     private apiUrl: string = environment.apiUrl;
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
