@@ -59,7 +59,6 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
 
     ngOnInit(): void {
         const data: Product[] = this.orderService.getCart();
-
         for (let i = 0; i < data.length; i++) {
             this.addProduct();
             for (let j = 0; j < data[i].options.length; j++) {
@@ -69,7 +68,6 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         }
         this.init = false;
         this.products().patchValue(data);
-        console.log(this.products().length);
     }
 
     onCheckout() {
