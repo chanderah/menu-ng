@@ -20,12 +20,11 @@
                 <h5 class="category-title mb-4">Your Cart</h5>
 
                 <div class="col-12">
-                    <p-scrollPanel [style]="{ width: '100%', height: '60vh', overflow: 'scroll' }">
-                        <div formArrayName="products">
-                            <div
-                                *ngFor="let product of products().controls; index as i"
-                                [formGroupName]="i"
-                                class="card my-3">
+                    <p-scrollPanel
+                        formArrayName="products"
+                        [style]="{ width: '100%', height: '60vh', overflow: 'scroll' }">
+                        <div *ngFor="let product of products().controls; index as i" [formGroupName]="i" class="my-3">
+                            <div class="flex gap-3 align-items-start justify-content-start">
                                 <img
                                     [alt]="product.value.name"
                                     [src]="
@@ -36,11 +35,46 @@
                                     (load)="isLoading = false"
                                     class="shadow-4 object-fit-cover"
                                     style="border-radius: 1rem"
-                                    width="60px"
-                                    height="60px" />
-                                <span class="text-md font-semibold">{{ i + 1 }}. {{ product.value.name }}</span>
+                                    width="80px"
+                                    height="80px" />
+                                <!-- <div style="display: flex; flex-direction: column"> -->
+                                <div class="flex flex-column align-items-start justify-content-between mt-2">
+                                    <span class="text-md font-semibold">{{ i + 1 }}. {{ product.value.name }}</span>
 
-                                <!-- <div formArrayName="options">
+                                    <div formArrayName="options" class="mt-2">
+                                        <div *ngFor="let option of options(i).controls; index as j" [formGroupName]="j">
+                                            <!-- <p class="text-sm"> <span class="font-semibold">Sugar: </span>Daddy</p> -->
+                                            <p class="text-sm">
+                                                <span class="font-semibold"> {{ option.value.name }}: </span>
+                                                <span class="font-semibold">
+                                                    {{ concatOptionValues(option.value.values) }}
+                                                </span>
+                                            </p>
+                                            <!-- <label>{{ option.value | json }}</label> -->
+                                        </div>
+                                    </div>
+
+                                    <label class="font-semibold text-sm">
+                                        {{ product.value.totalPrice | custom }}
+                                    </label>
+                                    <!-- <span class="text-md">Daddy </span> -->
+                                </div>
+                            </div>
+
+                            <div class="p-inputgroup mt-3">
+                                <span class="p-inputgroup-addon">
+                                    <i class="pi pi-comment" style="line-height: 1.25"></i>
+                                </span>
+                                <input
+                                    pInputText
+                                    type="text"
+                                    placeholder="Leave me a note..."
+                                    formControlName="notes" />
+                            </div>
+
+                            <p-divider></p-divider>
+
+                            <!-- <div formArrayName="options">
                                     <div
                                         *ngFor="let option of options(i).controls; index as j"
                                         [formGroupName]="i"
@@ -80,23 +114,19 @@
                                         </div>
                                     </div>
                                 </div> -->
-                            </div>
                         </div>
                     </p-scrollPanel>
                 </div>
 
-                <div class="col-12 flex flex-col gap-3 py-3">
-                    <button
-                        pButton
-                        icon="pi pi-whatsapp"
-                        class="p-button-sm p-button-outlined p-button-rounded"
-                        (click)="onClickWa()">
-                    </button>
+                <div class="col-12 flex flex-col gap-3 py-3 h-auto">
                     <div
                         class="col flex align-items-center justify-content-between bg-primary px-4"
-                        style="border-radius: 50px"
+                        style="height: 3rem; border-radius: 50px"
                         (click)="insertToCart()">
-                        <label class="font-semibold">+ Add to Cart</label>
+                        <div>
+                            <i class="pi pi-check mr-2"></i>
+                            <label class="font-semibold">Checkout</label>
+                        </div>
                         <label class="font-bold">
                             {{ cartForm.get('totalPrice').value | custom }}
                         </label>

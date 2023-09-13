@@ -5,6 +5,7 @@ import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import { OrderService } from '../../../service/order.service';
+import { ProductOptionValues } from './../../../interface/product';
 import { SharedService } from './../../../service/shared.service';
 
 @Component({
@@ -44,7 +45,6 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
 
                 products.forEach((product) => {
                     let price = product.price;
-                    console.log(price);
                     product?.options?.forEach((option) => {
                         option?.values?.forEach((data) => {
                             if (data?.selected) price += data?.price;
@@ -69,7 +69,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         }
         this.init = false;
         this.products().patchValue(data);
-        console.log(this.cartForm.value);
+        console.log(this.products().length);
     }
 
     increment(productIndex: number) {
@@ -148,6 +148,18 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
                 selected: [true, [Validators.required]]
             })
         );
+    }
+
+    concatOptionValues(productOptionValues: ProductOptionValues[]) {
+        console.log(productOptionValues);
+        console.log(productOptionValues.length);
+        // let values = [];
+        // productOptionValues.forEach((data) => {
+        //     console.log(data);
+        //     values.push(data.value);
+        // });
+        // return values.length === 1 ? values[0] : values.join(', ');
+        return null;
     }
 
     hideDialog() {
