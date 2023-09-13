@@ -78,11 +78,17 @@
                             </div>
 
                             <div class="flex align-items-center justify-content-end gap-3 mt-3">
-                                <button pButton icon="pi pi-trash" class="p-button-text" (click)="decrement(i)">
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-trash"
+                                    class="p-button-text"
+                                    (click)="deleteProduct(i)">
                                 </button>
 
                                 <button
                                     pButton
+                                    pRipple
                                     icon="pi pi-minus"
                                     class="p-button-outlined p-button-rounded"
                                     (click)="decrement(i)">
@@ -91,6 +97,7 @@
                                 <label class="font-bold">{{ product.value.qty }}</label>
                                 <button
                                     pButton
+                                    pRipple
                                     icon="pi pi-plus"
                                     class="p-button-outlined p-button-rounded p-button-qty"
                                     (click)="increment(i)">

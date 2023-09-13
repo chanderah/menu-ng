@@ -58,6 +58,10 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit(): void {
+        this.getProductsInCart();
+    }
+
+    getProductsInCart() {
         const data: Product[] = this.orderService.getCart();
         for (let i = 0; i < data.length; i++) {
             this.addProduct();
@@ -110,7 +114,12 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     }
 
     deleteProduct(productIndex: number) {
+        this.init = true;
         this.products().removeAt(productIndex);
+        this.orderService.clearCart();
+        this.orderService.setCart(this.products().value);
+        // this.orderService.removeFromCart(productIndex);
+        // this.getProductsInCart();
     }
 
     addProduct() {

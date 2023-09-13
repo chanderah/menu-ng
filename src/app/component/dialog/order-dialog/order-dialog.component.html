@@ -71,6 +71,7 @@
                     <div class="flex flex-col align-items-center gap-3">
                         <button
                             pButton
+                            pRipple
                             icon="pi pi-minus"
                             class="p-button-outlined p-button-rounded"
                             [disabled]="orderForm.get('qty').value === 1"
@@ -80,6 +81,7 @@
                         <label class="font-bold">{{ orderForm.get('qty').value }}</label>
                         <button
                             pButton
+                            pRipple
                             icon="pi pi-plus"
                             class="p-button-outlined p-button-rounded p-button-qty"
                             (click)="increment()">
@@ -89,14 +91,16 @@
                 <div class="flex flex-col col-12 gap-3 py-3" style="height: auto; z-index: 10000">
                     <button
                         pButton
+                        pRipple
                         icon="pi pi-whatsapp"
                         class="p-button-outlined p-button-rounded"
                         (click)="onClickWa()">
                     </button>
                     <div
+                        pRipple
                         class="col flex align-items-center justify-content-between bg-primary px-4"
                         style="border-radius: 50px"
-                        (click)="insertToCart()">
+                        (click)="onAddToCart()">
                         <label class="font-semibold">+ Add to Cart</label>
                         <label class="font-bold">
                             {{ totalPrice | custom }}

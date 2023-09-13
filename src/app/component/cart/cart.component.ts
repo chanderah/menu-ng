@@ -19,9 +19,4 @@ export class CartComponent implements OnInit {
         if (data) this.cart = data;
         else this.cart.length = 0;
     }
-
-    onClear() {
-        this.orderService.clear();
-        this.initData();
-    }
 }

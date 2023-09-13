@@ -50,6 +50,10 @@ export class OrderService extends SharedUtil {
         localStorage.setItem('customer', this.jsonStringify(data));
     }
 
+    clearCart() {
+        localStorage.removeItem('cart');
+    }
+
     getCart(): Product[] {
         const data = this.jsonParse(localStorage.getItem('cart'));
         if (!this.isEmpty(data)) {
@@ -58,9 +62,15 @@ export class OrderService extends SharedUtil {
         return this.cart;
     }
 
+    setCart(products: Product[]) {
+        localStorage.setItem('cart', this.jsonStringify(products));
+    }
+
     addToCart(product: Product) {
         this.getCart();
         this.getCustomerInfo();
+
+        product = this.filterProductOptions(product);
         this.cart.push(product);
 
         localStorage.setItem('cart', this.jsonStringify(this.cart));
@@ -69,7 +79,24 @@ export class OrderService extends SharedUtil {
         this.sharedService.showSuccess('Your item is successfully added to cart!');
     }
 
-    clear() {
-        localStorage.removeItem('cart');
+    removeFromCart(productIndex: number) {
+        this.getCart();
+        this.cart.splice(productIndex, 1);
     }
+
+    filterProductOptions(product: Product) {
+        product.options.forEach((option) => {
+            option.values.forEach((value, i) => {
+                if (!value.selected) {
+                    option.values.splice(i, 1);
+                }
+            });
+        });
+        console.log(product);
+        return product;
+    }
+
+    // calculateTotalPrice(product: Product) {
+    //     return product;
+    // }
 }

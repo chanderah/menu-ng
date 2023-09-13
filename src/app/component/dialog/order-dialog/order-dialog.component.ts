@@ -129,13 +129,33 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         window.open(url + capitalize(this.selectedProduct.name) + '.', '_blank');
     }
 
-    insertToCart() {
+    onAddToCart() {
+        if (!this.validate(this.orderForm.value)) return;
         // this.sharedService.showConfirm().then((res) => {
         //     if (res) {
-        this.orderService.addToCart(this.orderForm.value);
-        this.hideDialog();
+        // this.orderService.addToCart(this.orderForm.value);
+        // this.hideDialog();
         // }
         // });
+
+        this.orderService.addToCart(this.orderForm.value);
+        this.hideDialog();
+    }
+
+    validate(product: Product) {
+        let result: boolean = true;
+        product.options.forEach((option) => {
+            let selectedOption = 0;
+            option.values.forEach((value) => {
+                if (value.selected) selectedOption++;
+            });
+
+            if (option.required && selectedOption === 0) {
+                this.sharedService.showError('Please select the required variant.');
+                result = false;
+            }
+        });
+        return result;
     }
 
     getSidebarStyle() {
