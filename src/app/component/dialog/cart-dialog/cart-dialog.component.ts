@@ -59,6 +59,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
 
     ngOnInit(): void {
         this.getProductsInCart();
+        console.log(this.cartForm.value);
     }
 
     getProductsInCart() {
@@ -116,8 +117,8 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     deleteProduct(productIndex: number) {
         this.init = true;
         this.products().removeAt(productIndex);
-        this.orderService.clearCart();
         this.orderService.setCart(this.products().value);
+        if (this.products().length === 0) this.hideDialog();
     }
 
     addProduct() {
@@ -131,6 +132,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
                 description: ['', []],
                 price: [0, [Validators.required]],
                 options: this.formBuilder.array([]),
+                totalPrice: [0, [Validators.required]],
 
                 notes: ['', []],
                 qty: [0, []]
@@ -154,21 +156,18 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
             this.formBuilder.group({
                 value: ['', [Validators.required]],
                 price: [null, [Validators.required]],
-                selected: [true, [Validators.required]]
+                selected: [false, [Validators.required]]
             })
         );
     }
 
     concatOptionValues(productOptionValues: ProductOptionValues[]) {
-        console.log(productOptionValues);
-        console.log(productOptionValues.length);
-        // let values = [];
-        // productOptionValues.forEach((data) => {
-        //     console.log(data);
-        //     values.push(data.value);
-        // });
-        // return values.length === 1 ? values[0] : values.join(', ');
-        return null;
+        if (productOptionValues.length === 1) return productOptionValues[0].value.toString();
+        let value: string = productOptionValues[0].value;
+        for (let i = 1; i < productOptionValues.length; i++) {
+            value.concat(', ' + productOptionValues[i].value);
+        }
+        return value;
     }
 
     hideDialog() {

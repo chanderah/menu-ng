@@ -69,9 +69,7 @@ export class OrderService extends SharedUtil {
     addToCart(product: Product) {
         this.getCart();
         this.getCustomerInfo();
-
-        product = this.filterProductOptions(product);
-        this.cart.push(product);
+        this.cart.push(this.filterProductOptions(product));
 
         localStorage.setItem('cart', this.jsonStringify(this.cart));
         localStorage.setItem('customer', this.jsonStringify(this.customerInfo));
@@ -79,24 +77,15 @@ export class OrderService extends SharedUtil {
         this.sharedService.showSuccess('Your item is successfully added to cart!');
     }
 
-    removeFromCart(productIndex: number) {
-        this.getCart();
-        this.cart.splice(productIndex, 1);
-    }
-
     filterProductOptions(product: Product) {
-        product.options.forEach((option) => {
-            option.values.forEach((value, i) => {
-                if (!value.selected) {
-                    option.values.splice(i, 1);
+        for (let i = product.options.length - 1; i >= 0; i--) {
+            for (let j = product.options[i].values.length - 1; j >= 0; j--) {
+                if (!product.options[i].values[j].selected) {
+                    product.options[i].values.splice(j, 1);
                 }
-            });
-        });
-        console.log(product);
+            }
+            if (product.options[i].values.length === 0) product.options.splice(i, 1);
+        }
         return product;
     }
-
-    // calculateTotalPrice(product: Product) {
-    //     return product;
-    // }
 }

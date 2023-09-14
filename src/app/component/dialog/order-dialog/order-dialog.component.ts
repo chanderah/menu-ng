@@ -131,14 +131,10 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
 
     onAddToCart() {
         if (!this.validate(this.orderForm.value)) return;
-        // this.sharedService.showConfirm().then((res) => {
-        //     if (res) {
-        // this.orderService.addToCart(this.orderForm.value);
-        // this.hideDialog();
-        // }
-        // });
-
-        this.orderService.addToCart(this.orderForm.value);
+        this.orderService.addToCart({
+            ...this.orderForm.value,
+            totalPrice: this.totalPrice
+        });
         this.hideDialog();
     }
 

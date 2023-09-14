@@ -44,14 +44,17 @@
                                     height="80px" />
                                 <!-- <div style="display: flex; flex-direction: column"> -->
                                 <div class="flex flex-column align-items-start justify-content-between mt-2">
-                                    <span class="text-md font-semibold">{{ i + 1 }}. {{ product.value.name }}</span>
+                                    <span class="text-md font-semibold text-capitalize">
+                                        {{ i + 1 }}. {{ product.value.name }}
+                                    </span>
 
-                                    <div formArrayName="options" class="mt-2">
+                                    <div formArrayName="options" class="mt-2 mb-1">
                                         <div *ngFor="let option of options(i).controls; index as j" [formGroupName]="j">
-                                            <!-- <p class="text-sm"> <span class="font-semibold">Sugar: </span>Daddy</p> -->
                                             <p class="text-sm">
-                                                <span class="font-semibold"> {{ option.value.name }}: </span>
-                                                <span class="font-semibold">
+                                                <span class="font-semibold text-capitalize">
+                                                    {{ option.value.name }}:
+                                                </span>
+                                                <span class="text-capitalize">
                                                     {{ concatOptionValues(option.value.values) }}
                                                 </span>
                                             </p>
