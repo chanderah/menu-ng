@@ -6,6 +6,7 @@ import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import { OrderService } from '../../../service/order.service';
 import { ProductOptionValues } from './../../../interface/product';
+import { disableBodyScroll } from './../../../lib/shared.util';
 import { SharedService } from './../../../service/shared.service';
 
 @Component({
@@ -58,7 +59,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit(): void {
-        // disableBodyScroll();
+        disableBodyScroll();
         this.getProductsInCart();
     }
 
@@ -87,10 +88,17 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     }
 
     decrement(productIndex: number) {
-        this.products()
-            .at(productIndex)
-            .get('qty')
-            .setValue(this.products().at(productIndex).get('qty').value - 1);
+        let currentValue = this.products().at(productIndex).get('qty').value;
+        if (currentValue > 1) {
+            this.products()
+                .at(productIndex)
+                .get('qty')
+                .setValue(currentValue - 1);
+        } else {
+            this.sharedService.showConfirm('Are you sure to remove this item from cart?').then((res) => {
+                if (res) return this.deleteProduct(productIndex);
+            });
+        }
     }
 
     getSidebarStyle() {
@@ -118,6 +126,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         this.init = true;
         this.products().removeAt(productIndex);
         this.orderService.setCart(this.products().value);
+        console.log([this.products().value]);
         if (this.products().length === 0) this.hideDialog();
     }
 
