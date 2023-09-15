@@ -5,7 +5,7 @@ import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import { OrderService } from '../../../service/order.service';
 import { Product } from './../../../interface/product';
-import { capitalize, disableBodyScroll } from './../../../lib/shared.util';
+import { capitalize } from './../../../lib/shared.util';
 import { SharedService } from './../../../service/shared.service';
 
 @Component({
@@ -68,7 +68,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit(): void {
-        disableBodyScroll();
+        // disableBodyScroll();
         for (let i = 0; i < this.selectedProduct?.options.length; i++) {
             this.addOption();
             this.selectedProduct.options[i]?.values.forEach(() => this.addOptionValues(i));

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { isEmpty, jsonParse } from '../lib/shared.util';
-import { disableBodyScroll } from './../lib/shared.util';
 import { AppMainComponent } from './app.main.component';
 
 @Component({
@@ -20,7 +19,7 @@ export class AppTopBarComponent {
     }
 
     onClickCart() {
-        disableBodyScroll();
+        // disableBodyScroll();
         this.appMain.showCartDialog = true;
     }
 }
