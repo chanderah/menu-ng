@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
 import { AppConfig } from '../interface/appconfig';
 import { AppComponent } from './../app.component';
+import { enableBodyScroll } from './../lib/shared.util';
 import { ApiService } from './../service/api.service';
 
 @Component({
@@ -62,6 +63,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     onShowCartDialogChange(bool: boolean) {
+        if (bool === false) enableBodyScroll();
         this.showCartDialog = bool;
     }
 
@@ -143,7 +145,6 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     isMobile() {
-        console.log('yes');
         return window.innerWidth < 1024;
     }
 

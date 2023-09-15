@@ -40,6 +40,15 @@ export default class SharedUtil {
     };
 }
 
+export const disableBodyScroll = () => {
+    document.body.classList.add('block-scroll');
+};
+
+export const enableBodyScroll = () => {
+    console.log('called');
+    document.body.classList.remove('block-scroll');
+};
+
 export const trim = (data: string) => {
     return data.trim();
 };

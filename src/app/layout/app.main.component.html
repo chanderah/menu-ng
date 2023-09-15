@@ -24,5 +24,9 @@
     <!-- <app-config></app-config> -->
     <div *ngIf="menuActiveMobile" class="layout-mask p-component-overlay"></div>
 </div>
-<app-cart-dialog *ngIf="showCartDialog" (onChange)="onShowCartDialogChange($event)" [showDialog]="showCartDialog">
+<!-- prettier-ignore -->
+<app-cart-dialog
+    *ngIf="showCartDialog"
+    (onChange)="onShowCartDialogChange($event)"
+    [showDialog]="showCartDialog">
 </app-cart-dialog>

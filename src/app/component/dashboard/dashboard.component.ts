@@ -24,6 +24,7 @@ import { ProductService } from '../../service/productservice';
 import { SharedService } from '../../service/shared.service';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
 import { PagingInfo } from './../../interface/paging_info';
+import { enableBodyScroll } from './../../lib/shared.util';
 import { ApiService } from './../../service/api.service';
 import { OrderService } from './../../service/order.service';
 
@@ -150,6 +151,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     }
 
     onShowOrderDialogChange(bool: boolean) {
+        if (bool === false) enableBodyScroll();
         this.showOrderDialog = bool;
     }
 

@@ -6,6 +6,7 @@ import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import { OrderService } from '../../../service/order.service';
 import { ProductOptionValues } from './../../../interface/product';
+import { disableBodyScroll } from './../../../lib/shared.util';
 import { SharedService } from './../../../service/shared.service';
 
 @Component({
@@ -58,8 +59,8 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit(): void {
+        disableBodyScroll();
         this.getProductsInCart();
-        console.log(this.cartForm.value);
     }
 
     getProductsInCart() {
