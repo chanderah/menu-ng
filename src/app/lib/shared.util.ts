@@ -2,7 +2,8 @@ import { environment } from './../../environments/environment.prod';
 
 export default class SharedUtil {
     public env = environment;
-    public isDevelopment: boolean = environment.production === false;
+    // public isDevelopment: boolean = environment.production === false;
+    public isDevelopment = true;
 
     constructor() {}
 
