@@ -17,11 +17,6 @@
     </div>
     <div class="layout-main-container">
         <div class="layout-main">
-            <app-cart-dialog
-                *ngIf="showCartDialog"
-                (onChange)="onShowCartDialogChange($event)"
-                [showDialog]="showCartDialog">
-            </app-cart-dialog>
             <router-outlet></router-outlet>
         </div>
         <app-footer></app-footer>
@@ -29,3 +24,5 @@
     <!-- <app-config></app-config> -->
     <div *ngIf="menuActiveMobile" class="layout-mask p-component-overlay"></div>
 </div>
+<app-cart-dialog *ngIf="showCartDialog" (onChange)="onShowCartDialogChange($event)" [showDialog]="showCartDialog">
+</app-cart-dialog>
