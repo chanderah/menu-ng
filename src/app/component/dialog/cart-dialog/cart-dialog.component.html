@@ -9,7 +9,9 @@
         [showCloseIcon]="true"
         [closeOnEscape]="true"
         [style]="getSidebarStyle()"
-        [baseZIndex]="1000">
+        [autoZIndex]="true"
+        [modal]="true">
+        <!-- [baseZIndex]="1000" -->
         <ng-template pTemplate="header">
             <div class="flex justify-content-center w-full" (swipedown)="hideDialog()">
                 <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
