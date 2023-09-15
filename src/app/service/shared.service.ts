@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 import { lastValueFrom } from 'rxjs';
+import { NotificationDialogComponent } from './../component/dialog/notification/notification-dialog.component';
 import { sortArrayByLabelProperty } from './../lib/shared.util';
 import { ApiService } from './api.service';
 
@@ -12,8 +14,9 @@ export class SharedService {
 
     constructor(
         public messageService: MessageService,
+        public dialogService: DialogService,
         public confirmationService: ConfirmationService,
-        private apiService: ApiService
+        private apiService: ApiService // private notificationDialogComponent: NotificationDialogComponent
     ) {
         // super();
     }
@@ -52,6 +55,22 @@ export class SharedService {
 
     showError(message: string) {
         this.showToast('error', message, 'Failed');
+    }
+
+    showNotification(message: string) {
+        this.dialogService
+            .open(NotificationDialogComponent, {
+                // header: 'Success!',
+                showHeader: false,
+                width: '70%',
+                modal: true,
+                closeOnEscape: true,
+                dismissableMask: true,
+                data: message
+            })
+            .onClose.subscribe((res) => {
+                return res;
+            });
     }
 
     showConfirm(message: string = 'Are you sure to proceed?') {

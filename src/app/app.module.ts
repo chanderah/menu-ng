@@ -141,6 +141,7 @@ import { PanelsComponent } from './component/demo/panels/panels.component';
 import { TimelineComponent } from './component/demo/timeline/timeline.component';
 import { TreeComponent } from './component/demo/tree/tree.component';
 import { CategoryDialogComponent } from './component/dialog/category-dialog/category-dialog.component';
+import { NotificationDialogComponent } from './component/dialog/notification/notification-dialog.component';
 import { OrderDialogComponent } from './component/dialog/order-dialog/order-dialog.component';
 import { ProductDialogComponent } from './component/dialog/product-dialog/product-dialog.component';
 import { AppFooterComponent } from './layout/app.footer.component';
@@ -209,6 +210,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         /* PIPE */
         CustomCurrencyPipe,
         /* DIALOG */
+        NotificationDialogComponent,
         ProductDialogComponent,
         OrderDialogComponent,
         CategoryDialogComponent,

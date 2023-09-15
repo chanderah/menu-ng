@@ -1,5 +1,5 @@
 <div class="border-round border-1 surface-border p-4 mt-3" *ngIf="isLoading">
-    <div class="flex mb-3">
+    <!-- <div class="flex mb-3">
         <p-skeleton shape="circle" size="4rem" styleClass="mr-2"></p-skeleton>
         <div>
             <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
@@ -11,7 +11,10 @@
     <div class="flex justify-content-between mt-3">
         <p-skeleton width="4rem" height="2rem"></p-skeleton>
         <p-skeleton width="4rem" height="2rem"></p-skeleton>
-    </div>
+    </div> -->
+    <p-skeleton width="25rem" height="2rem" styleClass="p-mb-3" borderRadius="20px"> </p-skeleton>
+    <p-skeleton width="15rem" height="3rem" styleClass="p-mb-3" borderRadius="20px"> </p-skeleton>
+    <p-skeleton width="5rem" borderRadius="20px"> </p-skeleton>
 </div>
 <div class="text-center" [ngStyle]="{ visibility: isLoading ? 'hidden' : '' }">
     <img

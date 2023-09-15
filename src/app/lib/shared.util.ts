@@ -45,7 +45,6 @@ export const disableBodyScroll = () => {
 };
 
 export const enableBodyScroll = () => {
-    console.log('called');
     document.body.classList.remove('block-scroll');
 };
 
