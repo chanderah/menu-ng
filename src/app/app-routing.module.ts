@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { LoginComponent } from './component/admin/auth/login/login.component';
 import { RegisterComponent } from './component/admin/auth/register/register.component';
 import { CategoryComponent } from './component/admin/category/category.component';
+import { OrderComponent } from './component/admin/order/order.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
 import { CartComponent } from './component/cart/cart.component';
@@ -42,6 +43,7 @@ import { AppMainComponent } from './layout/app.main.component';
                     component: AppMainComponent,
                     children: [
                         { path: '', component: DashboardComponent },
+                        { path: 'order', component: OrderComponent },
                         { path: 'product', component: ProductComponent },
                         { path: 'category', component: CategoryComponent },
                         { path: 'table', component: TableComponent },

@@ -160,6 +160,7 @@ import { NodeService } from './service/nodeservice';
 import { OrderService } from './service/order.service';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
+import { OrderComponent } from './component/admin/order/order.component';
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
     overrides = <any>{
@@ -224,7 +225,8 @@ export class MyHammerConfig extends HammerGestureConfig {
         /* ADMIN */
         ProductComponent,
         CategoryComponent,
-        TableComponent
+        TableComponent,
+        OrderComponent
     ],
     imports: [
         BrowserModule,

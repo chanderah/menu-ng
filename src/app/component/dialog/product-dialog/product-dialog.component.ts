@@ -1,14 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Product } from 'src/app/interface/product';
 import SharedUtil from 'src/app/lib/shared.util';
-import { environment } from './../../../../environments/environment';
 
 @Component({
     templateUrl: './product-dialog.component.html',
-    styleUrls: ['../../../../assets/user.styles.scss']
+    styleUrls: ['../../../../assets/user.styles.scss'],
+    styles: [
+        `
+            .p-dialog-content {
+                border-bottom-left-radius: 6px;
+                border-bottom-right-radius: 6px;
+            }
+        `
+    ]
 })
-export class ProductDialogComponent extends SharedUtil implements OnInit {
+export class ProductDialogComponent extends SharedUtil implements OnInit, AfterViewInit {
     isLoading: boolean = true;
     product!: Product;
 
@@ -21,6 +28,10 @@ export class ProductDialogComponent extends SharedUtil implements OnInit {
 
     ngOnInit() {
         this.product = this.config.data;
+    }
+
+    ngAfterViewInit() {
+        document.getElementsByClassName('p-dialog-content')[0].className += ' bottom-radius';
     }
 
     addToCart(data: Product) {
