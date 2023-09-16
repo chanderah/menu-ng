@@ -50,7 +50,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
             options: this.formBuilder.array([]),
 
             notes: ['', []],
-            qty: [0, []]
+            quantity: [0, []]
         });
 
         this.orderForm.valueChanges.subscribe((product: Product) => {
@@ -62,7 +62,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
                         if (data.selected) price += data.price;
                     });
                 });
-                this.totalPrice = price * product.qty;
+                this.totalPrice = price * product.quantity;
             }
         });
     }
@@ -77,7 +77,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         console.log(this.orderForm.value);
 
         this.init = false;
-        this.orderForm.get('qty').setValue(1);
+        this.orderForm.get('quantity').setValue(1);
     }
 
     onClickOptionValuesRow(optionIndex: number, optionValuesIndex: number) {
@@ -117,11 +117,11 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     }
 
     increment() {
-        this.orderForm.get('qty').setValue(this.orderForm.get('qty').value + 1);
+        this.orderForm.get('quantity').setValue(this.orderForm.get('quantity').value + 1);
     }
 
     decrement() {
-        this.orderForm.get('qty').setValue(this.orderForm.get('qty').value - 1);
+        this.orderForm.get('quantity').setValue(this.orderForm.get('quantity').value - 1);
     }
 
     onClickWa() {

@@ -17,7 +17,7 @@ export interface Product {
     totalPrice?: number;
     optionsDetails?: string;
     notes?: string;
-    qty?: number;
+    quantity?: number;
 }
 
 export interface ProductOptions {

@@ -76,16 +76,16 @@
                             pRipple
                             icon="pi pi-minus"
                             class="p-button-outlined p-button-rounded"
-                            [disabled]="orderForm.get('qty').value === 1"
+                            [disabled]="orderForm.get('quantity').value === 1"
                             (click)="decrement()">
                         </button>
 
-                        <label class="font-bold">{{ orderForm.get('qty').value }}</label>
+                        <label class="font-bold">{{ orderForm.get('quantity').value }}</label>
                         <button
                             pButton
                             pRipple
                             icon="pi pi-plus"
-                            class="p-button-outlined p-button-rounded p-button-qty"
+                            class="p-button-outlined p-button-rounded p-button-quantity"
                             (click)="increment()">
                         </button>
                     </div>

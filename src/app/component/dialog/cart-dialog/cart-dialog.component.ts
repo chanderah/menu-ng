@@ -54,7 +54,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
                             if (data?.selected) price += data?.price;
                         });
                     });
-                    totalPrice += price * product.qty;
+                    totalPrice += price * product.quantity;
                 });
                 this.cartForm.get('totalPrice').setValue(totalPrice);
             }
@@ -100,16 +100,16 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     increment(productIndex: number) {
         this.products()
             .at(productIndex)
-            .get('qty')
-            .setValue(this.products().at(productIndex).get('qty').value + 1);
+            .get('quantity')
+            .setValue(this.products().at(productIndex).get('quantity').value + 1);
     }
 
     decrement(productIndex: number) {
-        let currentValue = this.products().at(productIndex).get('qty').value;
+        let currentValue = this.products().at(productIndex).get('quantity').value;
         if (currentValue > 1) {
             this.products()
                 .at(productIndex)
-                .get('qty')
+                .get('quantity')
                 .setValue(currentValue - 1);
         } else {
             this.sharedService.showConfirm('Are you sure to remove this item from cart?').then((res) => {
@@ -161,7 +161,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
                 totalPrice: [0, [Validators.required]],
 
                 notes: ['', []],
-                qty: [0, []]
+                quantity: [0, []]
             })
         );
     }

@@ -1,26 +1,23 @@
 export interface ProductOrder {
     id?: string;
+    name?: string;
     price?: number;
-    quantity?: number;
     image?: string;
 
-    options?: ProductOptions[];
+    options?: ProductOrderOptions[];
 
     //for order
-    totalPrice?: number;
+    quantity?: number;
     notes?: string;
-    qty?: number;
+    totalPrice?: number;
 }
 
-export interface ProductOptions {
+export interface ProductOrderOptions {
     name: string;
-    multiple: boolean;
-    required: boolean;
-
-    values: ProductOptionValues[];
+    values: ProductOrderOptionValues[];
 }
 
-export interface ProductOptionValues {
+export interface ProductOrderOptionValues {
     value: string;
     price: number;
     selected?: boolean;
