@@ -58,7 +58,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
                 this.apiService.createCategory(this.categoryForm.value).subscribe((res: any) => {
                     if (res.status === 200) {
                         this.getCategories();
-                        this.sharedService.showSuccess('Please reload the page to see the changes.');
+                        this.sharedService.successToast('Please reload the page to see the changes.');
                     } else {
                         alert(res.message);
                     }
@@ -67,7 +67,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
                 this.apiService.updateCategory(this.categoryForm.value).subscribe((res: any) => {
                     if (res.status === 200) {
                         this.getCategories();
-                        this.sharedService.showSuccess('Please reload the page to see the changes.');
+                        this.sharedService.successToast('Please reload the page to see the changes.');
                     } else {
                         alert(res.message);
                     }

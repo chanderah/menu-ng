@@ -7,6 +7,7 @@ import SharedUtil from 'src/app/lib/shared.util';
 import { OrderService } from '../../../service/order.service';
 import { ProductOptionValues } from './../../../interface/product';
 import { disableBodyScroll } from './../../../lib/shared.util';
+import { ApiService } from './../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     @Input() showDialog: boolean;
 
     init: boolean = true;
+    isLoading: boolean = true;
 
     cartForm: FormGroup;
 
@@ -27,7 +29,8 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         private router: Router,
         private formBuilder: FormBuilder,
         private orderService: OrderService,
-        private sharedService: SharedService
+        private sharedService: SharedService,
+        private apiService: ApiService
     ) {
         super();
 
@@ -61,6 +64,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     ngOnInit(): void {
         disableBodyScroll();
         this.getProductsInCart();
+        console.log(this.cartForm.value);
     }
 
     getProductsInCart() {
@@ -69,7 +73,9 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
             this.addProduct();
             for (let j = 0; j < data[i].options.length; j++) {
                 this.addOption(i);
-                data[i].options.forEach(() => this.addOptionValues(i, j));
+                for (let k = 0; k < data[i].options[j].values.length; k++) {
+                    this.addOptionValues(i, j);
+                }
             }
         }
         this.init = false;
@@ -77,7 +83,18 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     }
 
     onCheckout() {
-        console.log(this.cartForm.value);
+        this.isLoading = true;
+        this.orderService.createOrder(this.cartForm.value).then((res: any) => {
+            this.isLoading = false;
+            if (res.status === 200) {
+                this.showDialog = false;
+                this.sharedService.showNotification(
+                    'Order is placed! Please kindly wait while we are processing your request! :)'
+                );
+            } else {
+                this.sharedService.showErrorNotification();
+            }
+        });
     }
 
     increment(productIndex: number) {

@@ -264,7 +264,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
                 this.showProductDialog = true;
                 this.setProductForm(res.data);
             } else {
-                this.sharedService.showError('Failed to get product!');
+                this.sharedService.errorToast('Failed to get product!');
             }
         });
         this.getCategories();
@@ -284,8 +284,8 @@ export class ProductComponent extends SharedUtil implements OnInit {
                     this.isLoading = false;
                     if (res.status === 200) {
                         this.getProducts();
-                        this.sharedService.showSuccess('Product is deleted!');
-                    } else this.sharedService.showError('Failed to delete the product.');
+                        this.sharedService.successToast('Product is deleted!');
+                    } else this.sharedService.errorToast('Failed to delete the product.');
                 });
             }
         });

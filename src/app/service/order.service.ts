@@ -25,7 +25,7 @@ export class OrderService extends SharedUtil {
         super();
     }
 
-    getIssuedOrders(): Order {
+    getOrders(): Order {
         const data = this.jsonParse(localStorage.getItem('order'));
         if (!this.isEmpty(data)) this.order = data;
         return this.order;
@@ -36,6 +36,26 @@ export class OrderService extends SharedUtil {
         const data = this.jsonParse(localStorage.getItem('order'));
         if (!this.isEmpty(data)) this.order = data;
         return this.order;
+    }
+
+    setMyOrders(order: Order) {
+        localStorage.setItem('order', this.jsonStringify(order));
+    }
+
+    createOrder(order: Order) {
+        this.getCustomerInfo();
+
+        order = {
+            ...order,
+            tableId: this.customerInfo.tableId,
+            createdAt: new Date()
+        };
+        this.setCart(order.products);
+        this.setMyOrders(order);
+
+        return new Promise((resolve) => {
+            this.apiService.createOrder(order).subscribe((res: any) => resolve(res));
+        });
     }
 
     getCustomerInfo(): CustomerInfo {
@@ -73,12 +93,13 @@ export class OrderService extends SharedUtil {
         localStorage.setItem('cart', this.jsonStringify(this.cart));
         localStorage.setItem('customer', this.jsonStringify(this.customerInfo));
 
-        this.sharedService.showSuccess('Your item is successfully added to cart!');
+        // this.sharedService.successToast('Your item is successfully added to cart!');
         // this.app.showCartDialog();
-        // this.sharedService.showNotification('udah yaa!!');
+        this.sharedService.showNotification('The item is successfully added to cart!');
     }
 
     filterProductOptions(product: Product) {
+        console.log(product);
         for (let i = product.options.length - 1; i >= 0; i--) {
             for (let j = product.options[i].values.length - 1; j >= 0; j--) {
                 if (!product.options[i].values[j].selected) {
@@ -87,6 +108,7 @@ export class OrderService extends SharedUtil {
             }
             if (product.options[i].values.length === 0) product.options.splice(i, 1);
         }
+        console.log(product);
         return product;
     }
 }

@@ -148,7 +148,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
             });
 
             if (option.required && selectedOption === 0) {
-                this.sharedService.showError('Please select the required variant.');
+                this.sharedService.errorToast('Please select the required variant.');
                 result = false;
             }
         });

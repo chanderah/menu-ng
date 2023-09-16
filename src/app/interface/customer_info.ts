@@ -1,6 +1,6 @@
 export interface CustomerInfo {
     name?: string;
     orderId?: number;
-    tableId?: string;
+    tableId?: number;
     phone?: number;
 }

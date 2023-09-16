@@ -157,9 +157,11 @@
 
                 <div class="col-12 flex flex-col gap-3 py-3 h-auto" *ngIf="products().length > 0">
                     <div
+                        pRipple
                         class="col flex align-items-center justify-content-between bg-primary px-4"
                         style="height: 3rem; border-radius: 50px"
-                        (click)="onCheckout()">
+                        (click)="onCheckout()"
+                        [disabled]="isLoading">
                         <div>
                             <i class="pi pi-check mr-2 font-bold"></i>
                             <label class="font-bold">Checkout</label>

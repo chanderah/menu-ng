@@ -2,7 +2,7 @@ import { Product } from 'src/app/interface/product';
 
 export interface Order {
     id?: number;
-    tableId: string;
+    tableId: number;
     totalPrice: number;
     createdAt: Date;
 

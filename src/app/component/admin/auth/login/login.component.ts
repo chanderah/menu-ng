@@ -46,8 +46,8 @@ export class LoginComponent extends SharedUtil implements OnInit {
             if (res.status === 200) {
                 localStorage.setItem('user', this.jsonStringify(res.data));
                 this.router.navigate(['/']);
-                this.sharedService.showSuccess('Login success!');
-            } else this.sharedService.showError('Failed to authorize the user!');
+                this.sharedService.successToast('Login success!');
+            } else this.sharedService.errorToast('Failed to authorize the user!');
         });
     }
 }

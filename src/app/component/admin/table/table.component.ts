@@ -82,7 +82,7 @@ export class TableComponent extends SharedUtil implements OnInit {
                 this.tables = res.data;
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
             } else {
-                this.sharedService.showError('Failed to get Tables data.');
+                this.sharedService.errorToast('Failed to get Tables data.');
             }
         });
     }
@@ -94,18 +94,18 @@ export class TableComponent extends SharedUtil implements OnInit {
                 this.apiService.createTable(this.tableForm.value).subscribe((res: any) => {
                     if (res.status === 200) {
                         this.getTables();
-                        this.sharedService.showSuccess('Success!');
+                        this.sharedService.successToast('Success!');
                     } else {
-                        this.sharedService.showError('Failed to create.');
+                        this.sharedService.errorToast('Failed to create.');
                     }
                 });
             } else {
                 this.apiService.updateTable(this.tableForm.value).subscribe((res: any) => {
                     if (res.status === 200) {
                         this.getTables();
-                        this.sharedService.showSuccess('Success!');
+                        this.sharedService.successToast('Success!');
                     } else {
-                        this.sharedService.showError('Failed to create.');
+                        this.sharedService.errorToast('Failed to create.');
                     }
                 });
             }

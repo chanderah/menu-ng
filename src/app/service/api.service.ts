@@ -11,13 +11,14 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, catchError, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
 import SharedUtil from '../lib/shared.util';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
+import { Order } from './../interface/order';
 import { PagingInfo } from './../interface/paging_info';
 import { Table } from './../interface/table';
 import { User } from './../interface/user';
@@ -192,6 +193,10 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
 
     getOrderById(orderId: number) {
         return this.httpClient.post('/order/findById', { orderId: orderId });
+    }
+
+    createOrder(order: Order) {
+        return this.httpClient.post('/order/create', order);
     }
 
     updateOrder(orderId: number) {

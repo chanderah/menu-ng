@@ -41,36 +41,43 @@ export class SharedService {
         this.messageService.add({ severity, summary, detail });
     }
 
-    showInfo(message: string) {
+    infoToast(message: string) {
         this.showToast('info', message, 'Information');
     }
 
-    showSuccess(message: string) {
+    successToast(message: string) {
         this.showToast('success', message);
     }
 
-    showWarn(message: string) {
+    warnToast(message: string) {
         this.showToast('warn', message, 'Warn');
     }
 
-    showError(message: string) {
+    errorToast(message: string) {
         this.showToast('error', message, 'Failed');
     }
 
-    showNotification(message: string) {
+    showNotification(message: string, icon?: string, timeout?: number) {
         this.dialogService
             .open(NotificationDialogComponent, {
-                // header: 'Success!',
                 showHeader: false,
-                width: '70%',
+                width: 'auto',
                 modal: true,
                 closeOnEscape: true,
                 dismissableMask: true,
-                data: message
+                data: {
+                    icon: icon,
+                    message: message,
+                    timeout: timeout
+                }
             })
             .onClose.subscribe((res) => {
                 return res;
             });
+    }
+
+    showErrorNotification() {
+        this.showNotification('Something went wrong. Please try again :(', '🥵', 5000);
     }
 
     showConfirm(message: string = 'Are you sure to proceed?') {

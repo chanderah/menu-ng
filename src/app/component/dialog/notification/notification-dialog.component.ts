@@ -17,9 +17,8 @@ export class NotificationDialogComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        console.log(this.config.data);
         this.notification = {
-            icon: this.icons[new Date().getTime() % 4],
+            icon: this.config.data.icon ? this.config.data.icon : this.icons[new Date().getTime() % this.icons.length],
             message: this.config.data.message,
             timeout: this.config.data.timeout ? this.config.data.timeout : 3000
         };
