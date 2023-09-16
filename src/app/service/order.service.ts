@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HotToastService } from '@ngneat/hot-toast';
-import { ToastrService } from 'ngx-toastr';
 import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
 import SharedUtil from '../lib/shared.util';
@@ -17,8 +15,6 @@ export class OrderService extends SharedUtil {
     cart = [] as Product[];
 
     constructor(
-        private toast: HotToastService,
-        private toastr: ToastrService,
         private sharedService: SharedService,
         private apiService: ApiService
     ) {
@@ -93,8 +89,6 @@ export class OrderService extends SharedUtil {
         localStorage.setItem('cart', this.jsonStringify(this.cart));
         localStorage.setItem('customer', this.jsonStringify(this.customerInfo));
 
-        // this.sharedService.successToast('Your item is successfully added to cart!');
-        // this.app.showCartDialog();
         this.sharedService.showNotification('The item is successfully added to cart!');
     }
 
