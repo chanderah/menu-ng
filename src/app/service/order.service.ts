@@ -73,9 +73,9 @@ export class OrderService extends SharedUtil {
         localStorage.setItem('cart', this.jsonStringify(this.cart));
         localStorage.setItem('customer', this.jsonStringify(this.customerInfo));
 
-        // this.sharedService.showSuccess('Your item is successfully added to cart!');
+        this.sharedService.showSuccess('Your item is successfully added to cart!');
         // this.app.showCartDialog();
-        this.sharedService.showNotification('udah yaa!!');
+        // this.sharedService.showNotification('udah yaa!!');
     }
 
     filterProductOptions(product: Product) {

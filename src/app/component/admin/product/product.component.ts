@@ -277,12 +277,16 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
     onDeleteProduct() {
         if (this.isEmpty(this.selectedProduct)) return;
-        this.isLoading = true;
-        this.apiService.deleteProduct(this.selectedProduct).subscribe((res: any) => {
-            if (res.status === 200) {
-                this.getProducts();
-            } else {
-                alert(res.message);
+        this.sharedService.showConfirm('Are you sure to delete this product?').then((res) => {
+            if (res) {
+                this.isLoading = true;
+                this.apiService.deleteProduct(this.selectedProduct).subscribe((res: any) => {
+                    this.isLoading = false;
+                    if (res.status === 200) {
+                        this.getProducts();
+                        this.sharedService.showSuccess('Product is deleted!');
+                    } else this.sharedService.showError('Failed to delete the product.');
+                });
             }
         });
     }

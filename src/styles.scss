@@ -20,7 +20,18 @@
     overflow-y: hidden !important;
 }
 
+.rounded-radius {
+    border-radius: 20px;
+}
+
 .bottom-radius {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
+}
+
+.font-apple {
+    // font-size: large;
+    // font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }

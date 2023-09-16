@@ -1,5 +1,9 @@
-<div class="flex align-items-center justify-content-center" style="margin-top: 40px">
-    <button type="button">{{ config.data }}</button>
-    <button type="button">{{ config.data }}</button>
-    <button type="button">{{ config.data }}</button>
+<div class="flex flex-column align-items-center justify-content-between font-apple" (click)="dismiss()">
+    <div class="col-12 text-center" style="font-size: 50px">{{ notification.icon }}</div>
+    <div class="col-12 text-center text-md font-semibold">
+        {{ notification.message }}
+    </div>
+    <div class="col-12 text-center">
+        <a>click to dismiss</a>
+    </div>
 </div>

@@ -6,6 +6,7 @@ import { ConfigService } from 'src/app/layout/service/app.config.service';
 import SharedUtil from 'src/app/lib/shared.util';
 import { User } from '../../../../interface/user';
 import { ApiService } from '../../../../service/api.service';
+import { SharedService } from './../../../../service/shared.service';
 
 @Component({
     selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent extends SharedUtil implements OnInit {
 
     constructor(
         public configService: ConfigService,
+        private sharedService: SharedService,
         private router: Router,
         private apiService: ApiService,
 
@@ -44,10 +46,8 @@ export class LoginComponent extends SharedUtil implements OnInit {
             if (res.status === 200) {
                 localStorage.setItem('user', this.jsonStringify(res.data));
                 this.router.navigate(['/']);
-            } else {
-                console.log(res);
-                alert(res.message);
-            }
+                this.sharedService.showSuccess('Login success!');
+            } else this.sharedService.showError('Failed to authorize the user!');
         });
     }
 }
