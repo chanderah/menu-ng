@@ -88,9 +88,10 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
             this.isLoading = false;
             if (res.status === 200) {
                 this.showDialog = false;
-                this.sharedService.showNotification(
-                    'Order is placed! Please kindly wait while we are processing your request! :)'
-                );
+                this.router.navigate(['/order-complete'], { skipLocationChange: true });
+                // this.sharedService.showNotification(
+                //     'Order is placed! Please kindly wait while we are processing your request! :)'
+                // );
             } else {
                 this.sharedService.showErrorNotification();
             }
@@ -122,7 +123,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         return {
             width: this.app.isDesktop() ? '50vw' : '100vw',
             height: 'auto',
-            left: this.app.isDesktop() ? 'unset' : 0,
+            left: this.app.isDesktop() ? '25vw' : 0,
             overflow: 'scroll'
         };
     }
