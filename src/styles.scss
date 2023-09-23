@@ -16,6 +16,14 @@
 @import '../node_modules/swiper/swiper-bundle.min.css';
 // @import '~swiper/css/bundle';
 
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
 .block-scroll {
     overflow-y: hidden !important;
 }

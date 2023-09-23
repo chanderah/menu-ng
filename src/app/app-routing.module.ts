@@ -32,6 +32,7 @@ import { OverlaysComponent } from './component/demo/overlays/overlays.component'
 import { PanelsComponent } from './component/demo/panels/panels.component';
 import { TimelineComponent } from './component/demo/timeline/timeline.component';
 import { TreeComponent } from './component/demo/tree/tree.component';
+import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
@@ -44,6 +45,7 @@ import { AppMainComponent } from './layout/app.main.component';
                     children: [
                         { path: '', component: DashboardComponent },
                         { path: 'order', component: OrderComponent },
+                        { path: 'order-complete', component: OrderCompleteComponent },
                         { path: 'product', component: ProductComponent },
                         { path: 'category', component: CategoryComponent },
                         { path: 'table', component: TableComponent },
