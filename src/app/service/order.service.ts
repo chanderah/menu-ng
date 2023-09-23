@@ -38,6 +38,16 @@ export class OrderService extends SharedUtil {
         localStorage.setItem('order', this.jsonStringify(order));
     }
 
+    finishOrder(totalPrice: number) {
+        const order = {} as Order;
+        order.products = this.getCart();
+        order.tableId = this.getCustomerInfo().tableId;
+        order.createdAt = new Date();
+        order.totalPrice = totalPrice;
+        localStorage.setItem('order', this.jsonStringify(order));
+        this.clearCart();
+    }
+
     createOrder(order: Order) {
         this.getCustomerInfo();
 
