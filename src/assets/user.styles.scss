@@ -70,6 +70,25 @@
 
 // }
 
+.order-badge {
+    border-radius: var(--border-radius);
+    padding: 0.25em 0.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+
+    &.status-new {
+        background: #ffcdd2;
+        color: #c63737;
+    }
+
+    &.status-done {
+        background: #c8e6c9;
+        color: #256029;
+    }
+}
+
 .row-reversed {
     flex-direction: row-reverse !important;
 }

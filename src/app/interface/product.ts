@@ -8,7 +8,6 @@ export interface Product {
     category?: string;
     image?: string;
     rating?: number;
-    userCreated?: number;
 
     options?: ProductOptions[];
 
@@ -17,6 +16,9 @@ export interface Product {
     optionsDetails?: string;
     notes?: string;
     quantity?: number;
+
+    createdAt?: Date;
+    userCreated?: number;
 }
 
 export interface ProductOptions {

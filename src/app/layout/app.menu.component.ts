@@ -74,7 +74,8 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Management',
                 items: [
-                    { label: 'Live Orders', icon: 'pi pi-fw pi-eye', routerLink: ['/order'], badge: 'ADMIN' },
+                    { label: 'Live Orders', icon: 'pi pi-fw pi-eye', routerLink: ['/order/live'], badge: 'ADMIN' },
+                    { label: 'Manage Orders', icon: 'pi pi-fw pi-eye', routerLink: ['/order'], badge: 'ADMIN' },
                     { label: 'Manage Categories', icon: 'pi pi-fw pi-eye', routerLink: ['/category'], badge: 'ADMIN' },
                     { label: 'Manage Products', icon: 'pi pi-fw pi-eye', routerLink: ['/product'], badge: 'ADMIN' },
                     { label: 'Manage Tables', icon: 'pi pi-fw pi-eye', routerLink: ['/table'], badge: 'ADMIN' }

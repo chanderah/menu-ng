@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QrCodeModule } from 'ng-qrcode';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
+import { OrderLiveComponent } from './component/admin/order/order-live/order-live.component';
 import { CartDialogComponent } from './component/dialog/cart-dialog/cart-dialog.component';
 import { CustomCurrencyPipe } from './component/pipe/currency.pipe';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
@@ -107,6 +108,7 @@ import { SwiperModule } from 'swiper/angular';
 import { LoginComponent } from './component/admin/auth/login/login.component';
 import { RegisterComponent } from './component/admin/auth/register/register.component';
 import { CategoryComponent } from './component/admin/category/category.component';
+import { OrderComponent } from './component/admin/order/order.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
 import { CartComponent } from './component/cart/cart.component';
@@ -144,6 +146,7 @@ import { CategoryDialogComponent } from './component/dialog/category-dialog/cate
 import { NotificationDialogComponent } from './component/dialog/notification/notification-dialog.component';
 import { OrderDialogComponent } from './component/dialog/order-dialog/order-dialog.component';
 import { ProductDialogComponent } from './component/dialog/product-dialog/product-dialog.component';
+import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
 import { AppFooterComponent } from './layout/app.footer.component';
 import { AppMainComponent } from './layout/app.main.component';
 import { AppMenuComponent } from './layout/app.menu.component';
@@ -160,8 +163,7 @@ import { NodeService } from './service/nodeservice';
 import { OrderService } from './service/order.service';
 import { PhotoService } from './service/photoservice';
 import { ProductService } from './service/productservice';
-import { OrderComponent } from './component/admin/order/order.component';
-import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
+
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
     overrides = <any>{
@@ -228,6 +230,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         CategoryComponent,
         TableComponent,
         OrderComponent,
+        OrderLiveComponent,
         OrderCompleteComponent
     ],
     imports: [
