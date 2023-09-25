@@ -69,7 +69,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
                 this.sharedService.successToast('Data is updated!');
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
             } else {
-                this.sharedService.errorToast('Failed to get Tables data.');
+                this.sharedService.errorToast('Failed to get Orders data.');
             }
         });
 
