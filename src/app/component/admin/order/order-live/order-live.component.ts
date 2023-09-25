@@ -76,7 +76,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         if (this.timeoutId) clearTimeout(this.timeoutId);
         this.timeoutId = setTimeout(() => {
             this.getTables();
-        }, 10000);
+        }, 9000);
     }
 
     getRowStyle(data: boolean) {
