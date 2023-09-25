@@ -12,7 +12,18 @@ import { SharedService } from './../../../../service/shared.service';
     selector: 'app-order-live',
     templateUrl: './order-live.component.html',
     // styleUrls: ['./order-live.component.scss']
-    styleUrls: ['../../../../../assets/user.styles.scss', '../../../../../assets/demo/badges.scss']
+    styleUrls: ['../../../../../assets/user.styles.scss', '../../../../../assets/demo/badges.scss'],
+    styles: [
+        `
+            order-new {
+                display: none;
+            }
+
+            order-done {
+                display: none;
+            }
+        `
+    ]
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
@@ -25,6 +36,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
     selectedOrder = {} as Order;
     orders = [] as Order[];
+
+    timeoutId: any = null;
+    lastUpdated: Date = new Date();
 
     constructor(
         private sharedService: SharedService,
@@ -51,7 +65,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
             this.isLoading = false;
             if (res.status === 200) {
                 this.tables = res.data;
-
+                this.lastUpdated = new Date();
                 this.sharedService.successToast('Data is updated!');
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
             } else {
@@ -59,8 +73,25 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
             }
         });
 
-        setTimeout(() => {
+        if (this.timeoutId) clearTimeout(this.timeoutId);
+        this.timeoutId = setTimeout(() => {
             this.getTables();
         }, 10000);
     }
+
+    getRowStyle(data: boolean) {
+        console.log('am i called');
+        return {
+            background: data ? '#c8e6c9' : '#ffcdd2',
+            color: data ? '#256029' : '#c63737'
+            // width: this.app.isDesktop() ? '50vw' : '100vw',
+            // height: 'auto',
+            // left: this.app.isDesktop() ? '25vw' : 0,
+            // overflow: 'scroll'
+        };
+    }
+
+    onStart() {}
+
+    onPause() {}
 }
