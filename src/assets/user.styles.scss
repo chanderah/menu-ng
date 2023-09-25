@@ -70,6 +70,21 @@
 
 // }
 
+.font-normal {
+    font-weight: 100 !important;
+}
+
+.order-new {
+    background: #ffcdd2;
+    background-color: #ffcdd2;
+    color: #c63737;
+}
+
+.order-done {
+    background: #c8e6c9;
+    color: #256029;
+}
+
 .order-badge {
     border-radius: var(--border-radius);
     padding: 0.25em 0.5rem;
