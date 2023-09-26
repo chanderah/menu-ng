@@ -14,7 +14,6 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
-import { CustomerInfo } from '../interface/customer_info';
 import SharedUtil from '../lib/shared.util';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
@@ -187,8 +186,8 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     }
 
     /* ORDER */
-    getOrders(customerInfo: CustomerInfo) {
-        return this.httpClient.post('/order/findAll', {});
+    getOrders(pagingInfo: PagingInfo) {
+        return this.httpClient.post('/order/findAll', pagingInfo);
     }
 
     getOrderById(orderId: number) {

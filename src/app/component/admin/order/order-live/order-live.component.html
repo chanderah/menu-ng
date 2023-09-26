@@ -10,7 +10,7 @@
                         class="p-button"
                         icon="pi pi-check"
                         label="Mark All as Done"
-                        (click)="onStart()">
+                        (click)="markAllAsDone()">
                     </button>
                 </div>
             </div>
@@ -19,15 +19,15 @@
                 #tb
                 dataKey="id"
                 [paginator]="true"
+                [paginatorPosition]="'bottom'"
                 [pageLinks]="3"
-                [loading]="isLoading"
-                [rowsPerPageOptions]="[10, 20, 50, 100]"
-                [rows]="10"
+                [rowsPerPageOptions]="rowsPerPageOptions"
+                [rows]="rowsPerPageOptions[0]"
                 [totalRecords]="pagingInfo.rowCount"
                 [lazy]="true"
                 [filterDelay]="500"
-                (onLazyLoad)="getTables($event)"
-                [value]="tables"
+                (onLazyLoad)="getOrders($event)"
+                [value]="orders"
                 [rowHover]="true"
                 [scrollable]="true"
                 scrollDirection="both"
@@ -52,26 +52,14 @@
                         </div>
                     </div>
                 </ng-template>
-                <!-- <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width: 4rem"></th>
-                        <th pSortableColumn="name"> Name <p-sortIcon field="name"></p-sortIcon> </th>
-                        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-                        <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
-                    </tr>
-                </ng-template> -->
-
                 <ng-template pTemplate="body" let-data let-i="rowIndex">
-                    <!-- <tr [pSelectableRow]="data" class="order-done"> -->
-                    <tr [pSelectableRow]="data" [style]="getRowStyle(data.status)">
-                        <!-- <td style="width: 10px">
-                            <p-tableCheckbox [pSelectableRow]="data" [value]="data"></p-tableCheckbox>
-                        </td> -->
-                        <!-- <td style="width: 20px">
-                            <span [class]="'order-badge status-done'">
-                                {{ data.status ? 'Done' : 'New' }}
-                            </span>
-                        </td> -->
+                    <!-- <tr [pSelectableRow]="data" [style]="getRowStyle(data.status)"> -->
+                    <tr
+                        [pSelectableRow]="data"
+                        [style]="{
+                            background: data.isNew ? '#ffcdd2' : '#c8e6c9',
+                            color: data.isNew ? '#c63737' : '#256029'
+                        }">
                         <td style="min-width: 100px" class="text-left text-capitalize">
                             <div class="flex flex-column">
                                 <p class="font-semibold">#{{ '92JSKU2' + i }}</p>
@@ -80,7 +68,7 @@
                         </td>
                         <td style="min-width: 8rem; text-align: right" class="font-semibold">
                             <div class="flex flex-column">
-                                <p>Table {{ i + 1 }}</p>
+                                <p>Table {{ data.tableId }}</p>
                                 <p>{{ data.createdAt | date: 'MMM d, hh:mm' }}</p>
                             </div>
                         </td>

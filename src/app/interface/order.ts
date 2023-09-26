@@ -6,5 +6,8 @@ export interface Order {
     totalPrice: number;
     createdAt: Date;
 
+    isNew?: boolean;
+
     products: Product[];
+    productsName: string;
 }

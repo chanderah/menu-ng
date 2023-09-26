@@ -11,7 +11,6 @@ import { SharedService } from './../../../../service/shared.service';
 @Component({
     selector: 'app-order-live',
     templateUrl: './order-live.component.html',
-    // styleUrls: ['./order-live.component.scss']
     styleUrls: ['../../../../../assets/user.styles.scss', '../../../../../assets/demo/badges.scss'],
     styles: [
         `
@@ -28,6 +27,7 @@ import { SharedService } from './../../../../service/shared.service';
 export class OrderLiveComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
     // dialogBreakpoints = { '768px': '90vw' };
+    rowsPerPageOptions: number[] = [20, 50, 100];
 
     user = {} as User;
     pagingInfo = {} as PagingInfo;
@@ -51,20 +51,18 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         this.user = this.jsonParse(localStorage.getItem('user'));
     }
 
-    getTables(e?: LazyLoadEvent) {
-        this.isLoading = true;
+    getOrders(e?: LazyLoadEvent) {
         this.pagingInfo = {
             filter: e?.filters?.global?.value || '',
             limit: e?.rows || 20,
             offset: e?.first || 0,
-            sortField: e?.sortField || 'name',
-            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
+            sortField: e?.sortField || 'created_at',
+            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'DESC'
         };
 
-        this.apiService.getTables(this.pagingInfo).subscribe((res: any) => {
-            this.isLoading = false;
+        this.apiService.getOrders(this.pagingInfo).subscribe((res: any) => {
             if (res.status === 200) {
-                this.tables = res.data;
+                this.orders = this.checkNewOrders(res.data);
                 this.lastUpdated = new Date();
                 this.sharedService.successToast('Data is updated!');
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
@@ -75,23 +73,44 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
         if (this.timeoutId) clearTimeout(this.timeoutId);
         this.timeoutId = setTimeout(() => {
-            this.getTables();
+            this.getOrders();
         }, 9000);
     }
 
-    getRowStyle(data: boolean) {
-        console.log('am i called');
-        return {
-            background: data ? '#c8e6c9' : '#ffcdd2',
-            color: data ? '#256029' : '#c63737'
-            // width: this.app.isDesktop() ? '50vw' : '100vw',
-            // height: 'auto',
-            // left: this.app.isDesktop() ? '25vw' : 0,
-            // overflow: 'scroll'
-        };
+    checkNewOrders(newOrders: Order[]) {
+        let newData = 0;
+        if (this.orders.length > 0) {
+            for (let i = 0; i < newOrders.length; i++) {
+                if (this.orders[i].id === newOrders[i].id) {
+                    newOrders[i].isNew = false;
+                } else {
+                    newOrders[i].isNew = true;
+                    newData++;
+                }
+            }
+        }
+        if (newData > 0) this.showNewOrdersNotification(newData);
+        console.log('data:', newOrders);
+        return newOrders;
+    }
+
+    showNewOrdersNotification(count: number) {
+        console.log(`There is ${count} new order!`);
+    }
+
+    markAsDone(orderIndex: number) {}
+
+    markAllAsDone() {
+        this.orders.forEach((data) => {
+            data.isNew = false;
+        });
     }
 
     onStart() {}
 
     onPause() {}
+
+    ngOnDestroy() {
+        clearTimeout(this.timeoutId);
+    }
 }
