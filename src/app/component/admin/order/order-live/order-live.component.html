@@ -23,6 +23,8 @@
                 [pageLinks]="3"
                 [rowsPerPageOptions]="rowsPerPageOptions"
                 [rows]="rowsPerPageOptions[0]"
+                sortField="id"
+                [sortOrder]="-1"
                 [totalRecords]="pagingInfo.rowCount"
                 [lazy]="true"
                 [filterDelay]="500"
@@ -37,7 +39,7 @@
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column">
                         <p class="text-right text-sm font-normal">
-                            Last updated at: {{ lastUpdated | date: 'MMM d, hh:mm:ss' }}
+                            Last updated at: {{ lastUpdated | date: 'MMM d, HH:mm:ss' }}
                         </p>
                         <div class="flex justify-content-end flex-column sm:flex-row">
                             <span class="p-input-icon-left">
@@ -53,9 +55,9 @@
                     </div>
                 </ng-template>
                 <ng-template pTemplate="body" let-data let-i="rowIndex">
-                    <!-- <tr [pSelectableRow]="data" [style]="getRowStyle(data.status)"> -->
                     <tr
                         [pSelectableRow]="data"
+                        (click)="onClickOrder()"
                         [style]="{
                             background: data.isNew ? '#ffcdd2' : '#c8e6c9',
                             color: data.isNew ? '#c63737' : '#256029'
@@ -63,13 +65,13 @@
                         <td style="min-width: 100px" class="text-left text-capitalize">
                             <div class="flex flex-column">
                                 <p class="font-semibold">#{{ '92JSKU2' + i }}</p>
-                                <p>{{ 'Rp. 298,39' + i }}</p>
+                                <p>{{ data.totalPrice | custom }}</p>
                             </div>
                         </td>
                         <td style="min-width: 8rem; text-align: right" class="font-semibold">
                             <div class="flex flex-column">
                                 <p>Table {{ data.tableId }}</p>
-                                <p>{{ data.createdAt | date: 'MMM d, hh:mm' }}</p>
+                                <p>{{ data.createdAt | date: 'MMM d, HH:mm' }}</p>
                             </div>
                         </td>
                     </tr>
@@ -85,87 +87,64 @@
     </div>
 </div>
 
-<!-- <div class="grid">
-    <div class="col-12">
-        <div class="card">
-            <h5>Live Orders</h5>
-            <p-dataView
-                #dv
-                [value]="products"
-                [paginator]="true"
-                [rows]="9"
-                filterBy="name"
-                [sortField]="sortField"
-                [sortOrder]="sortOrder"
-                layout="list">
-                <ng-template pTemplate="header">
-                    <div class="grid grid-nogutter">
-                        <div class="col-12 text-right">
-                            <button
-                                pButton
-                                pRipple
-                                icon="pi pi-check"
-                                label="Mark All Done"
-                                (click)="markAsDone()"
-                                [disabled]="isLoading"
-                                class="w-auto p-button-outlined">
-                            </button>
-                        </div>
-                    </div>
-                </ng-template>
+<p-dialog
+    [maximizable]="true"
+    header="Order #{{ selectedOrder.id }}"
+    [(visible)]="showOrderDetailsDialog"
+    (onHide)="onHideOrderDetailsDialog()"
+    [contentStyle]="{ overflow: 'scroll' }"
+    [style]="{ width: '40vw', height: 'auto' }"
+    [breakpoints]="dialogBreakpoints"
+    [dismissableMask]="true"
+    [closeOnEscape]="true"
+    modal="true"
+    [blockScroll]="true"
+    showEffect="fade">
+    <div class="p-fluid px-2">
+        <div class="card p-1 mb-3">
+            <div class="flex flex-row col-12">
+                <div class="col-6">
+                    <p class="font-semibold ml-2 mt-2">Table {{ selectedOrder.tableId }}</p>
+                </div>
+                <div class="col-6 text-right">
+                    <p class="text-sm font-semibold mr-2 mt-2">{{ selectedOrder.totalPrice | custom }}</p>
+                </div>
+            </div>
+            <div class="col-12" *ngFor="let product of selectedOrder.products; index as i">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon font-semibold">{{ i + 1 }} </span>
+                    <label pInputText class="text-capitalize">{{ product.name }}</label>
+                </div>
 
-                <ng-template let-product pTemplate="listItem">
-                    <div class="col-12" style="background-color: #e0f2f1">
-                        <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-                            <div class="flex-1 text-center md:text-left">
-                                <div class="font-bold text-2xl">92JSKU27</div>
-                                <div class="mb-3">Rp. 193200</div>
-                            </div>
-                            <div
-                                class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-                                <span class="text-2xl font-semibold mb-2 align-self-center md:align-self-end">
-                                    Table 7
-                                </span>
-                                <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">
-                                    18 Aug, <span class="font-semibold">15.37</span>
-                                </span>
-                            </div>
+                <div class="flex flex-column">
+                    <div class="col-12" *ngFor="let option of product.options">
+                        <div class="p-inputgroup">
+                            <span class="p-inputgroup-addon font-semibold"> - </span>
+                            <label pInputText class="text-capitalize">{{ option.name }}</label>
                         </div>
                     </div>
-                </ng-template>
+                </div>
+            </div>
+        </div>
 
-                <ng-template let-product pTemplate="gridItem">
-                    <div class="col-12 md:col-4">
-                        <div class="card m-3 border-1 surface-border">
-                            <div class="flex align-items-center justify-content-between">
-                                <div class="flex align-items-center">
-                                    <i class="pi pi-tag mr-2"></i>
-                                    <span class="font-semibold">{{ product.category }}</span>
-                                </div>
-                                <span
-                                    [class]="'sm:ml-2 product-badge status-' + product.inventoryStatus.toLowerCase()"
-                                    >{{ product.inventoryStatus }}</span
-                                >
-                            </div>
-                            <div class="text-center">
-                                <img
-                                    [src]="'assets/demo/images/product/' + product.image"
-                                    [alt]="product.name"
-                                    class="w-9 shadow-2 my-3 mx-0" />
-                                <div class="text-2xl font-bold">{{ product.name }}</div>
-                                <div class="mb-3">{{ product.description }}</div>
-                                <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
-                            </div>
-                            <div class="flex align-items-center justify-content-between">
-                                <span class="text-2xl font-semibold">${{ product.price }}</span>
-                                <p-button
-                                    icon="pi pi-shopping-cart"
-                                    [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-            </p-dataView>
+        <div class="flex justify-content-end gap-2 mt-4">
+            <button
+                pButton
+                pRipple
+                icon="pi pi-times"
+                (click)="showOrderDetailsDialog = false"
+                label="Close"
+                class="w-auto p-button-danger p-button-outlined">
+            </button>
+            <button
+                pButton
+                pRipple
+                icon="pi pi-print"
+                class="w-auto p-button-outlined"
+                label="Invoice"
+                (click)="showOrderDetailsDialog = false"
+                [disabled]="isLoading">
+            </button>
         </div>
     </div>
-</div> -->
+</p-dialog>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
-import { Table } from 'src/app/interface/table';
 import { PagingInfo } from './../../../../interface/paging_info';
 import { User } from './../../../../interface/user';
 import SharedUtil from './../../../../lib/shared.util';
@@ -26,13 +25,13 @@ import { SharedService } from './../../../../service/shared.service';
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
-    // dialogBreakpoints = { '768px': '90vw' };
+    dialogBreakpoints = { '768px': '90vw' };
     rowsPerPageOptions: number[] = [20, 50, 100];
 
     user = {} as User;
     pagingInfo = {} as PagingInfo;
 
-    tables = [] as Table[];
+    showOrderDetailsDialog: boolean = false;
 
     selectedOrder = {} as Order;
     orders = [] as Order[];
@@ -56,15 +55,15 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
             filter: e?.filters?.global?.value || '',
             limit: e?.rows || 20,
             offset: e?.first || 0,
-            sortField: e?.sortField || 'created_at',
-            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'DESC'
+            sortField: 'id',
+            sortOrder: 'DESC'
         };
 
         this.apiService.getOrders(this.pagingInfo).subscribe((res: any) => {
             if (res.status === 200) {
-                this.orders = this.checkNewOrders(res.data);
+                this.checkNewOrders(res.data);
                 this.lastUpdated = new Date();
-                this.sharedService.successToast('Data is updated!');
+                // this.sharedService.successToast('Data is updated!');
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
             } else {
                 this.sharedService.errorToast('Failed to get Orders data.');
@@ -80,22 +79,38 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     checkNewOrders(newOrders: Order[]) {
         let newData = 0;
         if (this.orders.length > 0) {
-            for (let i = 0; i < newOrders.length; i++) {
-                if (this.orders[i].id === newOrders[i].id) {
-                    newOrders[i].isNew = false;
-                } else {
+            const index = newOrders.findIndex((v) => v.id === this.orders[0].id);
+            if (index !== 0) {
+                for (let i = 0; i < index; i++) {
                     newOrders[i].isNew = true;
+                    this.orders.unshift(newOrders[i]);
                     newData++;
                 }
             }
+        } else {
+            newOrders.forEach((data) => {
+                if (!data.hasOwnProperty('isNew')) {
+                    data.isNew = false;
+                }
+            });
+            this.orders = newOrders;
         }
+
+        this.orders.forEach((data) => {
+            if (this.isEmpty(data.productsName)) {
+                let productsName = [];
+                data.products.forEach((product) => productsName.push(product.name));
+                data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
+            }
+        });
+        // console.log(this.orders);
         if (newData > 0) this.showNewOrdersNotification(newData);
-        console.log('data:', newOrders);
         return newOrders;
     }
 
     showNewOrdersNotification(count: number) {
-        console.log(`There is ${count} new order!`);
+        this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000);
+        this.playSound();
     }
 
     markAsDone(orderIndex: number) {}
@@ -105,6 +120,19 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
             data.isNew = false;
         });
     }
+    playSound() {
+        let audio = new Audio();
+        audio.src = '../../../../../assets/sound/bell.mp3';
+        audio.load();
+        audio.play();
+    }
+
+    onClickOrder() {
+        console.log(this.selectedOrder);
+        this.showOrderDetailsDialog = true;
+    }
+
+    onHideOrderDetailsDialog() {}
 
     onStart() {}
 

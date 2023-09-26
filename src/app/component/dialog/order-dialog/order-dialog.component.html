@@ -95,16 +95,16 @@
                         pButton
                         pRipple
                         icon="pi pi-whatsapp"
-                        class="p-button-outlined p-button-rounded"
+                        class="p-button-outlined p-button-rounded cursor-pointer"
                         (click)="onClickWa()">
                     </button>
                     <div
                         pRipple
-                        class="col flex align-items-center justify-content-between bg-primary px-4"
+                        class="col flex align-items-center justify-content-between bg-primary cursor-pointer px-4"
                         style="border-radius: 50px"
                         (click)="onAddToCart()">
-                        <label class="font-semibold">+ Add to Cart</label>
-                        <label class="font-bold">
+                        <label class="font-semibold cursor-pointer">+ Add to Cart</label>
+                        <label class="font-bold cursor-pointer">
                             {{ totalPrice | custom }}
                         </label>
                     </div>

@@ -23,6 +23,8 @@
                 [loading]="isLoading"
                 [rowsPerPageOptions]="[10, 20, 50, 100]"
                 [rows]="10"
+                sortField="id"
+                [sortOrder]="-1"
                 [totalRecords]="pagingInfo.rowCount"
                 [lazy]="true"
                 [filterDelay]="500"
@@ -59,7 +61,7 @@
                         <th pSortableColumn="table_id"> Table <p-sortIcon field="tableId"></p-sortIcon> </th>
                         <th pSortableColumn="products">Products <p-sortIcon field="products"></p-sortIcon></th>
                         <th pSortableColumn="total_price">Price <p-sortIcon field="totalPrice"></p-sortIcon></th>
-                        <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
+                        <th pSortableColumn="created_at">Date Issued <p-sortIcon field="createdAt"></p-sortIcon></th>
                     </tr>
                 </ng-template>
 

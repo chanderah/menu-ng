@@ -111,7 +111,6 @@ import { CategoryComponent } from './component/admin/category/category.component
 import { OrderComponent } from './component/admin/order/order.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
-import { CartComponent } from './component/cart/cart.component';
 import { AccessComponent } from './component/demo/access/access.component';
 import { AppCodeModule } from './component/demo/app-code/app.code.component';
 import { BlocksComponent } from './component/demo/blocks/blocks.component';
@@ -224,7 +223,6 @@ export class MyHammerConfig extends HammerGestureConfig {
         RegisterComponent,
         LoginComponent,
         DashboardComponent,
-        CartComponent,
         /* ADMIN */
         ProductComponent,
         CategoryComponent,

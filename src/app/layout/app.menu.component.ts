@@ -50,7 +50,7 @@ export class AppMenuComponent implements OnInit {
     getDefaultMenu() {
         this.menus = [
             {
-                label: 'Order',
+                label: 'Menu',
                 // icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
@@ -63,11 +63,6 @@ export class AppMenuComponent implements OnInit {
                                 routerLink: ['/']
                             }
                         ]
-                    },
-                    {
-                        label: 'Cart',
-                        icon: 'pi pi-fw pi-shopping-cart',
-                        routerLink: ['/cart']
                     }
                 ]
             },

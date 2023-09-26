@@ -39,9 +39,9 @@ export class OrderComponent extends SharedUtil implements OnInit {
         this.isLoading = true;
         this.pagingInfo = {
             filter: e?.filters?.global?.value || '',
-            limit: e?.rows || 20,
+            limit: e?.rows || 10,
             offset: e?.first || 0,
-            sortField: e?.sortField || 'created_at',
+            sortField: e?.sortField || 'id',
             sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'DESC'
         };
 

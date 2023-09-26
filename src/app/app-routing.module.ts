@@ -7,7 +7,6 @@ import { OrderLiveComponent } from './component/admin/order/order-live/order-liv
 import { OrderComponent } from './component/admin/order/order.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
-import { CartComponent } from './component/cart/cart.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { AccessComponent } from './component/demo/access/access.component';
 import { BlocksComponent } from './component/demo/blocks/blocks.component';
@@ -50,7 +49,6 @@ import { AppMainComponent } from './layout/app.main.component';
                         { path: 'product', component: ProductComponent },
                         { path: 'category', component: CategoryComponent },
                         { path: 'table', component: TableComponent },
-                        { path: 'cart', component: CartComponent },
                         { path: 'order-complete', component: OrderCompleteComponent },
 
                         /*** DEMO ***/
