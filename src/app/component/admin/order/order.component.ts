@@ -36,6 +36,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
     }
 
     getOrders(e?: LazyLoadEvent) {
+        console.log(e);
         this.isLoading = true;
         this.pagingInfo = {
             filter: e?.filters?.global?.value || '',
