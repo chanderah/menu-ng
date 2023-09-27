@@ -39,6 +39,10 @@ export default class SharedUtil {
     capitalizeFirstLetter = (data: string) => {
         return data.charAt(0).toUpperCase() + data.slice(1);
     };
+
+    toAscii(num: number) {
+        return String.fromCharCode(97 + num);
+    }
 }
 
 export const disableBodyScroll = () => {

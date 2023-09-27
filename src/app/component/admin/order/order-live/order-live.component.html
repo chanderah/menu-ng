@@ -15,6 +15,7 @@
                 </div>
             </div>
 
+            <!-- [loading]="isLoading" -->
             <p-table
                 #tb
                 dataKey="id"
@@ -57,14 +58,14 @@
                 <ng-template pTemplate="body" let-data let-i="rowIndex">
                     <tr
                         [pSelectableRow]="data"
-                        (click)="onClickOrder()"
+                        (click)="onClickOrder(data)"
                         [style]="{
                             background: data.isNew ? '#ffcdd2' : '#c8e6c9',
                             color: data.isNew ? '#c63737' : '#256029'
                         }">
                         <td style="min-width: 100px" class="text-left text-capitalize">
                             <div class="flex flex-column">
-                                <p class="font-semibold">#{{ '92JSKU2' + i }}</p>
+                                <p class="font-semibold">#{{ '92JSKU2' + data.id }}</p>
                                 <p>{{ data.totalPrice | custom }}</p>
                             </div>
                         </td>
@@ -102,7 +103,7 @@
     showEffect="fade">
     <div class="p-fluid px-2">
         <div class="card p-1 mb-3">
-            <div class="flex flex-row col-12">
+            <div class="flex col-12">
                 <div class="col-6">
                     <p class="font-semibold ml-2 mt-2">Table {{ selectedOrder.tableId }}</p>
                 </div>
@@ -113,13 +114,13 @@
             <div class="col-12" *ngFor="let product of selectedOrder.products; index as i">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon font-semibold">{{ i + 1 }} </span>
-                    <label pInputText class="text-capitalize">{{ product.name }}</label>
+                    <label pInputText class="font-semibold text-capitalize">{{ product.name }}</label>
                 </div>
 
                 <div class="flex flex-column">
-                    <div class="col-12" *ngFor="let option of product.options">
+                    <div class="col-12 pb-0" *ngFor="let option of product.options; index as j">
                         <div class="p-inputgroup">
-                            <span class="p-inputgroup-addon font-semibold"> - </span>
+                            <span class="p-inputgroup-addon font-semibold"> {{ toAscii(j) }} </span>
                             <label pInputText class="text-capitalize">{{ option.name }}</label>
                         </div>
                     </div>
@@ -134,7 +135,8 @@
                 icon="pi pi-times"
                 (click)="showOrderDetailsDialog = false"
                 label="Close"
-                class="w-auto p-button-danger p-button-outlined">
+                class="w-auto p-button-danger p-button-outlined"
+                [disabled]="isLoading">
             </button>
             <button
                 pButton

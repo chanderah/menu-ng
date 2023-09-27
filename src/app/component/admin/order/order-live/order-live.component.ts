@@ -50,7 +50,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         this.user = this.jsonParse(localStorage.getItem('user'));
     }
 
-    getOrders(e?: LazyLoadEvent) {
+    async getOrders(e?: LazyLoadEvent) {
         this.pagingInfo = {
             filter: e?.filters?.global?.value || '',
             limit: e?.rows || 20,
@@ -59,7 +59,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
             sortOrder: 'DESC'
         };
 
+        this.isLoading = true;
         this.apiService.getOrders(this.pagingInfo).subscribe((res: any) => {
+            this.isLoading = false;
             if (res.status === 200) {
                 this.checkNewOrders(res.data);
                 this.lastUpdated = new Date();
@@ -120,6 +122,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
             data.isNew = false;
         });
     }
+
     playSound() {
         let audio = new Audio();
         audio.src = '../../../../../assets/sound/bell.mp3';
@@ -127,12 +130,15 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         audio.play();
     }
 
-    onClickOrder() {
-        console.log(this.selectedOrder);
+    onClickOrder(data: Order) {
+        this.selectedOrder = data;
         this.showOrderDetailsDialog = true;
+        console.log(this.selectedOrder);
     }
 
-    onHideOrderDetailsDialog() {}
+    onHideOrderDetailsDialog() {
+        // this.getOrders();
+    }
 
     onStart() {}
 
