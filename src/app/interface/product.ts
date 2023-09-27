@@ -27,6 +27,7 @@ export interface ProductOptions {
     required: boolean;
 
     values: ProductOptionValues[];
+    optionsName?: string;
 }
 
 export interface ProductOptionValues {

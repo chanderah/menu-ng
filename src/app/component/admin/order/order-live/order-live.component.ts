@@ -101,7 +101,18 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         this.orders.forEach((data) => {
             if (this.isEmpty(data.productsName)) {
                 let productsName = [];
-                data.products.forEach((product) => productsName.push(product.name));
+
+                data.products.forEach((product) => {
+                    productsName.push(product.name);
+
+                    product.options.forEach((option) => {
+                        let optionsName = [];
+                        option.values.forEach((value) => {
+                            optionsName.push(value.value);
+                        });
+                        option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
+                    });
+                });
                 data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
             }
         });
