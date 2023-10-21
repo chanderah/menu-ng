@@ -1,0 +1,13 @@
+:host ::ng-deep {
+    .p-paginator {
+        .p-paginator-next {
+            pointer-events: none;
+            color: gray;
+        }
+        .p-paginator-last {
+            // display: none !important;
+            pointer-events: none;
+            color: gray;
+        }
+    }
+}

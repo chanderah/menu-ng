@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import { PagingInfo } from './../../../../interface/paging_info';
 import { User } from './../../../../interface/user';
@@ -10,7 +10,12 @@ import { SharedService } from './../../../../service/shared.service';
 @Component({
     selector: 'app-order-live',
     templateUrl: './order-live.component.html',
-    styleUrls: ['../../../../../assets/user.styles.scss', '../../../../../assets/demo/badges.scss'],
+
+    styleUrls: [
+        './order-live.component.scss',
+        '../../../../../assets/user.styles.scss',
+        '../../../../../assets/demo/badges.scss'
+    ],
     styles: [
         `
             order-new {
@@ -27,6 +32,15 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
     dialogBreakpoints = { '768px': '90vw' };
     rowsPerPageOptions: number[] = [20, 50, 100];
+
+    contextMenus: MenuItem[] = [
+        // { label: 'View', icon: 'pi pi-fw pi-eye', command: () => this.viewOrder(this.selectedOrder) },
+        {
+            label: 'Done',
+            icon: 'pi pi-fw pi-check',
+            command: () => this.markAsDone(this.selectedOrder)
+        }
+    ];
 
     user = {} as User;
     pagingInfo = {} as PagingInfo;
@@ -65,7 +79,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
             if (res.status === 200) {
                 this.checkNewOrders(res.data);
                 this.lastUpdated = new Date();
-                // this.sharedService.successToast('Data is updated!');
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
             } else {
                 this.sharedService.errorToast('Failed to get Orders data.');
@@ -116,7 +129,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
                 data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
             }
         });
-        // console.log(this.orders);
         if (newData > 0) this.showNewOrdersNotification(newData);
         return newOrders;
     }
@@ -126,7 +138,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         this.playSound();
     }
 
-    markAsDone(orderIndex: number) {}
+    markAsDone(selectedOrder: Order) {
+        this.orders[this.orders.indexOf(selectedOrder)].isNew = false;
+    }
 
     markAllAsDone() {
         this.orders.forEach((data) => {
@@ -141,7 +155,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         audio.play();
     }
 
-    onClickOrder(data: Order) {
+    viewOrder(data: Order) {
         this.selectedOrder = data;
         this.showOrderDetailsDialog = true;
         console.log(this.selectedOrder);

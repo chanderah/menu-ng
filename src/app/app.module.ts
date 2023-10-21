@@ -6,6 +6,7 @@ import { BrowserModule, HammerGestureConfig, HammerModule, HAMMER_GESTURE_CONFIG
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QrCodeModule } from 'ng-qrcode';
 import { ToastrModule } from 'ngx-toastr';
+import { ContextMenuModule } from 'primeng/contextmenu';
 import { AppRoutingModule } from './app-routing.module';
 import { OrderLiveComponent } from './component/admin/order/order-live/order-live.component';
 import { CartDialogComponent } from './component/dialog/cart-dialog/cart-dialog.component';
@@ -33,7 +34,6 @@ import { CodeHighlighterModule } from 'primeng/codehighlighter';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
-import { ContextMenuModule } from 'primeng/contextmenu';
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
@@ -332,7 +332,8 @@ export class MyHammerConfig extends HammerGestureConfig {
         ReactiveFormsModule,
         HammerModule,
         ScrollPanelModule,
-        QrCodeModule
+        QrCodeModule,
+        ContextMenuModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },

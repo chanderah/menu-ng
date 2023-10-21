@@ -14,14 +14,14 @@
                     </button>
                 </div>
             </div>
-
+            <p-contextMenu #cm [model]="contextMenus"></p-contextMenu>
             <!-- [loading]="isLoading" -->
             <p-table
                 #tb
                 dataKey="id"
                 [paginator]="true"
                 [paginatorPosition]="'bottom'"
-                [pageLinks]="3"
+                [pageLinks]="0"
                 [rowsPerPageOptions]="rowsPerPageOptions"
                 [rows]="rowsPerPageOptions[0]"
                 sortField="id"
@@ -36,29 +36,21 @@
                 scrollDirection="both"
                 selectionMode="single"
                 [(selection)]="selectedOrder"
+                [(contextMenuSelection)]="selectedOrder"
+                [contextMenu]="cm"
                 responsiveLayout="scroll">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column">
                         <p class="text-right text-sm font-normal">
                             Last updated at: {{ lastUpdated | date: 'MMM d, HH:mm:ss' }}
                         </p>
-                        <!-- <div class="flex justify-content-end flex-column sm:flex-row">
-                            <span class="p-input-icon-left">
-                                <i class="pi pi-search"></i>
-                                <input
-                                    pInputText
-                                    type="search"
-                                    (input)="tb.filterGlobal($event.target.value, 'contains')"
-                                    placeholder="Search ..."
-                                    class="w-full" />
-                            </span>
-                        </div> -->
                     </div>
                 </ng-template>
                 <ng-template pTemplate="body" let-data let-i="rowIndex">
                     <tr
                         [pSelectableRow]="data"
-                        (click)="onClickOrder(data)"
+                        [pContextMenuRow]="data"
+                        (click)="viewOrder(data)"
                         [style]="{
                             background: data.isNew ? '#ffcdd2' : '#c8e6c9',
                             color: data.isNew ? '#c63737' : '#256029'
