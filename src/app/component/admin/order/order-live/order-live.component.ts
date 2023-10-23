@@ -47,11 +47,11 @@ import { SharedService } from './../../../../service/shared.service';
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
+    isPageLimitChange: boolean = false;
     dialogBreakpoints = { '768px': '90vw' };
     rowsPerPageOptions: number[] = [20, 50, 100];
 
     contextMenus: MenuItem[] = [
-        // { label: 'View', icon: 'pi pi-fw pi-eye', command: () => this.viewOrder(this.selectedOrder) },
         {
             label: 'Done',
             icon: 'pi pi-fw pi-check',
@@ -82,6 +82,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     }
 
     async getOrders(e?: LazyLoadEvent) {
+        if (e?.rows && e?.rows !== this.pagingInfo.limit) this.isPageLimitChange = true;
         this.pagingInfo = {
             filter: e?.filters?.global?.value || '',
             limit: e?.rows || 20,
@@ -110,7 +111,14 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
     checkNewOrders(newOrders: Order[]) {
         let newData = 0;
-        if (this.orders.length > 0) {
+        if (this.orders.length == 0 || this.isPageLimitChange) {
+            newOrders.forEach((data) => {
+                if (!data.hasOwnProperty('isNew')) {
+                    data.isNew = false;
+                }
+            });
+            this.orders = newOrders;
+        } else {
             const index = newOrders.findIndex((v) => v.id === this.orders[0].id);
             if (index !== 0) {
                 for (let i = 0; i < index; i++) {
@@ -119,33 +127,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
                     newData++;
                 }
             }
-        } else {
-            newOrders.forEach((data) => {
-                if (!data.hasOwnProperty('isNew')) {
-                    data.isNew = false;
-                }
-            });
-            this.orders = newOrders;
         }
-
-        this.orders.forEach((data) => {
-            if (this.isEmpty(data.productsName)) {
-                let productsName = [];
-
-                data.products.forEach((product) => {
-                    productsName.push(product.name);
-
-                    product.options.forEach((option) => {
-                        let optionsName = [];
-                        option.values.forEach((value) => {
-                            optionsName.push(value.value);
-                        });
-                        option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
-                    });
-                });
-                data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
-            }
-        });
         if (newData > 0) this.showNewOrdersNotification(newData);
         return newOrders;
     }
@@ -173,9 +155,24 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     }
 
     viewOrder(data: Order) {
+        if (this.isEmpty(data.productsName)) {
+            let productsName = [];
+
+            data.products.forEach((product) => {
+                productsName.push(product.name);
+
+                product.options.forEach((option) => {
+                    let optionsName = [];
+                    option.values.forEach((value) => {
+                        optionsName.push(value.value);
+                    });
+                    option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
+                });
+            });
+            data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
+        }
         this.selectedOrder = data;
         this.showOrderDetailsDialog = true;
-        console.log(this.selectedOrder);
     }
 
     onHideOrderDetailsDialog() {

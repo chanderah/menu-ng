@@ -14,10 +14,12 @@ import { SharedService } from './../../../service/shared.service';
 })
 export class OrderComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
-    // dialogBreakpoints = { '768px': '90vw' };
+    dialogBreakpoints = { '768px': '90vw' };
 
     user = {} as User;
     pagingInfo = {} as PagingInfo;
+
+    showOrderDetailsDialog: boolean = false;
 
     selectedOrder = {} as Order;
     orders = [] as Order[];
@@ -57,6 +59,21 @@ export class OrderComponent extends SharedUtil implements OnInit {
                 this.sharedService.errorToast('Failed to get Orders data.');
             }
         });
+    }
+
+    viewOrder(data: Order) {
+        data.products.forEach((product) => {
+            product.options.forEach((option) => {
+                let optionsName = [];
+                option.values.forEach((value) => {
+                    optionsName.push(value.value);
+                });
+                option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
+            });
+        });
+
+        this.selectedOrder = data;
+        this.showOrderDetailsDialog = true;
     }
 
     getProductsName(orders: Order[]) {

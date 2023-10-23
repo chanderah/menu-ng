@@ -57,7 +57,7 @@
                         }">
                         <td style="min-width: 100px" class="text-left text-capitalize">
                             <div class="flex flex-column">
-                                <p class="font-semibold">#{{ data.order_code }}</p>
+                                <p class="font-semibold">#{{ data.orderCode }}</p>
                                 <p>{{ data.totalPrice | custom }}</p>
                             </div>
                         </td>
@@ -82,7 +82,7 @@
 
 <p-dialog
     [maximizable]="true"
-    header="Order #{{ selectedOrder.id }}"
+    header="Order #{{ selectedOrder.orderCode }}"
     [(visible)]="showOrderDetailsDialog"
     (onHide)="onHideOrderDetailsDialog()"
     [contentStyle]="{ overflow: 'scroll' }"
@@ -113,9 +113,9 @@
                     <div class="col-12 pb-0" *ngFor="let option of product.options; index as j">
                         <div class="p-inputgroup">
                             <span class="p-inputgroup-addon font-semibold"> {{ toAscii(j) }} </span>
-                            <label pInputText class="text-capitalize">{{
-                                option.name + ': ' + option.optionsName
-                            }}</label>
+                            <label pInputText class="text-capitalize">
+                                {{ option.name + ': ' + option.optionsName }}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -129,16 +129,15 @@
                 icon="pi pi-times"
                 (click)="showOrderDetailsDialog = false"
                 label="Close"
-                class="w-auto p-button-danger p-button-outlined"
-                [disabled]="isLoading">
+                class="w-auto p-button-danger p-button-outlined">
             </button>
             <button
                 pButton
                 pRipple
-                icon="pi pi-print"
+                icon="pi pi-check"
                 class="w-auto p-button-outlined"
-                label="Invoice"
-                (click)="showOrderDetailsDialog = false"
+                label="Done"
+                (click)="markAsDone(selectedOrder)"
                 [disabled]="isLoading">
             </button>
         </div>
