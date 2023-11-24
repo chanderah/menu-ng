@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LazyLoadEvent, MenuItem } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import { PagingInfo } from './../../../../interface/paging_info';
 import { User } from './../../../../interface/user';
@@ -81,7 +81,11 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         this.user = this.jsonParse(localStorage.getItem('user'));
     }
 
-    async getOrders(e?: LazyLoadEvent) {
+    onPaginateChange(e: any) {
+        console.log(e);
+    }
+
+    async getOrders(e?: any) {
         if (e?.rows && e?.rows !== this.pagingInfo.limit) this.isPageLimitChange = true;
         this.pagingInfo = {
             filter: e?.filters?.global?.value || '',
@@ -92,44 +96,24 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         };
 
         this.isLoading = true;
-        this.apiService.getOrders(this.pagingInfo).subscribe((res: any) => {
-            this.isLoading = false;
-            if (res.status === 200) {
-                this.checkNewOrders(res.data);
-                this.lastUpdated = new Date();
-                if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
-            } else {
-                this.sharedService.errorToast('Failed to get Orders data.');
-            }
-        });
+        this.apiService
+            .getLiveOrders(this.orders.length > 0 ? this.orders[0].id : 0, this.pagingInfo.limit)
+            .subscribe((res: any) => {
+                this.isLoading = false;
+                if (res.status === 200) {
+                    this.lastUpdated = new Date();
+                    if (res.data.length > 0) {
+                        if (this.orders.length > 0) {
+                            this.orders.push(res.data);
+                            this.orders.slice(0, this.pagingInfo.limit);
+                            this.showNewOrdersNotification(res.data.length);
+                        } else this.orders = res.data;
+                    }
+                } else this.sharedService.errorToast('Failed to get Orders data.');
+            });
 
         if (this.timeoutId) clearTimeout(this.timeoutId);
-        this.timeoutId = setTimeout(() => {
-            this.getOrders();
-        }, 9000);
-    }
-
-    checkNewOrders(newOrders: Order[]) {
-        let newData = 0;
-        if (this.orders.length == 0 || this.isPageLimitChange) {
-            newOrders.forEach((data) => {
-                if (!data.hasOwnProperty('isNew')) {
-                    data.isNew = false;
-                }
-            });
-            this.orders = newOrders;
-        } else {
-            const index = newOrders.findIndex((v) => v.id === this.orders[0].id);
-            if (index !== 0) {
-                for (let i = 0; i < index; i++) {
-                    newOrders[i].isNew = true;
-                    this.orders.unshift(newOrders[i]);
-                    newData++;
-                }
-            }
-        }
-        if (newData > 0) this.showNewOrdersNotification(newData);
-        return newOrders;
+        this.timeoutId = setTimeout(() => this.getOrders(), 9000);
     }
 
     showNewOrdersNotification(count: number) {
@@ -160,12 +144,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
             data.products.forEach((product) => {
                 productsName.push(product.name);
-
                 product.options.forEach((option) => {
                     let optionsName = [];
-                    option.values.forEach((value) => {
-                        optionsName.push(value.value);
-                    });
+                    option.values.forEach((value) => optionsName.push(value.value));
                     option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
                 });
             });
@@ -175,9 +156,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         this.showOrderDetailsDialog = true;
     }
 
-    onHideOrderDetailsDialog() {
-        // this.getOrders();
-    }
+    onHideOrderDetailsDialog() {}
 
     onStart() {}
 

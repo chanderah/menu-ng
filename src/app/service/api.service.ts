@@ -11,7 +11,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, Observable, of } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
 import SharedUtil from '../lib/shared.util';
@@ -186,6 +186,10 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     }
 
     /* ORDER */
+    getLiveOrders(lastFetchedId: number, limit: number) {
+        return this.httpClient.post('/order/findLive', { id: lastFetchedId, limit: limit });
+    }
+
     getOrders(pagingInfo: PagingInfo) {
         return this.httpClient.post('/order/findAll', pagingInfo);
     }

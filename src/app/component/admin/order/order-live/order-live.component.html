@@ -19,6 +19,7 @@
             <p-table
                 #tb
                 dataKey="id"
+                (onPage)="onPaginateChange($event)"
                 [paginator]="true"
                 [paginatorPosition]="'bottom'"
                 [pageLinks]="0"
