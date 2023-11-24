@@ -10,7 +10,6 @@ import { SharedService } from './../../../../service/shared.service';
 @Component({
     selector: 'app-order-live',
     templateUrl: './order-live.component.html',
-
     styleUrls: [
         // './order-live.component.scss',
         '../../../../../assets/user.styles.scss',
@@ -47,10 +46,8 @@ import { SharedService } from './../../../../service/shared.service';
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
-    isPageLimitChange: boolean = false;
     dialogBreakpoints = { '768px': '90vw' };
     rowsPerPageOptions: number[] = [20, 50, 100];
-
     contextMenus: MenuItem[] = [
         {
             label: 'Done',
@@ -79,6 +76,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
     ngOnInit() {
         this.user = this.jsonParse(localStorage.getItem('user'));
+        this.pagingInfo.limit = this.rowsPerPageOptions[0];
     }
 
     onPaginateChange(e: any) {
@@ -86,7 +84,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     }
 
     async getOrders(e?: any) {
-        if (e?.rows && e?.rows !== this.pagingInfo.limit) this.isPageLimitChange = true;
         this.pagingInfo = {
             filter: e?.filters?.global?.value || '',
             limit: e?.rows || 20,

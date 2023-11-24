@@ -19,12 +19,12 @@
             <p-table
                 #tb
                 dataKey="id"
-                (onPage)="onPaginateChange($event)"
                 [paginator]="true"
                 [paginatorPosition]="'bottom'"
                 [pageLinks]="0"
+                (onPage)="onPaginateChange($event)"
                 [rowsPerPageOptions]="rowsPerPageOptions"
-                [rows]="rowsPerPageOptions[0]"
+                [rows]="pagingInfo.limit"
                 sortField="id"
                 [sortOrder]="-1"
                 [totalRecords]="pagingInfo.rowCount"
@@ -73,7 +73,7 @@
 
                 <ng-template pTemplate="emptymessage" let-columns>
                     <tr>
-                        <td attr.colspan="100%" style="text-align: center"> No order found.</td>
+                        <td attr.colspan="100%" style="text-align: center"> {{ isLoading ? 'Loading...' : 'No order found.' }}</td>
                     </tr>
                 </ng-template>
             </p-table>
