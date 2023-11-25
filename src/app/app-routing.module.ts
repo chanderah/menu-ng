@@ -10,7 +10,6 @@ import { TableComponent } from './component/admin/table/table.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
 import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
-import { CustomerGuard } from './guard/customer.guard';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
@@ -19,7 +18,7 @@ import { AppMainComponent } from './layout/app.main.component';
             [
                 {
                     path: '',
-                    canActivate: [CustomerGuard],
+                    // canActivate: [CustomerGuard],
                     component: AppMainComponent,
                     children: [
                         { path: '', component: DashboardComponent },

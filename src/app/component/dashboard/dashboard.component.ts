@@ -67,6 +67,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     ) {
         super();
         this.route.queryParams.subscribe((params: any) => {
+            this.checkIsAuthorized();
             if (!this.isEmpty(params.table)) {
                 const table: Table = { id: params.table };
                 orderService.setCustomerInfo(table);
@@ -87,6 +88,17 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     ngOnInit() {
         this.init = false;
         // this.getProducts();
+    }
+
+    checkIsAuthorized() {
+        const user = this.sharedService.getUser();
+        const customer = this.orderService.getCustomerInfo();
+
+        if (this.isEmpty(customer)) {
+            if (this.isEmpty(user)) {
+                this.router.navigate(['/unauthorized']);
+            }
+        }
     }
 
     getFeaturedProducts() {
