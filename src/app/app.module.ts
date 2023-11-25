@@ -1,8 +1,8 @@
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Injectable, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule, HammerGestureConfig, HammerModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QrCodeModule } from 'ng-qrcode';
 import { ToastrModule } from 'ngx-toastr';
@@ -99,7 +99,6 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { AppComponent } from './app.component';
 
 import { DashboardComponent } from './component/dashboard/dashboard.component';
-import { EmptyComponent } from './component/demo/empty/empty.component';
 
 import * as Hammer from 'hammerjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -111,36 +110,6 @@ import { CategoryComponent } from './component/admin/category/category.component
 import { OrderComponent } from './component/admin/order/order.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
-import { AccessComponent } from './component/demo/access/access.component';
-import { AppCodeModule } from './component/demo/app-code/app.code.component';
-import { BlocksComponent } from './component/demo/blocks/blocks.component';
-import { BlockViewer } from './component/demo/blockviewer/blockviewer.component';
-import { ButtonComponent } from './component/demo/button/button.component';
-import { ChartsComponent } from './component/demo/charts/charts.component';
-import { CrudComponent } from './component/demo/crud/crud.component';
-import { DocumentationComponent } from './component/demo/documentation/documentation.component';
-import { ErrorComponent } from './component/demo/error/error.component';
-import { FileComponent } from './component/demo/file/file.component';
-import { FloatLabelComponent } from './component/demo/floatlabel/floatlabel.component';
-import { FormLayoutComponent } from './component/demo/formlayout/formlayout.component';
-import { IconsComponent } from './component/demo/icons/icons.component';
-import { InputComponent } from './component/demo/input/input.component';
-import { InvalidStateComponent } from './component/demo/invalidstate/invalidstate.component';
-import { LandingComponent } from './component/demo/landing/landing.component';
-import { ListComponent } from './component/demo/list/list.component';
-import { MediaComponent } from './component/demo/media/media.component';
-import { ConfirmationComponent } from './component/demo/menus/confirmation.component';
-import { MenusComponent } from './component/demo/menus/menus.component';
-import { PaymentComponent } from './component/demo/menus/payment.component';
-import { PersonalComponent } from './component/demo/menus/personal.component';
-import { SeatComponent } from './component/demo/menus/seat.component';
-import { MessagesComponent } from './component/demo/messages/messages.component';
-import { MiscComponent } from './component/demo/misc/misc.component';
-import { NotfoundComponent } from './component/demo/notfound/notfound.component';
-import { OverlaysComponent } from './component/demo/overlays/overlays.component';
-import { PanelsComponent } from './component/demo/panels/panels.component';
-import { TimelineComponent } from './component/demo/timeline/timeline.component';
-import { TreeComponent } from './component/demo/tree/tree.component';
 import { CategoryDialogComponent } from './component/dialog/category-dialog/category-dialog.component';
 import { NotificationDialogComponent } from './component/dialog/notification/notification-dialog.component';
 import { OrderDialogComponent } from './component/dialog/order-dialog/order-dialog.component';
@@ -179,37 +148,6 @@ export class MyHammerConfig extends HammerGestureConfig {
         AppConfigComponent,
         AppMenuComponent,
         AppMenuitemComponent,
-        FormLayoutComponent,
-        FloatLabelComponent,
-        InvalidStateComponent,
-        InputComponent,
-        ButtonComponent,
-        ListComponent,
-        TreeComponent,
-        PanelsComponent,
-        OverlaysComponent,
-        MenusComponent,
-        MessagesComponent,
-        MessagesComponent,
-        MiscComponent,
-        ChartsComponent,
-        EmptyComponent,
-        FileComponent,
-        IconsComponent,
-        DocumentationComponent,
-        CrudComponent,
-        TimelineComponent,
-        BlocksComponent,
-        BlockViewer,
-        MediaComponent,
-        PaymentComponent,
-        ConfirmationComponent,
-        PersonalComponent,
-        SeatComponent,
-        LandingComponent,
-        ErrorComponent,
-        NotfoundComponent,
-        AccessComponent,
         /* PIPE */
         CustomCurrencyPipe,
         /* DIALOG */
@@ -317,7 +255,6 @@ export class MyHammerConfig extends HammerGestureConfig {
         TreeSelectModule,
         TreeTableModule,
         VirtualScrollerModule,
-        AppCodeModule,
         StyleClassModule,
         // User Defined Modules
         DialogModule,

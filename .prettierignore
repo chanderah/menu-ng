@@ -1,6 +1,6 @@
 # Ignore artifacts:
 
-app-routing.module.ts
+# app-routing.module.ts
 
 build
 coverage
