@@ -36,9 +36,11 @@
                 responsiveLayout="scroll">
                 <ng-template pTemplate="caption">
                     <div class="flex align-items-end justify-content-between">
-                        <p class="text-right text-sm font-normal">
-                            Last updated at: {{ lastUpdated | date: 'MMM d, HH:mm:ss' }}
-                        </p>
+                        <div class="flex align-items-end">
+                            <p class="text-sm font-normal">
+                                Last updated at: {{ lastUpdated | date: 'MMM d, HH:mm:ss' }}
+                            </p>
+                        </div>
                         <p-dropdown
                             [options]="rowsPerPageOptions"
                             [(ngModel)]="pagingInfo.limit"
@@ -73,9 +75,11 @@
 
                 <ng-template pTemplate="emptymessage" let-columns>
                     <tr>
-                        <td attr.colspan="100%" style="text-align: center">
-                            {{ isLoading ? 'Loading...' : 'No order found.' }}</td
-                        >
+                        <td attr.colspan="100%">
+                            <div class="flex my-3 align-items-center justify-content-center">
+                                {{ isLoading ? 'Loading...' : 'No data found' }}
+                            </div>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
