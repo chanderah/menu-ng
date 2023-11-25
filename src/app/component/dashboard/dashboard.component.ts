@@ -96,7 +96,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
         if (this.isEmpty(customer)) {
             if (this.isEmpty(user)) {
-                this.router.navigate(['/unauthorized']);
+                this.router.navigateByUrl('/customer', { skipLocationChange: true });
             }
         }
     }

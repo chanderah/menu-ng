@@ -7,9 +7,11 @@ import { OrderLiveComponent } from './component/admin/order/order-live/order-liv
 import { OrderComponent } from './component/admin/order/order.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
+import { CustomerComponent } from './component/customer/customer.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
 import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
+import { AdminGuard } from './guard/admin.guard';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
@@ -18,18 +20,25 @@ import { AppMainComponent } from './layout/app.main.component';
             [
                 {
                     path: '',
-                    // canActivate: [CustomerGuard],
                     component: AppMainComponent,
                     children: [
                         { path: '', component: DashboardComponent },
-                        { path: 'order', component: OrderComponent },
-                        { path: 'order/live', component: OrderLiveComponent },
-                        { path: 'product', component: ProductComponent },
-                        { path: 'category', component: CategoryComponent },
-                        { path: 'table', component: TableComponent },
-                        { path: 'order-complete', component: OrderCompleteComponent }
+                        { path: 'order-complete', component: OrderCompleteComponent },
+                        {
+                            path: 'admin',
+                            canActivate: [AdminGuard],
+                            canActivateChild: [AdminGuard],
+                            children: [
+                                { path: 'order', component: OrderComponent },
+                                { path: 'order/live', component: OrderLiveComponent },
+                                { path: 'product', component: ProductComponent },
+                                { path: 'category', component: CategoryComponent },
+                                { path: 'table', component: TableComponent }
+                            ]
+                        }
                     ]
                 },
+                { path: 'customer', component: CustomerComponent },
                 { path: 'unauthorized', component: UnauthorizedComponent },
                 { path: 'login', component: LoginComponent },
                 { path: 'register', component: RegisterComponent },

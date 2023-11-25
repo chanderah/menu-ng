@@ -125,6 +125,7 @@ import { ConfigService } from './layout/service/app.config.service';
 import { MenuService } from './layout/service/app.menu.service';
 import { ApiService } from './service/api.service';
 import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
+import { CustomerComponent } from './component/customer/customer.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -162,7 +163,8 @@ export class MyHammerConfig extends HammerGestureConfig {
         OrderComponent,
         OrderLiveComponent,
         OrderCompleteComponent,
-        UnauthorizedComponent
+        UnauthorizedComponent,
+        CustomerComponent
     ],
     imports: [
         BrowserModule,
