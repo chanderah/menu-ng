@@ -19,18 +19,12 @@
             <p-table
                 #tb
                 dataKey="id"
-                [paginator]="true"
-                [paginatorPosition]="'bottom'"
-                [pageLinks]="0"
-                (onPage)="onPaginateChange($event)"
-                [rowsPerPageOptions]="rowsPerPageOptions"
                 [rows]="pagingInfo.limit"
                 sortField="id"
                 [sortOrder]="-1"
-                [totalRecords]="pagingInfo.rowCount"
                 [lazy]="true"
                 [filterDelay]="500"
-                (onLazyLoad)="getOrders($event)"
+                (onLazyLoad)="getOrders()"
                 [value]="orders"
                 [rowHover]="true"
                 [scrollable]="true"
@@ -41,10 +35,16 @@
                 [contextMenu]="cm"
                 responsiveLayout="scroll">
                 <ng-template pTemplate="caption">
-                    <div class="flex flex-column">
+                    <div class="flex align-items-end justify-content-between">
                         <p class="text-right text-sm font-normal">
                             Last updated at: {{ lastUpdated | date: 'MMM d, HH:mm:ss' }}
                         </p>
+                        <p-dropdown
+                            [options]="rowsPerPageOptions"
+                            [(ngModel)]="pagingInfo.limit"
+                            (onChange)="getOrders(0)"
+                            placeholder="Data per Page">
+                        </p-dropdown>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="body" let-data let-i="rowIndex">
@@ -73,7 +73,9 @@
 
                 <ng-template pTemplate="emptymessage" let-columns>
                     <tr>
-                        <td attr.colspan="100%" style="text-align: center"> {{ isLoading ? 'Loading...' : 'No order found.' }}</td>
+                        <td attr.colspan="100%" style="text-align: center">
+                            {{ isLoading ? 'Loading...' : 'No order found.' }}</td
+                        >
                     </tr>
                 </ng-template>
             </p-table>
@@ -135,6 +137,7 @@
             <button
                 pButton
                 pRipple
+                *ngIf="selectedOrder.isNew"
                 icon="pi pi-check"
                 class="w-auto p-button-outlined"
                 label="Done"

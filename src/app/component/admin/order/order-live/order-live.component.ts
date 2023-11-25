@@ -46,15 +46,9 @@ import { SharedService } from './../../../../service/shared.service';
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
+    isPaginateChange: boolean = true;
     dialogBreakpoints = { '768px': '90vw' };
     rowsPerPageOptions: number[] = [20, 50, 100];
-    contextMenus: MenuItem[] = [
-        {
-            label: 'Done',
-            icon: 'pi pi-fw pi-check',
-            command: () => this.markAsDone(this.selectedOrder)
-        }
-    ];
 
     user = {} as User;
     pagingInfo = {} as PagingInfo;
@@ -66,6 +60,13 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
     timeoutId: any = null;
     lastUpdated: Date = new Date();
+    contextMenus: MenuItem[] = [
+        {
+            label: 'Done',
+            icon: 'pi pi-fw pi-check',
+            command: () => this.markAsDone(this.selectedOrder)
+        }
+    ];
 
     constructor(
         private sharedService: SharedService,
@@ -79,35 +80,26 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         this.pagingInfo.limit = this.rowsPerPageOptions[0];
     }
 
-    onPaginateChange(e: any) {
-        console.log(e);
+    onPaginateChange() {
+        return this.getOrders();
     }
 
-    async getOrders(e?: any) {
-        this.pagingInfo = {
-            filter: e?.filters?.global?.value || '',
-            limit: e?.rows || 20,
-            offset: e?.first || 0,
-            sortField: 'id',
-            sortOrder: 'DESC'
-        };
-
+    async getOrders(lastFetchedId: number = this.orders.length) {
         this.isLoading = true;
-        this.apiService
-            .getLiveOrders(this.orders.length > 0 ? this.orders[0].id : 0, this.pagingInfo.limit)
-            .subscribe((res: any) => {
-                this.isLoading = false;
-                if (res.status === 200) {
-                    this.lastUpdated = new Date();
-                    if (res.data.length > 0) {
-                        if (this.orders.length > 0) {
-                            this.orders.push(res.data);
-                            this.orders.slice(0, this.pagingInfo.limit);
-                            this.showNewOrdersNotification(res.data.length);
-                        } else this.orders = res.data;
-                    }
-                } else this.sharedService.errorToast('Failed to get Orders data.');
-            });
+        this.apiService.getLiveOrders(lastFetchedId, this.pagingInfo.limit).subscribe((res: any) => {
+            if (res.status === 200) {
+                this.lastUpdated = new Date();
+                if (res.data.length > 0) {
+                    if (lastFetchedId === 0) this.orders.length = 0;
+                    if (this.orders.length > 0) {
+                        this.orders.push(res.data);
+                        this.orders.slice(0, this.pagingInfo.limit);
+                        this.showNewOrdersNotification(res.data.length);
+                    } else this.orders = res.data;
+                }
+            } else this.sharedService.errorToast('Failed to get Orders data.');
+            this.isLoading = false;
+        });
 
         if (this.timeoutId) clearTimeout(this.timeoutId);
         this.timeoutId = setTimeout(() => this.getOrders(), 9000);
@@ -138,7 +130,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     viewOrder(data: Order) {
         if (this.isEmpty(data.productsName)) {
             let productsName = [];
-
             data.products.forEach((product) => {
                 productsName.push(product.name);
                 product.options.forEach((option) => {
@@ -148,6 +139,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
                 });
             });
             data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
+            console.log(data.productsName);
         }
         this.selectedOrder = data;
         this.showOrderDetailsDialog = true;
