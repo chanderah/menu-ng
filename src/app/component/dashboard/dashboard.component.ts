@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { debounceTime, Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 import { Product } from 'src/app/interface/product';
 import { Table } from 'src/app/interface/table';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
@@ -20,7 +20,6 @@ import SwiperCore, {
     Virtual,
     Zoom
 } from 'swiper';
-import { ProductService } from '../../service/productservice';
 import { SharedService } from '../../service/shared.service';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
 import { PagingInfo } from './../../interface/paging_info';
@@ -61,7 +60,6 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         private sharedService: SharedService,
         private route: ActivatedRoute,
         private router: Router,
-        private productService: ProductService,
         private dialogService: DialogService,
         private orderService: OrderService,
         private formBuilder: FormBuilder,

@@ -9,6 +9,8 @@ import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
+import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
+import { CustomerGuard } from './guard/customer.guard';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
@@ -17,6 +19,7 @@ import { AppMainComponent } from './layout/app.main.component';
             [
                 {
                     path: '',
+                    canActivate: [CustomerGuard],
                     component: AppMainComponent,
                     children: [
                         { path: '', component: DashboardComponent },
@@ -28,6 +31,7 @@ import { AppMainComponent } from './layout/app.main.component';
                         { path: 'order-complete', component: OrderCompleteComponent }
                     ]
                 },
+                { path: 'unauthorized', component: UnauthorizedComponent },
                 { path: 'login', component: LoginComponent },
                 { path: 'register', component: RegisterComponent },
                 { path: '**', redirectTo: '' }

@@ -13,6 +13,7 @@ import { CartDialogComponent } from './component/dialog/cart-dialog/cart-dialog.
 import { CustomCurrencyPipe } from './component/pipe/currency.pipe';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { AppTopBarComponent } from './layout/app.topbar.component';
+import { OrderService } from './service/order.service';
 import { SharedService } from './service/shared.service';
 
 import { AccordionModule } from 'primeng/accordion';
@@ -123,14 +124,7 @@ import { AppConfigComponent } from './layout/config/app.config.component';
 import { ConfigService } from './layout/service/app.config.service';
 import { MenuService } from './layout/service/app.menu.service';
 import { ApiService } from './service/api.service';
-import { CountryService } from './service/countryservice';
-import { CustomerService } from './service/customerservice';
-import { EventService } from './service/eventservice';
-import { IconService } from './service/iconservice';
-import { NodeService } from './service/nodeservice';
-import { OrderService } from './service/order.service';
-import { PhotoService } from './service/photoservice';
-import { ProductService } from './service/productservice';
+import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -167,7 +161,8 @@ export class MyHammerConfig extends HammerGestureConfig {
         TableComponent,
         OrderComponent,
         OrderLiveComponent,
-        OrderCompleteComponent
+        OrderCompleteComponent,
+        UnauthorizedComponent
     ],
     imports: [
         BrowserModule,
@@ -284,13 +279,6 @@ export class MyHammerConfig extends HammerGestureConfig {
             useClass: ApiService,
             multi: true
         },
-        CountryService,
-        CustomerService,
-        EventService,
-        IconService,
-        NodeService,
-        PhotoService,
-        ProductService,
         MenuService,
         ConfigService,
 

@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { lastValueFrom } from 'rxjs';
+import { User } from 'src/app/interface/user';
 import { NotificationDialogComponent } from './../component/dialog/notification/notification-dialog.component';
-import { sortArrayByLabelProperty } from './../lib/shared.util';
+import { jsonParse, sortArrayByLabelProperty } from './../lib/shared.util';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -19,6 +20,15 @@ export class SharedService {
         private apiService: ApiService // private notificationDialogComponent: NotificationDialogComponent
     ) {
         // super();
+    }
+
+    getUser(): User {
+        return jsonParse(localStorage.getItem('user')) as User;
+    }
+
+    removeUser() {
+        localStorage.removeItem('user');
+        return;
     }
 
     async getCategories() {

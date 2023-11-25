@@ -39,16 +39,16 @@ export class CategoryComponent extends SharedUtil implements OnInit {
         });
     }
 
+    ngOnInit() {
+        this.user = this.jsonParse(localStorage.getItem('user'));
+        this.getCategories();
+    }
+
     async getCategories() {
         this.isLoading = true;
         this.categories = await this.sharedService.getCategories();
         this.resetCategoryDialog();
         this.isLoading = false;
-    }
-
-    ngOnInit() {
-        this.user = this.jsonParse(localStorage.getItem('user'));
-        this.getCategories();
     }
 
     async onSubmit() {

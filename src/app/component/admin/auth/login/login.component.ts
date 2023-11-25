@@ -37,6 +37,8 @@ export class LoginComponent extends SharedUtil implements OnInit {
 
     ngOnInit(): void {
         this.config = this.configService.config;
+        this.user = this.sharedService.getUser();
+        if (this.user) this.router.navigate(['/']);
     }
 
     onSubmit() {
