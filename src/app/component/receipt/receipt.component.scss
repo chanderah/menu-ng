@@ -1,4 +1,4 @@
-/* TODO: optimize */
+@import url('https://fonts.cdnfonts.com/css/fake-receipt');
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -34,6 +34,11 @@ body {
     text-align: center;
     font-size: 24pt;
     font-weight: bold;
+}
+
+.products {
+    font-family: 'Fake Receipt', sans-serif;
+    font-size: 10px;
 }
 
 #location {

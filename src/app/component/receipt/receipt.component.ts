@@ -8,10 +8,19 @@ import jsPDF from 'jspdf';
     styleUrls: ['./receipt.component.scss']
 })
 export class ReceiptComponent implements OnInit {
+    currentDate: Date = new Date();
+    orders: any[] = [];
+
     constructor() {}
 
     ngOnInit(): void {
-        // this.convertToPdf();
+        for (let i = 0; i < 10; i++) {
+            this.orders.push({
+              name: `Products ${i + 1}`,
+              qty: i+1,
+                price: 2890 * (i + 1) + i
+            });
+        }
     }
 
     convertToPdf() {
