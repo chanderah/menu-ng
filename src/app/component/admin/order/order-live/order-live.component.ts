@@ -46,11 +46,13 @@ import { SharedService } from './../../../../service/shared.service';
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
-    dialogBreakpoints = { '768px': '90vw' };
+    isPaginationChange: boolean = true;
     rowsPerPageOptions: number[] = [20, 50, 100];
+    dialogBreakpoints = { '768px': '90vw' };
 
     user = {} as User;
     pagingInfo = {} as PagingInfo;
+    audio = new Audio('../../../../../assets/sound/bell.mp3');
 
     showOrderDetailsDialog: boolean = false;
 
@@ -80,33 +82,41 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     }
 
     onPaginateChange() {
+        this.isPaginationChange = true;
         return this.getOrders();
     }
 
-    async getOrders(lastFetchedId: number = this.orders.length) {
+    async getOrders() {
         this.isLoading = true;
-        this.apiService.getLiveOrders(lastFetchedId, this.pagingInfo.limit).subscribe((res: any) => {
+        this.apiService.getLiveOrders(this.getLastFetchedId(), this.pagingInfo.limit).subscribe((res: any) => {
             if (res.status === 200) {
                 this.lastUpdated = new Date();
                 if (res.data.length > 0) {
-                    if (lastFetchedId === 0) this.orders.length = 0;
                     if (this.orders.length > 0) {
-                        this.orders.push(res.data);
-                        this.orders.slice(0, this.pagingInfo.limit);
-                        this.showNewOrdersNotification(res.data.length);
+                        if (this.isPaginationChange) {
+                            this.orders = res.data;
+                            this.isPaginationChange = false;
+                        } else {
+                            this.orders = res.data.concat(this.orders).slice(0, this.pagingInfo.limit);
+                            this.showNewOrdersNotification(res.data.length);
+                        }
                     } else this.orders = res.data;
                 }
             } else this.sharedService.errorToast('Failed to get Orders data.');
             this.isLoading = false;
         });
-
         if (this.timeoutId) clearTimeout(this.timeoutId);
         this.timeoutId = setTimeout(() => this.getOrders(), 9000);
     }
 
+    getLastFetchedId() {
+        if (this.isPaginationChange) return 0;
+        else return this.orders.length > 0 ? this.orders[0].id : 0;
+    }
+
     showNewOrdersNotification(count: number) {
-        this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000);
         this.playSound();
+        this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000);
     }
 
     markAsDone(selectedOrder: Order) {
@@ -120,10 +130,8 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     }
 
     playSound() {
-        let audio = new Audio();
-        audio.src = '../../../../../assets/sound/bell.mp3';
-        audio.load();
-        audio.play();
+        this.audio.load();
+        this.audio.play();
     }
 
     viewOrder(data: Order) {

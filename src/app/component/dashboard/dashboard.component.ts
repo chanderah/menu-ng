@@ -71,7 +71,6 @@ export class DashboardComponent extends SharedUtil implements OnInit {
             if (!this.isEmpty(params.table)) {
                 const table: Table = { id: params.table };
                 orderService.setCustomerInfo(table);
-
                 router.navigate(['/']);
             }
 

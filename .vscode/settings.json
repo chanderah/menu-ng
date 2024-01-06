@@ -9,5 +9,6 @@
         "exclude/": true,
         "**/node_modules": false
     },
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "angular.enable-strict-mode-prompt": false
 }
