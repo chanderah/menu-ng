@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { isEmpty, jsonParse } from '../lib/shared.util';
+import { Product } from './../interface/product';
 import { AppMainComponent } from './app.main.component';
 
 @Component({
@@ -13,7 +14,7 @@ export class AppTopBarComponent {
     constructor(public appMain: AppMainComponent) {}
 
     getCountCartItems() {
-        const cartItems: any[] = jsonParse(localStorage.getItem('cart'));
+        const cartItems: any[] = jsonParse(localStorage.getItem('cart')) as Product[];
         if (isEmpty(cartItems)) return '0';
         return cartItems.length.toString();
     }

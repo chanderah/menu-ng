@@ -1,3 +1,4 @@
+import { parse, stringify } from 'lossless-json';
 import { environment } from './../../environments/environment.prod';
 
 export default class SharedUtil {
@@ -17,31 +18,27 @@ export default class SharedUtil {
     };
 
     isEmpty = (obj: any) => {
-        if (!obj || obj == null || obj == '' || obj?.length === 0 || JSON.stringify(obj) === '{}') return true;
-        else return false;
+        return isEmpty(obj);
     };
 
     jsonParse = (obj: any) => {
-        if (typeof obj != 'string') return JSON.parse(this.jsonStringify(obj));
-        return JSON.parse(obj);
+        return jsonParse(obj);
     };
 
     jsonStringify = (obj: any) => {
-        return JSON.stringify(obj);
+        return jsonStringify(obj);
     };
 
     sortArrayByLabelProperty = (a: any, b: any) => {
-        if (a.label > b.label) return 1;
-        if (a.label < b.label) return -1;
-        return 0;
+        return sortArrayByLabelProperty(a, b);
     };
 
     capitalizeFirstLetter = (data: string) => {
-        return data.charAt(0).toUpperCase() + data.slice(1);
+        return capitalizeFirstLetter(data);
     };
 
     toAscii(num: number) {
-        return String.fromCharCode(97 + num);
+        return toAscii(num);
     }
 }
 
@@ -62,14 +59,23 @@ export const isEmpty = (obj: any) => {
     else return false;
 };
 
-export const jsonParse = (obj: any) => {
-    if (typeof obj != 'string') return JSON.parse(jsonStringify(obj));
-    return JSON.parse(obj);
+export const jsonParse = (obj: any): any => {
+    if (typeof obj != 'string') return parse(stringify(obj));
+    return parse(obj);
 };
 
-export const jsonStringify = (obj: any) => {
-    return JSON.stringify(obj);
+export const jsonStringify = (obj: any): string => {
+    return stringify(obj);
 };
+
+// export const jsonParse = (obj: any) => {
+//     if (typeof obj != 'string') return JSON.parse(jsonStringify(obj));
+//     return JSON.parse(obj);
+// };
+
+// export const jsonStringify = (obj: any) => {
+//     return JSON.stringify(obj);
+// };
 
 export const capitalize = (data: string) => {
     data.split(' ').forEach((c: string) => {
@@ -86,4 +92,8 @@ export const sortArrayByLabelProperty = (a: any, b: any) => {
     if (a.label > b.label) return 1;
     if (a.label < b.label) return -1;
     return 0;
+};
+
+export const toAscii = (num: number) => {
+    return String.fromCharCode(97 + num);
 };

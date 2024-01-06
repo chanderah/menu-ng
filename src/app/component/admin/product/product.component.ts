@@ -85,7 +85,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = this.jsonParse(localStorage.getItem('user'));
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
         // this.getProducts();
         this.getCategories();
     }
@@ -292,7 +292,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     }
 
     resetNode() {
-        const nodes: TreeNode[] = this.jsonParse(this.categories);
+        const nodes = this.jsonParse(this.categories) as TreeNode[];
         nodes.forEach((node) => {
             if (node.partialSelected) node.partialSelected = false;
             if (node.children) {

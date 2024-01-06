@@ -34,7 +34,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = this.jsonParse(localStorage.getItem('user'));
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
     }
 
     getOrders(e?: LazyLoadEvent) {

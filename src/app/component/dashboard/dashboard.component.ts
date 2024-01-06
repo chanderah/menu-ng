@@ -5,7 +5,6 @@ import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription, debounceTime } from 'rxjs';
 import { Product } from 'src/app/interface/product';
-import { Table } from 'src/app/interface/table';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import SwiperCore, {
@@ -22,6 +21,7 @@ import SwiperCore, {
 } from 'swiper';
 import { SharedService } from '../../service/shared.service';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
+import { CustomerInfo } from './../../interface/customer_info';
 import { PagingInfo } from './../../interface/paging_info';
 import { enableBodyScroll } from './../../lib/shared.util';
 import { ApiService } from './../../service/api.service';
@@ -69,8 +69,8 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         this.route.queryParams.subscribe((params: any) => {
             this.checkIsAuthorized();
             if (!this.isEmpty(params.table)) {
-                const table: Table = { tableId: params.table };
-                orderService.setCustomerInfo(table);
+                const customer: CustomerInfo = { tableId: params.table };
+                orderService.setCustomerInfo(customer);
                 router.navigate(['/']);
             }
 

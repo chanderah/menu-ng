@@ -22,14 +22,14 @@ export class OrderService extends SharedUtil {
     }
 
     getOrders(): Order {
-        const data = this.jsonParse(localStorage.getItem('order'));
+        const data = this.jsonParse(localStorage.getItem('order')) as Order;
         if (!this.isEmpty(data)) this.order = data;
         return this.order;
         // SHOULD BE DB!!
     }
 
     getMyOrders(): Order {
-        const data = this.jsonParse(localStorage.getItem('order'));
+        const data = this.jsonParse(localStorage.getItem('order')) as Order;
         if (!this.isEmpty(data)) this.order = data;
         return this.order;
     }
@@ -65,9 +65,9 @@ export class OrderService extends SharedUtil {
     }
 
     getCustomerInfo(): CustomerInfo {
-        const data = this.jsonParse(localStorage.getItem('customer'));
+        const data: CustomerInfo = this.jsonParse(localStorage.getItem('customer')) as CustomerInfo;
         if (!this.isEmpty(data)) this.customerInfo = data;
-        else this.customerInfo = {};
+        else this.customerInfo = null;
         return this.customerInfo;
     }
 
@@ -80,10 +80,8 @@ export class OrderService extends SharedUtil {
     }
 
     getCart(): Product[] {
-        const data = this.jsonParse(localStorage.getItem('cart'));
-        if (!this.isEmpty(data)) {
-            this.cart = data;
-        } else this.cart = [];
+        const data = this.jsonParse(localStorage.getItem('cart')) as Product[];
+        if (!this.isEmpty(data)) this.cart = data;
         return this.cart;
     }
 

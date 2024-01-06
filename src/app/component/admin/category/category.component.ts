@@ -117,7 +117,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     }
 
     resetNode() {
-        const nodes: TreeNode[] = this.jsonParse(this.categories);
+        const nodes = this.jsonParse(this.categories) as TreeNode[];
         nodes.forEach((node) => {
             if (node.partialSelected) node.partialSelected = false;
             if (node.children) {

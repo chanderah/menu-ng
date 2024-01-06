@@ -61,7 +61,7 @@ export class TableComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = this.jsonParse(localStorage.getItem('user'));
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
         this.getTables();
     }
 

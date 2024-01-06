@@ -32,7 +32,7 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         if (req.url.includes('demo') || req.url.includes('.json')) return next.handle(req);
         if (this.isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
-        const user = this.jsonParse(localStorage.getItem('user'));
+        const user = this.jsonParse(localStorage.getItem('user')) as User;
         req = req.clone({
             url: this.apiUrl + req.url,
             headers: new HttpHeaders({
