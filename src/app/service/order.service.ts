@@ -45,8 +45,8 @@ export class OrderService extends SharedUtil {
             jsonStringify({
                 products: this.getCart(),
                 tableId: this.getCustomerInfo().tableId,
+                totalPrice: totalPrice,
                 createdAt: new Date(),
-                totalPrice: totalPrice
             } as Order)
         );
         this.clearCart();

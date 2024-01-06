@@ -86,12 +86,13 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         this.orderService.createOrder(this.cartForm.value).then((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
+                this.app.hideTopMenu();
                 this.showDialog = false;
-                this.orderService.finishOrder(this.cartForm.get('totalPrice').value);
-                this.router.navigate(['/order-complete'], { skipLocationChange: true });
-                // this.sharedService.showNotification(
-                //     'Order is placed! Please kindly wait while we are processing your request! :)'
-                // );
+                this.router.navigate(['/order-complete'], {
+                    state: {
+                        totalPrice: this.cartForm.get('totalPrice').value
+                    }
+                });
             } else this.sharedService.showErrorNotification();
         });
     }

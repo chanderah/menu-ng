@@ -85,9 +85,9 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
         });
     }
 
-    toggleMenu(event: Event) {
+    // toggleMenu(event: Event) {
+    toggleMenu() {
         this.menuClick = true;
-
         if (this.isDesktop()) {
             if (this.app.menuMode === 'overlay') {
                 if (this.menuActiveMobile === true) this.overlayMenuActive = true;
@@ -98,7 +98,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
             this.menuActiveMobile = !this.menuActiveMobile;
             this.topMenuActive = false;
         }
-        event.preventDefault();
+        // event.preventDefault();
     }
 
     toggleProfile(event: Event) {

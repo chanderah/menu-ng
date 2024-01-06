@@ -79,6 +79,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     ngOnInit() {
         this.user = jsonParse(localStorage.getItem('user')) as User;
         this.pagingInfo.limit = this.rowsPerPageOptions[0];
+        this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🛎', 900000);
     }
 
     onPaginateChange() {

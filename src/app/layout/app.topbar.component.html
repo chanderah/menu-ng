@@ -4,22 +4,10 @@
         <span>Menu</span>
     </a>
 
-    <a class="p-link layout-menu-button layout-topbar-button" (click)="appMain.toggleMenu($event)">
+    <a class="p-link layout-menu-button layout-topbar-button" (click)="appMain.toggleMenu()">
         <i class="pi pi-bars"></i>
     </a>
 
-    <!-- <a class="p-link layout-topbar-menu-button layout-topbar-button pt-2" routerLink="/cart">
-        <i
-            pBadge
-            class="pi pi-shopping-cart p-text-secondary"
-            severity="danger"
-            style="font-size: 2rem"
-            routerLink="/cart"
-            [value]="getCartItems()">
-        </i>
-    </a> -->
-
-    <!-- <a class="p-link layout-topbar-menu-button pt-2" routerLink="/cart"> -->
     <a class="p-link layout-topbar-menu-button pt-2">
         <i
             pBadge
@@ -30,15 +18,4 @@
             [value]="getCountCartItems()">
         </i>
     </a>
-
-    <!-- <div
-        class="layout-topbar-menu"
-        [ngClass]="{
-            'layout-topbar-menu-mobile-active': appMain.topMenuActive
-        }">
-        <a href="#" class="p-link layout-topbar-button">
-            <i class="pi pi-shopping-cart"></i>
-            <span>Cart</span>
-        </a>
-    </div> -->
 </div>
