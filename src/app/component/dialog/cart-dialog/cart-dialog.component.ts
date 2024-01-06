@@ -64,7 +64,6 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     ngOnInit(): void {
         disableBodyScroll();
         this.getProductsInCart();
-        console.log(this.cartForm.value);
     }
 
     getProductsInCart() {
@@ -82,7 +81,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         this.products().patchValue(data);
     }
 
-    onCheckout() {
+    onSubmit() {
         this.isLoading = true;
         this.orderService.createOrder(this.cartForm.value).then((res: any) => {
             this.isLoading = false;
@@ -93,9 +92,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
                 // this.sharedService.showNotification(
                 //     'Order is placed! Please kindly wait while we are processing your request! :)'
                 // );
-            } else {
-                this.sharedService.showErrorNotification();
-            }
+            } else this.sharedService.showErrorNotification();
         });
     }
 

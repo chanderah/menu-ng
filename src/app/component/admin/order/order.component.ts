@@ -62,6 +62,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
     }
 
     viewOrder(data: Order) {
+        if (!data) return;
         data.products.forEach((product) => {
             product.options.forEach((option) => {
                 let optionsName = [];

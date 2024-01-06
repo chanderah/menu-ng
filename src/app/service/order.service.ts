@@ -40,18 +40,20 @@ export class OrderService extends SharedUtil {
     }
 
     finishOrder(totalPrice: number) {
-        const order = {} as Order;
-        order.products = this.getCart();
-        order.tableId = this.getCustomerInfo().tableId;
-        order.createdAt = new Date();
-        order.totalPrice = totalPrice;
-        localStorage.setItem('order', jsonStringify(order));
+        localStorage.setItem(
+            'order',
+            jsonStringify({
+                products: this.getCart(),
+                tableId: this.getCustomerInfo().tableId,
+                createdAt: new Date(),
+                totalPrice: totalPrice
+            } as Order)
+        );
         this.clearCart();
     }
 
     createOrder(order: Order) {
         this.getCustomerInfo();
-
         order = {
             ...order,
             tableId: this.customerInfo.tableId,
@@ -102,7 +104,6 @@ export class OrderService extends SharedUtil {
     }
 
     filterProductOptions(product: Product) {
-        console.log(product);
         for (let i = product.options.length - 1; i >= 0; i--) {
             for (let j = product.options[i].values.length - 1; j >= 0; j--) {
                 if (!product.options[i].values[j].selected) {
@@ -111,7 +112,6 @@ export class OrderService extends SharedUtil {
             }
             if (product.options[i].values.length === 0) product.options.splice(i, 1);
         }
-        console.log(product);
         return product;
     }
 }

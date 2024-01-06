@@ -146,7 +146,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
                 });
             });
             data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
-            console.log(data.productsName);
         }
         this.selectedOrder = data;
         this.showOrderDetailsDialog = true;
