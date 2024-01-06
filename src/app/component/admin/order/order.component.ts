@@ -35,10 +35,12 @@ export class OrderComponent extends SharedUtil implements OnInit {
 
     ngOnInit() {
         this.user = jsonParse(localStorage.getItem('user')) as User;
+        // this.run();
     }
 
+    run() {}
+
     getOrders(e?: LazyLoadEvent) {
-        console.log(e);
         this.isLoading = true;
         this.pagingInfo = {
             filter: e?.filters?.global?.value || '',

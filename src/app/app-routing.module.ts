@@ -10,6 +10,7 @@ import { TableComponent } from './component/admin/table/table.component';
 import { CustomerComponent } from './component/customer/customer.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
+import { ReceiptComponent } from './component/receipt/receipt.component';
 import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
 import { AdminGuard } from './guard/admin.guard';
 import { AppMainComponent } from './layout/app.main.component';
@@ -39,6 +40,7 @@ import { AppMainComponent } from './layout/app.main.component';
                     ]
                 },
                 { path: 'customer', component: CustomerComponent },
+                { path: 'receipt', component: ReceiptComponent },
                 { path: 'unauthorized', component: UnauthorizedComponent },
                 { path: 'login', component: LoginComponent },
                 { path: 'register', component: RegisterComponent },

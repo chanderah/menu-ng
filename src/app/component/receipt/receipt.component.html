@@ -1,0 +1,95 @@
+<button pButton pRipple (click)="convertToPdf()">Print</button>
+<!-- <pre>
+    <div id="content">
+    <div><p>woiii</p></div>
+    </div>
+    <div>
+    <table id="pdfContent" class="m-4">
+    <tbody>
+    <tr>
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+    </tr>
+    <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+    </tr>
+    <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+    </tr>
+    <tr>
+    <td>Ernst Handel</td>
+    <td>Roland Mendel</td>
+    <td>Austria</td>
+    </tr>
+    <tr>
+    <td>Island Trading</td>
+    <td>Helen Bennett</td>
+    <td>UK</td>
+    </tr>
+    <tr>
+    <td>Laughing Bacchus Winecellars</td>
+    <td>Yoshi Tannamuri</td>
+    <td>Canada</td>
+    </tr>
+    <tr>
+    <td>Magazzini Alimentari Riuniti</td>
+    <td>Giovanni Rovelli</td>
+    <td>Italy</td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+</pre> -->
+
+<!-- START RECEIPT -->
+<div class="content ml-2 mt-2">
+    <div class="receipt">
+        <div class="orderNo"> Parking ID# <span id="Order #">71</span>: <span id="Order Name">Jet Set</span> </div>
+        <div class="headerSubTitle"> Order Receipt </div>
+        <div class="headerTitle"> Cafe Blabla </div>
+        <div class="headerSubTitle"> Hayathnagar, Hyd-70, 8247524795 </div>
+        <div id="location"> Vehicle Details </div>
+        <div id="location"> AP 29 CH 7553 </div>
+        <div id="date"> In Time: Saturday, Jun 13 2018 1:05:18 </div>
+        <svg id="barcode"></svg>
+
+        <hr />
+
+        <!-- Items Purchased -->
+        <div class="flex">
+            <div id="qrcode"></div>
+            <div class="totals">
+                <div class="section">
+                    <div class="row">
+                        <div class="col1"></div>
+                        <div class="col2">Cost (per day)</div>
+                        <div class="col3">₹60</div>
+                    </div>
+                    <div class="row">
+                        <div class="col1"></div>
+                        <div class="col2">Battery</div>
+                        <div class="col3">1</div>
+                    </div>
+                    <div class="row">
+                        <div class="col1"></div>
+                        <div class="col2">Toolkit</div>
+                        <div class="col3">yes</div>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="row">
+                        <div class="col1"></div>
+                        <div class="col2">Load</div>
+                        <div class="col3">Empty</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="keepIt"> This is a legitimate proof of transaction.</div>
+    </div>
+</div>
