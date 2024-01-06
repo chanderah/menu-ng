@@ -21,7 +21,6 @@ import SwiperCore, {
 } from 'swiper';
 import { SharedService } from '../../service/shared.service';
 import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
-import { CustomerInfo } from './../../interface/customer_info';
 import { PagingInfo } from './../../interface/paging_info';
 import { enableBodyScroll } from './../../lib/shared.util';
 import { ApiService } from './../../service/api.service';
@@ -69,8 +68,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         this.route.queryParams.subscribe((params: any) => {
             this.checkIsAuthorized();
             if (!this.isEmpty(params.table)) {
-                const customer: CustomerInfo = { tableId: params.table };
-                orderService.setCustomerInfo(customer);
+                orderService.setCustomerInfo({ tableId: Number(params.table) });
                 router.navigate(['/']);
             }
 

@@ -33,6 +33,7 @@
         "chart.js": "^3.3.2",
         "hammerjs": "^2.0.8",
         "image-conversion": "^2.1.1",
+        "json-stringify-deterministic": "^1.0.12",
         "lossless-json": "^4.0.1",
         "ng-qrcode": "^7.0.0",
         "ngx-toastr": "^14.3.0",

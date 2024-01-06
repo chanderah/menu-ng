@@ -1,4 +1,3 @@
-import { parse, stringify } from 'lossless-json';
 import { environment } from './../../environments/environment.prod';
 
 export default class SharedUtil {
@@ -60,11 +59,12 @@ export const isEmpty = (obj: any) => {
 };
 
 export const jsonParse = (obj: any): any => {
-    if (typeof obj != 'string') return parse(stringify(obj));
-    return parse(obj);
+    if (typeof obj != 'string') return JSON.parse(jsonStringify(obj));
+    return JSON.parse(obj);
 };
 
 export const jsonStringify = (obj: any): string => {
+    const stringify = require('json-stringify-deterministic');
     return stringify(obj);
 };
 
