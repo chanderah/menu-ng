@@ -69,7 +69,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         this.route.queryParams.subscribe((params: any) => {
             this.checkIsAuthorized();
             if (!this.isEmpty(params.table)) {
-                const table: Table = { id: params.table };
+                const table: Table = { tableId: params.table };
                 orderService.setCustomerInfo(table);
                 router.navigate(['/']);
             }
