@@ -6,6 +6,7 @@ import { ConfigService } from 'src/app/layout/service/app.config.service';
 import SharedUtil from 'src/app/lib/shared.util';
 import { User } from '../../../../interface/user';
 import { ApiService } from '../../../../service/api.service';
+import { jsonStringify } from './../../../../lib/shared.util';
 import { SharedService } from './../../../../service/shared.service';
 
 @Component({
@@ -46,7 +47,7 @@ export class LoginComponent extends SharedUtil implements OnInit {
         this.apiService.login(this.form.value).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
-                localStorage.setItem('user', this.jsonStringify(res.data));
+                localStorage.setItem('user', jsonStringify(res.data));
                 this.router.navigate(['/']);
                 this.sharedService.successToast('Login success!');
             } else this.sharedService.errorToast('Failed to authorize the user!');

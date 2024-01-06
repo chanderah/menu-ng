@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
-import SharedUtil from 'src/app/lib/shared.util';
+import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
 import { PagingInfo } from './../../../interface/paging_info';
 import { User } from './../../../interface/user';
 import { ApiService } from './../../../service/api.service';
@@ -34,7 +34,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = this.jsonParse(localStorage.getItem('user')) as User;
+        this.user = jsonParse(localStorage.getItem('user')) as User;
     }
 
     getOrders(e?: LazyLoadEvent) {

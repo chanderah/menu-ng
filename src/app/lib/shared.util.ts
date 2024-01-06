@@ -20,18 +20,6 @@ export default class SharedUtil {
         return isEmpty(obj);
     };
 
-    jsonParse = (obj: any) => {
-        return jsonParse(obj);
-    };
-
-    jsonStringify = (obj: any) => {
-        return jsonStringify(obj);
-    };
-
-    sortArrayByLabelProperty = (a: any, b: any) => {
-        return sortArrayByLabelProperty(a, b);
-    };
-
     capitalizeFirstLetter = (data: string) => {
         return capitalizeFirstLetter(data);
     };

@@ -3,7 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import { PagingInfo } from './../../../../interface/paging_info';
 import { User } from './../../../../interface/user';
-import SharedUtil from './../../../../lib/shared.util';
+import SharedUtil, { jsonParse } from './../../../../lib/shared.util';
 import { ApiService } from './../../../../service/api.service';
 import { SharedService } from './../../../../service/shared.service';
 
@@ -77,7 +77,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = this.jsonParse(localStorage.getItem('user')) as User;
+        this.user = jsonParse(localStorage.getItem('user')) as User;
         this.pagingInfo.limit = this.rowsPerPageOptions[0];
     }
 

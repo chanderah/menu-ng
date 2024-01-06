@@ -6,6 +6,7 @@ import SharedUtil from 'src/app/lib/shared.util';
 import { Category } from '../../../interface/category';
 import { PagingInfo } from '../../../interface/paging_info';
 import { ApiService } from '../../../service/api.service';
+import { jsonParse } from './../../../lib/shared.util';
 import { SharedService } from './../../../service/shared.service';
 
 @Component({
@@ -40,7 +41,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = this.jsonParse(localStorage.getItem('user'));
+        this.user = jsonParse(localStorage.getItem('user'));
         this.getCategories();
     }
 
@@ -105,7 +106,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
 
     onEditCategory() {
         if (this.isEmpty(this.selectedCategory)) return;
-        this.apiService.findCategoryById(this.jsonParse(this.selectedCategory)).subscribe((res: any) => {
+        this.apiService.findCategoryById(jsonParse(this.selectedCategory)).subscribe((res: any) => {
             if (res.status === 200) {
                 this.categoryForm.patchValue(res.data);
                 this.showCategoryDialog = true;
@@ -117,7 +118,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     }
 
     resetNode() {
-        const nodes = this.jsonParse(this.categories) as TreeNode[];
+        const nodes = jsonParse(this.categories) as TreeNode[];
         nodes.forEach((node) => {
             if (node.partialSelected) node.partialSelected = false;
             if (node.children) {

@@ -3,6 +3,7 @@ import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
 import SharedUtil from '../lib/shared.util';
 import { Order } from './../interface/order';
+import { jsonParse, jsonStringify } from './../lib/shared.util';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
 
@@ -22,20 +23,20 @@ export class OrderService extends SharedUtil {
     }
 
     getOrders(): Order {
-        const data = this.jsonParse(localStorage.getItem('order')) as Order;
+        const data = jsonParse(localStorage.getItem('order')) as Order;
         if (!this.isEmpty(data)) this.order = data;
         return this.order;
         // SHOULD BE DB!!
     }
 
     getMyOrders(): Order {
-        const data = this.jsonParse(localStorage.getItem('order')) as Order;
+        const data = jsonParse(localStorage.getItem('order')) as Order;
         if (!this.isEmpty(data)) this.order = data;
         return this.order;
     }
 
     setMyOrders(order: Order) {
-        localStorage.setItem('order', this.jsonStringify(order));
+        localStorage.setItem('order', jsonStringify(order));
     }
 
     finishOrder(totalPrice: number) {
@@ -44,7 +45,7 @@ export class OrderService extends SharedUtil {
         order.tableId = this.getCustomerInfo().tableId;
         order.createdAt = new Date();
         order.totalPrice = totalPrice;
-        localStorage.setItem('order', this.jsonStringify(order));
+        localStorage.setItem('order', jsonStringify(order));
         this.clearCart();
     }
 
@@ -65,14 +66,14 @@ export class OrderService extends SharedUtil {
     }
 
     getCustomerInfo(): CustomerInfo {
-        const data: CustomerInfo = this.jsonParse(localStorage.getItem('customer')) as CustomerInfo;
+        const data: CustomerInfo = jsonParse(localStorage.getItem('customer')) as CustomerInfo;
         if (!this.isEmpty(data)) this.customerInfo = data;
         else this.customerInfo = null;
         return this.customerInfo;
     }
 
     setCustomerInfo(data: CustomerInfo) {
-        localStorage.setItem('customer', this.jsonStringify(data));
+        localStorage.setItem('customer', jsonStringify(data));
     }
 
     clearCart() {
@@ -80,13 +81,13 @@ export class OrderService extends SharedUtil {
     }
 
     getCart(): Product[] {
-        const data = this.jsonParse(localStorage.getItem('cart')) as Product[];
+        const data = jsonParse(localStorage.getItem('cart')) as Product[];
         if (!this.isEmpty(data)) this.cart = data;
         return this.cart;
     }
 
     setCart(products: Product[]) {
-        localStorage.setItem('cart', this.jsonStringify(products));
+        localStorage.setItem('cart', jsonStringify(products));
     }
 
     addToCart(product: Product) {
@@ -94,8 +95,8 @@ export class OrderService extends SharedUtil {
         this.getCustomerInfo();
         this.cart.push(this.filterProductOptions(product));
 
-        localStorage.setItem('cart', this.jsonStringify(this.cart));
-        localStorage.setItem('customer', this.jsonStringify(this.customerInfo));
+        localStorage.setItem('cart', jsonStringify(this.cart));
+        localStorage.setItem('customer', jsonStringify(this.customerInfo));
 
         this.sharedService.showNotification('The item is successfully added to cart!');
     }

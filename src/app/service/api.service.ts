@@ -21,6 +21,7 @@ import { Order } from './../interface/order';
 import { PagingInfo } from './../interface/paging_info';
 import { Table } from './../interface/table';
 import { User } from './../interface/user';
+import { jsonParse } from './../lib/shared.util';
 
 @Injectable({
     providedIn: 'root'
@@ -32,7 +33,7 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         if (req.url.includes('demo') || req.url.includes('.json')) return next.handle(req);
         if (this.isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
-        const user = this.jsonParse(localStorage.getItem('user')) as User;
+        const user = jsonParse(localStorage.getItem('user')) as User;
         req = req.clone({
             url: this.apiUrl + req.url,
             headers: new HttpHeaders({
