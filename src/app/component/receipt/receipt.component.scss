@@ -6,6 +6,11 @@ body {
     padding: 0px;
 }
 
+table {
+    border-collapse: separate;
+    border-spacing: 0.4rem;
+}
+
 .receipt {
     padding: 3mm;
     width: 80mm;
@@ -26,7 +31,7 @@ body {
 .headerSubTitle {
     font-family: 'Equestria', 'Permanent Marker', cursive;
     text-align: center;
-    font-size: 12pt;
+    font-size: 16pt;
 }
 
 .headerTitle {

@@ -50,7 +50,7 @@
     <div class="receipt">
         <div class="orderNo">#{{ '6A85708B' }}</div>
         <div class="headerSubTitle font-bold py-1"> Order Receipt </div>
-        <div id="date">Cafe Nusantara, 021-873218</div>
+        <div id="date">Cafe Nusantara, +(62) 2153873</div>
         <div id="date">Jl. Teratai 3 Blok A6 No.8</div>
         <div id="date">Perumahan Taman Duta, Cisalak</div>
         <div id="date">Depok, Jawa Barat 16416</div>
@@ -60,31 +60,20 @@
         <hr />
 
         <div class="products">
-            <table>
+            <table class="w-full">
                 <tbody>
-                    <th [colSpan]="2" class="text-lg pb-4">DINE IN</th>
-
+                    <th class="text-lg pb-2">DINE IN</th>
                     <tr *ngFor="let data of orders">
-                        <td class="w-full">
-                            <div class="w-full">{{ data.name }}</div>
-                        </td>
-                        <td class="w-full text-right">
-                            <div class="w-full">{{ data.price | custom }}</div>
-                        </td>
-                    </tr>
-                    <!-- <tr class="px-8" *ngFor="let data of orders">
-                        <td class="w-full">
-                            <div class="flex flex-column align-items-left justify-content-center">
-                                <div class="div">
-                                    {{ data.name }}
-                                </div>
-                                <div class="text-right"> x{{ data.qty }} </div>
+                        <!-- <td class="w-full"> -->
+                        <td class="flex flex-column">
+                            <span>{{ data.name }}</span>
+                            <div class="flex align-items-center justify-content-center w-full">
+                                <div class="w-full text-right">{{ data.price | custom }}</div>
+                                <div class="w-full text-right">x{{ data.qty }}</div>
+                                <span class="w-full text-right">{{ data.price | custom }}</span>
                             </div>
                         </td>
-                        <td class="flex align-items-end justify-content-end w-full">
-                            <p>Rp{{ data.price }} </p>
-                        </td>
-                    </tr> -->
+                    </tr>
                 </tbody>
             </table>
 
