@@ -68,17 +68,49 @@
                         <td class="flex flex-column">
                             <span>{{ data.name }}</span>
                             <div class="flex align-items-center justify-content-center w-full">
-                                <div class="w-full text-right">{{ data.price | custom }}</div>
-                                <div class="w-full text-right">x{{ data.qty }}</div>
+                                <span class="w-full text-right">{{ data.price | custom }}</span>
+                                <span class="w-full text-right">x{{ data.qty }}</span>
                                 <span class="w-full text-right">{{ data.price | custom }}</span>
                             </div>
+                        </td>
+                    </tr>
+                    <hr />
+                    <tr>
+                        <td class="flex justify-content-between">
+                            <span>SUBTOTAL</span>
+                            <span>{{ subTotal | custom }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="flex justify-content-between">
+                            <span>TAXES</span>
+                            <span>{{ taxes | custom }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="flex justify-content-between font-bold">
+                            <span>TOTAL</span>
+                            <span>{{ total | custom }}</span>
+                        </td>
+                    </tr>
+                    <hr />
+                    <tr>
+                        <td class="flex justify-content-between">
+                            <span>RECEIVED AMOUNT</span>
+                            <span>{{ receivedAmount | custom }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="flex justify-content-between">
+                            <span>CHANGES</span>
+                            <span>{{ changes | custom }}</span>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
             <hr />
-            <div class="font-bold text-center"> THIS IS A LEGITIMATE PROOF OF TRANSACTION.</div>
+            <div class="font-bold text-center"> THIS IS A LEGITIMATE PROOF OF TRANSACTION</div>
         </div>
     </div>
 </div>
