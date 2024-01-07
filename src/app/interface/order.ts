@@ -10,5 +10,20 @@ export interface Order {
     isNew?: boolean;
 
     products: Product[];
-    productsName: string;
+    productsName?: string;
+}
+
+export interface OrderReceipt{
+    id?: number;
+    tableId: number;
+    orderCode: string;
+
+    taxes: number;
+    subTotal: number;
+    total: number;
+    receivedAmount: number;
+    changes: number;
+
+    issuedAt: Date;
+    createdAt: Date;
 }
