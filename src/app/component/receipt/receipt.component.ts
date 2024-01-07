@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { OrderReceipt } from './../../interface/order';
+import { Product } from './../../interface/product';
 
 @Component({
     selector: 'app-receipt',
@@ -8,36 +10,49 @@ import jsPDF from 'jspdf';
     styleUrls: ['./receipt.component.scss']
 })
 export class ReceiptComponent implements OnInit {
-    currentDate: Date = new Date();
-    tableId: number = 7;
-    orders: any[] = [];
+    orderReceipt = {} as OrderReceipt;
     taxesRatio: number = 0.1; //10%
-    taxes: number = 0;
-    subTotal: number = 0;
-    total: number = 0;
-    receivedAmount: number = 200000;
-    changes: number = 0;
+    // tableId: number = 7;
+    // orders: any[] = [];
+    // taxes: number = 0;
+    // subTotal: number = 0;
+    // total: number = 0;
+    // receivedAmount: number = 200000;
+    // changes: number = 0;
 
     constructor() {}
 
     ngOnInit(): void {
+        const products: Product[] = [];
         for (let i = 0; i < 3; i++) {
-            this.orders.push({
+            products.push({
                 name: `Products ${i + 1}`,
-                qty: i + 1,
+                quantity: i + 1,
                 price: 2890 * (i + 1) + i
             });
         }
+
+        this.orderReceipt = {
+            ...this.orderReceipt,
+            orderCode: '6A85708B',
+            receivedAmount: 200000,
+            issuedAt: new Date(),
+            createdAt: new Date(),
+            tableId: 7,
+            products: products
+        };
+
         this.countTotal();
     }
 
     countTotal() {
-        for (const order of this.orders) {
-            this.subTotal += order.price;
+        this.orderReceipt.subTotal = 0;
+        for (const product of this.orderReceipt.products) {
+            this.orderReceipt.subTotal += product.price * product.quantity;
         }
-        this.taxes = this.subTotal * this.taxesRatio;
-        this.total = this.subTotal + this.taxes;
-        this.changes = this.receivedAmount - this.total;
+        this.orderReceipt.taxes = this.orderReceipt.subTotal * this.taxesRatio;
+        this.orderReceipt.total = this.orderReceipt.subTotal + this.orderReceipt.taxes;
+        this.orderReceipt.changes = this.orderReceipt.receivedAmount - this.orderReceipt.total;
     }
 
     convertToPdf() {

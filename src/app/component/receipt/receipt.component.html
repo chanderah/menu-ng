@@ -2,14 +2,14 @@
 
 <div>
     <div id="pdfContent">
-        <div class="orderNo">{{ tableId }}#{{ '6A85708B' }}</div>
+        <div class="orderNo">{{ orderReceipt.tableId + '#' + orderReceipt.orderCode }}</div>
         <div class="headerSubTitle font-bold py-1"> Order Receipt </div>
         <div id="date">Cafe Nusantara, +(62) 2153873</div>
         <div id="date">Jl. Teratai 3 Blok A6 No.8</div>
         <div id="date">Perumahan Taman Duta, Cisalak</div>
         <div id="date">Depok, Jawa Barat 16416</div>
         <div class="my-2"></div>
-        <div id="date">{{ currentDate | date: 'EEEE, MMM d yyyy @ HH:mm:ss (a)' }}</div>
+        <div id="date">{{ orderReceipt.createdAt | date: 'EEEE, MMM d yyyy @ HH:mm:ss (a)' }}</div>
 
         <hr />
 
@@ -17,13 +17,13 @@
             <table class="w-full">
                 <tbody>
                     <th class="text-lg pb-2">DINE IN</th>
-                    <tr *ngFor="let data of orders">
+                    <tr *ngFor="let data of orderReceipt.products">
                         <!-- <td class="w-full"> -->
                         <td class="flex flex-column">
                             <span>{{ data.name }}</span>
                             <div class="flex align-items-center justify-content-center w-full">
                                 <span class="w-full text-right">{{ data.price | custom }}</span>
-                                <span class="w-full text-right">x{{ data.qty }}</span>
+                                <span class="w-full text-right">x{{ data.quantity }}</span>
                                 <span class="w-full text-right">{{ data.price | custom }}</span>
                             </div>
                         </td>
@@ -32,32 +32,32 @@
                     <tr>
                         <td class="flex justify-content-between">
                             <span>SUBTOTAL</span>
-                            <span>{{ subTotal | custom }}</span>
+                            <span>{{ orderReceipt.subTotal | custom }}</span>
                         </td>
                     </tr>
                     <tr>
                         <td class="flex justify-content-between">
                             <span>TAXES</span>
-                            <span>{{ taxes | custom }}</span>
+                            <span>{{ orderReceipt.taxes | custom }}</span>
                         </td>
                     </tr>
                     <tr>
                         <td class="flex justify-content-between font-bold">
                             <span>TOTAL</span>
-                            <span>{{ total | custom }}</span>
+                            <span>{{ orderReceipt.total | custom }}</span>
                         </td>
                     </tr>
                     <hr />
                     <tr>
                         <td class="flex justify-content-between">
                             <span>RECEIVED AMOUNT</span>
-                            <span>{{ receivedAmount | custom }}</span>
+                            <span>{{ orderReceipt.receivedAmount | custom }}</span>
                         </td>
                     </tr>
                     <tr>
                         <td class="flex justify-content-between">
                             <span>CHANGES</span>
-                            <span>{{ changes | custom }}</span>
+                            <span>{{ orderReceipt.changes | custom }}</span>
                         </td>
                     </tr>
                 </tbody>

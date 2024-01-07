@@ -24,6 +24,8 @@ export interface OrderReceipt{
     receivedAmount: number;
     changes: number;
 
+    products: Product[];
+
     issuedAt: Date;
     createdAt: Date;
 }
