@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
@@ -20,25 +21,28 @@ export class OrderComponent extends SharedUtil implements OnInit {
     pagingInfo = {} as PagingInfo;
 
     showOrderDetailsDialog: boolean = false;
+    showPrintInvoiceDialog: boolean = false;
 
     selectedOrder = {} as Order;
     orders = [] as Order[];
 
     lastUpdated: Date = new Date();
+    formInvoice: FormGroup = this.formBuilder.group({
+        paymentMethod: ['', Validators.required],
+        receivedAmount: ['', Validators.required]
+    });
 
     constructor(
         private sharedService: SharedService,
-        private apiService: ApiService
+        private apiService: ApiService,
+        private formBuilder: FormBuilder
     ) {
         super();
     }
 
     ngOnInit() {
         this.user = jsonParse(localStorage.getItem('user')) as User;
-        // this.run();
     }
-
-    run() {}
 
     getOrders(e?: LazyLoadEvent) {
         this.isLoading = true;
@@ -78,6 +82,13 @@ export class OrderComponent extends SharedUtil implements OnInit {
         this.selectedOrder = data;
         this.showOrderDetailsDialog = true;
     }
+
+    onClickInvoice() {
+        this.showPrintInvoiceDialog = true;
+        console.log(this.selectedOrder);
+    }
+
+    onPrintInvoice() {}
 
     getProductsName(orders: Order[]) {
         orders.forEach((data) => {

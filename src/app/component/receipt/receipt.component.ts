@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { OrderReceipt } from './../../interface/order';
-import { Product } from './../../interface/product';
 
 @Component({
     selector: 'app-receipt',
@@ -20,29 +20,30 @@ export class ReceiptComponent implements OnInit {
     // receivedAmount: number = 200000;
     // changes: number = 0;
 
-    constructor() {}
+    constructor(private router: Router) {}
 
     ngOnInit(): void {
-        const products: Product[] = [];
-        for (let i = 0; i < 3; i++) {
-            products.push({
-                name: `Products ${i + 1}`,
-                quantity: i + 1,
-                price: 2890 * (i + 1) + i
-            });
-        }
+        // const products: Product[] = [];
+        // for (let i = 0; i < 3; i++) {
+        //     products.push({
+        //         name: `Products ${i + 1}`,
+        //         quantity: i + 1,
+        //         price: 2890 * (i + 1) + i
+        //     });
+        // }
 
-        this.orderReceipt = {
-            ...this.orderReceipt,
-            orderCode: '6A85708B',
-            receivedAmount: 200000,
-            issuedAt: new Date(),
-            createdAt: new Date(),
-            tableId: 7,
-            products: products
-        };
-
-        this.countTotal();
+        // this.orderReceipt = {
+        //     ...this.orderReceipt,
+        //     orderCode: '6A85708B',
+        //     receivedAmount: 200000,
+        //     issuedAt: new Date(),
+        //     createdAt: new Date(),
+        //     tableId: 7,
+        //     products: products
+        // };
+        const props = this.router.getCurrentNavigation().extras.state;
+        console.log(props);
+        // this.countTotal();
     }
 
     countTotal() {

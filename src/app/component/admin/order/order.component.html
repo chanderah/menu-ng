@@ -154,9 +154,63 @@
                 icon="pi pi-print"
                 class="w-auto p-button-outlined"
                 label="Invoice"
-                (click)="showOrderDetailsDialog = false"
+                (click)="onClickInvoice()"
                 [disabled]="isLoading">
             </button>
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog
+    [maximizable]="true"
+    header="Print Invoice"
+    [(visible)]="showPrintInvoiceDialog"
+    (onHide)="this.formInvoice.reset()"
+    [contentStyle]="{ overflow: 'visible' }"
+    [style]="{ width: '40vw', height: 'auto' }"
+    [dismissableMask]="false"
+    [closeOnEscape]="false"
+    [breakpoints]="dialogBreakpoints"
+    modal="true"
+    [blockScroll]="true"
+    showEffect="fade">
+    <div [formGroup]="formInvoice" (keyup.enter)="onPrintInvoice()" class="p-fluid px-2">
+        <div class="col-12">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">Rp</span>
+                <p-inputNumber
+                    [min]="0"
+                    placeholder="Received Amount"
+                    formControlName="receivedAmount"
+                    mode="currency"
+                    currency="IDR"
+                    inputId="locale-user"
+                    step="10000">
+                </p-inputNumber>
+            </div>
+        </div>
+
+        <div class="flex mt-4 justify-content-end">
+            <div class="flex gap-2">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    (click)="showPrintInvoiceDialog = false"
+                    label="Cancel"
+                    [disabled]="isLoading"
+                    class="w-auto p-button-danger p-button-outlined">
+                </button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    (click)="onPrintInvoice()"
+                    label="Print"
+                    [disabled]="isLoading"
+                    class="w-auto p-button-outlined">
+                </button>
+            </div>
         </div>
     </div>
 </p-dialog>
