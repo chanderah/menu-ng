@@ -94,11 +94,18 @@ export class OrderComponent extends SharedUtil implements OnInit {
     }
 
     onClickReceipt() {
+        this.formReceipt.get('paymentMethod').setValue(this.paymentMethods[0]);
+        this.formReceipt.get('paymentMethod').valueChanges.subscribe((v: PaymentMethod) => {
+            if (v?.id !== 1) {
+                this.formReceipt.get('receivedAmount').setValue(this.selectedOrder.totalPrice);
+                this.formReceipt.get('receivedAmount').disable();
+            } else this.formReceipt.get('receivedAmount').enable();
+        });
         this.showPrintReceiptDialog = true;
-        console.log(this.selectedOrder);
     }
 
     onPrintReceipt() {
+        this.formReceipt.enable();
         console.log(this.formReceipt.value);
     }
 
