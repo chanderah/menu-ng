@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
+import { PaymentMethod } from './../../../interface/order';
 import { PagingInfo } from './../../../interface/paging_info';
 import { User } from './../../../interface/user';
 import { ApiService } from './../../../service/api.service';
@@ -21,13 +22,15 @@ export class OrderComponent extends SharedUtil implements OnInit {
     pagingInfo = {} as PagingInfo;
 
     showOrderDetailsDialog: boolean = false;
-    showPrintInvoiceDialog: boolean = false;
+    showPrintReceiptDialog: boolean = false;
 
     selectedOrder = {} as Order;
     orders = [] as Order[];
 
     lastUpdated: Date = new Date();
-    formInvoice: FormGroup = this.formBuilder.group({
+
+    paymentMethods = [] as PaymentMethod[];
+    formReceipt: FormGroup = this.formBuilder.group({
         paymentMethod: ['', Validators.required],
         receivedAmount: ['', Validators.required]
     });
@@ -42,6 +45,13 @@ export class OrderComponent extends SharedUtil implements OnInit {
 
     ngOnInit() {
         this.user = jsonParse(localStorage.getItem('user')) as User;
+        this.apiService.getPaymentMethods().subscribe((res: any) => {
+            if (res.status === 200) this.paymentMethods = res.data;
+        });
+    }
+
+    get paymentMethod() {
+        return this.formReceipt.get('paymentMethod');
     }
 
     getOrders(e?: LazyLoadEvent) {
@@ -83,12 +93,14 @@ export class OrderComponent extends SharedUtil implements OnInit {
         this.showOrderDetailsDialog = true;
     }
 
-    onClickInvoice() {
-        this.showPrintInvoiceDialog = true;
+    onClickReceipt() {
+        this.showPrintReceiptDialog = true;
         console.log(this.selectedOrder);
     }
 
-    onPrintInvoice() {}
+    onPrintReceipt() {
+        console.log(this.formReceipt.value);
+    }
 
     getProductsName(orders: Order[]) {
         orders.forEach((data) => {

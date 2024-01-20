@@ -13,7 +13,7 @@ export interface Order {
     productsName?: string;
 }
 
-export interface OrderReceipt{
+export interface OrderReceipt {
     id?: number;
     tableId: number;
     orderCode: string;
@@ -27,5 +27,15 @@ export interface OrderReceipt{
     products: Product[];
 
     issuedAt: Date;
+    createdAt: Date;
+}
+
+export interface PaymentMethod {
+    id: number;
+    name: string;
+    accountName: string;
+    accountNumber: number;
+
+    updatedAt: Date;
     createdAt: Date;
 }

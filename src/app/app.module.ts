@@ -111,11 +111,14 @@ import { CategoryComponent } from './component/admin/category/category.component
 import { OrderComponent } from './component/admin/order/order.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
+import { CustomerComponent } from './component/customer/customer.component';
 import { CategoryDialogComponent } from './component/dialog/category-dialog/category-dialog.component';
 import { NotificationDialogComponent } from './component/dialog/notification/notification-dialog.component';
 import { OrderDialogComponent } from './component/dialog/order-dialog/order-dialog.component';
 import { ProductDialogComponent } from './component/dialog/product-dialog/product-dialog.component';
 import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
+import { ReceiptComponent } from './component/receipt/receipt.component';
+import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
 import { AppFooterComponent } from './layout/app.footer.component';
 import { AppMainComponent } from './layout/app.main.component';
 import { AppMenuComponent } from './layout/app.menu.component';
@@ -124,9 +127,6 @@ import { AppConfigComponent } from './layout/config/app.config.component';
 import { ConfigService } from './layout/service/app.config.service';
 import { MenuService } from './layout/service/app.menu.service';
 import { ApiService } from './service/api.service';
-import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
-import { CustomerComponent } from './component/customer/customer.component';
-import { ReceiptComponent } from './component/receipt/receipt.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {

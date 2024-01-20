@@ -210,4 +210,8 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     deleteOrder(orderId: number) {
         return this.httpClient.post('/order/delete', { orderId: orderId });
     }
+
+    getPaymentMethods() {
+        return this.httpClient.post('/paymentMethod/findAll', {});
+    }
 }
