@@ -11,7 +11,6 @@ import { OrderReceipt } from './../../interface/order';
 })
 export class ReceiptComponent implements OnInit {
     orderReceipt = {} as OrderReceipt;
-    taxesRatio: number = 0.1; //10%
     // tableId: number = 7;
     // orders: any[] = [];
     // taxes: number = 0;
@@ -20,43 +19,29 @@ export class ReceiptComponent implements OnInit {
     // receivedAmount: number = 200000;
     // changes: number = 0;
 
-    constructor(private router: Router) {}
+    constructor(private router: Router) {
+        // this.orderReceipt = this.router.getCurrentNavigation()?.extras?.state?.orderReceipt ?? {};
+    }
 
     ngOnInit(): void {
-        // const products: Product[] = [];
-        // for (let i = 0; i < 3; i++) {
-        //     products.push({
-        //         name: `Products ${i + 1}`,
-        //         quantity: i + 1,
-        //         price: 2890 * (i + 1) + i
-        //     });
-        // }
-
-        // this.orderReceipt = {
-        //     ...this.orderReceipt,
-        //     orderCode: '6A85708B',
-        //     receivedAmount: 200000,
-        //     issuedAt: new Date(),
-        //     createdAt: new Date(),
-        //     tableId: 7,
-        //     products: products
-        // };
-        const props = this.router.getCurrentNavigation().extras.state;
-        console.log(props);
-        // this.countTotal();
+        this.convertToPdf();
     }
 
-    countTotal() {
-        this.orderReceipt.subTotal = 0;
-        for (const product of this.orderReceipt.products) {
-            this.orderReceipt.subTotal += product.price * product.quantity;
-        }
-        this.orderReceipt.taxes = this.orderReceipt.subTotal * this.taxesRatio;
-        this.orderReceipt.total = this.orderReceipt.subTotal + this.orderReceipt.taxes;
-        this.orderReceipt.changes = this.orderReceipt.receivedAmount - this.orderReceipt.total;
-    }
+    // @Input
+    // set data() {
+
+    // }
 
     convertToPdf() {
+        // this.orderReceipt.subTotal = 0;
+        // for (const product of this.orderReceipt.products) {
+        //     this.orderReceipt.subTotal += product.price * product.quantity;
+        // }
+        // this.orderReceipt.taxes = this.orderReceipt.subTotal * this.sharedService.getShopConfig().taxes;
+        // this.orderReceipt.taxes = this.orderReceipt.subTotal * 0.1;
+        this.orderReceipt.total = this.orderReceipt.subTotal + this.orderReceipt.taxes;
+        this.orderReceipt.changes = this.orderReceipt.receivedAmount - this.orderReceipt.total;
+
         const content = document.getElementById('pdfContent');
         html2canvas(content).then((canvas) => {
             const imgWidth = 88;

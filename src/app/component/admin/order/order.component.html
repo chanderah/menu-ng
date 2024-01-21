@@ -94,6 +94,10 @@
             </p-table>
         </div>
     </div>
+
+    <div class="w-auto" *ngIf="showPrintReceiptDialog">
+        <app-receipt></app-receipt>
+    </div>
 </div>
 
 <!-- (onHide)="onHideOrderDetailsDialog()" -->
@@ -165,7 +169,7 @@
     [maximizable]="true"
     header="Print Receipt"
     [(visible)]="showPrintReceiptDialog"
-    (onHide)="this.formReceipt.reset()"
+    (onHide)="this.form.reset()"
     [contentStyle]="{ overflow: 'visible' }"
     [style]="{ width: '40vw', height: 'auto' }"
     [dismissableMask]="false"
@@ -174,7 +178,7 @@
     modal="true"
     [blockScroll]="true"
     showEffect="fade">
-    <div [formGroup]="formReceipt" (keyup.enter)="onPrintReceipt()" class="p-fluid px-2">
+    <div [formGroup]="form" (keyup.enter)="onPrintReceipt()" class="p-fluid px-2">
         <div class="card p-1 mb-3 flex flex-column gap-4 p-4">
             <!-- <div class="col-12"> -->
             <div class="flex col-12 align-items-center justify-content-center gap-3">
@@ -191,11 +195,9 @@
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon">Rp</span>
                 <p-inputNumber
-                    [min]="0"
+                    [min]="selectedOrderGrandTotal"
                     placeholder="Received Amount"
                     formControlName="receivedAmount"
-                    mode="currency"
-                    currency="IDR"
                     inputId="locale-user"
                     step="10000">
                 </p-inputNumber>
@@ -218,8 +220,8 @@
                     pButton
                     pRipple
                     icon="pi pi-check"
-                    (click)="onPrintReceipt()"
                     label="Print"
+                    (click)="onPrintReceipt()"
                     [disabled]="isLoading"
                     class="w-auto p-button-outlined">
                 </button>

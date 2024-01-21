@@ -4,7 +4,8 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { lastValueFrom } from 'rxjs';
 import { User } from 'src/app/interface/user';
 import { NotificationDialogComponent } from './../component/dialog/notification/notification-dialog.component';
-import { jsonParse, sortArrayByLabelProperty } from './../lib/shared.util';
+import { ShopConfig } from './../interface/shop_config';
+import { jsonParse, jsonStringify, sortArrayByLabelProperty } from './../lib/shared.util';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -28,6 +29,15 @@ export class SharedService {
 
     removeUser() {
         localStorage.removeItem('user');
+        return;
+    }
+
+    getShopConfig(): ShopConfig {
+        return jsonParse(localStorage.getItem('shopConfig'));
+    }
+
+    setShopConfig(shopConfig: ShopConfig) {
+        localStorage.setItem('shopConfig', jsonStringify(shopConfig));
         return;
     }
 

@@ -17,12 +17,13 @@ export interface OrderReceipt {
     id?: number;
     tableId: number;
     orderCode: string;
+    paymentMethod: PaymentMethod;
 
     taxes: number;
     subTotal: number;
-    total: number;
+    total?: number;
     receivedAmount: number;
-    changes: number;
+    changes?: number;
 
     products: Product[];
 

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
-import { PaymentMethod } from './../../../interface/order';
+import { OrderReceipt, PaymentMethod } from './../../../interface/order';
 import { PagingInfo } from './../../../interface/paging_info';
 import { User } from './../../../interface/user';
 import { ApiService } from './../../../service/api.service';
@@ -24,20 +25,25 @@ export class OrderComponent extends SharedUtil implements OnInit {
     showOrderDetailsDialog: boolean = false;
     showPrintReceiptDialog: boolean = false;
 
-    selectedOrder = {} as Order;
     orders = [] as Order[];
+    selectedOrder = {} as Order;
+    selectedOrderReceipt = {} as OrderReceipt;
+
+    taxesRatio: number = 0.1; //sharedService
+    selectedOrderGrandTotal: number = 0;
 
     lastUpdated: Date = new Date();
 
     paymentMethods = [] as PaymentMethod[];
-    formReceipt: FormGroup = this.formBuilder.group({
+    form: FormGroup = this.formBuilder.group({
         paymentMethod: ['', Validators.required],
         receivedAmount: ['', Validators.required]
     });
 
     constructor(
-        private sharedService: SharedService,
+        private router: Router,
         private apiService: ApiService,
+        private sharedService: SharedService,
         private formBuilder: FormBuilder
     ) {
         super();
@@ -51,7 +57,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
     }
 
     get paymentMethod() {
-        return this.formReceipt.get('paymentMethod');
+        return this.form.get('paymentMethod');
     }
 
     getOrders(e?: LazyLoadEvent) {
@@ -94,19 +100,33 @@ export class OrderComponent extends SharedUtil implements OnInit {
     }
 
     onClickReceipt() {
-        this.formReceipt.get('paymentMethod').setValue(this.paymentMethods[0]);
-        this.formReceipt.get('paymentMethod').valueChanges.subscribe((v: PaymentMethod) => {
+        this.selectedOrderGrandTotal = this.selectedOrder.totalPrice + this.selectedOrder.totalPrice * this.taxesRatio;
+
+        this.form.get('paymentMethod').setValue(this.paymentMethods[0]);
+        this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
+        this.form.get('paymentMethod').valueChanges.subscribe((v: PaymentMethod) => {
             if (v?.id !== 1) {
-                this.formReceipt.get('receivedAmount').setValue(this.selectedOrder.totalPrice);
-                this.formReceipt.get('receivedAmount').disable();
-            } else this.formReceipt.get('receivedAmount').enable();
+                this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
+                this.form.get('receivedAmount').disable();
+            } else this.form.get('receivedAmount').enable();
         });
         this.showPrintReceiptDialog = true;
     }
 
     onPrintReceipt() {
-        this.formReceipt.enable();
-        console.log(this.formReceipt.value);
+        this.form.enable();
+        this.selectedOrderReceipt = {
+            tableId: this.selectedOrder.tableId,
+            orderCode: this.selectedOrder.orderCode,
+            receivedAmount: this.form.get('receivedAmount').value,
+            paymentMethod: this.form.get('paymentMethod').value,
+            taxes: this.selectedOrder.totalPrice * 0.1, // sharedService
+            subTotal: this.selectedOrder.totalPrice,
+            products: this.selectedOrder.products,
+            issuedAt: this.selectedOrder.createdAt,
+            createdAt: new Date()
+        };
+        this.selectedOrderReceipt.total = this.selectedOrderGrandTotal;
     }
 
     getProductsName(orders: Order[]) {
