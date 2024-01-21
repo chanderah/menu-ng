@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { OrderReceipt } from './../../interface/order';
+import { OrderComponent } from './../admin/order/order.component';
 
 @Component({
     selector: 'app-receipt',
@@ -19,11 +20,15 @@ export class ReceiptComponent implements OnInit {
     // receivedAmount: number = 200000;
     // changes: number = 0;
 
-    constructor(private router: Router) {
+    constructor(
+        private router: Router,
+        private orderComponent: OrderComponent
+    ) {
         // this.orderReceipt = this.router.getCurrentNavigation()?.extras?.state?.orderReceipt ?? {};
     }
 
     ngOnInit(): void {
+        // clg
         this.convertToPdf();
     }
 
