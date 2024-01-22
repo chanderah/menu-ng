@@ -1,41 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input } from '@angular/core';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { OrderReceipt } from './../../interface/order';
-import { OrderComponent } from './../admin/order/order.component';
 
 @Component({
     selector: 'app-receipt',
     templateUrl: './receipt.component.html',
     styleUrls: ['./receipt.component.scss']
 })
-export class ReceiptComponent implements OnInit {
+export class ReceiptComponent {
     orderReceipt = {} as OrderReceipt;
-    // tableId: number = 7;
-    // orders: any[] = [];
-    // taxes: number = 0;
-    // subTotal: number = 0;
-    // total: number = 0;
-    // receivedAmount: number = 200000;
-    // changes: number = 0;
 
-    constructor(
-        private router: Router,
-        private orderComponent: OrderComponent
-    ) {
-        // this.orderReceipt = this.router.getCurrentNavigation()?.extras?.state?.orderReceipt ?? {};
-    }
+    constructor() {}
 
-    ngOnInit(): void {
-        // clg
+    @Input()
+    set data(data: OrderReceipt) {
+        this.orderReceipt = data;
         this.convertToPdf();
     }
-
-    // @Input
-    // set data() {
-
-    // }
 
     convertToPdf() {
         // this.orderReceipt.subTotal = 0;
@@ -44,8 +26,8 @@ export class ReceiptComponent implements OnInit {
         // }
         // this.orderReceipt.taxes = this.orderReceipt.subTotal * this.sharedService.getShopConfig().taxes;
         // this.orderReceipt.taxes = this.orderReceipt.subTotal * 0.1;
-        this.orderReceipt.total = this.orderReceipt.subTotal + this.orderReceipt.taxes;
-        this.orderReceipt.changes = this.orderReceipt.receivedAmount - this.orderReceipt.total;
+        // this.orderReceipt.total = this.orderReceipt.subTotal + this.orderReceipt.taxes;
+        // this.orderReceipt.changes = this.orderReceipt.receivedAmount - this.orderReceipt.total;
 
         const content = document.getElementById('pdfContent');
         html2canvas(content).then((canvas) => {

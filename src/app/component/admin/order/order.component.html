@@ -96,7 +96,74 @@
     </div>
 
     <div class="w-auto" *ngIf="showPrintReceiptDialog">
-        <app-receipt></app-receipt>
+        <div class="order-receipt">
+            <div id="pdfContent">
+                <div class="orderNo">{{ selectedOrderReceipt.tableId + '#' + selectedOrderReceipt.orderCode }}</div>
+                <div class="headerSubTitle font-bold py-1"> Order Receipt </div>
+                <div id="date">Cafe Nusantara, +(62) 2153873</div>
+                <div id="date">Jl. Teratai 3 Blok A6 No.8</div>
+                <div id="date">Perumahan Taman Duta, Cisalak</div>
+                <div id="date">Depok, Jawa Barat 16416</div>
+                <div class="my-2"></div>
+                <div id="date">{{ selectedOrderReceipt.createdAt | date: 'EEEE, MMM d yyyy @ HH:mm:ss (a)' }}</div>
+
+                <hr />
+
+                <div class="products">
+                    <table class="w-full">
+                        <tbody>
+                            <th class="text-lg pb-2">DINE IN</th>
+                            <tr *ngFor="let data of selectedOrderReceipt.products">
+                                <!-- <td class="w-full"> -->
+                                <td class="flex flex-column">
+                                    <span>{{ data.name }}</span>
+                                    <div class="flex align-items-center justify-content-center w-full">
+                                        <span class="w-full text-right">{{ data.price | custom }}</span>
+                                        <span class="w-full text-right">x{{ data.quantity }}</span>
+                                        <span class="w-full text-right">{{ data.price | custom }}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <hr />
+                            <tr>
+                                <td class="flex justify-content-between">
+                                    <span>SUBTOTAL</span>
+                                    <span>{{ selectedOrderReceipt.subTotal | custom }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="flex justify-content-between">
+                                    <span>TAXES</span>
+                                    <span>{{ selectedOrderReceipt.taxes | custom }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="flex justify-content-between font-bold">
+                                    <span>TOTAL</span>
+                                    <span>{{ selectedOrderReceipt.total | custom }}</span>
+                                </td>
+                            </tr>
+                            <hr />
+                            <tr>
+                                <td class="flex justify-content-between">
+                                    <span>RECEIVED AMOUNT</span>
+                                    <span>{{ selectedOrderReceipt.receivedAmount | custom }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="flex justify-content-between">
+                                    <span>CHANGES</span>
+                                    <span>{{ selectedOrderReceipt.changes | custom }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <hr />
+                    <div class="font-bold text-center"> THIS IS A LEGITIMATE PROOF OF TRANSACTION</div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

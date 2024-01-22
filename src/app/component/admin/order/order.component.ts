@@ -10,6 +10,9 @@ import { User } from './../../../interface/user';
 import { ApiService } from './../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
 
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
 @Component({
     selector: 'app-order',
     templateUrl: './order.component.html',
@@ -103,7 +106,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
         this.selectedOrderGrandTotal = this.selectedOrder.totalPrice + this.selectedOrder.totalPrice * this.taxesRatio;
 
         this.form.get('paymentMethod').setValue(this.paymentMethods[0]);
-        this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
+        // this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
         this.form.get('paymentMethod').valueChanges.subscribe((v: PaymentMethod) => {
             if (v?.id !== 1) {
                 this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
@@ -127,6 +130,25 @@ export class OrderComponent extends SharedUtil implements OnInit {
             createdAt: new Date()
         };
         this.selectedOrderReceipt.total = this.selectedOrderGrandTotal;
+        this.selectedOrderReceipt.changes = this.selectedOrderReceipt.receivedAmount - this.selectedOrderReceipt.total;
+        this.saveAsPdf();
+    }
+
+    saveAsPdf() {
+        const content = document.getElementById('pdfContent');
+        html2canvas(content).then((canvas) => {
+            const imgWidth = 88;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            let pdf = new jsPDF({
+                orientation: 'portrait',
+                compress: false,
+                format: [imgWidth + 2, imgHeight + 2]
+            });
+            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 1, 1, imgWidth, imgHeight);
+            pdf.save(`invoices-${new Date().getTime()}.pdf`);
+            pdf.autoPrint();
+        });
     }
 
     getProductsName(orders: Order[]) {
