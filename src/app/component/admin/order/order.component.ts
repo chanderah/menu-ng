@@ -8,6 +8,7 @@ import { OrderReceipt, PaymentMethod } from './../../../interface/order';
 import { PagingInfo } from './../../../interface/paging_info';
 import { User } from './../../../interface/user';
 import { ApiService } from './../../../service/api.service';
+import { OrderService } from './../../../service/order.service';
 import { SharedService } from './../../../service/shared.service';
 
 import html2canvas from 'html2canvas';
@@ -40,13 +41,14 @@ export class OrderComponent extends SharedUtil implements OnInit {
     paymentMethods = [] as PaymentMethod[];
     form: FormGroup = this.formBuilder.group({
         paymentMethod: ['', Validators.required],
-        receivedAmount: ['', Validators.required]
+        receivedAmount: [null, Validators.required]
     });
 
     constructor(
         private router: Router,
         private apiService: ApiService,
         private sharedService: SharedService,
+        private orderService: OrderService,
         private formBuilder: FormBuilder
     ) {
         super();
@@ -57,10 +59,6 @@ export class OrderComponent extends SharedUtil implements OnInit {
         this.apiService.getPaymentMethods().subscribe((res: any) => {
             if (res.status === 200) this.paymentMethods = res.data;
         });
-    }
-
-    get paymentMethod() {
-        return this.form.get('paymentMethod');
     }
 
     getOrders(e?: LazyLoadEvent) {
@@ -105,8 +103,8 @@ export class OrderComponent extends SharedUtil implements OnInit {
     onClickReceipt() {
         this.selectedOrderGrandTotal = this.selectedOrder.totalPrice + this.selectedOrder.totalPrice * this.taxesRatio;
 
-        this.form.get('paymentMethod').setValue(this.paymentMethods[0]);
         // this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
+        this.form.get('paymentMethod').setValue(this.paymentMethods[0]);
         this.form.get('paymentMethod').valueChanges.subscribe((v: PaymentMethod) => {
             if (v?.id !== 1) {
                 this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
@@ -116,39 +114,57 @@ export class OrderComponent extends SharedUtil implements OnInit {
         this.showPrintReceiptDialog = true;
     }
 
-    onPrintReceipt() {
+    async onPrintReceipt() {
+        if ((this.form.get('paymentMethod').value as PaymentMethod).id === 1) {
+            if (this.form.get('receivedAmount').value < this.selectedOrderGrandTotal) {
+                return this.sharedService.errorToast("Received amount can't be lower than Grand Total Price.");
+            }
+        }
         this.form.enable();
-        this.selectedOrderReceipt = {
-            tableId: this.selectedOrder.tableId,
-            orderCode: this.selectedOrder.orderCode,
-            receivedAmount: this.form.get('receivedAmount').value,
-            paymentMethod: this.form.get('paymentMethod').value,
-            taxes: this.selectedOrder.totalPrice * 0.1, // sharedService
-            subTotal: this.selectedOrder.totalPrice,
-            products: this.selectedOrder.products,
-            issuedAt: this.selectedOrder.createdAt,
-            createdAt: new Date()
-        };
-        this.selectedOrderReceipt.total = this.selectedOrderGrandTotal;
-        this.selectedOrderReceipt.changes = this.selectedOrderReceipt.receivedAmount - this.selectedOrderReceipt.total;
-        this.saveAsPdf();
+        this.orderService
+            .generateOrderReceipt({
+                tableId: this.selectedOrder.tableId,
+                orderCode: this.selectedOrder.orderCode,
+                receivedAmount: this.form.get('receivedAmount').value,
+                paymentMethod: this.form.get('paymentMethod').value,
+                taxes: this.selectedOrder.totalPrice * 0.1, // sharedService
+                subTotal: this.selectedOrder.totalPrice,
+                total: this.selectedOrderGrandTotal,
+                products: this.selectedOrder.products,
+                issuedAt: this.selectedOrder.createdAt,
+                createdAt: new Date()
+            })
+            .then((res) => {
+                this.selectedOrderReceipt = res;
+                setTimeout(() => {
+                    this.printAsPdf();
+                }, 10);
+            });
     }
 
-    saveAsPdf() {
-        const content = document.getElementById('pdfContent');
-        html2canvas(content).then((canvas) => {
-            const imgWidth = 88;
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    printAsPdf() {
+        try {
+            const content = document.getElementById('pdfContent');
+            html2canvas(content).then((canvas) => {
+                const imgWidth = 88;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-            let pdf = new jsPDF({
-                orientation: 'portrait',
-                compress: false,
-                format: [imgWidth + 2, imgHeight + 2]
+                let pdf = new jsPDF({
+                    orientation: 'portrait',
+                    compress: false,
+                    format: [imgWidth + 2, imgHeight + 2]
+                });
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 1, 1, imgWidth, imgHeight);
+                // pdf.save(`invoices-${new Date().getTime()}.pdf`);
+                pdf.autoPrint();
+                pdf.output('dataurlnewwindow');
+                this.showOrderDetailsDialog = false;
+                this.showPrintReceiptDialog = false;
+                this.sharedService.showNotification('Receipt is successfully downloaded!');
             });
-            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 1, 1, imgWidth, imgHeight);
-            pdf.save(`invoices-${new Date().getTime()}.pdf`);
-            pdf.autoPrint();
-        });
+        } catch (err) {
+            this.sharedService.showErrorNotification();
+        }
     }
 
     getProductsName(orders: Order[]) {

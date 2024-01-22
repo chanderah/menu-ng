@@ -18,6 +18,7 @@ import { SharedService } from './service/shared.service';
 
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoFocusModule } from 'primeng/autofocus';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { BadgeModule } from 'primeng/badge';
@@ -269,7 +270,8 @@ export class MyHammerConfig extends HammerGestureConfig {
         HammerModule,
         ScrollPanelModule,
         QrCodeModule,
-        ContextMenuModule
+        ContextMenuModule,
+        AutoFocusModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },

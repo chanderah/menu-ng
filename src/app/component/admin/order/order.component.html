@@ -262,7 +262,9 @@
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon">Rp</span>
                 <p-inputNumber
-                    [min]="selectedOrderGrandTotal"
+                    [min]="0"
+                    pAutoFocus
+                    [autofocus]="true"
                     placeholder="Received Amount"
                     formControlName="receivedAmount"
                     inputId="locale-user"

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
 import SharedUtil from '../lib/shared.util';
-import { Order } from './../interface/order';
+import { Order, OrderReceipt } from './../interface/order';
 import { jsonParse, jsonStringify } from './../lib/shared.util';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
@@ -46,7 +46,7 @@ export class OrderService extends SharedUtil {
                 products: this.getCart(),
                 tableId: this.getCustomerInfo().tableId,
                 totalPrice: totalPrice,
-                createdAt: new Date(),
+                createdAt: new Date()
             } as Order)
         );
         this.clearCart();
@@ -64,6 +64,13 @@ export class OrderService extends SharedUtil {
 
         return new Promise((resolve) => {
             this.apiService.createOrder(order).subscribe((res: any) => resolve(res));
+        });
+    }
+
+    async generateOrderReceipt(order: OrderReceipt): Promise<OrderReceipt> {
+        return new Promise((resolve) => {
+            order.changes = order.receivedAmount - order.total;
+            resolve(order);
         });
     }
 
