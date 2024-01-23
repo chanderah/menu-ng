@@ -145,6 +145,12 @@
                             </tr>
                             <hr />
                             <tr>
+                                <td class="flex justify-content-end">
+                                    <!-- <span>RECEIVED AMOUNT</span> -->
+                                    <span>{{ selectedOrderReceipt?.paymentMethod?.name }}</span>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="flex justify-content-between">
                                     <span>RECEIVED AMOUNT</span>
                                     <span>{{ selectedOrderReceipt.receivedAmount | custom }}</span>

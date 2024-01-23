@@ -120,6 +120,8 @@ export class OrderComponent extends SharedUtil implements OnInit {
                 return this.sharedService.errorToast("Received amount can't be lower than Grand Total Price.");
             }
         }
+        this.isLoading = true;
+
         this.form.enable();
         this.orderService
             .generateOrderReceipt({
@@ -136,9 +138,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
             })
             .then((res) => {
                 this.selectedOrderReceipt = res;
-                setTimeout(() => {
-                    this.printAsPdf();
-                }, 10);
+                setTimeout(() => this.printAsPdf(), 10);
             });
     }
 
@@ -156,14 +156,38 @@ export class OrderComponent extends SharedUtil implements OnInit {
                 });
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 1, 1, imgWidth, imgHeight);
                 // pdf.save(`invoices-${new Date().getTime()}.pdf`);
+                // pdf.autoPrint();
+                // window.open(pdf.output('bloburl'));
+                // pdf.output('dataurlnewwindow');
+                // this.showOrderDetailsDialog = false;
+                // this.showPrintReceiptDialog = false;
+                // this.sharedService.showNotification('Receipt is successfully downloaded!');
+
                 pdf.autoPrint();
-                pdf.output('dataurlnewwindow');
-                this.showOrderDetailsDialog = false;
-                this.showPrintReceiptDialog = false;
-                this.sharedService.showNotification('Receipt is successfully downloaded!');
+
+                const frame = document.createElement('iframe');
+                frame.style.position = 'fixed';
+                frame.style.width = '1px';
+                frame.style.height = '1px';
+                frame.style.opacity = '0.01';
+                const isSafari = /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent);
+                if (isSafari) {
+                    // fallback in safari
+                    frame.onload = () => {
+                        try {
+                            frame.contentWindow.document.execCommand('print', false, null);
+                        } catch (e) {
+                            frame.contentWindow.print();
+                        }
+                    };
+                }
+                frame.src = pdf.output('bloburl').toString();
+                document.body.appendChild(frame);
             });
         } catch (err) {
             this.sharedService.showErrorNotification();
+        } finally {
+            this.isLoading = false;
         }
     }
 
