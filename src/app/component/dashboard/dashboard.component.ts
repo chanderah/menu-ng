@@ -66,44 +66,26 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     ) {
         super();
         this.route.queryParams.subscribe((params: any) => {
-            this.checkIsAuthorized();
-            if (!this.isEmpty(params.table)) {
-                orderService.setCustomerInfo({ tableId: Number(params.table) });
-                router.navigate(['/']);
-            }
-
             this.currentMenu = params.menu || 'root';
             if (this.currentMenu === 'root') this.initSwiper();
-            else this.featuredProducts.length = 0;
-
             if (!this.init) this.getProducts();
         });
-        //prettier-ignore
-        this.filter.get('value').valueChanges.pipe(debounceTime(500)).subscribe(() => this.getProducts())
+        this.filter
+            .get('value')
+            .valueChanges.pipe(debounceTime(500))
+            .subscribe(() => this.getProducts());
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.init = false;
         // this.getProducts();
-    }
 
-    checkIsAuthorized() {
-        const user = this.sharedService.getUser();
-        const customer = this.orderService.getCustomerInfo();
+        // const data = await db.getAppData('user');
+        // console.log(data);
+        // db.app.update('user', { userId: 'chandraa01', name: 'csa' });
+        // db.app.update({ id: 'user', value: 'yuhu' });
 
-        if (this.isEmpty(customer)) {
-            if (this.isEmpty(user)) {
-                this.router.navigateByUrl('/customer', { skipLocationChange: true });
-            }
-        }
-    }
-
-    getFeaturedProducts() {
-        this.apiService.getFeaturedProducts().subscribe((res: any) => {
-            if (res.status === 200) {
-                this.featuredProducts = res.data;
-            }
-        });
+        // this.sharedService.setUser();
     }
 
     getCategories() {
@@ -168,25 +150,31 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     }
 
     initSwiper() {
-        this.getFeaturedProducts(); //await ??
-        this.swiperOptions = {
-            autoHeight: true,
-            autoplay: {
-                delay: 2500,
-                pauseOnMouseEnter: true,
-                disableOnInteraction: false
-            },
-            loop: true,
-            centeredSlides: true,
-            breakpoints: {
-                0: {
-                    slidesPerView: 1
-                },
-                768: {
-                    slidesPerView: 4
+        if (!this.swiperOptions) {
+            this.apiService.getFeaturedProducts().subscribe((res: any) => {
+                if (res.status === 200) {
+                    this.featuredProducts = res.data;
+                    this.swiperOptions = {
+                        autoHeight: true,
+                        autoplay: {
+                            delay: 2500,
+                            pauseOnMouseEnter: true,
+                            disableOnInteraction: false
+                        },
+                        loop: true,
+                        centeredSlides: true,
+                        breakpoints: {
+                            0: {
+                                slidesPerView: 1
+                            },
+                            768: {
+                                slidesPerView: 4
+                            }
+                        }
+                    };
                 }
-            }
-        };
+            });
+        }
     }
 
     onClickImage(data: any) {

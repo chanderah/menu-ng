@@ -11,8 +11,8 @@ import { CustomerComponent } from './component/customer/customer.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
 import { ReceiptComponent } from './component/receipt/receipt.component';
-import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
 import { AdminGuard } from './guard/admin.guard';
+import { TableGuard } from './guard/table.guard';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
@@ -23,7 +23,7 @@ import { AppMainComponent } from './layout/app.main.component';
                     path: '',
                     component: AppMainComponent,
                     children: [
-                        { path: '', component: DashboardComponent },
+                        { path: '', canActivate: [TableGuard], component: DashboardComponent },
                         { path: 'order-complete', component: OrderCompleteComponent },
                         {
                             path: 'admin',
@@ -41,7 +41,6 @@ import { AppMainComponent } from './layout/app.main.component';
                 },
                 { path: 'customer', component: CustomerComponent },
                 { path: 'receipt', component: ReceiptComponent },
-                { path: 'unauthorized', component: UnauthorizedComponent },
                 { path: 'login', component: LoginComponent },
                 { path: 'register', component: RegisterComponent },
                 { path: '**', redirectTo: '' }
