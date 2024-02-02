@@ -24,11 +24,11 @@
                 <div class="col-12">
                     <p-scrollPanel
                         formArrayName="products"
-                        [style]="{ width: '100%', height: '60vh', overflow: 'scroll' }">
+                        [style]="{ width: '100%', height: '60vh', overflow: 'auto' }">
                         <div
                             *ngIf="products().length === 0"
                             class="flex justify-content-center align-items-center w-full h-full">
-                            <p class="text-md">EMPTY</p>
+                            <p class="text-md">Empty</p>
                         </div>
                         <div *ngFor="let product of products().controls; index as i" [formGroupName]="i" class="my-3">
                             <div class="flex gap-3 align-items-start justify-content-start">
@@ -118,7 +118,7 @@
                                         <div class="flex justify-content-between pb-2">
                                             <span class="text-md font-semibold">{{ option.value.name }}</span>
                                             <p class="text-xs font-semibold" style="color: grey">
-                                                {{ option.value.required === true ? '*required' : '*optional' }}
+                                                {{ option.value.required ? '*required' : '*optional' }}
                                             </p>
                                         </div>
 

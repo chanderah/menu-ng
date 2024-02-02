@@ -22,7 +22,7 @@
                 <div class="col-12" style="display: inline-block">
                     <h5 class="category-title mb-4">{{ orderForm.get('name').value }}</h5>
                     <!-- <p-divider></p-divider> -->
-                    <p-scrollPanel [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'scroll' }">
+                    <p-scrollPanel [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }">
                         <div formArrayName="options">
                             <div
                                 *ngFor="let option of options().controls; index as i"
@@ -33,7 +33,7 @@
                                 <div class="flex justify-content-between pb-2">
                                     <span class="text-md font-semibold text-capitalize">{{ option.value.name }}</span>
                                     <p class="text-xs font-semibold" style="color: grey">
-                                        {{ option.value.required === true ? '*required' : '*optional' }}
+                                        {{ option.value.required ? '*required' : '*optional' }}
                                     </p>
                                 </div>
 
@@ -68,7 +68,7 @@
                     </p-scrollPanel>
                 </div>
 
-                <div class="col-12 flex align-items-center justify-content-between py-2" style="height: auto">
+                <div class="col-12 flex align-items-center justify-content-between pb-2" style="height: auto">
                     <label class="font-semibold">Quantity</label>
                     <div class="flex flex-col align-items-center gap-3">
                         <button

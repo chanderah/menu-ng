@@ -90,7 +90,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
         this.menuClick = true;
         if (this.isDesktop()) {
             if (this.app.menuMode === 'overlay') {
-                if (this.menuActiveMobile === true) this.overlayMenuActive = true;
+                if (this.menuActiveMobile) this.overlayMenuActive = true;
                 this.overlayMenuActive = !this.overlayMenuActive;
                 this.menuActiveMobile = false;
             } else if (this.app.menuMode === 'static') this.staticMenuInactive = !this.staticMenuInactive;
