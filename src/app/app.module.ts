@@ -272,6 +272,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         QrCodeModule,
         ContextMenuModule,
         AutoFocusModule
+        // AngularFireModule.initializeApp(environment.firebaseConfig)
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },

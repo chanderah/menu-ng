@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { AppComponent } from 'src/app/app.component';
+import { AppMainComponent } from 'src/app/layout/app.main.component';
 import { isEmpty, jsonParse } from '../lib/shared.util';
 import { Product } from './../interface/product';
-import { AppMainComponent } from './app.main.component';
 
 @Component({
     selector: 'app-topbar',
@@ -11,16 +12,18 @@ import { AppMainComponent } from './app.main.component';
 export class AppTopBarComponent {
     items: MenuItem[];
 
-    constructor(public appMain: AppMainComponent) {}
+    constructor(
+        public app: AppComponent,
+        public appMain: AppMainComponent
+    ) {}
 
     getCountCartItems() {
         const cartItems: any[] = jsonParse(localStorage.getItem('cart')) as Product[];
-        if (isEmpty(cartItems)) return '0';
-        return cartItems.length.toString();
+        return isEmpty(cartItems) ? '0' : cartItems.length.toString();
     }
 
     onClickCart() {
         // disableBodyScroll();
-        this.appMain.showCartDialog = true;
+        this.app.showCartDialog = true;
     }
 }

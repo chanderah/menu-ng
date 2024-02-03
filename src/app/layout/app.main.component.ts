@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
 import { AppConfig } from '../interface/appconfig';
 import { AppComponent } from './../app.component';
-import { enableBodyScroll } from './../lib/shared.util';
 import { ApiService } from './../service/api.service';
 
 @Component({
@@ -48,8 +47,6 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     configClick: boolean;
     config: AppConfig;
 
-    showCartDialog: boolean = false;
-
     constructor(
         public renderer: Renderer2,
         public app: AppComponent,
@@ -60,11 +57,6 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     ngOnInit() {
         this.config = this.configService.config;
         this.subscription = this.configService.configUpdate$.subscribe((config) => (this.config = config));
-    }
-
-    onShowCartDialogChange(bool: boolean) {
-        if (bool === false) enableBodyScroll();
-        this.showCartDialog = bool;
     }
 
     ngAfterViewInit() {
