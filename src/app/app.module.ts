@@ -119,7 +119,6 @@ import { OrderDialogComponent } from './component/dialog/order-dialog/order-dial
 import { ProductDialogComponent } from './component/dialog/product-dialog/product-dialog.component';
 import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
 import { ReceiptComponent } from './component/receipt/receipt.component';
-import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
 import { AppFooterComponent } from './layout/app.footer.component';
 import { AppMainComponent } from './layout/app.main.component';
 import { AppMenuComponent } from './layout/app.menu.component';
@@ -165,7 +164,6 @@ export class MyHammerConfig extends HammerGestureConfig {
         OrderComponent,
         OrderLiveComponent,
         OrderCompleteComponent,
-        UnauthorizedComponent,
         CustomerComponent,
         ReceiptComponent
     ],

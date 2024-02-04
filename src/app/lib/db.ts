@@ -6,13 +6,26 @@ interface App {
 }
 
 class LocalDB extends Dexie {
-    public app!: Table<App, string>;
+    private app!: Table<any, string>;
 
     constructor() {
         super('menukita');
-        this.version(5).stores({
-            app: 'id'
+        this.version(1).stores({
+            app: ''
         });
+    }
+
+    async getAppData(key: string) {
+        const res = await this.app.get(key);
+        return res;
+    }
+
+    setAppData(key: string, data: any) {
+        return this.app.put(data, key);
+    }
+
+    removeAppData(key: string) {
+        return this.app.delete(key);
     }
 }
 
