@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
@@ -46,9 +46,8 @@ import { SharedService } from './../../../../service/shared.service';
         `
     ]
 })
-export class OrderLiveComponent extends SharedUtil implements OnInit {
+export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewInit {
     isLoading: boolean = true;
-    isPaginationChange: boolean = true;
     rowsPerPageOptions: number[] = [20, 50, 100];
     dialogBreakpoints = { '768px': '90vw' };
 
@@ -82,6 +81,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     ngOnInit() {
         this.user = jsonParse(localStorage.getItem('user')) as User;
         this.pagingInfo.limit = this.rowsPerPageOptions[0];
+    }
+
+    ngAfterViewInit(): void {
         this.initFcm();
     }
 
@@ -90,37 +92,37 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
             if (permission === 'denied') {
                 this.sharedService.showNotification('Please allow our browser notification!', '😢', 90000);
             } else if (permission === 'granted') {
-                console.log('granted');
                 this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
-
                 const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
-                if (fcmToken != localStorage.getItem('fcmToken')) {
-                    localStorage.setItem('fcmToken', fcmToken);
-                }
-                console.log(fcmToken);
+                //prettier-ignore
+                if (fcmToken) {
+                    if (fcmToken != localStorage.getItem('fcmToken')) {
+                        localStorage.setItem('fcmToken', fcmToken);
+                    }
+                } else window.location.reload();
 
                 this.messagingService.messages.subscribe((res) => {
-                    if (res) console.log(res);
+                    if (res) this.getOrders();
+                });
+
+                navigator.serviceWorker.addEventListener('message', (e) => {
+                    if (e.data === 'new-order') return this.getOrders();
                 });
             }
         });
     }
 
-    onPaginateChange() {
-        this.isPaginationChange = true;
-        return this.getOrders();
-    }
-
-    async getOrders() {
+    async getOrders(lastFetchedId?: number) {
         this.isLoading = true;
-        this.apiService.getLiveOrders(this.getLastFetchedId(), this.pagingInfo.limit).subscribe((res: any) => {
+
+        lastFetchedId = lastFetchedId ?? this.getLastFetchedId();
+        this.apiService.getLiveOrders(lastFetchedId, this.pagingInfo.limit).subscribe((res: any) => {
             if (res.status === 200) {
                 this.lastUpdated = new Date();
                 if (res.data.length > 0) {
                     if (this.orders.length > 0) {
-                        if (this.isPaginationChange) {
+                        if (lastFetchedId === 0) {
                             this.orders = res.data;
-                            this.isPaginationChange = false;
                         } else {
                             this.orders = res.data.concat(this.orders).slice(0, this.pagingInfo.limit);
                             this.showNewOrdersNotification(res.data.length);
@@ -128,15 +130,12 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
                     } else this.orders = res.data;
                 }
             } else this.sharedService.errorToast('Failed to get Orders data.');
-            this.isLoading = false;
         });
-        if (this.timeoutId) clearTimeout(this.timeoutId);
-        this.timeoutId = setTimeout(() => this.getOrders(), 9000);
+        this.isLoading = false;
     }
 
     getLastFetchedId() {
-        if (this.isPaginationChange) return 0;
-        else return this.orders.length > 0 ? this.orders[0].id : 0;
+        return this.orders.length > 0 ? this.orders[0].id : 0;
     }
 
     showNewOrdersNotification(count: number) {

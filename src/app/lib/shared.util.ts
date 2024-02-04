@@ -20,8 +20,12 @@ export default class SharedUtil {
         return isEmpty(obj);
     };
 
-    capitalizeFirstLetter = (data: string) => {
-        return capitalizeFirstLetter(data);
+    capitalize = (str: string) => {
+        return capitalize(str);
+    };
+
+    capitalizeFirstLetter = (str: string) => {
+        return capitalizeFirstLetter(str);
     };
 
     toAscii(num: number) {
@@ -65,11 +69,15 @@ export const jsonStringify = (obj: any): string => {
 //     return JSON.stringify(obj);
 // };
 
-export const capitalize = (data: string) => {
-    data.split(' ').forEach((c: string) => {
-        c = c.charAt(0).toUpperCase() + (c.length === 1 ? '' : c.slice(1));
-    });
-    return data;
+export const capitalize = (str: string) => {
+    if (isEmpty(str)) return '';
+
+    const words = str.split(' ');
+    return words
+        .map((w) => {
+            return w[0].toUpperCase() + w.substring(1);
+        })
+        .join(' ');
 };
 
 export const capitalizeFirstLetter = (data: string) => {

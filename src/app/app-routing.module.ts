@@ -7,6 +7,7 @@ import { OrderLiveComponent } from './component/admin/order/order-live/order-liv
 import { OrderComponent } from './component/admin/order/order.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
+import { UserComponent } from './component/admin/user/user.component';
 import { CustomerComponent } from './component/customer/customer.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { OrderCompleteComponent } from './component/order-complete/order-complete.component';
@@ -30,6 +31,7 @@ import { AppMainComponent } from './layout/app.main.component';
                             canActivate: [AdminGuard],
                             canActivateChild: [AdminGuard],
                             children: [
+                                { path: 'user', component: UserComponent },
                                 { path: 'order', component: OrderComponent },
                                 { path: 'order/live', component: OrderLiveComponent },
                                 { path: 'product', component: ProductComponent },

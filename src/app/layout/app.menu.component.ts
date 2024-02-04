@@ -85,7 +85,8 @@ export class AppMenuComponent implements OnInit {
                         routerLink: ['/admin/product'],
                         badge: 'ADMIN'
                     },
-                    { label: 'Manage Tables', icon: 'pi pi-fw pi-eye', routerLink: ['/admin/table'], badge: 'ADMIN' }
+                    { label: 'Manage Tables', icon: 'pi pi-fw pi-eye', routerLink: ['/admin/table'], badge: 'ADMIN' },
+                    { label: 'Manage Users', icon: 'pi pi-fw pi-eye', routerLink: ['/admin/user'], badge: 'ADMIN' }
                 ]
             });
         }

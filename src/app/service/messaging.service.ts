@@ -36,14 +36,14 @@ export class MessagingService {
             })
                 .then((token) => {
                     onMessage(this.messaging, (res) => this.messages$.next(res));
-                    // onBackgroundMessage(getMessaging(), (res) => {
-                    //     console.log(res);
-                    // });
                     resolve(token);
                 })
                 .catch((err) => {
-                    if (retry) this.unregisterFcm().then(() => this.registerFcm(firebaseConfig, false));
-                    else reject(err);
+                    if (retry) {
+                        this.unregisterFcm().then(() =>
+                            setTimeout(() => this.registerFcm(firebaseConfig, false), 1000)
+                        );
+                    } else reject(err);
                 });
         });
     }
@@ -52,7 +52,12 @@ export class MessagingService {
         return new Promise((resolve) => {
             navigator.serviceWorker
                 .getRegistrations()
-                .then((reg) => reg.map((r) => r.unregister()))
+                .then((reg) =>
+                    reg.map((r) => {
+                        console.log(r);
+                        r.unregister();
+                    })
+                )
                 .then(() => resolve(true));
         });
     }

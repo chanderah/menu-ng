@@ -80,13 +80,13 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         return this.httpClient.post('/user/login', user);
     }
 
-    updateAuth(user: User) {
-        return this.httpClient.post('/user/update', user);
-    }
-
     /* USER */
     getUsers(pagingInfo: PagingInfo) {
         return this.httpClient.post('/user/findAll', pagingInfo);
+    }
+
+    getUserRoles() {
+        return this.httpClient.post('/user/role/findAll', {});
     }
 
     findUserById(user: User) {
@@ -98,11 +98,11 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     }
 
     updateUser(user: User) {
-        return this.httpClient.post('/user/findByUsername', user);
+        return this.httpClient.post('/user/update', user);
     }
 
     deleteUser(user: User) {
-        return this.httpClient.post('/user/findByUsername', user);
+        return this.httpClient.post('/user/deleteUser', user);
     }
 
     /* CATEGORY */

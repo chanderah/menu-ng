@@ -5,8 +5,9 @@ export interface User {
     password: string;
     name: string;
     email: string;
-    token: string;
-    createdAt: Date;
+    token?: string;
+    fcmToken?: string;
+    createdAt?: Date;
 }
 
 export interface UserBasic {
@@ -15,5 +16,12 @@ export interface UserBasic {
     username: string;
     name: string;
     email: string;
+    fcmToken?: string;
+    createdAt: Date;
+}
+
+export interface UserRole {
+    id: number;
+    name: string;
     createdAt: Date;
 }
