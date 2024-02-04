@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
-import { environment } from './../environments/environment';
 import { enableBodyScroll } from './lib/shared.util';
 import { ApiService } from './service/api.service';
 import { MessagingService } from './service/messaging.service';
+import { SharedService } from './service/shared.service';
 
 @Component({
     selector: 'app-root',
@@ -16,7 +16,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     constructor(
         private primengConfig: PrimeNGConfig,
         private messagingService: MessagingService,
-        private apiService: ApiService
+        private apiService: ApiService,
+        private sharedService: SharedService
     ) {}
 
     ngOnInit() {
@@ -24,32 +25,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         document.documentElement.style.fontSize = '14px';
     }
 
-    ngAfterViewInit() {
-        this.initFcm();
-    }
-
-    initFcm() {
-        // prettier-ignore
-        Notification.requestPermission(
-            async (permission: NotificationPermission) => {
-                if (permission === 'denied') alert('Please allow our browser notification');
-                else if (permission === 'granted') {
-                    const fcmToken = await this.messagingService.registerFcm(
-                        environment.firebaseConfig,
-                    );
-
-                    if (fcmToken != localStorage.getItem('fcmToken')) {
-                        localStorage.setItem("fcmToken", fcmToken)
-                    }
-                    console.log(fcmToken);
-
-                    this.messagingService.messages.subscribe((res) => {
-                        if (res) console.log(res);
-                    });
-                }
-            },
-        );
-    }
+    ngAfterViewInit() {}
 
     onShowCartDialogChange(bool: boolean) {
         if (bool === false) enableBodyScroll();

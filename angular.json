@@ -54,7 +54,16 @@
                             "node_modules/prismjs/prism.js",
                             "node_modules/prismjs/components/prism-typescript.js"
                         ],
-                        "allowedCommonJsDependencies": ["react-image-file-resizer", "chart.js", "qrcode"]
+                        "allowedCommonJsDependencies": [
+                            "react-image-file-resizer",
+                            "chart.js",
+                            "qrcode",
+                            "html2canvas",
+                            "raf",
+                            "core-js",
+                            "jspdf",
+                            "rgbcolor"
+                        ]
                     },
                     "configurations": {
                         "production": {

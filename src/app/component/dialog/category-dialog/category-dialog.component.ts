@@ -21,9 +21,7 @@ export class CategoryDialogComponent implements OnInit {
         console.log(this.product);
     }
 
-    ngOnInit(): void {
-        console.log('i called');
-    }
+    ngOnInit(): void {}
 
     addToCart(data: any) {
         // const res = this.orderService.addToCart(data);

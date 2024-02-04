@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
+import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
+import { MessagingService } from 'src/app/service/messaging.service';
+import { environment } from './../../../../../environments/environment';
 import { PagingInfo } from './../../../../interface/paging_info';
 import { User } from './../../../../interface/user';
-import SharedUtil, { jsonParse } from './../../../../lib/shared.util';
 import { ApiService } from './../../../../service/api.service';
 import { SharedService } from './../../../../service/shared.service';
 
@@ -71,7 +73,8 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
     constructor(
         private sharedService: SharedService,
-        private apiService: ApiService
+        private apiService: ApiService,
+        private messagingService: MessagingService
     ) {
         super();
     }
@@ -79,7 +82,28 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     ngOnInit() {
         this.user = jsonParse(localStorage.getItem('user')) as User;
         this.pagingInfo.limit = this.rowsPerPageOptions[0];
-        this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
+        this.initFcm();
+    }
+
+    initFcm() {
+        Notification.requestPermission(async (permission: NotificationPermission) => {
+            if (permission === 'denied') {
+                this.sharedService.showNotification('Please allow our browser notification!', '😢', 90000);
+            } else if (permission === 'granted') {
+                console.log('granted');
+                this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
+
+                const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
+                if (fcmToken != localStorage.getItem('fcmToken')) {
+                    localStorage.setItem('fcmToken', fcmToken);
+                }
+                console.log(fcmToken);
+
+                this.messagingService.messages.subscribe((res) => {
+                    if (res) console.log(res);
+                });
+            }
+        });
     }
 
     onPaginateChange() {

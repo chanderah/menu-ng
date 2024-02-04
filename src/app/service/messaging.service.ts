@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseOptions, initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { Messaging, getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 export interface FirebaseConfig extends FirebaseOptions {
@@ -19,6 +19,8 @@ export class MessagingService {
     private fcmUrl: string = 'https://fcm.googleapis.com/v1/projects/menukita-56209/messages:send';
     private fcmToken!: any;
 
+    private messaging: Messaging;
+
     constructor() {}
 
     get messages() {
@@ -28,16 +30,20 @@ export class MessagingService {
     async registerFcm(firebaseConfig: FirebaseConfig, retry: boolean = true): Promise<string> {
         return new Promise((resolve, reject) => {
             const firebaseApp = initializeApp(firebaseConfig);
-            getToken(getMessaging(firebaseApp), {
+            this.messaging = getMessaging(firebaseApp);
+            getToken(this.messaging, {
                 vapidKey: firebaseConfig.vapidKey
             })
                 .then((token) => {
-                    onMessage(getMessaging(), (res) => this.messages$.next(res));
+                    onMessage(this.messaging, (res) => this.messages$.next(res));
+                    // onBackgroundMessage(getMessaging(), (res) => {
+                    //     console.log(res);
+                    // });
                     resolve(token);
                 })
                 .catch((err) => {
                     if (retry) this.unregisterFcm().then(() => this.registerFcm(firebaseConfig, false));
-                    else resolve(err);
+                    else reject(err);
                 });
         });
     }

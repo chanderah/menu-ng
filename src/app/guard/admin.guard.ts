@@ -28,7 +28,6 @@ export class AdminGuard implements CanActivate, CanActivateChild {
     }
 
     canActivateChild(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        console.log('called');
         if (!this.sharedService.isAdmin()) {
             this.router.navigateByUrl('/unauthorized', { skipLocationChange: true });
             return false;
