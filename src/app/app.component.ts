@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import { environment } from './../environments/environment';
 import { enableBodyScroll } from './lib/shared.util';
+import { ApiService } from './service/api.service';
 import { MessagingService } from './service/messaging.service';
 
 @Component({
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     constructor(
         private primengConfig: PrimeNGConfig,
-        private messagingService: MessagingService
+        private messagingService: MessagingService,
+        private apiService: ApiService
     ) {}
 
     ngOnInit() {
@@ -23,15 +25,45 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     async ngAfterViewInit() {
-        const token: string = await this.messagingService.registerFcm(environment.firebaseConfig);
-        if (token != localStorage.getItem('token')) {
-            localStorage.setItem('token', token);
-        }
-        console.log(token);
+        this.initFcm();
+        // const token: string = await this.messagingService.registerFcm(environment.firebaseConfig);
+        // if (token != localStorage.getItem('token')) {
+        //     localStorage.setItem('token', token);
+        // }
+        // console.log(token);
 
-        this.messagingService.messages.subscribe((res) => {
-            console.log(res);
-        });
+        // this.messagingService.messages.subscribe((res) => {
+        //     console.log(res);
+        // });
+
+        // setTimeout(() => {
+        //     this.apiService.sendNotification({ message: 'woii', token }).subscribe((res) => {
+        //         // console.log(res);
+        //     });
+        // }, 2000);
+    }
+
+    initFcm() {
+        // prettier-ignore
+        Notification.requestPermission(
+            async (permission: NotificationPermission) => {
+                if (permission === 'denied') alert('Please allow our browser notification');
+                else if (permission === 'granted') {
+                    const fcmToken = await this.messagingService.registerFcm(
+                        environment.firebaseConfig,
+                    );
+
+                    if (fcmToken != localStorage.getItem('fcmToken')) {
+                        localStorage.setItem("fcmToken", fcmToken)
+                    }
+                    console.log(fcmToken);
+
+                    this.messagingService.messages.subscribe((res) => {
+                        if (res) console.log(res);
+                    });
+                }
+            },
+        );
     }
 
     onShowCartDialogChange(bool: boolean) {

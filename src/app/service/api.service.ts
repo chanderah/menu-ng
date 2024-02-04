@@ -80,6 +80,10 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         return this.httpClient.post('/user/login', user);
     }
 
+    updateAuth(user: User) {
+        return this.httpClient.post('/user/update', user);
+    }
+
     /* USER */
     getUsers(pagingInfo: PagingInfo) {
         return this.httpClient.post('/user/findAll', pagingInfo);
