@@ -24,23 +24,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         document.documentElement.style.fontSize = '14px';
     }
 
-    async ngAfterViewInit() {
+    ngAfterViewInit() {
         this.initFcm();
-        // const token: string = await this.messagingService.registerFcm(environment.firebaseConfig);
-        // if (token != localStorage.getItem('token')) {
-        //     localStorage.setItem('token', token);
-        // }
-        // console.log(token);
-
-        // this.messagingService.messages.subscribe((res) => {
-        //     console.log(res);
-        // });
-
-        // setTimeout(() => {
-        //     this.apiService.sendNotification({ message: 'woii', token }).subscribe((res) => {
-        //         // console.log(res);
-        //     });
-        // }, 2000);
     }
 
     initFcm() {
