@@ -3,8 +3,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { lastValueFrom } from 'rxjs';
 import { User } from 'src/app/interface/user';
+import { isEmpty } from 'src/app/lib/shared.util';
 import { NotificationDialogComponent } from './../component/dialog/notification/notification-dialog.component';
 import { ShopConfig } from './../interface/shop_config';
+import { db } from './../lib/db';
 import { jsonParse, jsonStringify, sortArrayByLabelProperty } from './../lib/shared.util';
 import { ApiService } from './api.service';
 
@@ -23,8 +25,28 @@ export class SharedService {
         // super();
     }
 
+    isAdmin() {
+        const user = this.getUser();
+        if (!user || isEmpty(user) || !this.isValidUser(user)) {
+            return false;
+        }
+        return true;
+    }
+
+    isValidUser(user: User): boolean {
+        Object.values(user).forEach((v) => {
+            if (isEmpty(v)) return false;
+        });
+        return true;
+    }
+
     getUser(): User {
+        // return jsonParse(db.getAppData('user').then((res) => res));
         return jsonParse(localStorage.getItem('user')) as User;
+    }
+
+    setUser(user?: User) {
+        return db.setAppData('user', user);
     }
 
     removeUser() {
