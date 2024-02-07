@@ -3,7 +3,7 @@ export const environment = {
     appUrl: 'https://menu-ng.vercel.app',
     // appUrl: 'https://chandrasa.fun',
     apiUrl: 'https://api.chandrasa.fun/api',
-    publicPath: 'https://assets.chandrasa.fun/',
+    publicPath: 'https://assets.chandrasa.fun',
     imagePath: 'assets/images',
     firebaseConfig: {
         apiKey: 'AIzaSyCUfFlUk0PT-Rswl2aoCiaNBZMYQIbllXo',
