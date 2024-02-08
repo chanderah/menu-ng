@@ -14,8 +14,9 @@
                     </button>
                 </div>
             </div>
+
             <p-contextMenu #cm [model]="contextMenus"></p-contextMenu>
-            <!-- [loading]="isLoading" -->
+
             <p-table
                 #tb
                 dataKey="id"
@@ -55,8 +56,8 @@
                         [pContextMenuRow]="data"
                         (click)="viewOrder(data)"
                         [style]="{
-                            background: data.isNew ? '#ffcdd2' : '#c8e6c9',
-                            color: data.isNew ? '#c63737' : '#256029',
+                            background: data.isDone ? '#c8e6c9' : '#ffcdd2',
+                            color: data.isDone ? '#256029' : '#c63737',
                             border: '1px'
                         }">
                         <td style="width: 40px" class="text-center">
@@ -145,11 +146,11 @@
             <button
                 pButton
                 pRipple
-                *ngIf="selectedOrder.isNew"
+                *ngIf="!selectedOrder.isDone"
                 icon="pi pi-check"
                 class="w-auto p-button-outlined"
                 label="Done"
-                (click)="markAsDone(selectedOrder)"
+                (click)="markAsDone(selectedOrder.id, selectedOrder.id)"
                 [disabled]="isLoading">
             </button>
         </div>

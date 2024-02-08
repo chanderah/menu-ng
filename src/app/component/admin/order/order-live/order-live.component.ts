@@ -66,7 +66,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
         {
             label: 'Done',
             icon: 'pi pi-fw pi-check',
-            command: () => this.markAsDone(this.selectedOrder)
+            command: () => this.markAsDone(this.selectedOrder.id, this.selectedOrder.id)
         }
     ];
 
@@ -134,10 +134,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
                         if (lastFetchedId === 0) {
                             this.orders = res.data;
                         } else {
-                            console.log('orders', this.orders);
-                            console.log('newOrders', res.data);
                             this.orders = res.data.concat(this.orders).slice(0, this.pagingInfo.limit);
-                            console.log('concat', this.orders);
                             this.showNewOrdersNotification(res.data.length);
                         }
                     } else this.orders = res.data;
@@ -156,14 +153,21 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
         this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000).then(() => this.appRef.tick());
     }
 
-    markAsDone(selectedOrder: Order) {
-        this.orders[this.orders.indexOf(selectedOrder)].isNew = false;
+    markAsDone(fromId: number, toId: number) {
+        this.isLoading = true;
+        this.apiService.markOrderAsDone(fromId, toId).subscribe((res: any) => {
+            this.isLoading = false;
+            if (res.status === 200) {
+                this.orders
+                    .filter((v) => !v.isDone && v.id >= fromId && v.id <= toId)
+                    .forEach((v) => (v.isDone = true));
+            } else this.sharedService.errorToast('Failed to update orders');
+        });
     }
 
     markAllAsDone() {
-        this.orders.forEach((data) => {
-            data.isNew = false;
-        });
+        const ids = this.orders.filter((v) => !v.isDone).map((v) => v.id);
+        if (ids.length > 0) this.markAsDone(Math.min(...ids), Math.max(...ids));
     }
 
     playSound() {

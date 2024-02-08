@@ -195,8 +195,12 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     }
 
     /* ORDER */
+    markOrderAsDone(fromId: number, toId: number) {
+        return this.httpClient.post('/order/markAsDone', { fromId, toId });
+    }
+
     getLiveOrders(lastFetchedId: number, limit: number) {
-        return this.httpClient.post('/order/findLive', { id: lastFetchedId, limit: limit });
+        return this.httpClient.post('/order/findLive', { id: lastFetchedId, limit });
     }
 
     getOrders(pagingInfo: PagingInfo) {
@@ -204,7 +208,7 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     }
 
     getOrderById(orderId: number) {
-        return this.httpClient.post('/order/findById', { orderId: orderId });
+        return this.httpClient.post('/order/findById', { orderId });
     }
 
     createOrder(order: Order) {
@@ -212,11 +216,11 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     }
 
     updateOrder(orderId: number) {
-        return this.httpClient.post('/order/update', { orderId: orderId });
+        return this.httpClient.post('/order/update', { orderId });
     }
 
     deleteOrder(orderId: number) {
-        return this.httpClient.post('/order/delete', { orderId: orderId });
+        return this.httpClient.post('/order/delete', { orderId });
     }
 
     getPaymentMethods() {

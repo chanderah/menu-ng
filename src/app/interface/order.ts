@@ -7,7 +7,7 @@ export interface Order {
     totalPrice: number;
     createdAt: Date;
 
-    isNew?: boolean;
+    isDone: boolean;
 
     products: Product[];
     productsName?: string;
