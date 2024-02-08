@@ -102,22 +102,22 @@ export class SharedService {
 
     showNotification(message: string, icon?: string, timeout?: number): Promise<any> {
         return new Promise((resolve) => {
-            this.dialogService
-                .open(NotificationDialogComponent, {
-                    showHeader: false,
-                    width: 'auto',
-                    modal: true,
-                    closeOnEscape: true,
-                    dismissableMask: true,
-                    data: {
-                        icon: icon,
-                        message: message,
-                        timeout: timeout
-                    }
-                })
-                .onClose.subscribe((res) => {
-                    resolve(res);
-                });
+            this.dialogService.open(NotificationDialogComponent, {
+                showHeader: false,
+                width: 'auto',
+                modal: true,
+                closeOnEscape: true,
+                dismissableMask: true,
+                data: {
+                    icon: icon,
+                    message: message,
+                    timeout: timeout
+                }
+            });
+            resolve(true);
+            // .onClose.subscribe((res) => {
+            //     resolve(res);
+            // });
         });
     }
 

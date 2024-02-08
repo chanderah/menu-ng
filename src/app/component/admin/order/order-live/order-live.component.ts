@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
@@ -72,6 +72,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
 
     constructor(
         private appRef: ApplicationRef,
+        private cdRef: ChangeDetectorRef,
         private sharedService: SharedService,
         private apiService: ApiService,
         private messagingService: MessagingService
@@ -152,8 +153,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
 
     showNewOrdersNotification(count: number) {
         this.playSound();
-        this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000);
-        this.appRef.tick();
+        this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000).then(() => this.appRef.tick());
     }
 
     markAsDone(selectedOrder: Order) {
