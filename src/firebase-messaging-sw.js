@@ -16,12 +16,11 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-        body: payload.notification.body,
-        icon: payload.notification.image
-    };
-
+    // const notificationTitle = payload.notification.title;
+    // const notificationOptions = {
+    //     body: payload.notification.body,
+    //     icon: payload.notification.image
+    // };
     return clients
         .matchAll({
             type: 'window',

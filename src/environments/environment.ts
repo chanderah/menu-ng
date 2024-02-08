@@ -2,6 +2,7 @@ export const environment = {
     production: false,
     appUrl: 'http://localhost:3000',
     apiUrl: 'http://localhost:3000/api',
+    // apiUrl: 'https://api.chandrasa.fun/api',
     publicPath: 'https://public.chandrasa.fun',
     imagePath: 'assets/images',
     firebaseConfig: {

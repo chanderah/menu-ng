@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ApplicationRef, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
@@ -71,6 +71,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     ];
 
     constructor(
+        private appRef: ApplicationRef,
         private sharedService: SharedService,
         private apiService: ApiService,
         private messagingService: MessagingService
@@ -90,14 +91,23 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     initFcm() {
         Notification.requestPermission(async (permission: NotificationPermission) => {
             if (permission === 'denied') {
-                this.sharedService.showNotification('Please allow our browser notification!', '😢', 90000);
+                this.sharedService.showNotification(
+                    'Please refresh page & allow our browser notification!',
+                    '😢',
+                    90000
+                );
             } else if (permission === 'granted') {
                 this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
                 const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
                 //prettier-ignore
                 if (fcmToken) {
-                    if (fcmToken != localStorage.getItem('fcmToken')) {
-                        localStorage.setItem('fcmToken', fcmToken);
+                    if (fcmToken != this.sharedService.getUser().fcmToken) {
+                        const user = this.sharedService.getUser();
+                        user.fcmToken = fcmToken;
+                        this.apiService.updateFcmToken(user).subscribe((res: any) => {
+                            if (res.status === 200) this.sharedService.setUser(user);
+
+                        })
                     }
                 } else window.location.reload();
 
@@ -114,7 +124,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
 
     async getOrders(lastFetchedId?: number) {
         this.isLoading = true;
-
         lastFetchedId = lastFetchedId ?? this.getLastFetchedId();
         this.apiService.getLiveOrders(lastFetchedId, this.pagingInfo.limit).subscribe((res: any) => {
             if (res.status === 200) {
@@ -124,12 +133,15 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
                         if (lastFetchedId === 0) {
                             this.orders = res.data;
                         } else {
+                            console.log('orders', this.orders);
+                            console.log('newOrders', res.data);
                             this.orders = res.data.concat(this.orders).slice(0, this.pagingInfo.limit);
+                            console.log('concat', this.orders);
                             this.showNewOrdersNotification(res.data.length);
                         }
                     } else this.orders = res.data;
                 }
-            } else this.sharedService.errorToast('Failed to get Orders data.');
+            } else this.sharedService.errorToast('Failed to get orders data');
         });
         this.isLoading = false;
     }
@@ -141,6 +153,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     showNewOrdersNotification(count: number) {
         this.playSound();
         this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000);
+        this.appRef.tick();
     }
 
     markAsDone(selectedOrder: Order) {

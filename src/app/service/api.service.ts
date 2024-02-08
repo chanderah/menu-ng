@@ -101,6 +101,10 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         return this.httpClient.post('/user/update', user);
     }
 
+    updateFcmToken(user: User) {
+        return this.httpClient.post('/user/updateFcmToken', user);
+    }
+
     deleteUser(user: User) {
         return this.httpClient.post('/user/deleteUser', user);
     }

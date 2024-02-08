@@ -6,7 +6,6 @@ import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/shared.util';
 import { NotificationDialogComponent } from './../component/dialog/notification/notification-dialog.component';
 import { ShopConfig } from './../interface/shop_config';
-import { db } from './../lib/db';
 import { jsonParse, jsonStringify, sortArrayByLabelProperty } from './../lib/shared.util';
 import { ApiService } from './api.service';
 
@@ -46,7 +45,9 @@ export class SharedService {
     }
 
     setUser(user?: User) {
-        return db.setAppData('user', user);
+        // return db.setAppData('user', user);
+        localStorage.setItem('user', jsonStringify(user));
+        return;
     }
 
     removeUser() {
@@ -99,23 +100,25 @@ export class SharedService {
         this.showToast('error', message, 'Failed');
     }
 
-    showNotification(message: string, icon?: string, timeout?: number) {
-        this.dialogService
-            .open(NotificationDialogComponent, {
-                showHeader: false,
-                width: 'auto',
-                modal: true,
-                closeOnEscape: true,
-                dismissableMask: true,
-                data: {
-                    icon: icon,
-                    message: message,
-                    timeout: timeout
-                }
-            })
-            .onClose.subscribe((res) => {
-                return res;
-            });
+    showNotification(message: string, icon?: string, timeout?: number): Promise<any> {
+        return new Promise((resolve) => {
+            this.dialogService
+                .open(NotificationDialogComponent, {
+                    showHeader: false,
+                    width: 'auto',
+                    modal: true,
+                    closeOnEscape: true,
+                    dismissableMask: true,
+                    data: {
+                        icon: icon,
+                        message: message,
+                        timeout: timeout
+                    }
+                })
+                .onClose.subscribe((res) => {
+                    resolve(res);
+                });
+        });
     }
 
     showErrorNotification() {

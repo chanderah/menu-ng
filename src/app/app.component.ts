@@ -1,9 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
-import { enableBodyScroll } from './lib/shared.util';
-import { ApiService } from './service/api.service';
-import { MessagingService } from './service/messaging.service';
-import { SharedService } from './service/shared.service';
 
 @Component({
     selector: 'app-root',
@@ -11,14 +7,11 @@ import { SharedService } from './service/shared.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
     menuMode = 'static';
-    showCartDialog: boolean = false;
 
-    constructor(
-        private primengConfig: PrimeNGConfig,
-        private messagingService: MessagingService,
-        private apiService: ApiService,
-        private sharedService: SharedService
-    ) {}
+    constructor(private primengConfig: PrimeNGConfig) // private messagingService: MessagingService,
+    // private apiService: ApiService,
+    // private sharedService: SharedService
+    {}
 
     ngOnInit() {
         this.primengConfig.ripple = true;
@@ -26,9 +19,4 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {}
-
-    onShowCartDialogChange(bool: boolean) {
-        if (bool === false) enableBodyScroll();
-        this.showCartDialog = bool;
-    }
 }

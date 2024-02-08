@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { AppComponent } from 'src/app/app.component';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import { isEmpty, jsonParse } from '../lib/shared.util';
 import { Product } from './../interface/product';
@@ -12,10 +11,7 @@ import { Product } from './../interface/product';
 export class AppTopBarComponent {
     items: MenuItem[];
 
-    constructor(
-        public app: AppComponent,
-        public appMain: AppMainComponent
-    ) {}
+    constructor(public appMain: AppMainComponent) {}
 
     getCountCartItems() {
         const cartItems: any[] = jsonParse(localStorage.getItem('cart')) as Product[];
@@ -24,6 +20,6 @@ export class AppTopBarComponent {
 
     onClickCart() {
         // disableBodyScroll();
-        this.app.showCartDialog = true;
+        this.appMain.showCartDialog = true;
     }
 }

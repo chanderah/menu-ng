@@ -3,8 +3,8 @@ import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2 } from '@angular
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
 import { AppConfig } from '../interface/appconfig';
+import { enableBodyScroll } from '../lib/shared.util';
 import { AppComponent } from './../app.component';
-import { ApiService } from './../service/api.service';
 
 @Component({
     selector: 'app-main',
@@ -47,11 +47,12 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     configClick: boolean;
     config: AppConfig;
 
+    showCartDialog: boolean = false;
+
     constructor(
         public renderer: Renderer2,
         public app: AppComponent,
-        public configService: ConfigService,
-        public apiService: ApiService
+        public configService: ConfigService
     ) {}
 
     ngOnInit() {
@@ -77,8 +78,12 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
         });
     }
 
-    // toggleMenu(event: Event) {
-    toggleMenu() {
+    onShowCartDialogChange(bool: boolean) {
+        if (bool === false) enableBodyScroll();
+        this.showCartDialog = bool;
+    }
+
+    toggleMenu(event: Event) {
         this.menuClick = true;
         if (this.isDesktop()) {
             if (this.app.menuMode === 'overlay') {
@@ -90,7 +95,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
             this.menuActiveMobile = !this.menuActiveMobile;
             this.topMenuActive = false;
         }
-        // event.preventDefault();
+        event.preventDefault();
     }
 
     toggleProfile(event: Event) {
