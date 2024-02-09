@@ -8,10 +8,7 @@ import { PrimeNGConfig } from 'primeng/api';
 export class AppComponent implements OnInit, AfterViewInit {
     menuMode = 'static';
 
-    constructor(private primengConfig: PrimeNGConfig) // private messagingService: MessagingService,
-    // private apiService: ApiService,
-    // private sharedService: SharedService
-    {}
+    constructor(private primengConfig: PrimeNGConfig) {}
 
     ngOnInit() {
         this.primengConfig.ripple = true;

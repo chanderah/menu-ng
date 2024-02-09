@@ -13,6 +13,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
+import { AppComponent } from '../app.component';
 import SharedUtil from '../lib/shared.util';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
@@ -27,6 +28,13 @@ import { jsonParse } from './../lib/shared.util';
 })
 export class ApiService extends SharedUtil implements HttpInterceptor {
     private apiUrl: string = environment.apiUrl;
+
+    constructor(
+        private httpClient: HttpClient,
+        private app: AppComponent
+    ) {
+        super();
+    }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (req.url.includes('.json')) return next.handle(req);
@@ -61,10 +69,6 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
                 return of(new HttpResponse({ body: error }));
             })
         );
-    }
-
-    constructor(private httpClient: HttpClient) {
-        super();
     }
 
     /* AUTH */
