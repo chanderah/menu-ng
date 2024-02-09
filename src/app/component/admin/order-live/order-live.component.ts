@@ -125,22 +125,22 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     }
 
     countAwaitingOrders() {
-        this.awaitingOrdersCount = this.orders.filter((v) => !v.isDone).length;
+        this.awaitingOrdersCount = this.orders.filter((v) => !v.isCompleted).length;
     }
 
     markAsDone(fromId: number, toId: number) {
         this.apiService.markOrderAsDone(fromId, toId).subscribe((res: any) => {
             if (res.status === 200) {
                 this.orders
-                    .filter((v) => !v.isDone && v.id >= fromId && v.id <= toId)
-                    .forEach((v) => (v.isDone = true));
+                    .filter((v) => !v.isCompleted && v.id >= fromId && v.id <= toId)
+                    .forEach((v) => (v.isCompleted = true));
                 this.countAwaitingOrders();
             } else this.sharedService.errorToast('Failed to update orders');
         });
     }
 
     markAllAsDone() {
-        const ids = this.orders.filter((v) => !v.isDone).map((v) => v.id);
+        const ids = this.orders.filter((v) => !v.isCompleted).map((v) => v.id);
         if (ids.length > 0) this.markAsDone(Math.min(...ids), Math.max(...ids));
     }
 

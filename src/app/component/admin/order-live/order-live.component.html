@@ -66,8 +66,8 @@
                         [pContextMenuRow]="data"
                         (click)="viewOrder(data)"
                         [style]="{
-                            background: data.isDone ? '#c8e6c9' : '#ffcdd2',
-                            color: data.isDone ? '#256029' : '#c63737',
+                            background: data.isCompleted ? '#c8e6c9' : '#ffcdd2',
+                            color: data.isCompleted ? '#256029' : '#c63737',
                             border: '1px'
                         }">
                         <td style="width: 40px" class="text-center">
@@ -153,7 +153,7 @@
             <button
                 pButton
                 pRipple
-                *ngIf="!selectedOrder.isDone"
+                *ngIf="!selectedOrder.isCompleted"
                 icon="pi pi-check"
                 class="w-auto p-button-outlined"
                 label="Done"

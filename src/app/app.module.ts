@@ -39,6 +39,7 @@ import * as Hammer from 'hammerjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogService } from 'primeng/dynamicdialog';
+import { FileUploadModule } from 'primeng/fileupload';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
@@ -141,7 +142,8 @@ const adminComponents: any[] = [
         DialogModule,
         TableModule,
         TreeModule,
-        RadioButtonModule
+        RadioButtonModule,
+        FileUploadModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
