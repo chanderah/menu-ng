@@ -10,7 +10,6 @@ import {
     HttpStatusCode
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { Observable, catchError, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
@@ -64,10 +63,7 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         );
     }
 
-    constructor(
-        private httpClient: HttpClient,
-        private toastr: ToastrService
-    ) {
+    constructor(private httpClient: HttpClient) {
         super();
     }
 
