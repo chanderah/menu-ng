@@ -20,11 +20,11 @@ import SwiperCore, {
     Zoom
 } from 'swiper';
 import { SharedService } from '../../service/shared.service';
-import { ProductDialogComponent } from '../dialog/product-dialog/product-dialog.component';
 import { PagingInfo } from './../../interface/paging_info';
 import { enableBodyScroll } from './../../lib/shared.util';
 import { ApiService } from './../../service/api.service';
 import { OrderService } from './../../service/order.service';
+import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
 

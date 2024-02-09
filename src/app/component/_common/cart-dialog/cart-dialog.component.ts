@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
+import { ProductOptionValues } from '../../../interface/product';
+import { disableBodyScroll } from '../../../lib/shared.util';
+import { ApiService } from '../../../service/api.service';
 import { OrderService } from '../../../service/order.service';
-import { ProductOptionValues } from './../../../interface/product';
-import { disableBodyScroll } from './../../../lib/shared.util';
-import { ApiService } from './../../../service/api.service';
-import { SharedService } from './../../../service/shared.service';
+import { SharedService } from '../../../service/shared.service';
 
 @Component({
     selector: 'app-cart-dialog',

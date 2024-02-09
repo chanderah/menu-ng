@@ -4,7 +4,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { lastValueFrom } from 'rxjs';
 import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/shared.util';
-import { NotificationDialogComponent } from './../component/dialog/notification/notification-dialog.component';
+import { NotificationDialogComponent } from '../component/_common/notification-dialog/notification-dialog.component';
 import { ShopConfig } from './../interface/shop_config';
 import { jsonParse, jsonStringify, sortArrayByLabelProperty } from './../lib/shared.util';
 import { ApiService } from './api.service';

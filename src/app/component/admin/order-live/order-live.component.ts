@@ -3,47 +3,16 @@ import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
 import { MessagingService } from 'src/app/service/messaging.service';
-import { environment } from './../../../../../environments/environment';
-import { PagingInfo } from './../../../../interface/paging_info';
-import { User } from './../../../../interface/user';
-import { ApiService } from './../../../../service/api.service';
-import { SharedService } from './../../../../service/shared.service';
+import { environment } from '../../../../environments/environment';
+import { PagingInfo } from '../../../interface/paging_info';
+import { User } from '../../../interface/user';
+import { ApiService } from '../../../service/api.service';
+import { SharedService } from '../../../service/shared.service';
 
 @Component({
     selector: 'app-order-live',
     templateUrl: './order-live.component.html',
-    styleUrls: [
-        // './order-live.component.scss',
-        '../../../../../assets/user.styles.scss'
-    ],
-    styles: [
-        `
-            :host ::ng-deep {
-                .p-paginator {
-                    .p-paginator-first {
-                        display: none;
-                        // pointer-events: none;
-                        // color: gray;
-                    }
-                    .p-paginator-prev {
-                        display: none;
-                        // pointer-events: none;
-                        // color: gray;
-                    }
-                    .p-paginator-next {
-                        display: none;
-                        // pointer-events: none;
-                        // color: gray;
-                    }
-                    .p-paginator-last {
-                        display: none;
-                        // pointer-events: none;
-                        // color: gray;
-                    }
-                }
-            }
-        `
-    ]
+    styleUrls: ['./order-live.component.scss', '../../../../assets/user.styles.scss']
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewInit {
     isLoading: boolean = true;

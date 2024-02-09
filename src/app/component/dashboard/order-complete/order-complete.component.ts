@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { OrderService } from './../../service/order.service';
+import { OrderService } from '../../../service/order.service';
 
 @Component({
     selector: 'app-order-complete',
     templateUrl: './order-complete.component.html',
-    styleUrls: ['../../../../src/assets/user.styles.scss']
+    styleUrls: ['../../../../assets/user.styles.scss']
 })
 export class OrderCompleteComponent implements OnInit, AfterViewInit {
     timeout: number = 15;
