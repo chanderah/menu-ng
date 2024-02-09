@@ -97,6 +97,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
         this.isLoading = true;
         lastFetchedId = lastFetchedId ?? this.getLastFetchedId();
         this.apiService.getLiveOrders(lastFetchedId, this.pagingInfo.limit).subscribe((res: any) => {
+            this.isLoading = false;
             if (res.status === 200) {
                 this.lastUpdated = new Date();
                 if (res.data.length > 0) {
@@ -112,7 +113,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
                 }
             } else this.sharedService.errorToast('Failed to get orders data');
         });
-        this.isLoading = false;
     }
 
     getLastFetchedId() {
@@ -129,9 +129,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     }
 
     markAsDone(fromId: number, toId: number) {
-        this.isLoading = true;
         this.apiService.markOrderAsDone(fromId, toId).subscribe((res: any) => {
-            this.isLoading = false;
             if (res.status === 200) {
                 this.orders
                     .filter((v) => !v.isDone && v.id >= fromId && v.id <= toId)

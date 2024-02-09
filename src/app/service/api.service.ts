@@ -220,6 +220,6 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     }
 
     getPaymentMethods() {
-        return this.httpClient.post('/paymentMethod/findAll', {});
+        return this.httpClient.post('/payment/findAllMethod', {});
     }
 }
