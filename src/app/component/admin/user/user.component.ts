@@ -10,7 +10,7 @@ import { SharedService } from './../../../service/shared.service';
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
-    styleUrls: ['../../../../assets/user.styles.scss', '../../../../assets/demo/badges.scss']
+    styleUrls: ['../../../../assets/user.styles.scss']
 })
 export class UserComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;

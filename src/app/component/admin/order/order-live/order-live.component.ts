@@ -14,8 +14,7 @@ import { SharedService } from './../../../../service/shared.service';
     templateUrl: './order-live.component.html',
     styleUrls: [
         // './order-live.component.scss',
-        '../../../../../assets/user.styles.scss',
-        '../../../../../assets/demo/badges.scss'
+        '../../../../../assets/user.styles.scss'
     ],
     styles: [
         `

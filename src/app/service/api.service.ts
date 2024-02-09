@@ -30,7 +30,7 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     private apiUrl: string = environment.apiUrl;
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (req.url.includes('demo') || req.url.includes('.json')) return next.handle(req);
+        if (req.url.includes('.json')) return next.handle(req);
         if (this.isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
         const user = jsonParse(localStorage.getItem('user')) as User;

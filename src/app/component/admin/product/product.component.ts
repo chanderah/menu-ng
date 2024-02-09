@@ -14,7 +14,7 @@ import { SharedService } from './../../../service/shared.service';
 
 @Component({
     templateUrl: './product.component.html',
-    styleUrls: ['../../../../assets/user.styles.scss', '../../../../assets/demo/badges.scss'],
+    styleUrls: ['../../../../assets/user.styles.scss'],
     styles: [
         `
             :host ::ng-deep {

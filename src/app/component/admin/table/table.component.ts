@@ -14,7 +14,7 @@ import { SharedService } from './../../../service/shared.service';
 @Component({
     selector: 'app-table',
     templateUrl: './table.component.html',
-    styleUrls: ['../../../../assets/user.styles.scss', '../../../../assets/demo/badges.scss']
+    styleUrls: ['../../../../assets/user.styles.scss']
 })
 export class TableComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
