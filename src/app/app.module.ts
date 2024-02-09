@@ -16,6 +16,7 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PasswordModule } from 'primeng/password';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SidebarModule } from 'primeng/sidebar';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -139,7 +140,8 @@ const adminComponents: any[] = [
         DropdownModule,
         DialogModule,
         TableModule,
-        TreeModule
+        TreeModule,
+        RadioButtonModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
