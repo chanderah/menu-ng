@@ -1,4 +1,7 @@
-<div pRipple class="flex flex-column align-items-center justify-content-between font-apple" (click)="dismiss()">
+<div
+    pRipple
+    class="flex flex-column align-items-center justify-content-between font-apple cursor-pointer"
+    (click)="dismiss()">
     <div class="col-12 text-center" style="font-size: 60px">{{ notification.icon }}</div>
     <div class="col-12 text-center text-md font-semibold">
         {{ notification.message }}

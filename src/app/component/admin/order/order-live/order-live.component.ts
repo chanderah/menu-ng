@@ -70,6 +70,8 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
         }
     ];
 
+    awaitingOrdersCount: number = 0;
+
     constructor(
         private appRef: ApplicationRef,
         private cdRef: ChangeDetectorRef,
@@ -138,6 +140,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
                             this.showNewOrdersNotification(res.data.length);
                         }
                     } else this.orders = res.data;
+                    this.countAwaitingOrders();
                 }
             } else this.sharedService.errorToast('Failed to get orders data');
         });
@@ -145,12 +148,16 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     }
 
     getLastFetchedId() {
-        return this.orders.length > 0 ? this.orders[0].id : 0;
+        return this.orders.length > 0 ? Math.max(...this.orders.map((v) => v.id)) : 0;
     }
 
     showNewOrdersNotification(count: number) {
         this.playSound();
         this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000).then(() => this.appRef.tick());
+    }
+
+    countAwaitingOrders() {
+        this.awaitingOrdersCount = this.orders.filter((v) => !v.isDone).length;
     }
 
     markAsDone(fromId: number, toId: number) {
@@ -161,6 +168,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
                 this.orders
                     .filter((v) => !v.isDone && v.id >= fromId && v.id <= toId)
                     .forEach((v) => (v.isDone = true));
+                this.countAwaitingOrders();
             } else this.sharedService.errorToast('Failed to update orders');
         });
     }

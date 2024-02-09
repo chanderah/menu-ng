@@ -2,7 +2,9 @@
     <div class="col-12">
         <div class="card">
             <div class="flex align-items-center justify-content-between mb-4">
-                <h5 class="category-title">Live Orders</h5>
+                <h5 class="category-title">
+                    <i class="pi pi-bell text-3xl mr-2" pBadge [value]="awaitingOrdersCount"></i> Live Orders
+                </h5>
                 <div class="flex gap-2">
                     <button
                         pButton
@@ -69,20 +71,10 @@
                                 <p>{{ data.totalPrice | custom }}</p>
                             </div>
                         </td>
-                        <td style="min-width: 8rem; text-align: right" class="font-semibold">
+                        <td style="min-width: 8rem; text-align: right">
                             <div class="flex flex-column">
-                                <p>Table {{ data.tableId }}</p>
+                                <p class="font-semibold">Table {{ data.tableId }}</p>
                                 <p>{{ data.createdAt | date: 'MMM d, HH:mm' }}</p>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="emptymessage" let-columns>
-                    <tr>
-                        <td attr.colspan="100%">
-                            <div class="flex my-3 align-items-center justify-content-center">
-                                {{ isLoading ? 'Loading...' : 'No data found' }}
                             </div>
                         </td>
                     </tr>

@@ -4,18 +4,14 @@
             <div class="flex align-items-center justify-content-between mb-4">
                 <h5 class="category-title">Categories</h5>
                 <div class="flex gap-2">
-                    <button
-                        pButton
-                        pRipple
-                        class="p-button"
-                        (click)="onEditCategory()"
-                        [disabled]="isEmpty(selectedCategory)">
-                        Edit
-                    </button>
                     <button pButton pRipple class="p-button" (click)="onAddCategory()">Add</button>
                 </div>
             </div>
-            <p-tree [value]="categories" selectionMode="single" [(selection)]="selectedCategory"></p-tree>
+            <p-tree
+                [value]="categories"
+                selectionMode="single"
+                [(selection)]="selectedCategory"
+                (onNodeSelect)="onEditCategory()"></p-tree>
         </div>
     </div>
 </div>
