@@ -125,7 +125,6 @@ const adminComponents: any[] = [
         SkeletonModule,
         ToastModule,
         SwiperModule,
-        // DialogModule,
         HammerModule,
         ScrollPanelModule,
         QrCodeModule,
