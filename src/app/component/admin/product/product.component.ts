@@ -258,21 +258,10 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
     onEditProduct() {
         if (this.isEmpty(this.selectedProduct)) return;
-        this.isLoading = true;
-        this.apiService.findProductById(this.selectedProduct).subscribe((res: any) => {
-            if (res.status === 200) {
-                this.showProductDialog = true;
-                this.setProductForm(res.data);
-            } else {
-                this.sharedService.errorToast('Failed to get product!');
-            }
-        });
         this.getCategories();
-    }
-
-    setProductForm(data: Product) {
-        if (data.options) data.options.forEach(() => this.addOption());
-        this.productForm.patchValue(data);
+        if (this.selectedProduct.options) this.selectedProduct.options.forEach(() => this.addOption());
+        this.productForm.patchValue(this.selectedProduct);
+        this.showProductDialog = true;
     }
 
     onDeleteProduct() {
