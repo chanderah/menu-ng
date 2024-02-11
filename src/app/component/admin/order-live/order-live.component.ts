@@ -28,7 +28,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     selectedOrder = {} as Order;
     orders = [] as Order[];
 
-    timeoutId: any = null;
+    timeoutId!: any;
     lastUpdated: Date = new Date();
     contextMenus: MenuItem[] = [
         {
@@ -113,6 +113,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
                 }
             } else this.sharedService.errorToast('Failed to get orders data');
         });
+
+        if (this.timeoutId) clearTimeout(this.timeoutId);
+        this.timeoutId = setTimeout(() => this.getOrders(), 120000);
     }
 
     getLastFetchedId() {

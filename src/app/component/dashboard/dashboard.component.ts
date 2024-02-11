@@ -39,8 +39,8 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     init: boolean = true;
     subscription!: Subscription;
 
-    currentMenu!: string;
-    selectedMenu!: Category;
+    currentMenu: string;
+    selectedCategory: Category;
     categories!: Category[];
 
     pagingInfo = {} as PagingInfo;
@@ -70,40 +70,23 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     ) {
         super();
 
-        this.route.queryParams.subscribe(async (params: any) => {
-            if (params.menu) {
-                await this.getCurrentMenu(params.menu);
-            } else {
-                this.selectedMenu = null;
-                this.initSwiper();
-                if (!this.init) this.getProducts();
-            }
+        this.route.queryParams.subscribe((params: any) => {
+            this.currentMenu = params.menu || 'root';
+            if (this.currentMenu === 'root') this.initSwiper();
+            if (!this.init) this.getProducts();
         });
+
         this.filter
             .get('value')
             .valueChanges.pipe(debounceTime(500))
             .subscribe(() => this.getProducts());
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.init = false;
     }
 
-    async getCurrentMenu(param: string): Promise<boolean> {
-        return new Promise((resolve) => {
-            const categories = this.app.categories$.getValue();
-            if (this.isEmpty(categories)) {
-                this.app.categories.pipe(take(2)).subscribe((res) => {
-                    if (res) {
-                        this.selectedMenu = res.find((v) => v.param === param);
-                        resolve(true);
-                    }
-                });
-            } else this.selectedMenu = categories.find((v) => v.param === param);
-        });
-    }
-
-    getProducts(e?: LazyLoadEvent) {
+    async getProducts(e?: LazyLoadEvent) {
         this.isLoading = true;
         this.pagingInfo = {
             filter: this.filter.get('value').value,
@@ -118,11 +101,15 @@ export class DashboardComponent extends SharedUtil implements OnInit {
             sortField: e?.sortField || 'NAME',
             sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
         };
-        if (this.currentMenu === 'root') return this.getActiveProducts();
-        else return this.getActiveProductsByCategoryParam();
-    }
 
-    getActiveProducts() {
+        if (this.currentMenu !== 'root') {
+            await this.getCategories().then(() => {
+                this.selectedCategory = this.categories.find((v) => v.param === this.currentMenu);
+                if (!this.selectedCategory) this.router.navigateByUrl('/');
+                else this.pagingInfo.condition.push({ column: 'category_id', value: this.selectedCategory.id });
+            });
+        }
+
         this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
@@ -132,14 +119,17 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         });
     }
 
-    getActiveProductsByCategoryParam() {
-        this.pagingInfo.condition[0] = { column: null, value: this.currentMenu };
-        this.apiService.findActiveProductByCategoryParam(this.pagingInfo).subscribe((res: any) => {
-            this.isLoading = false;
-            if (res.status === 200) {
-                this.products = res.data;
-                if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
-            } else this.sharedService.errorToast(res.message);
+    async getCategories() {
+        return new Promise((resolve) => {
+            if (this.categories) resolve(true);
+            else {
+                this.app.categories.pipe(take(2)).subscribe((res) => {
+                    if (res) {
+                        this.categories = res;
+                        resolve(true);
+                    }
+                });
+            }
         });
     }
 
