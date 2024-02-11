@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { AppComponent } from 'src/app/app.component';
-import { User } from 'src/app/interface/user';
 import SharedUtil from 'src/app/lib/shared.util';
 import { Category } from '../../../interface/category';
 import { PagingInfo } from '../../../interface/paging_info';
@@ -20,13 +19,12 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     showCategoryDialog: boolean = false;
     dialogBreakpoints = { '768px': '90vw' };
 
-    user = {} as User;
     pagingInfo = {} as PagingInfo;
 
     categories = [] as Category[];
     selectedCategory = {} as TreeNode;
 
-    categoryForm: FormGroup;
+    form: FormGroup;
 
     constructor(
         private app: AppComponent,
@@ -36,33 +34,25 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     ) {
         super();
 
-        this.categoryForm = this.formBuilder.group({
+        this.form = this.formBuilder.group({
             id: [0],
             label: ['', [Validators.maxLength(255), Validators.required]]
         });
     }
 
-    ngOnInit() {
-        this.user = jsonParse(localStorage.getItem('user'));
-        this.getCategories();
-    }
-
-    async getCategories() {
-        this.app.getCategories();
-        this.resetCategoryDialog();
-    }
+    ngOnInit() {}
 
     async onSubmit() {
         this.isLoading = true;
         try {
             if (this.isEmpty(this.selectedCategory)) {
-                this.apiService.createCategory(this.categoryForm.value).subscribe((res: any) => {
+                this.apiService.createCategory(this.form.value).subscribe((res: any) => {
                     if (res.status === 200) {
                         window.location.reload();
                     } else this.sharedService.errorToast(res.message);
                 });
             } else {
-                this.apiService.updateCategory(this.categoryForm.value).subscribe((res: any) => {
+                this.apiService.updateCategory(this.form.value).subscribe((res: any) => {
                     if (res.status === 200) {
                         window.location.reload();
                     } else this.sharedService.errorToast(res.message);
@@ -76,19 +66,17 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     resetCategoryDialog() {
         this.showCategoryDialog = false;
         this.selectedCategory = null;
-        this.categoryForm.reset();
+        this.form.reset();
     }
 
     onDeleteCategory() {
         if (this.isEmpty(this.selectedCategory)) return;
         this.isLoading = true;
-        this.apiService.deleteCategory(this.categoryForm.value).subscribe((res: any) => {
+        this.apiService.deleteCategory(this.form.value).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
-                this.getCategories();
-            } else {
-                this.sharedService.errorToast(res.message);
-            }
+                this.sharedService.refreshPage();
+            } else this.sharedService.errorToast(res.message);
         });
     }
 
@@ -102,11 +90,11 @@ export class CategoryComponent extends SharedUtil implements OnInit {
         if (this.isEmpty(this.selectedCategory)) return;
         this.apiService.findCategoryById(jsonParse(this.selectedCategory)).subscribe((res: any) => {
             if (res.status === 200) {
-                this.categoryForm.patchValue(res.data);
+                this.form.patchValue(res.data);
                 this.showCategoryDialog = true;
             } else {
                 this.sharedService.errorToast('Invalid session!');
-                return this.getCategories();
+                return this.sharedService.refreshPage();
             }
         });
     }

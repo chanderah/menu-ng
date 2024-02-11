@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { BehaviorSubject } from 'rxjs';
 import { Category } from './interface/category';
 import { User } from './interface/user';
 import { sortArrayByLabelProperty } from './lib/shared.util';
@@ -11,9 +12,9 @@ import { SharedService } from './service/shared.service';
     templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-    menuMode = 'static';
-    user = {} as User;
-    categories = [] as Category[];
+    public menuMode = 'static';
+    public user = {} as User;
+    public categories$: BehaviorSubject<Category[]> = new BehaviorSubject(null);
 
     constructor(
         private primengConfig: PrimeNGConfig,
@@ -26,16 +27,16 @@ export class AppComponent implements OnInit {
         document.documentElement.style.fontSize = '14px';
 
         this.user = this.sharedService.getUser();
+        this.getCategories();
     }
 
-    async getCategories() {
-        return new Promise((resolve) => {
-            this.apiService.getCategories().subscribe((res: any) => {
-                if (res.status === 200) {
-                    this.categories = res.data.sort(sortArrayByLabelProperty);
-                    resolve(true);
-                }
-            });
+    get categories() {
+        return this.categories$.asObservable();
+    }
+
+    private getCategories() {
+        this.apiService.getCategories().subscribe((res: any) => {
+            if (res.status === 200) this.categories$.next(res.data.sort(sortArrayByLabelProperty));
         });
     }
 }

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription, debounceTime, take } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
 import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
@@ -40,11 +40,11 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     subscription!: Subscription;
 
     currentMenu!: string;
+    selectedMenu!: Category;
+    categories!: Category[];
 
     pagingInfo = {} as PagingInfo;
 
-    selectedCategpry = {} as Category;
-    categories = [] as any[];
     products = [] as Product[];
     featuredProducts = [] as Product[];
 
@@ -69,13 +69,15 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         private apiService: ApiService
     ) {
         super();
-        this.route.queryParams.subscribe((params: any) => {
-            // console.log(params.menu);
-            console.log(params);
-            // sharedService.getCategories().then()
-            // this.currentMenu = params.menu || 'root';
-            // if (this.currentMenu === 'root') this.initSwiper();
-            // if (!this.init) this.getProducts();
+
+        this.route.queryParams.subscribe(async (params: any) => {
+            if (params.menu) {
+                await this.getCurrentMenu(params.menu);
+            } else {
+                this.selectedMenu = null;
+                this.initSwiper();
+                if (!this.init) this.getProducts();
+            }
         });
         this.filter
             .get('value')
@@ -85,6 +87,20 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
     async ngOnInit() {
         this.init = false;
+    }
+
+    async getCurrentMenu(param: string): Promise<boolean> {
+        return new Promise((resolve) => {
+            const categories = this.app.categories$.getValue();
+            if (this.isEmpty(categories)) {
+                this.app.categories.pipe(take(2)).subscribe((res) => {
+                    if (res) {
+                        this.selectedMenu = res.find((v) => v.param === param);
+                        resolve(true);
+                    }
+                });
+            } else this.selectedMenu = categories.find((v) => v.param === param);
+        });
     }
 
     getProducts(e?: LazyLoadEvent) {

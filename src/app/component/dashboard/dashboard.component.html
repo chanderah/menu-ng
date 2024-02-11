@@ -1,6 +1,6 @@
 <div id="featuredProducts" class="grid">
     <div class="col-12">
-        <div class="card" *ngIf="currentMenu === 'root' && featuredProducts.length > 1">
+        <div class="card" *ngIf="selectedMenu && featuredProducts.length > 1">
             <h5 class="category-title">Featured</h5>
             <swiper [config]="swiperOptions" #swiper>
                 <ng-template *ngFor="let product of featuredProducts" swiperSlide>
@@ -50,7 +50,7 @@
             <div class="col-3 p-fluid" style="width: fit-content">
                 <button
                     pButton
-                    [label]="currentMenu === 'root' ? 'Filter' : currentMenu"
+                    [label]="selectedMenu ? selectedMenu.label : 'Filter'"
                     icon="pi pi-sliders-v"
                     (click)="appMain.toggleMenu($event)"
                     class="p-button-plain p-button-rounded p-button-outlined"

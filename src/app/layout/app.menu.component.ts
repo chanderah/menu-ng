@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 import { isEmpty } from 'src/app/lib/shared.util';
 import { AppComponent } from '../app.component';
 import { Menu } from '../interface/menu';
 import { SharedService } from '../service/shared.service';
 import { environment } from './../../environments/environment';
-import { Category } from './../interface/category';
 
 @Component({
     selector: 'app-menu',
@@ -117,15 +117,17 @@ export class AppMenuComponent implements OnInit {
     }
 
     async getDBMenu() {
-        this.app.getCategories().then(() => {
-            this.app.categories.forEach((c: Category) => {
-                this.menus[0].items[0].items.push({
-                    id: c.id,
-                    label: c.label,
-                    routerLink: ['/'],
-                    queryParams: { menu: c.param }
+        this.app.categories.pipe(take(2)).subscribe((categories) => {
+            if (categories) {
+                categories.forEach((c) => {
+                    this.menus[0].items[0].items.push({
+                        id: c.id,
+                        label: c.label,
+                        routerLink: ['/'],
+                        queryParams: { menu: c.param }
+                    });
                 });
-            });
+            }
         });
     }
 
