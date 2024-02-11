@@ -12,7 +12,7 @@ import { CustomerComponent } from './component/customer/customer.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { OrderCompleteComponent } from './component/dashboard/order-complete/order-complete.component';
 import { AdminGuard } from './guard/admin.guard';
-import { TableGuard } from './guard/table.guard';
+import { CustomerGuard } from './guard/customer.guard';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
@@ -23,7 +23,7 @@ import { AppMainComponent } from './layout/app.main.component';
                     path: '',
                     component: AppMainComponent,
                     children: [
-                        { path: '', canActivate: [TableGuard], component: DashboardComponent },
+                        { path: '', canActivate: [CustomerGuard], component: DashboardComponent },
                         { path: 'order-complete', component: OrderCompleteComponent },
                         {
                             path: 'admin',

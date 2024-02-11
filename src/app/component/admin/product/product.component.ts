@@ -142,6 +142,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     addOption() {
         this.options().push(
             this.formBuilder.group({
+                id: [null],
                 name: ['', [Validators.required]],
                 multiple: [false],
                 required: [false],
@@ -162,6 +163,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     addOptionValues(optionIndex: number) {
         this.optionValues(optionIndex).push(
             this.formBuilder.group({
+                id: [null],
                 value: ['', [Validators.required]],
                 price: [null, [Validators.required]]
             })
@@ -229,10 +231,8 @@ export class ProductComponent extends SharedUtil implements OnInit {
                     } else alert(res.message);
                 });
             } else {
-                //edit
                 this.apiService.updateProduct(this.productForm.value).subscribe((res: any) => {
                     if (res.status === 200) {
-                        console.log('success update product');
                         return this.getProducts();
                     } else alert(res.message);
                 });

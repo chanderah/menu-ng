@@ -182,6 +182,7 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     }
 
     updateProduct(product: Product) {
+        console.log(product);
         // const p = { ...product, options: JSON.stringify(product.options) };
         return this.httpClient.post('/product/update', product);
     }
