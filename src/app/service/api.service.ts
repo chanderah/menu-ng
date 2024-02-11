@@ -152,28 +152,16 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         return this.httpClient.post('/product/findAll', pagingInfo);
     }
 
-    getActiveProducts(pagingInfo: PagingInfo) {
-        return this.httpClient.post('/product/findActive', pagingInfo);
-    }
-
-    getFeaturedProducts() {
-        return this.httpClient.post('/product/findFeatured', {});
-    }
-
-    findProductById(product: Product) {
-        return this.httpClient.post('/product/findById', product);
-    }
-
     findProductByCategory(product: Product) {
         return this.httpClient.post('/product/findByCategory', product);
     }
 
-    findActiveProductByCategory(pagingInfo: PagingInfo) {
-        return this.httpClient.post('/product/findActiveByCategory', pagingInfo);
-    }
-
     findActiveProductByCategoryParam(pagingInfo: PagingInfo) {
         return this.httpClient.post('/product/findActiveByCategoryParam', pagingInfo);
+    }
+
+    findProductById(product: Product) {
+        return this.httpClient.post('/product/findById', product);
     }
 
     createProduct(product: Product) {

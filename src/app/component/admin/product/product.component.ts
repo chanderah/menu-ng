@@ -106,7 +106,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
                 this.products = res.data;
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
             } else {
-                alert(res.message);
+                this.sharedService.errorToast(res.message);
             }
         });
     }
@@ -118,7 +118,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
             if (res.status === 200) {
                 this.categories = res.data.sort(sortArrayByLabelProperty);
             } else {
-                alert(res.message);
+                this.sharedService.errorToast(res.message);
             }
         });
     }
@@ -214,7 +214,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
             const img = await resizeImg(e.files[0]);
             this.productForm.get('image').setValue(img);
         } catch (err) {
-            alert(err);
+            this.sharedService.errorToast(err);
         } finally {
             fileUpload.clear();
         }
@@ -228,13 +228,13 @@ export class ProductComponent extends SharedUtil implements OnInit {
                     if (res.status === 200) {
                         console.log(res.message);
                         return this.getProducts();
-                    } else alert(res.message);
+                    } else this.sharedService.errorToast(res.message);
                 });
             } else {
                 this.apiService.updateProduct(this.productForm.value).subscribe((res: any) => {
                     if (res.status === 200) {
                         return this.getProducts();
-                    } else alert(res.message);
+                    } else this.sharedService.errorToast(res.message);
                 });
             }
         } finally {

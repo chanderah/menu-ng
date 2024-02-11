@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/interface/user';
 import { isEmpty } from 'src/app/lib/shared.util';
+import { AppComponent } from '../app.component';
 import { Menu } from '../interface/menu';
 import { SharedService } from '../service/shared.service';
 import { environment } from './../../environments/environment';
 import { Category } from './../interface/category';
-import { AppMainComponent } from './app.main.component';
 
 @Component({
     selector: 'app-menu',
@@ -28,7 +27,7 @@ import { AppMainComponent } from './app.main.component';
                 </li>
             </ul>
             <p-divider></p-divider>
-            <ng-container *ngIf="user">
+            <ng-container *ngIf="app.user">
                 <button
                     pButton
                     pRipple
@@ -45,24 +44,21 @@ import { AppMainComponent } from './app.main.component';
 export class AppMenuComponent implements OnInit {
     isDevelopment: boolean = environment.production === false;
     menus: Menu[];
-    user: User;
-    categories: Category[];
 
     constructor(
-        public appMain: AppMainComponent,
+        public app: AppComponent,
         private sharedService: SharedService,
         private router: Router
     ) {}
 
     ngOnInit() {
-        this.user = this.sharedService.getUser();
         this.getMenus();
     }
 
     getMenus() {
         this.getDefaultMenu();
         this.getDBMenu();
-        if (!isEmpty(this.user)) {
+        if (!isEmpty(this.app.user)) {
             this.menus.push({
                 label: 'Management',
                 items: [
@@ -121,13 +117,14 @@ export class AppMenuComponent implements OnInit {
     }
 
     async getDBMenu() {
-        this.categories = await this.sharedService.getCategories();
-        this.categories.forEach((data: Category) => {
-            this.menus[0].items[0].items.push({
-                id: data.id,
-                label: data.label,
-                routerLink: ['/'],
-                queryParams: { menu: data.param }
+        this.app.getCategories().then(() => {
+            this.app.categories.forEach((c: Category) => {
+                this.menus[0].items[0].items.push({
+                    id: c.id,
+                    label: c.label,
+                    routerLink: ['/'],
+                    queryParams: { menu: c.param }
+                });
             });
         });
     }

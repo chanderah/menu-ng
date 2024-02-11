@@ -1,5 +1,5 @@
 export interface PagingInfo {
-    field?: Field;
+    condition?: PagingInfoCondition[];
     filter?: string;
     limit: number | 10 | 25 | 50 | 100;
     offset?: number; //0
@@ -8,7 +8,7 @@ export interface PagingInfo {
     rowCount?: number;
 }
 
-interface Field {
-    column: string; //category
-    value: string | number; // 0
+interface PagingInfoCondition {
+    column: string;
+    value: string | number | boolean;
 }

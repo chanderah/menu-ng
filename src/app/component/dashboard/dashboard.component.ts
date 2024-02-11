@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription, debounceTime } from 'rxjs';
+import { AppComponent } from 'src/app/app.component';
+import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
@@ -33,14 +35,15 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
     styleUrls: ['../../../assets/user.styles.scss']
 })
 export class DashboardComponent extends SharedUtil implements OnInit {
+    isLoading: boolean = true;
     init: boolean = true;
     subscription!: Subscription;
 
-    currentMenu: string;
+    currentMenu!: string;
 
     pagingInfo = {} as PagingInfo;
-    isLoading: boolean = true;
 
+    selectedCategpry = {} as Category;
     categories = [] as any[];
     products = [] as Product[];
     featuredProducts = [] as Product[];
@@ -55,6 +58,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     });
 
     constructor(
+        public app: AppComponent,
         public appMain: AppMainComponent,
         private sharedService: SharedService,
         private route: ActivatedRoute,
@@ -66,9 +70,12 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     ) {
         super();
         this.route.queryParams.subscribe((params: any) => {
-            this.currentMenu = params.menu || 'root';
-            if (this.currentMenu === 'root') this.initSwiper();
-            if (!this.init) this.getProducts();
+            // console.log(params.menu);
+            console.log(params);
+            // sharedService.getCategories().then()
+            // this.currentMenu = params.menu || 'root';
+            // if (this.currentMenu === 'root') this.initSwiper();
+            // if (!this.init) this.getProducts();
         });
         this.filter
             .get('value')
@@ -78,37 +85,18 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
     async ngOnInit() {
         this.init = false;
-        // this.getProducts();
-
-        // const data = await db.getAppData('user');
-        // console.log(data);
-        // db.app.update('user', { userId: 'chandraa01', name: 'csa' });
-        // db.app.update({ id: 'user', value: 'yuhu' });
-
-        // this.sharedService.setUser();
-    }
-
-    getCategories() {
-        this.categories = [
-            {
-                label: 'Filter',
-                icon: 'pi pi-fw pi-sliders-v',
-                items: [
-                    [
-                        {
-                            label: 'Categories',
-                            items: [{ label: 'All' }, { label: 'Foods' }, { label: 'Drinks' }]
-                        }
-                    ]
-                ]
-            }
-        ];
     }
 
     getProducts(e?: LazyLoadEvent) {
         this.isLoading = true;
         this.pagingInfo = {
             filter: this.filter.get('value').value,
+            condition: [
+                {
+                    column: 'status',
+                    value: true
+                }
+            ],
             limit: e?.rows || 20,
             offset: e?.first || 0,
             sortField: e?.sortField || 'NAME',
@@ -119,23 +107,23 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     }
 
     getActiveProducts() {
-        this.apiService.getActiveProducts(this.pagingInfo).subscribe((res: any) => {
+        this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
                 this.products = res.data;
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
-            } else alert(res.message);
+            } else this.sharedService.errorToast(res.message);
         });
     }
 
     getActiveProductsByCategoryParam() {
-        this.pagingInfo.field = { column: null, value: this.currentMenu };
+        this.pagingInfo.condition[0] = { column: null, value: this.currentMenu };
         this.apiService.findActiveProductByCategoryParam(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
             if (res.status === 200) {
                 this.products = res.data;
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
-            } else alert(res.message);
+            } else this.sharedService.errorToast(res.message);
         });
     }
 
@@ -151,29 +139,31 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
     initSwiper() {
         if (!this.swiperOptions) {
-            this.apiService.getFeaturedProducts().subscribe((res: any) => {
-                if (res.status === 200) {
-                    this.featuredProducts = res.data;
-                    this.swiperOptions = {
-                        autoHeight: true,
-                        autoplay: {
-                            delay: 2500,
-                            pauseOnMouseEnter: true,
-                            disableOnInteraction: false
-                        },
-                        loop: true,
-                        centeredSlides: true,
-                        breakpoints: {
-                            0: {
-                                slidesPerView: 1
+            this.apiService
+                .getProducts({ limit: 10, condition: [{ column: 'featured', value: true }] })
+                .subscribe((res: any) => {
+                    if (res.status === 200) {
+                        this.featuredProducts = res.data;
+                        this.swiperOptions = {
+                            autoHeight: true,
+                            autoplay: {
+                                delay: 2500,
+                                pauseOnMouseEnter: true,
+                                disableOnInteraction: false
                             },
-                            768: {
-                                slidesPerView: 4
+                            loop: true,
+                            centeredSlides: true,
+                            breakpoints: {
+                                0: {
+                                    slidesPerView: 1
+                                },
+                                768: {
+                                    slidesPerView: 4
+                                }
                             }
-                        }
-                    };
-                }
-            });
+                        };
+                    }
+                });
         }
     }
 

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './component/admin/auth/login/login.component';
-import { RegisterComponent } from './component/admin/auth/register/register.component';
 import { CategoryComponent } from './component/admin/category/category.component';
 import { OrderLiveComponent } from './component/admin/order-live/order-live.component';
 import { OrderComponent } from './component/admin/order/order.component';
@@ -42,7 +41,6 @@ import { AppMainComponent } from './layout/app.main.component';
                 },
                 { path: 'customer', component: CustomerComponent },
                 { path: 'login', component: LoginComponent },
-                { path: 'register', component: RegisterComponent },
                 { path: '**', redirectTo: '' }
             ],
             { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }

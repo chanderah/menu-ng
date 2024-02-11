@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
+import { AppComponent } from 'src/app/app.component';
 import { User } from 'src/app/interface/user';
 import SharedUtil from 'src/app/lib/shared.util';
 import { Category } from '../../../interface/category';
@@ -28,6 +29,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     categoryForm: FormGroup;
 
     constructor(
+        private app: AppComponent,
         private formBuilder: FormBuilder,
         private sharedService: SharedService,
         private apiService: ApiService
@@ -46,10 +48,8 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     }
 
     async getCategories() {
-        this.isLoading = true;
-        this.categories = await this.sharedService.getCategories();
+        this.app.getCategories();
         this.resetCategoryDialog();
-        this.isLoading = false;
     }
 
     async onSubmit() {
@@ -87,7 +87,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
             if (res.status === 200) {
                 this.getCategories();
             } else {
-                alert(res.message);
+                this.sharedService.errorToast(res.message);
             }
         });
     }
@@ -105,7 +105,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
                 this.categoryForm.patchValue(res.data);
                 this.showCategoryDialog = true;
             } else {
-                alert('Invalid session!');
+                this.sharedService.errorToast('Invalid session!');
                 return this.getCategories();
             }
         });
