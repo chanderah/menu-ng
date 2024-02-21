@@ -9,6 +9,7 @@ import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
+import { enableBodyScroll } from 'src/app/lib/utils';
 import SwiperCore, {
     A11y,
     Autoplay,
@@ -23,9 +24,7 @@ import SwiperCore, {
 } from 'swiper';
 import { SharedService } from '../../service/shared.service';
 import { PagingInfo } from './../../interface/paging_info';
-import { enableBodyScroll } from './../../lib/shared.util';
 import { ApiService } from './../../service/api.service';
-import { OrderService } from './../../service/order.service';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
@@ -64,15 +63,15 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private dialogService: DialogService,
-        private orderService: OrderService,
+        // private orderService: OrderService,
         private formBuilder: FormBuilder,
         private apiService: ApiService
     ) {
         super();
 
         this.route.queryParams.subscribe((params: any) => {
-            this.currentMenu = params.menu || 'root';
-            if (this.currentMenu === 'root') this.initSwiper();
+            this.currentMenu = params?.menu;
+            if (!this.currentMenu) this.initSwiper();
             if (!this.init) this.getProducts();
         });
 
@@ -102,7 +101,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
             sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
         };
 
-        if (this.currentMenu !== 'root') {
+        if (this.currentMenu) {
             await this.getCategories().then(() => {
                 this.selectedCategory = this.categories.find((v) => v.param === this.currentMenu);
                 if (!this.selectedCategory) this.router.navigateByUrl('/');
@@ -121,8 +120,10 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
     async getCategories() {
         return new Promise((resolve) => {
-            if (this.categories) resolve(true);
-            else {
+            if (this.categories) {
+                console.log('ada kok');
+                resolve(true);
+            } else {
                 this.app.categories.pipe(take(2)).subscribe((res) => {
                     if (res) {
                         this.categories = res;

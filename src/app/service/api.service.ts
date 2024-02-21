@@ -20,7 +20,6 @@ import { Order } from './../interface/order';
 import { PagingInfo } from './../interface/paging_info';
 import { Table } from './../interface/table';
 import { User } from './../interface/user';
-import { jsonParse } from './../lib/shared.util';
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +35,7 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         if (req.url.includes('.json')) return next.handle(req);
         if (this.isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
-        const user = jsonParse(localStorage.getItem('user')) as User;
+        const user = this.jsonParse(localStorage.getItem('user')) as User;
         req = req.clone({
             url: this.apiUrl + req.url,
             headers: new HttpHeaders({
@@ -54,20 +53,19 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
                     return res;
                 }
             }),
-            catchError((error: HttpErrorResponse) => {
-                error = error.error?.message
-                    ? error.error
+            catchError((err: HttpErrorResponse) => {
+                err = err.error?.message
+                    ? err.error
                     : {
-                          status: error.status === 0 ? HttpStatusCode.InternalServerError : error.status,
-                          message: error.message ? error.message : 'Something went wrong.'
+                          status: err.status === 0 ? HttpStatusCode.InternalServerError : err.status,
+                          message: err.message ? err.message : 'Something went wrong.'
                       };
-                if (this.isDevelopment) console.error('ERROR:', req.method, req.url, error, req.body);
-                return of(new HttpResponse({ body: error }));
+                if (this.isDevelopment) console.error('ERROR:', req.method, req.url, err, req.body);
+                return of(new HttpResponse({ body: err }));
             })
         );
     }
 
-    /* AUTH */
     register(user: User) {
         return this.httpClient.post('/user/register', user);
     }
@@ -76,7 +74,6 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         return this.httpClient.post('/user/login', user);
     }
 
-    /* USER */
     getUsers(pagingInfo: PagingInfo) {
         return this.httpClient.post('/user/findAll', pagingInfo);
     }

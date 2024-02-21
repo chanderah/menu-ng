@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
 import SharedUtil from '../lib/shared.util';
+import { jsonParse, jsonStringify } from '../lib/utils';
 import { Order, OrderReceipt } from './../interface/order';
-import { jsonParse, jsonStringify } from './../lib/shared.util';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
 

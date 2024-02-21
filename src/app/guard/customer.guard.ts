@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { isEmpty } from '../lib/shared.util';
+import { isEmpty } from '../lib/utils';
 import { OrderService } from '../service/order.service';
 import { SharedService } from '../service/shared.service';
 

@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2 } from '@angular
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
 import { AppConfig } from '../interface/appconfig';
-import { enableBodyScroll } from '../lib/shared.util';
+import { enableBodyScroll } from '../lib/utils';
 import { AppComponent } from './../app.component';
 
 @Component({

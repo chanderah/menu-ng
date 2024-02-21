@@ -1,7 +1,7 @@
 import { AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
-import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
+import SharedUtil from 'src/app/lib/shared.util';
 import { MessagingService } from 'src/app/service/messaging.service';
 import { environment } from '../../../../environments/environment';
 import { PagingInfo } from '../../../interface/paging_info';
@@ -51,7 +51,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     }
 
     ngOnInit() {
-        this.user = jsonParse(localStorage.getItem('user')) as User;
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
         this.pagingInfo.limit = this.rowsPerPageOptions[0];
     }
 

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
-import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
 import { OrderReceipt, PaymentMethod } from './../../../interface/order';
 import { PagingInfo } from './../../../interface/paging_info';
 import { User } from './../../../interface/user';
@@ -13,6 +12,7 @@ import { SharedService } from './../../../service/shared.service';
 
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import SharedUtil from 'src/app/lib/shared.util';
 
 @Component({
     selector: 'app-order',
@@ -55,7 +55,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = jsonParse(localStorage.getItem('user')) as User;
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
         this.apiService.getPaymentMethods().subscribe((res: any) => {
             if (res.status === 200) this.paymentMethods = res.data;
         });

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
-import { isEmpty } from 'src/app/lib/shared.util';
 import { AppComponent } from '../app.component';
 import { Menu } from '../interface/menu';
+import { isEmpty } from '../lib/utils';
 import { SharedService } from '../service/shared.service';
 import { environment } from './../../environments/environment';
 

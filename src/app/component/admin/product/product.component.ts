@@ -4,7 +4,8 @@ import { LazyLoadEvent, TreeNode } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { Product, ProductOptions } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
-import SharedUtil, { jsonParse, sortArrayByLabelProperty } from 'src/app/lib/shared.util';
+import SharedUtil from 'src/app/lib/shared.util';
+import { sortArrayByLabelProperty } from 'src/app/lib/utils';
 import { Category } from '../../../interface/category';
 import { PagingInfo } from '../../../interface/paging_info';
 import { UploadEvent } from '../../../interface/upload_event';
@@ -85,7 +86,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = jsonParse(localStorage.getItem('user')) as User;
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
         // this.getProducts();
         this.getCategories();
     }
@@ -281,7 +282,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     }
 
     resetNode() {
-        const nodes = jsonParse(this.categories) as TreeNode[];
+        const nodes = this.categories as TreeNode[];
         nodes.forEach((node) => {
             if (node.partialSelected) node.partialSelected = false;
             if (node.children) {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
-import { isEmpty, jsonParse } from '../lib/shared.util';
+import { isEmpty, jsonParse } from '../lib/utils';
 import { Product } from './../interface/product';
 
 @Component({

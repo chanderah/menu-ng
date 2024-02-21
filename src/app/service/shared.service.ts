@@ -1,17 +1,27 @@
 import { Injectable } from '@angular/core';
+import * as CryptoJS from 'crypto-js';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { User } from 'src/app/interface/user';
-import { isEmpty } from 'src/app/lib/shared.util';
+import { environment } from 'src/environments/environment.prod';
 import { NotificationDialogComponent } from '../component/_common/notification-dialog/notification-dialog.component';
-import { ShopConfig } from './../interface/shop_config';
-import { jsonParse, jsonStringify } from './../lib/shared.util';
+import { ShopConfig } from '../interface/shop_config';
+import { isEmpty, jsonParse, jsonStringify } from '../lib/utils';
 import { ApiService } from './api.service';
+
+const ALGORITHM = 'aes-256-cbc';
+const CIPHER_KEY = 'abcdefghijklmnopqrstuvwxyz012345'; // Same key used in Golang
+const BLOCK_SIZE = 16;
 
 @Injectable({
     providedIn: 'root'
 })
 export class SharedService {
+    private AES_BLOCK_SIZE: number = 16;
+    private AES_ALGORITHM: string = 'aes-256-cfb';
+    private AES_IV = '1010101010101010';
+    private AES_KEY = environment.aesKey;
+
     constructor(
         public messageService: MessageService,
         public dialogService: DialogService,
@@ -19,6 +29,30 @@ export class SharedService {
         private apiService: ApiService // private notificationDialogComponent: NotificationDialogComponent
     ) {
         // super();
+    }
+
+    encrypt(data: any) {
+        return CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(environment.aesKey), {
+            iv: CryptoJS.enc.Utf8.parse(environment.aesIv),
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        }).ciphertext.toString(CryptoJS.enc.Base64);
+    }
+
+    decrypt(data: string) {
+        return CryptoJS.AES.decrypt(data, CryptoJS.enc.Utf8.parse(environment.aesKey), {
+            iv: CryptoJS.enc.Utf8.parse(environment.aesKey),
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        }).toString(CryptoJS.enc.Utf8);
+    }
+
+    encode(data: any) {
+        return typeof data === 'string' ? btoa(data) : btoa(jsonStringify(data));
+    }
+
+    decode(data: string) {
+        return atob(data);
     }
 
     isAdmin() {

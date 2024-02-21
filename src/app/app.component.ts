@@ -3,7 +3,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { Category } from './interface/category';
 import { User } from './interface/user';
-import { sortArrayByLabelProperty } from './lib/shared.util';
+import { sortArrayByLabelProperty } from './lib/utils';
 import { ApiService } from './service/api.service';
 import { SharedService } from './service/shared.service';
 
@@ -28,6 +28,11 @@ export class AppComponent implements OnInit {
 
         this.user = this.sharedService.getUser();
         this.getCategories();
+
+        const encrypted = this.sharedService.encrypt('c');
+        const decrypted = this.sharedService.decrypt(encrypted);
+        console.log(encrypted);
+        console.log(decrypted);
     }
 
     get categories() {

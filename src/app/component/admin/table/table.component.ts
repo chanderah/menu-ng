@@ -4,10 +4,10 @@ import { LazyLoadEvent, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Product, ProductOptions } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
-import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
+import SharedUtil from 'src/app/lib/shared.util';
+import { trim } from 'src/app/lib/utils';
 import { Category } from './../../../interface/category';
 import { PagingInfo } from './../../../interface/paging_info';
-import { trim } from './../../../lib/shared.util';
 import { ApiService } from './../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
 
@@ -61,7 +61,7 @@ export class TableComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = jsonParse(localStorage.getItem('user')) as User;
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
         this.getTables();
     }
 
