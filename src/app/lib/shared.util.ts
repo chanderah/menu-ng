@@ -1,4 +1,4 @@
-import { environment } from './../../environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { capitalize, capitalizeFirstLetter, isEmpty, jsonParse, jsonStringify, toAscii } from './utils';
 
 export default class SharedUtil {

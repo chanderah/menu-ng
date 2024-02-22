@@ -1,4 +1,3 @@
-
 export const disableBodyScroll = () => {
     document.body.classList.add('block-scroll');
 };
@@ -17,8 +16,12 @@ export const isEmpty = (obj: any) => {
 };
 
 export const jsonParse = (obj: any): any => {
-    if (typeof obj != 'string') return JSON.parse(jsonStringify(obj));
-    return JSON.parse(obj);
+    try {
+        if (typeof obj != 'string') return JSON.parse(jsonStringify(obj));
+        return JSON.parse(obj);
+    } catch (_) {
+        return obj;
+    }
 };
 
 export const jsonStringify = (obj: any): string => {

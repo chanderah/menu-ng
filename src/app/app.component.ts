@@ -28,11 +28,6 @@ export class AppComponent implements OnInit {
 
         this.user = this.sharedService.getUser();
         this.getCategories();
-
-        const encrypted = this.sharedService.encrypt('c');
-        const decrypted = this.sharedService.decrypt(encrypted);
-        console.log(encrypted);
-        console.log(decrypted);
     }
 
     get categories() {

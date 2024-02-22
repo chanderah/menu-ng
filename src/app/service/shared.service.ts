@@ -3,35 +3,22 @@ import * as CryptoJS from 'crypto-js';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { User } from 'src/app/interface/user';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { NotificationDialogComponent } from '../component/_common/notification-dialog/notification-dialog.component';
 import { ShopConfig } from '../interface/shop_config';
 import { isEmpty, jsonParse, jsonStringify } from '../lib/utils';
-import { ApiService } from './api.service';
-
-const ALGORITHM = 'aes-256-cbc';
-const CIPHER_KEY = 'abcdefghijklmnopqrstuvwxyz012345'; // Same key used in Golang
-const BLOCK_SIZE = 16;
 
 @Injectable({
     providedIn: 'root'
 })
 export class SharedService {
-    private AES_BLOCK_SIZE: number = 16;
-    private AES_ALGORITHM: string = 'aes-256-cfb';
-    private AES_IV = '1010101010101010';
-    private AES_KEY = environment.aesKey;
-
     constructor(
         public messageService: MessageService,
         public dialogService: DialogService,
-        public confirmationService: ConfirmationService,
-        private apiService: ApiService // private notificationDialogComponent: NotificationDialogComponent
-    ) {
-        // super();
-    }
+        public confirmationService: ConfirmationService
+    ) {}
 
-    encrypt(data: any) {
+    encrypt(data: string) {
         return CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(environment.aesKey), {
             iv: CryptoJS.enc.Utf8.parse(environment.aesIv),
             mode: CryptoJS.mode.CBC,
@@ -41,7 +28,7 @@ export class SharedService {
 
     decrypt(data: string) {
         return CryptoJS.AES.decrypt(data, CryptoJS.enc.Utf8.parse(environment.aesKey), {
-            iv: CryptoJS.enc.Utf8.parse(environment.aesKey),
+            iv: CryptoJS.enc.Utf8.parse(environment.aesIv),
             mode: CryptoJS.mode.CBC,
             padding: CryptoJS.pad.Pkcs7
         }).toString(CryptoJS.enc.Utf8);

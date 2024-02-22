@@ -11,7 +11,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
 import SharedUtil from '../lib/shared.util';
 import { environment } from './../../environments/environment';
@@ -20,6 +20,7 @@ import { Order } from './../interface/order';
 import { PagingInfo } from './../interface/paging_info';
 import { Table } from './../interface/table';
 import { User } from './../interface/user';
+import { SharedService } from './shared.service';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +28,10 @@ import { User } from './../interface/user';
 export class ApiService extends SharedUtil implements HttpInterceptor {
     private apiUrl: string = environment.apiUrl;
 
-    constructor(private httpClient: HttpClient) {
+    constructor(
+        private httpClient: HttpClient,
+        private sharedService: SharedService
+    ) {
         super();
     }
 
@@ -41,19 +45,26 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
             headers: new HttpHeaders({
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'User': 'Unauthorized'
+                'User': `${user?.id ?? 0}`
             }),
-            body: { ...req.body, userCreated: user?.id || 0 }
-            // body: this.validator.encrypt(req.body),
+            body: this.sharedService.encrypt(this.jsonStringify(req.body))
         });
+        // console.log('body:', this.sharedService.encrypt(this.jsonStringify(req.body)));
         return next.handle(req).pipe(
-            map((res: HttpEvent<any>) => {
+            filter((e) => e?.type !== 0),
+            map((res: any) => {
                 if (res instanceof HttpResponse) {
+                    if (res.body?.bytes) {
+                        res = res.clone({
+                            body: this.jsonParse(this.sharedService.decrypt(res.body.bytes).trim())
+                        });
+                    }
                     if (this.isDevelopment) console.log('RESPONSE:', res.body.status, req.method, req.url, res.body);
-                    return res;
                 }
+                return res;
             }),
             catchError((err: HttpErrorResponse) => {
+                console.log('err', err);
                 err = err.error?.message
                     ? err.error
                     : {
