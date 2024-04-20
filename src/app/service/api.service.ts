@@ -11,7 +11,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Product } from 'src/app/interface/product';
 import SharedUtil from '../lib/shared.util';
 import { environment } from './../../environments/environment';
@@ -20,7 +20,7 @@ import { Order } from './../interface/order';
 import { PagingInfo } from './../interface/paging_info';
 import { Table } from './../interface/table';
 import { User } from './../interface/user';
-import { jsonParse } from './../lib/shared.util';
+import { SharedService } from './shared.service';
 
 @Injectable({
     providedIn: 'root'
@@ -28,7 +28,10 @@ import { jsonParse } from './../lib/shared.util';
 export class ApiService extends SharedUtil implements HttpInterceptor {
     private apiUrl: string = environment.apiUrl;
 
-    constructor(private httpClient: HttpClient) {
+    constructor(
+        private httpClient: HttpClient,
+        private sharedService: SharedService
+    ) {
         super();
     }
 
@@ -36,38 +39,43 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         if (req.url.includes('.json')) return next.handle(req);
         if (this.isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
-        const user = jsonParse(localStorage.getItem('user')) as User;
+        const user = this.jsonParse(localStorage.getItem('user')) as User;
         req = req.clone({
             url: this.apiUrl + req.url,
             headers: new HttpHeaders({
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'User': 'Unauthorized'
+                'User': `${user?.id ?? 0}`
             }),
-            body: { ...req.body, userCreated: user?.id || 0 }
-            // body: this.validator.encrypt(req.body),
+            body: this.sharedService.encrypt(this.jsonStringify(req.body))
         });
         return next.handle(req).pipe(
-            map((res: HttpEvent<any>) => {
+            filter((e) => e?.type !== 0),
+            map((res: any) => {
                 if (res instanceof HttpResponse) {
+                    if (res.body?.encryptedData) {
+                        res = res.clone({
+                            body: this.jsonParse(this.sharedService.decrypt(res.body.encryptedData))
+                        });
+                    }
                     if (this.isDevelopment) console.log('RESPONSE:', res.body.status, req.method, req.url, res.body);
-                    return res;
                 }
+                return res;
             }),
-            catchError((error: HttpErrorResponse) => {
-                error = error.error?.message
-                    ? error.error
+            catchError((err: HttpErrorResponse) => {
+                console.log('err', err);
+                err = err.error?.message
+                    ? err.error
                     : {
-                          status: error.status === 0 ? HttpStatusCode.InternalServerError : error.status,
-                          message: error.message ? error.message : 'Something went wrong.'
+                          status: err.status === 0 ? HttpStatusCode.InternalServerError : err.status,
+                          message: err.message ? err.message : 'Something went wrong.'
                       };
-                if (this.isDevelopment) console.error('ERROR:', req.method, req.url, error, req.body);
-                return of(new HttpResponse({ body: error }));
+                if (this.isDevelopment) console.error('ERROR:', req.method, req.url, err, req.body);
+                return of(new HttpResponse({ body: err }));
             })
         );
     }
 
-    /* AUTH */
     register(user: User) {
         return this.httpClient.post('/user/register', user);
     }
@@ -76,7 +84,6 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         return this.httpClient.post('/user/login', user);
     }
 
-    /* USER */
     getUsers(pagingInfo: PagingInfo) {
         return this.httpClient.post('/user/findAll', pagingInfo);
     }
@@ -152,28 +159,16 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
         return this.httpClient.post('/product/findAll', pagingInfo);
     }
 
-    getActiveProducts(pagingInfo: PagingInfo) {
-        return this.httpClient.post('/product/findActive', pagingInfo);
-    }
-
-    getFeaturedProducts() {
-        return this.httpClient.post('/product/findFeatured', {});
-    }
-
-    findProductById(product: Product) {
-        return this.httpClient.post('/product/findById', product);
-    }
-
     findProductByCategory(product: Product) {
         return this.httpClient.post('/product/findByCategory', product);
     }
 
-    findActiveProductByCategory(pagingInfo: PagingInfo) {
-        return this.httpClient.post('/product/findActiveByCategory', pagingInfo);
-    }
-
     findActiveProductByCategoryParam(pagingInfo: PagingInfo) {
         return this.httpClient.post('/product/findActiveByCategoryParam', pagingInfo);
+    }
+
+    findProductById(product: Product) {
+        return this.httpClient.post('/product/findById', product);
     }
 
     createProduct(product: Product) {
@@ -182,6 +177,7 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
     }
 
     updateProduct(product: Product) {
+        console.log(product);
         // const p = { ...product, options: JSON.stringify(product.options) };
         return this.httpClient.post('/product/update', product);
     }

@@ -4,7 +4,8 @@ import { LazyLoadEvent, TreeNode } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { Product, ProductOptions } from 'src/app/interface/product';
 import { User } from 'src/app/interface/user';
-import SharedUtil, { jsonParse, sortArrayByLabelProperty } from 'src/app/lib/shared.util';
+import SharedUtil from 'src/app/lib/shared.util';
+import { sortArrayByLabelProperty } from 'src/app/lib/utils';
 import { Category } from '../../../interface/category';
 import { PagingInfo } from '../../../interface/paging_info';
 import { UploadEvent } from '../../../interface/upload_event';
@@ -85,7 +86,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = jsonParse(localStorage.getItem('user')) as User;
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
         // this.getProducts();
         this.getCategories();
     }
@@ -106,7 +107,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
                 this.products = res.data;
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
             } else {
-                alert(res.message);
+                this.sharedService.errorToast(res.message);
             }
         });
     }
@@ -118,7 +119,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
             if (res.status === 200) {
                 this.categories = res.data.sort(sortArrayByLabelProperty);
             } else {
-                alert(res.message);
+                this.sharedService.errorToast(res.message);
             }
         });
     }
@@ -142,6 +143,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     addOption() {
         this.options().push(
             this.formBuilder.group({
+                id: [null],
                 name: ['', [Validators.required]],
                 multiple: [false],
                 required: [false],
@@ -162,6 +164,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     addOptionValues(optionIndex: number) {
         this.optionValues(optionIndex).push(
             this.formBuilder.group({
+                id: [null],
                 value: ['', [Validators.required]],
                 price: [null, [Validators.required]]
             })
@@ -212,7 +215,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
             const img = await resizeImg(e.files[0]);
             this.productForm.get('image').setValue(img);
         } catch (err) {
-            alert(err);
+            this.sharedService.errorToast(err);
         } finally {
             fileUpload.clear();
         }
@@ -226,15 +229,13 @@ export class ProductComponent extends SharedUtil implements OnInit {
                     if (res.status === 200) {
                         console.log(res.message);
                         return this.getProducts();
-                    } else alert(res.message);
+                    } else this.sharedService.errorToast(res.message);
                 });
             } else {
-                //edit
                 this.apiService.updateProduct(this.productForm.value).subscribe((res: any) => {
                     if (res.status === 200) {
-                        console.log('success update product');
                         return this.getProducts();
-                    } else alert(res.message);
+                    } else this.sharedService.errorToast(res.message);
                 });
             }
         } finally {
@@ -258,21 +259,10 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
     onEditProduct() {
         if (this.isEmpty(this.selectedProduct)) return;
-        this.isLoading = true;
-        this.apiService.findProductById(this.selectedProduct).subscribe((res: any) => {
-            if (res.status === 200) {
-                this.showProductDialog = true;
-                this.setProductForm(res.data);
-            } else {
-                this.sharedService.errorToast('Failed to get product!');
-            }
-        });
         this.getCategories();
-    }
-
-    setProductForm(data: Product) {
-        if (data.options) data.options.forEach(() => this.addOption());
-        this.productForm.patchValue(data);
+        if (this.selectedProduct.options) this.selectedProduct.options.forEach(() => this.addOption());
+        this.productForm.patchValue(this.selectedProduct);
+        this.showProductDialog = true;
     }
 
     onDeleteProduct() {
@@ -292,7 +282,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     }
 
     resetNode() {
-        const nodes = jsonParse(this.categories) as TreeNode[];
+        const nodes = this.categories as TreeNode[];
         nodes.forEach((node) => {
             if (node.partialSelected) node.partialSelected = false;
             if (node.children) {

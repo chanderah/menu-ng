@@ -39,13 +39,13 @@ import * as Hammer from 'hammerjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogService } from 'primeng/dynamicdialog';
+import { FileUploadModule } from 'primeng/fileupload';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { SwiperModule } from 'swiper/angular';
 import { NotificationDialogComponent } from './component/_common/notification-dialog/notification-dialog.component';
 import { LoginComponent } from './component/admin/auth/login/login.component';
-import { RegisterComponent } from './component/admin/auth/register/register.component';
 import { CategoryComponent } from './component/admin/category/category.component';
 import { OrderLiveComponent } from './component/admin/order-live/order-live.component';
 import { OrderComponent } from './component/admin/order/order.component';
@@ -106,7 +106,6 @@ const adminComponents: any[] = [
 
         /* MAIN COMPONENT */
         SkeletonComponent,
-        RegisterComponent,
         LoginComponent,
         DashboardComponent
     ],
@@ -141,7 +140,8 @@ const adminComponents: any[] = [
         DialogModule,
         TableModule,
         TreeModule,
-        RadioButtonModule
+        RadioButtonModule,
+        FileUploadModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },

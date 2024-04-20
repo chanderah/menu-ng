@@ -3,4 +3,5 @@ export interface CustomerInfo {
     orderId?: number;
     tableId: number;
     phone?: number;
+    createdAt: Date;
 }

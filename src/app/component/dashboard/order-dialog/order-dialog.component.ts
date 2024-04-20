@@ -3,8 +3,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
+import { capitalize, disableBodyScroll } from 'src/app/lib/utils';
 import { Product } from '../../../interface/product';
-import { capitalize, disableBodyScroll } from '../../../lib/shared.util';
 import { OrderService } from '../../../service/order.service';
 import { SharedService } from '../../../service/shared.service';
 

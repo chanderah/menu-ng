@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './component/admin/auth/login/login.component';
-import { RegisterComponent } from './component/admin/auth/register/register.component';
 import { CategoryComponent } from './component/admin/category/category.component';
 import { OrderLiveComponent } from './component/admin/order-live/order-live.component';
 import { OrderComponent } from './component/admin/order/order.component';
@@ -12,7 +11,7 @@ import { CustomerComponent } from './component/customer/customer.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { OrderCompleteComponent } from './component/dashboard/order-complete/order-complete.component';
 import { AdminGuard } from './guard/admin.guard';
-import { TableGuard } from './guard/table.guard';
+import { CustomerGuard } from './guard/customer.guard';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
@@ -23,7 +22,7 @@ import { AppMainComponent } from './layout/app.main.component';
                     path: '',
                     component: AppMainComponent,
                     children: [
-                        { path: '', canActivate: [TableGuard], component: DashboardComponent },
+                        { path: '', canActivate: [CustomerGuard], component: DashboardComponent },
                         { path: 'order-complete', component: OrderCompleteComponent },
                         {
                             path: 'admin',
@@ -42,7 +41,6 @@ import { AppMainComponent } from './layout/app.main.component';
                 },
                 { path: 'customer', component: CustomerComponent },
                 { path: 'login', component: LoginComponent },
-                { path: 'register', component: RegisterComponent },
                 { path: '**', redirectTo: '' }
             ],
             { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }

@@ -117,7 +117,7 @@
         [header]="selectedProduct ? 'Edit Product' : 'Add Product'"
         [(visible)]="showProductDialog"
         (onHide)="resetProductDialog()"
-        [style]="{ width: '40vw', height: '100%' }"
+        [style]="{ width: '40vw', height: 'auto' }"
         [breakpoints]="dialogBreakpoints"
         [dismissableMask]="false"
         [closeOnEscape]="false"
@@ -129,7 +129,7 @@
         </div> -->
         <div class="p-fluid px-2" *ngIf="!isLoading">
             <div class="grid my-3">
-                <div class="col-12 flex justify-content-center" *ngIf="productForm.controls['image'].value">
+                <div class="col-12 flex justify-content-center" *ngIf="productForm.get('image').value">
                     <img
                         [src]="getPreviewImg()"
                         (load)="isLoading = false"

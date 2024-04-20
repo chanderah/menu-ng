@@ -1,27 +1,45 @@
-import { Injectable } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { lastValueFrom } from 'rxjs';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { Injectable } from '@angular/core';
+import * as CryptoJS from 'crypto-js';
 import { User } from 'src/app/interface/user';
-import { isEmpty } from 'src/app/lib/shared.util';
+import { environment } from 'src/environments/environment';
 import { NotificationDialogComponent } from '../component/_common/notification-dialog/notification-dialog.component';
-import { ShopConfig } from './../interface/shop_config';
-import { jsonParse, jsonStringify, sortArrayByLabelProperty } from './../lib/shared.util';
-import { ApiService } from './api.service';
+import { ShopConfig } from '../interface/shop_config';
+import { isEmpty, jsonParse, jsonStringify } from '../lib/utils';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SharedService {
-    categories: any[];
-
     constructor(
         public messageService: MessageService,
         public dialogService: DialogService,
-        public confirmationService: ConfirmationService,
-        private apiService: ApiService // private notificationDialogComponent: NotificationDialogComponent
-    ) {
-        // super();
+        public confirmationService: ConfirmationService
+    ) {}
+
+    encrypt(data: string) {
+        return CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(environment.aesKey), {
+            iv: CryptoJS.enc.Utf8.parse(environment.aesIv),
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        }).ciphertext.toString(CryptoJS.enc.Base64);
+    }
+
+    decrypt(data: string) {
+        return CryptoJS.AES.decrypt(data, CryptoJS.enc.Utf8.parse(environment.aesKey), {
+            iv: CryptoJS.enc.Utf8.parse(environment.aesIv),
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        }).toString(CryptoJS.enc.Utf8);
+    }
+
+    encode(data: any) {
+        return typeof data === 'string' ? btoa(data) : btoa(jsonStringify(data));
+    }
+
+    decode(data: string) {
+        return atob(data);
     }
 
     isAdmin() {
@@ -62,13 +80,6 @@ export class SharedService {
     setShopConfig(shopConfig: ShopConfig) {
         localStorage.setItem('shopConfig', jsonStringify(shopConfig));
         return;
-    }
-
-    async getCategories() {
-        await lastValueFrom(this.apiService.getCategories()).then((res: any) => {
-            if (res.status === 200) this.categories = res.data.sort(sortArrayByLabelProperty);
-        });
-        return this.categories;
     }
 
     refreshPage() {

@@ -1,20 +1,11 @@
-import { environment } from './../../environments/environment.prod';
+import { environment } from 'src/environments/environment';
+import { capitalize, capitalizeFirstLetter, isEmpty, jsonParse, jsonStringify, toAscii } from './utils';
 
 export default class SharedUtil {
-    // public isLoading = true;
     public env = environment;
-    // public isDevelopment: boolean = environment.production === false;
-    public isDevelopment = true;
+    public isDevelopment: boolean = environment.production === false;
 
     constructor() {}
-
-    encrypt = (data: any) => {
-        return data;
-    };
-
-    decrypt = (data: any) => {
-        return data;
-    };
 
     isEmpty = (obj: any) => {
         return isEmpty(obj);
@@ -31,65 +22,12 @@ export default class SharedUtil {
     toAscii(num: number) {
         return toAscii(num);
     }
+
+    jsonParse(obj: string) {
+        return jsonParse(obj);
+    }
+
+    jsonStringify(obj: any) {
+        return jsonStringify(obj);
+    }
 }
-
-export const disableBodyScroll = () => {
-    document.body.classList.add('block-scroll');
-};
-
-export const enableBodyScroll = () => {
-    document.body.classList.remove('block-scroll');
-};
-
-export const trim = (data: string) => {
-    return data.trim();
-};
-
-export const isEmpty = (obj: any) => {
-    if (!obj || obj == null || obj == '' || obj?.length === 0 || JSON.stringify(obj) === '{}') return true;
-    else return false;
-};
-
-export const jsonParse = (obj: any): any => {
-    if (typeof obj != 'string') return JSON.parse(jsonStringify(obj));
-    return JSON.parse(obj);
-};
-
-export const jsonStringify = (obj: any): string => {
-    const stringify = require('json-stringify-deterministic');
-    return stringify(obj);
-};
-
-// export const jsonParse = (obj: any) => {
-//     if (typeof obj != 'string') return JSON.parse(jsonStringify(obj));
-//     return JSON.parse(obj);
-// };
-
-// export const jsonStringify = (obj: any) => {
-//     return JSON.stringify(obj);
-// };
-
-export const capitalize = (str: string) => {
-    if (isEmpty(str)) return '';
-
-    const words = str.split(' ');
-    return words
-        .map((w) => {
-            return w[0].toUpperCase() + w.substring(1);
-        })
-        .join(' ');
-};
-
-export const capitalizeFirstLetter = (data: string) => {
-    return data.charAt(0).toUpperCase() + data.slice(1);
-};
-
-export const sortArrayByLabelProperty = (a: any, b: any) => {
-    if (a.label > b.label) return 1;
-    if (a.label < b.label) return -1;
-    return 0;
-};
-
-export const toAscii = (num: number) => {
-    return String.fromCharCode(97 + num);
-};

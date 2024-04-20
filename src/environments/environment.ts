@@ -1,10 +1,12 @@
 export const environment = {
     production: false,
-    appUrl: 'http://localhost:3000',
+    appUrl: 'http://localhost:4200',
     apiUrl: 'http://localhost:3000/api',
     // apiUrl: 'https://api.chandrasa.fun/api',
     publicPath: 'https://public.chandrasa.fun',
     imagePath: 'assets/images',
+    aesKey: 'chandrachansa@18',
+    aesIv: 'chandrachansa@19',
     firebaseConfig: {
         apiKey: 'AIzaSyCUfFlUk0PT-Rswl2aoCiaNBZMYQIbllXo',
         vapidKey: 'BDpFnJzR0mL030pHC6WLWa0d73nya8mnNMaZ3F-emDnRKT_1ANYG9NXxjIgfbWQz2D0YnvsAGf8LXMQ---dQ1s0',

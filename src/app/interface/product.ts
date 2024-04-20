@@ -22,16 +22,22 @@ export interface Product {
 }
 
 export interface ProductOptions {
+    id: number;
+    productId: number;
     name: string;
     multiple: boolean;
     required: boolean;
 
     values: ProductOptionValues[];
     optionsName?: string;
+    createdAt?: Date;
 }
 
 export interface ProductOptionValues {
+    id: number;
+    productOptionId: number;
     value: string;
     price: number;
     selected?: boolean;
+    createdAt?: Date;
 }

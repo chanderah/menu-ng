@@ -10,6 +10,7 @@
             <p-tree
                 [value]="categories"
                 selectionMode="single"
+                [loading]="isLoading"
                 [(selection)]="selectedCategory"
                 (onNodeSelect)="onEditCategory()"></p-tree>
         </div>
@@ -21,7 +22,7 @@
     [maximizable]="true"
     [header]="selectedCategory ? 'Edit Category' : 'Add Category'"
     [(visible)]="showCategoryDialog"
-    (onHide)="this.categoryForm.reset()"
+    (onHide)="this.form.reset()"
     [contentStyle]="{ overflow: 'visible' }"
     [style]="{ width: '40vw', height: 'auto' }"
     [dismissableMask]="false"
@@ -30,7 +31,7 @@
     modal="true"
     [blockScroll]="true"
     showEffect="fade">
-    <div [formGroup]="categoryForm" (keyup.enter)="onSubmit()" class="p-fluid px-2">
+    <div [formGroup]="form" (keyup.enter)="onSubmit()" class="p-fluid px-2">
         <div class="col-12">
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>

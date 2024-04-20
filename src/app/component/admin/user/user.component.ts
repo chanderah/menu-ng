@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
 import { PagingInfo } from 'src/app/interface/paging_info';
 import { User, UserRole } from 'src/app/interface/user';
-import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
+import SharedUtil from 'src/app/lib/shared.util';
 import { ApiService } from './../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
 
@@ -45,7 +45,7 @@ export class UserComponent extends SharedUtil implements OnInit {
     }
 
     ngOnInit() {
-        this.user = jsonParse(localStorage.getItem('user')) as User;
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
         this.apiService.getUserRoles().subscribe((res: any) => {
             if (res.status === 200) this.userRoles = res.data;
         });

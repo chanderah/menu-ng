@@ -1,7 +1,7 @@
 import { AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
-import SharedUtil, { jsonParse } from 'src/app/lib/shared.util';
+import SharedUtil from 'src/app/lib/shared.util';
 import { MessagingService } from 'src/app/service/messaging.service';
 import { environment } from '../../../../environments/environment';
 import { PagingInfo } from '../../../interface/paging_info';
@@ -28,7 +28,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     selectedOrder = {} as Order;
     orders = [] as Order[];
 
-    timeoutId: any = null;
+    timeoutId!: any;
     lastUpdated: Date = new Date();
     contextMenus: MenuItem[] = [
         {
@@ -51,7 +51,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     }
 
     ngOnInit() {
-        this.user = jsonParse(localStorage.getItem('user')) as User;
+        this.user = this.jsonParse(localStorage.getItem('user')) as User;
         this.pagingInfo.limit = this.rowsPerPageOptions[0];
     }
 
@@ -113,6 +113,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
                 }
             } else this.sharedService.errorToast('Failed to get orders data');
         });
+
+        if (this.timeoutId) clearTimeout(this.timeoutId);
+        this.timeoutId = setTimeout(() => this.getOrders(), 120000);
     }
 
     getLastFetchedId() {
@@ -125,22 +128,22 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     }
 
     countAwaitingOrders() {
-        this.awaitingOrdersCount = this.orders.filter((v) => !v.isDone).length;
+        this.awaitingOrdersCount = this.orders.filter((v) => !v.isCompleted).length;
     }
 
     markAsDone(fromId: number, toId: number) {
         this.apiService.markOrderAsDone(fromId, toId).subscribe((res: any) => {
             if (res.status === 200) {
                 this.orders
-                    .filter((v) => !v.isDone && v.id >= fromId && v.id <= toId)
-                    .forEach((v) => (v.isDone = true));
+                    .filter((v) => !v.isCompleted && v.id >= fromId && v.id <= toId)
+                    .forEach((v) => (v.isCompleted = true));
                 this.countAwaitingOrders();
             } else this.sharedService.errorToast('Failed to update orders');
         });
     }
 
     markAllAsDone() {
-        const ids = this.orders.filter((v) => !v.isDone).map((v) => v.id);
+        const ids = this.orders.filter((v) => !v.isCompleted).map((v) => v.id);
         if (ids.length > 0) this.markAsDone(Math.min(...ids), Math.max(...ids));
     }
 
