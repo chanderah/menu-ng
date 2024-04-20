@@ -2,7 +2,7 @@
     "name": "menu-ng",
     "version": "14.0.5",
     "scripts": {
-        "3000": "ng serve --port 3000",
+        "3000": "ng serve --port 4200",
         "ng": "ng",
         "prod": "ng serve --configuration=production",
         "dev": "ng serve",

@@ -10,6 +10,7 @@
             <p-tree
                 [value]="categories"
                 selectionMode="single"
+                [loading]="isLoading"
                 [(selection)]="selectedCategory"
                 (onNodeSelect)="onEditCategory()"></p-tree>
         </div>

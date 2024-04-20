@@ -1,7 +1,7 @@
+import { DialogService } from 'primeng/dynamicdialog';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
 import { User } from 'src/app/interface/user';
 import { environment } from 'src/environments/environment';
 import { NotificationDialogComponent } from '../component/_common/notification-dialog/notification-dialog.component';

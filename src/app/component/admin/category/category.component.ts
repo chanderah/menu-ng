@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
+import { filter, take } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import { Category } from '../../../interface/category';
@@ -23,7 +24,10 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     categories = [] as Category[];
     selectedCategory = {} as TreeNode;
 
-    form: FormGroup;
+    form: FormGroup = this.formBuilder.group({
+        id: [0],
+        label: ['', [Validators.maxLength(255), Validators.required]]
+    });
 
     constructor(
         private app: AppComponent,
@@ -32,14 +36,19 @@ export class CategoryComponent extends SharedUtil implements OnInit {
         private apiService: ApiService
     ) {
         super();
-
-        this.form = this.formBuilder.group({
-            id: [0],
-            label: ['', [Validators.maxLength(255), Validators.required]]
-        });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.app.categories
+            .pipe(
+                filter((v) => !!v),
+                take(1)
+            )
+            .subscribe((res) => {
+                this.categories = res;
+                this.isLoading = false;
+            });
+    }
 
     async onSubmit() {
         this.isLoading = true;

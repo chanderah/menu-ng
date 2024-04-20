@@ -69,7 +69,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     ) {
         super();
 
-        this.route.queryParams.subscribe((params: any) => {
+        this.route.queryParams.subscribe((params) => {
             this.currentMenu = params?.menu;
             if (!this.currentMenu) this.initSwiper();
             if (!this.init) this.getProducts();
@@ -121,7 +121,6 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     async getCategories() {
         return new Promise((resolve) => {
             if (this.categories) {
-                console.log('ada kok');
                 resolve(true);
             } else {
                 this.app.categories.pipe(take(2)).subscribe((res) => {

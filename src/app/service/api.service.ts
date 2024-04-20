@@ -49,14 +49,13 @@ export class ApiService extends SharedUtil implements HttpInterceptor {
             }),
             body: this.sharedService.encrypt(this.jsonStringify(req.body))
         });
-        // console.log('body:', this.sharedService.encrypt(this.jsonStringify(req.body)));
         return next.handle(req).pipe(
             filter((e) => e?.type !== 0),
             map((res: any) => {
                 if (res instanceof HttpResponse) {
-                    if (res.body?.bytes) {
+                    if (res.body?.encryptedData) {
                         res = res.clone({
-                            body: this.jsonParse(this.sharedService.decrypt(res.body.bytes).trim())
+                            body: this.jsonParse(this.sharedService.decrypt(res.body.encryptedData))
                         });
                     }
                     if (this.isDevelopment) console.log('RESPONSE:', res.body.status, req.method, req.url, res.body);
