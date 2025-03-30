@@ -13,7 +13,7 @@ import { Category } from '../interface/category';
             <ul class="layout-menu" role="menu" (keydown)="onKeydown($event)">
                 <ng-container *ngFor="let item of menus; let i = index">
                     <li
-                        *ngIf="isAdminMenu ? sharedService.isAdmin : true"
+                        *ngIf="isAdminMenu(item) ? sharedService.isAdmin : true"
                         app-menu
                         class="layout-menuitem-category"
                         [item]="item"
@@ -88,54 +88,50 @@ export class AppMenuComponent implements OnInit {
                     },
                 ],
             },
-            this.getManagementMenu(),
+            {
+                id: 1,
+                // icon: 'pi pi-fw pi-briefcase',
+                label: 'Management',
+                items: [
+                    {
+                        label: 'Live Orders',
+                        icon: 'pi pi-fw pi-eye',
+                        routerLink: ['/admin/order/live'],
+                        badge: 'ADMIN',
+                    },
+                    {
+                        label: 'Manage Orders',
+                        icon: 'pi pi-fw pi-eye',
+                        routerLink: ['/admin/order'],
+                        badge: 'ADMIN',
+                    },
+                    {
+                        label: 'Manage Categories',
+                        icon: 'pi pi-fw pi-eye',
+                        routerLink: ['/admin/category'],
+                        badge: 'ADMIN',
+                    },
+                    {
+                        label: 'Manage Products',
+                        icon: 'pi pi-fw pi-eye',
+                        routerLink: ['/admin/product'],
+                        badge: 'ADMIN',
+                    },
+                    {
+                        label: 'Manage Tables',
+                        icon: 'pi pi-fw pi-eye',
+                        routerLink: ['/admin/table'],
+                        badge: 'ADMIN',
+                    },
+                    {
+                        label: 'Manage Users',
+                        icon: 'pi pi-fw pi-eye',
+                        routerLink: ['/admin/user'],
+                        badge: 'ADMIN',
+                    },
+                ],
+            },
         ];
-    }
-
-    getManagementMenu() {
-        return {
-            id: 1,
-            // icon: 'pi pi-fw pi-briefcase',
-            label: 'Management',
-            items: [
-                {
-                    label: 'Live Orders',
-                    icon: 'pi pi-fw pi-eye',
-                    routerLink: ['/admin/order/live'],
-                    badge: 'ADMIN',
-                },
-                {
-                    label: 'Manage Orders',
-                    icon: 'pi pi-fw pi-eye',
-                    routerLink: ['/admin/order'],
-                    badge: 'ADMIN',
-                },
-                {
-                    label: 'Manage Categories',
-                    icon: 'pi pi-fw pi-eye',
-                    routerLink: ['/admin/category'],
-                    badge: 'ADMIN',
-                },
-                {
-                    label: 'Manage Products',
-                    icon: 'pi pi-fw pi-eye',
-                    routerLink: ['/admin/product'],
-                    badge: 'ADMIN',
-                },
-                {
-                    label: 'Manage Tables',
-                    icon: 'pi pi-fw pi-eye',
-                    routerLink: ['/admin/table'],
-                    badge: 'ADMIN',
-                },
-                {
-                    label: 'Manage Users',
-                    icon: 'pi pi-fw pi-eye',
-                    routerLink: ['/admin/user'],
-                    badge: 'ADMIN',
-                },
-            ],
-        };
     }
 
     async getDBMenu() {

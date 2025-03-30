@@ -149,6 +149,6 @@ export class SharedService {
     }
 
     get isAdmin() {
-        return this.user?.role === 'admin';
+        return this.user?.role?.level >= 1;
     }
 }

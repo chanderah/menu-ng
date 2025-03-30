@@ -1,6 +1,7 @@
 export interface User {
     id: number;
-    role: string;
+    roleId: UserRole;
+    role: UserRole;
     username: string;
     password: string;
     name: string;
@@ -12,7 +13,8 @@ export interface User {
 
 export interface UserBasic {
     id: number;
-    role: string;
+    roleId: UserRole;
+    role: UserRole;
     username: string;
     name: string;
     email: string;
@@ -23,5 +25,7 @@ export interface UserBasic {
 export interface UserRole {
     id: number;
     name: string;
+    label: string;
+    level: number;
     createdAt: Date;
 }

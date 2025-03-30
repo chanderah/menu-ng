@@ -38,7 +38,7 @@ export class UserComponent extends SharedUtil implements OnInit {
             name: ['', [Validators.maxLength(255), Validators.required]],
             username: ['', [Validators.maxLength(255), Validators.required]],
             password: ['', [Validators.maxLength(255), Validators.required]],
-            role: ['', [Validators.maxLength(255), Validators.required]],
+            roleId: ['', [Validators.maxLength(255), Validators.required]],
             status: [true, [Validators.maxLength(255), Validators.required]],
             createdAt: [null],
         });
@@ -72,7 +72,7 @@ export class UserComponent extends SharedUtil implements OnInit {
 
     onSubmit() {
         const value: User = this.form.getRawValue();
-        if (this.isEmpty(value.role) || this.isEmpty(value.username)) {
+        if (this.isEmpty(value.roleId) || this.isEmpty(value.username)) {
             return this.sharedService.errorToast('Please fill the required field');
         }
 
