@@ -8,7 +8,7 @@ export interface FirebaseConfig extends FirebaseOptions {
 }
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 /**
  * @author: chandraa01 2/2/24
@@ -32,7 +32,7 @@ export class MessagingService {
             const firebaseApp = initializeApp(firebaseConfig);
             this.messaging = getMessaging(firebaseApp);
             getToken(this.messaging, {
-                vapidKey: firebaseConfig.vapidKey
+                vapidKey: firebaseConfig.vapidKey,
             })
                 .then((token) => {
                     onMessage(this.messaging, (res) => this.messages$.next(res));

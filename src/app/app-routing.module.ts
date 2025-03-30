@@ -34,18 +34,18 @@ import { AppMainComponent } from './layout/app.main.component';
                                 { path: 'order/live', component: OrderLiveComponent },
                                 { path: 'product', component: ProductComponent },
                                 { path: 'category', component: CategoryComponent },
-                                { path: 'table', component: TableComponent }
-                            ]
-                        }
-                    ]
+                                { path: 'table', component: TableComponent },
+                            ],
+                        },
+                    ],
                 },
                 { path: 'customer', component: CustomerComponent },
                 { path: 'login', component: LoginComponent },
-                { path: '**', redirectTo: '' }
+                { path: '**', redirectTo: '' },
             ],
             { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }
-        )
+        ),
     ],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
 export class AppRoutingModule {}

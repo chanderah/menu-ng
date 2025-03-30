@@ -11,7 +11,7 @@ class LocalDB extends Dexie {
     constructor() {
         super('menukita');
         this.version(1).stores({
-            app: ''
+            app: '',
         });
     }
 

@@ -34,8 +34,8 @@ import { SharedService } from './../../../service/shared.service';
                     height: 0.5rem;
                 }
             }
-        `
-    ]
+        `,
+    ],
 })
 export class ProductComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
@@ -76,12 +76,12 @@ export class ProductComponent extends SharedUtil implements OnInit {
             featured: [false],
             status: [true],
             userCreated: ['', [Validators.required]],
-            options: this.formBuilder.array([])
+            options: this.formBuilder.array([]),
         });
 
         this.categoryForm = this.formBuilder.group({
             id: [0],
-            label: ['', [Validators.maxLength(255), Validators.required]]
+            label: ['', [Validators.maxLength(255), Validators.required]],
         });
     }
 
@@ -99,7 +99,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
             limit: e?.rows || 10,
             offset: e?.first || 0,
             sortField: e?.sortField || 'ID',
-            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
+            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
         };
         this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
             this.isLoading = false;
@@ -147,7 +147,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
                 name: ['', [Validators.required]],
                 multiple: [false],
                 required: [false],
-                values: this.formBuilder.array([])
+                values: this.formBuilder.array([]),
             })
         );
         this.addOptionValues(this.options().length - 1);
@@ -166,7 +166,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
             this.formBuilder.group({
                 id: [null],
                 value: ['', [Validators.required]],
-                price: [null, [Validators.required]]
+                price: [null, [Validators.required]],
             })
         );
     }

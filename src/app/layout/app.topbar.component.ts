@@ -6,7 +6,7 @@ import { Product } from './../interface/product';
 
 @Component({
     selector: 'app-topbar',
-    templateUrl: './app.topbar.component.html'
+    templateUrl: './app.topbar.component.html',
 })
 export class AppTopBarComponent {
     items: MenuItem[];

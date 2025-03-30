@@ -17,7 +17,7 @@ import SharedUtil from 'src/app/lib/shared.util';
 @Component({
     selector: 'app-order',
     templateUrl: './order.component.html',
-    styleUrls: ['./order.component.scss']
+    styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
@@ -41,7 +41,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
     paymentMethods = [] as PaymentMethod[];
     form: FormGroup = this.formBuilder.group({
         paymentMethod: ['', Validators.required],
-        receivedAmount: [null, Validators.required]
+        receivedAmount: [null, Validators.required],
     });
 
     constructor(
@@ -68,7 +68,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
             limit: e?.rows || 10,
             offset: e?.first || 0,
             sortField: e?.sortField || 'id',
-            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'DESC'
+            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'DESC',
         };
 
         this.apiService.getOrders(this.pagingInfo).subscribe((res: any) => {
@@ -134,7 +134,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
                 total: this.selectedOrderGrandTotal,
                 products: this.selectedOrder.products,
                 issuedAt: this.selectedOrder.createdAt,
-                createdAt: new Date()
+                createdAt: new Date(),
             })
             .then((res) => {
                 this.selectedOrderReceipt = res;
@@ -152,7 +152,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
                 let pdf = new jsPDF({
                     orientation: 'portrait',
                     compress: false,
-                    format: [imgWidth + 2, imgHeight + 2]
+                    format: [imgWidth + 2, imgHeight + 2],
                 });
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 1, 1, imgWidth, imgHeight);
                 // pdf.save(`invoices-${new Date().getTime()}.pdf`);
@@ -203,7 +203,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
     getRowStyle(data: boolean) {
         return {
             background: data ? '#c8e6c9' : '#ffcdd2',
-            color: data ? '#256029' : '#c63737'
+            color: data ? '#256029' : '#c63737',
             // width: this.app.isDesktop() ? '50vw' : '100vw',
             // height: 'auto',
             // left: this.app.isDesktop() ? '25vw' : 0,

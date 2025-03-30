@@ -15,6 +15,6 @@ export const environment = {
         storageBucket: 'menukita-56209.appspot.com',
         messagingSenderId: '216721167099',
         appId: '1:216721167099:web:535bab08af3d77701a965e',
-        measurementId: 'G-PES92S64XK'
-    }
+        measurementId: 'G-PES92S64XK',
+    },
 };

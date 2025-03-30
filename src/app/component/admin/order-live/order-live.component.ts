@@ -1,20 +1,20 @@
 import { AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
-import SharedUtil from 'src/app/lib/shared.util';
 import { MessagingService } from 'src/app/service/messaging.service';
 import { environment } from '../../../../environments/environment';
 import { PagingInfo } from '../../../interface/paging_info';
 import { User } from '../../../interface/user';
 import { ApiService } from '../../../service/api.service';
 import { SharedService } from '../../../service/shared.service';
+import { isEmpty, jsonParse } from 'src/app/lib/utils';
 
 @Component({
     selector: 'app-order-live',
     templateUrl: './order-live.component.html',
-    styleUrls: ['./order-live.component.scss', '../../../../assets/user.styles.scss']
+    styleUrls: ['./order-live.component.scss', '../../../../assets/user.styles.scss'],
 })
-export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewInit {
+export class OrderLiveComponent implements OnInit, AfterViewInit {
     isLoading: boolean = true;
     rowsPerPageOptions: number[] = [20, 50, 100];
     dialogBreakpoints = { '768px': '90vw' };
@@ -34,8 +34,8 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
         {
             label: 'Done',
             icon: 'pi pi-fw pi-check',
-            command: () => this.markAsDone(this.selectedOrder.id, this.selectedOrder.id)
-        }
+            command: () => this.markAsDone(this.selectedOrder.id, this.selectedOrder.id),
+        },
     ];
 
     awaitingOrdersCount: number = 0;
@@ -46,12 +46,10 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
         private sharedService: SharedService,
         private apiService: ApiService,
         private messagingService: MessagingService
-    ) {
-        super();
-    }
+    ) {}
 
     ngOnInit() {
-        this.user = this.jsonParse(localStorage.getItem('user')) as User;
+        this.user = jsonParse(localStorage.getItem('user')) as User;
         this.pagingInfo.limit = this.rowsPerPageOptions[0];
     }
 
@@ -72,12 +70,11 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
                 const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
                 //prettier-ignore
                 if (fcmToken) {
-                    if (fcmToken != this.sharedService.getUser().fcmToken) {
-                        const user = this.sharedService.getUser();
+                    if (fcmToken != this.sharedService.user.fcmToken) {
+                        const user = { ...this.sharedService.user };
                         user.fcmToken = fcmToken;
                         this.apiService.updateFcmToken(user).subscribe((res: any) => {
-                            if (res.status === 200) this.sharedService.setUser(user);
-
+                            if (res.status === 200) this.sharedService.user = user;
                         })
                     }
                 } else window.location.reload();
@@ -153,7 +150,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     }
 
     viewOrder(data: Order) {
-        if (this.isEmpty(data.productsName)) {
+        if (isEmpty(data.productsName)) {
             let productsName = [];
             data.products.forEach((product) => {
                 productsName.push(product.name);

@@ -67,7 +67,7 @@ import { ApiService } from './service/api.service';
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
     overrides = <any>{
-        swipe: { direction: Hammer.DIRECTION_ALL }
+        swipe: { direction: Hammer.DIRECTION_ALL },
     };
 }
 
@@ -78,7 +78,7 @@ const layoutComponents: any[] = [
     AppTopBarComponent,
     AppFooterComponent,
     AppMenuComponent,
-    AppMenuitemComponent
+    AppMenuitemComponent,
 ];
 
 const adminComponents: any[] = [
@@ -87,7 +87,7 @@ const adminComponents: any[] = [
     OrderLiveComponent,
     ProductComponent,
     CategoryComponent,
-    TableComponent
+    TableComponent,
 ];
 
 @NgModule({
@@ -107,7 +107,7 @@ const adminComponents: any[] = [
         /* MAIN COMPONENT */
         SkeletonComponent,
         LoginComponent,
-        DashboardComponent
+        DashboardComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -141,19 +141,19 @@ const adminComponents: any[] = [
         TableModule,
         TreeModule,
         RadioButtonModule,
-        FileUploadModule
+        FileUploadModule,
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         // { provide: LOCALE_ID, useValue: 'id-ID' },
         {
             provide: HAMMER_GESTURE_CONFIG,
-            useClass: MyHammerConfig
+            useClass: MyHammerConfig,
         },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ApiService,
-            multi: true
+            multi: true,
         },
         MenuService,
         ConfigService,
@@ -164,9 +164,9 @@ const adminComponents: any[] = [
         OrderService,
 
         /* SHARED */
-        SharedService
+        SharedService,
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 

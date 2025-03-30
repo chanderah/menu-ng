@@ -1,14 +1,14 @@
+import SharedUtil from 'src/app/lib/shared.util';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Subscription, debounceTime, take } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
 import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
-import SharedUtil from 'src/app/lib/shared.util';
 import { enableBodyScroll } from 'src/app/lib/utils';
 import SwiperCore, {
     A11y,
@@ -20,7 +20,7 @@ import SwiperCore, {
     SwiperOptions,
     Thumbs,
     Virtual,
-    Zoom
+    Zoom,
 } from 'swiper';
 import { SharedService } from '../../service/shared.service';
 import { PagingInfo } from './../../interface/paging_info';
@@ -31,7 +31,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
 
 @Component({
     templateUrl: './dashboard.component.html',
-    styleUrls: ['../../../assets/user.styles.scss']
+    styleUrls: ['../../../assets/user.styles.scss'],
 })
 export class DashboardComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
@@ -40,7 +40,6 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
     currentMenu: string;
     selectedCategory: Category;
-    categories!: Category[];
 
     pagingInfo = {} as PagingInfo;
 
@@ -53,7 +52,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     showOrderDialog: boolean = false;
 
     filter: FormGroup = this.formBuilder.group({
-        value: ['']
+        value: [''],
     });
 
     constructor(
@@ -92,21 +91,19 @@ export class DashboardComponent extends SharedUtil implements OnInit {
             condition: [
                 {
                     column: 'status',
-                    value: true
-                }
+                    value: true,
+                },
             ],
             limit: e?.rows || 20,
             offset: e?.first || 0,
             sortField: e?.sortField || 'NAME',
-            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
+            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
         };
 
         if (this.currentMenu) {
-            await this.getCategories().then(() => {
-                this.selectedCategory = this.categories.find((v) => v.param === this.currentMenu);
-                if (!this.selectedCategory) this.router.navigateByUrl('/');
-                else this.pagingInfo.condition.push({ column: 'category_id', value: this.selectedCategory.id });
-            });
+            this.selectedCategory = this.sharedService.categories.find((v) => v.param === this.currentMenu);
+            if (!this.selectedCategory) this.router.navigateByUrl('/');
+            else this.pagingInfo.condition.push({ column: 'category_id', value: this.selectedCategory.id });
         }
 
         this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
@@ -115,21 +112,6 @@ export class DashboardComponent extends SharedUtil implements OnInit {
                 this.products = res.data;
                 if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
             } else this.sharedService.errorToast(res.message);
-        });
-    }
-
-    async getCategories() {
-        return new Promise((resolve) => {
-            if (this.categories) {
-                resolve(true);
-            } else {
-                this.app.categories.pipe(take(2)).subscribe((res) => {
-                    if (res) {
-                        this.categories = res;
-                        resolve(true);
-                    }
-                });
-            }
         });
     }
 
@@ -155,18 +137,18 @@ export class DashboardComponent extends SharedUtil implements OnInit {
                             autoplay: {
                                 delay: 2500,
                                 pauseOnMouseEnter: true,
-                                disableOnInteraction: false
+                                disableOnInteraction: false,
                             },
                             loop: true,
                             centeredSlides: true,
                             breakpoints: {
                                 0: {
-                                    slidesPerView: 1
+                                    slidesPerView: 1,
                                 },
                                 768: {
-                                    slidesPerView: 4
-                                }
-                            }
+                                    slidesPerView: 4,
+                                },
+                            },
                         };
                     }
                 });
@@ -180,7 +162,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
                 data: data,
                 closeOnEscape: true,
                 dismissableMask: true,
-                height: 'auto'
+                height: 'auto',
                 // maximizable: true
             })
             .onClose.subscribe((res) => {

@@ -8,7 +8,7 @@ import { AppMainComponent } from '../app.main.component';
 
 @Component({
     selector: 'app-config',
-    templateUrl: './app.config.component.html'
+    templateUrl: './app.config.component.html',
 })
 export class AppConfigComponent implements OnInit, OnDestroy {
     subscription: Subscription;

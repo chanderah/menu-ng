@@ -6,7 +6,7 @@ import { OrderService } from '../service/order.service';
 import { SharedService } from '../service/shared.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class CustomerGuard implements CanActivate {
     constructor(
@@ -22,12 +22,12 @@ export class CustomerGuard implements CanActivate {
         if (route.queryParamMap.has('table')) {
             this.orderService.setCustomerInfo({
                 tableId: Number(route.queryParamMap.get('table')),
-                createdAt: new Date()
+                createdAt: new Date(),
             });
             this.router.navigateByUrl('/');
         } else {
             if (isEmpty(this.orderService.getCustomerInfo())) {
-                if (isEmpty(this.sharedService.getUser())) {
+                if (!this.sharedService.user?.id) {
                     this.router.navigateByUrl('/customer', { skipLocationChange: true });
                 }
             } else this.checkExpiry();

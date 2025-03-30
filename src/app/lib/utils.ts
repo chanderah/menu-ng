@@ -1,9 +1,21 @@
+import { environment } from 'src/environments/environment';
+
+export const isDevelopment = !environment.production;
+
 export const disableBodyScroll = () => {
     document.body.classList.add('block-scroll');
 };
 
 export const enableBodyScroll = () => {
     document.body.classList.remove('block-scroll');
+};
+
+export const encode = (data: any) => {
+    return typeof data === 'string' ? btoa(data) : btoa(jsonStringify(data));
+};
+
+export const decode = (data: string) => {
+    return atob(data);
 };
 
 export const trim = (data: string) => {
@@ -38,7 +50,7 @@ export const capitalize = (str: string) => {
 };
 
 export const capitalizeFirstLetter = (data: string) => {
-    return data.charAt(0).toUpperCase() + data.slice(1);
+    return isEmpty(data) ? '' : data.charAt(0).toUpperCase() + data.slice(1);
 };
 
 export const sortArrayByLabelProperty = (a: any, b: any) => {

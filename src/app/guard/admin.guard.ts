@@ -5,13 +5,13 @@ import {
     CanActivateChild,
     Router,
     RouterStateSnapshot,
-    UrlTree
+    UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SharedService } from '../service/shared.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class AdminGuard implements CanActivate, CanActivateChild {
     constructor(
@@ -28,7 +28,7 @@ export class AdminGuard implements CanActivate, CanActivateChild {
     }
 
     canActivateChild(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        if (!this.sharedService.isAdmin()) {
+        if (!this.sharedService.isAdmin) {
             this.router.navigateByUrl('/unauthorized', { skipLocationChange: true });
             return false;
         }

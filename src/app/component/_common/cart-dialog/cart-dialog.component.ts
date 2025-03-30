@@ -13,7 +13,7 @@ import { SharedService } from '../../../service/shared.service';
 @Component({
     selector: 'app-cart-dialog',
     templateUrl: './cart-dialog.component.html',
-    styleUrls: ['../../../../assets/user.styles.scss']
+    styleUrls: ['../../../../assets/user.styles.scss'],
 })
 export class CartDialogComponent extends SharedUtil implements OnInit {
     @Output() onChange = new EventEmitter<boolean>();
@@ -39,7 +39,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
             tableId: [null, []],
             totalPrice: [0, []],
             products: this.formBuilder.array([]),
-            createdAt: [null, []]
+            createdAt: [null, []],
         });
 
         this.products().valueChanges.subscribe((products: Product[]) => {
@@ -90,8 +90,8 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
                 this.showDialog = false;
                 this.router.navigate(['/order-complete'], {
                     state: {
-                        totalPrice: this.cartForm.get('totalPrice').value
-                    }
+                        totalPrice: this.cartForm.get('totalPrice').value,
+                    },
                 });
             } else this.sharedService.showErrorNotification();
         });
@@ -123,7 +123,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
             width: this.app.isDesktop() ? '50vw' : '100vw',
             height: 'auto',
             left: this.app.isDesktop() ? '25vw' : 0,
-            overflow: 'scroll'
+            overflow: 'scroll',
         };
     }
 
@@ -161,7 +161,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
                 totalPrice: [0, [Validators.required]],
 
                 notes: ['', []],
-                quantity: [0, []]
+                quantity: [0, []],
             })
         );
     }
@@ -172,7 +172,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
                 name: ['', [Validators.required]],
                 multiple: [false, [Validators.required]],
                 required: [false, [Validators.required]],
-                values: this.formBuilder.array([])
+                values: this.formBuilder.array([]),
             })
         );
     }
@@ -182,7 +182,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
             this.formBuilder.group({
                 value: ['', [Validators.required]],
                 price: [null, [Validators.required]],
-                selected: [false, [Validators.required]]
+                selected: [false, [Validators.required]],
             })
         );
     }

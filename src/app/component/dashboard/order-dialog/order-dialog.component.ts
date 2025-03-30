@@ -11,7 +11,7 @@ import { SharedService } from '../../../service/shared.service';
 @Component({
     selector: 'app-order-dialog',
     templateUrl: './order-dialog.component.html',
-    styleUrls: ['../../../../assets/user.styles.scss']
+    styleUrls: ['../../../../assets/user.styles.scss'],
 })
 export class OrderDialogComponent extends SharedUtil implements OnInit {
     @Output() onChange = new EventEmitter<boolean>();
@@ -50,7 +50,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
             options: this.formBuilder.array([]),
 
             notes: ['', []],
-            quantity: [0, []]
+            quantity: [0, []],
         });
 
         this.orderForm.valueChanges.subscribe((product: Product) => {
@@ -97,7 +97,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
                 name: ['', [Validators.required]],
                 multiple: [false, [Validators.required]],
                 required: [false, [Validators.required]],
-                values: this.formBuilder.array([])
+                values: this.formBuilder.array([]),
             })
         );
     }
@@ -111,7 +111,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
             this.formBuilder.group({
                 value: ['', [Validators.required]],
                 price: [null, [Validators.required]],
-                selected: [false, [Validators.required]]
+                selected: [false, [Validators.required]],
             })
         );
     }
@@ -134,7 +134,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         if (!this.validate(this.orderForm.value)) return;
         this.orderService.addToCart({
             ...this.orderForm.value,
-            totalPrice: this.totalPrice
+            totalPrice: this.totalPrice,
         });
         this.hideDialog();
     }
@@ -160,7 +160,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
             width: this.app.isDesktop() ? '50vw' : '100vw',
             height: 'auto',
             left: this.app.isDesktop() ? 'unset' : 0,
-            overflow: 'scroll'
+            overflow: 'scroll',
         };
     }
 

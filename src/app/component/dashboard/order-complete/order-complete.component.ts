@@ -5,7 +5,7 @@ import { OrderService } from '../../../service/order.service';
 @Component({
     selector: 'app-order-complete',
     templateUrl: './order-complete.component.html',
-    styleUrls: ['../../../../assets/user.styles.scss']
+    styleUrls: ['../../../../assets/user.styles.scss'],
 })
 export class OrderCompleteComponent implements OnInit, AfterViewInit {
     timeout: number = 15;

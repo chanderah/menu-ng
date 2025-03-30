@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
                 <p-skeleton width="4rem" height="2rem"></p-skeleton>
             </div>
         </div>
-    `
+    `,
 })
 export class SkeletonComponent implements OnInit {
     constructor() {}

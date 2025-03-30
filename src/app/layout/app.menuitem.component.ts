@@ -69,26 +69,26 @@ import { AppMainComponent } from './app.main.component';
     //     </ng-container>
     // `,
     host: {
-        '[class.active-menuitem]': 'active'
+        '[class.active-menuitem]': 'active',
     },
     animations: [
         trigger('children', [
             state(
                 'void',
                 style({
-                    height: '0px'
+                    height: '0px',
                 })
             ),
             state(
                 'hiddenAnimated',
                 style({
-                    height: '0px'
+                    height: '0px',
                 })
             ),
             state(
                 'visibleAnimated',
                 style({
-                    height: '*'
+                    height: '*',
                 })
             ),
             transition('visibleAnimated => hiddenAnimated', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
@@ -96,18 +96,18 @@ import { AppMainComponent } from './app.main.component';
             transition(
                 'void => visibleAnimated, visibleAnimated => void',
                 animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')
-            )
-        ])
-    ]
+            ),
+        ]),
+    ],
 })
 export class AppMenuitemComponent implements OnInit, OnDestroy {
-    @Input() item: any;
-    @Input() index: number;
-    @Input() root: boolean;
-    @Input() parentKey: string;
+    @Input() item!: any;
+    @Input() index!: number;
+    @Input() root!: boolean;
+    @Input() parentKey!: string;
 
-    menuSourceSubscription: Subscription;
-    menuResetSubscription: Subscription;
+    menuSourceSubscription!: Subscription;
+    menuResetSubscription!: Subscription;
 
     active = false;
     key: string;
@@ -148,7 +148,7 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
             queryParams: 'ignored',
             // queryParams: this.item.items ? 'ignored' : 'exact',
             matrixParams: 'ignored',
-            fragment: 'ignored'
+            fragment: 'ignored',
         });
     }
 

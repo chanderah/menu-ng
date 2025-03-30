@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Product } from 'src/app/interface/product';
 import { CustomerInfo } from '../interface/customer_info';
-import SharedUtil from '../lib/shared.util';
-import { jsonParse, jsonStringify } from '../lib/utils';
+import { isEmpty, jsonParse, jsonStringify } from '../lib/utils';
 import { Order, OrderReceipt } from './../interface/order';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
-export class OrderService extends SharedUtil {
+export class OrderService {
     customerInfo = {} as CustomerInfo;
     order = {} as Order;
     cart = [] as Product[];
@@ -18,20 +17,18 @@ export class OrderService extends SharedUtil {
     constructor(
         private sharedService: SharedService,
         private apiService: ApiService
-    ) {
-        super();
-    }
+    ) {}
 
     getOrders(): Order {
         const data = jsonParse(localStorage.getItem('order')) as Order;
-        if (!this.isEmpty(data)) this.order = data;
+        if (!isEmpty(data)) this.order = data;
         return this.order;
         // SHOULD BE DB!!
     }
 
     getMyOrders(): Order {
         const data = jsonParse(localStorage.getItem('order')) as Order;
-        if (!this.isEmpty(data)) this.order = data;
+        if (!isEmpty(data)) this.order = data;
         return this.order;
     }
 
@@ -46,7 +43,7 @@ export class OrderService extends SharedUtil {
                 products: this.getCart(),
                 tableId: this.getCustomerInfo().tableId,
                 totalPrice: totalPrice,
-                createdAt: new Date()
+                createdAt: new Date(),
             } as Order)
         );
         this.clearCart();
@@ -57,7 +54,7 @@ export class OrderService extends SharedUtil {
         order = {
             ...order,
             tableId: this.customerInfo.tableId,
-            createdAt: new Date()
+            createdAt: new Date(),
         };
         this.setCart(order.products);
         this.setMyOrders(order);
@@ -76,7 +73,7 @@ export class OrderService extends SharedUtil {
 
     getCustomerInfo(): CustomerInfo {
         const data: CustomerInfo = jsonParse(localStorage.getItem('customer')) as CustomerInfo;
-        if (!this.isEmpty(data)) this.customerInfo = data;
+        if (!isEmpty(data)) this.customerInfo = data;
         else this.customerInfo = null;
         return this.customerInfo;
     }
@@ -91,7 +88,7 @@ export class OrderService extends SharedUtil {
 
     getCart(): Product[] {
         const data = jsonParse(localStorage.getItem('cart')) as Product[];
-        if (!this.isEmpty(data)) this.cart = data;
+        if (!isEmpty(data)) this.cart = data;
         return this.cart;
     }
 

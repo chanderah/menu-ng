@@ -14,7 +14,7 @@ import { SharedService } from './../../../service/shared.service';
 @Component({
     selector: 'app-table',
     templateUrl: './table.component.html',
-    styleUrls: ['../../../../assets/user.styles.scss']
+    styleUrls: ['../../../../assets/user.styles.scss'],
 })
 export class TableComponent extends SharedUtil implements OnInit {
     isLoading: boolean = true;
@@ -56,7 +56,7 @@ export class TableComponent extends SharedUtil implements OnInit {
             name: ['', [Validators.maxLength(255), Validators.required]],
             barcode: ['', [Validators.maxLength(255), Validators.required]],
             status: [true, [Validators.maxLength(255), Validators.required]],
-            userCreated: [null, []]
+            userCreated: [null, []],
         });
     }
 
@@ -73,7 +73,7 @@ export class TableComponent extends SharedUtil implements OnInit {
             limit: e?.rows || 20,
             offset: e?.first || 0,
             sortField: e?.sortField || 'name',
-            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC'
+            sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
         };
 
         this.apiService.getTables(this.pagingInfo).subscribe((res: any) => {

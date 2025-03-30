@@ -4,21 +4,19 @@ import { Router } from '@angular/router';
 import { AppConfig } from 'src/app/interface/appconfig';
 import { ConfigService } from 'src/app/layout/service/app.config.service';
 import SharedUtil from 'src/app/lib/shared.util';
-import { User } from '../../../../interface/user';
 import { ApiService } from '../../../../service/api.service';
 import { SharedService } from './../../../../service/shared.service';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent extends SharedUtil implements OnInit {
     config: AppConfig;
 
     isLoading: boolean = false;
     form: FormGroup;
-    user = {} as User;
 
     constructor(
         public configService: ConfigService,
@@ -31,23 +29,25 @@ export class LoginComponent extends SharedUtil implements OnInit {
         super();
         this.form = this.formBuilder.group({
             username: ['', Validators.required],
-            password: ['', [Validators.minLength(8), Validators.required]]
+            password: ['', [Validators.minLength(8), Validators.required]],
         });
     }
 
     ngOnInit(): void {
         this.config = this.configService.config;
-        this.user = this.sharedService.getUser();
-        if (this.user) this.router.navigate(['/']);
+        this.sharedService.user$.subscribe((v) => {
+            if (v.id) this.router.navigate(['/']);
+        });
     }
 
     onSubmit() {
         this.isLoading = true;
-        this.apiService.login(this.form.value).subscribe((res: any) => {
+        this.apiService.login(this.form.value).subscribe((res) => {
             this.isLoading = false;
             if (res.status === 200) {
-                this.sharedService.setUser(this.form.value);
-                this.router.navigate(['/']);
+                console.log('res', res.data);
+                this.sharedService.user = res.data;
+                // this.router.navigate(['/']);
                 this.sharedService.successToast('Login success!');
             } else this.sharedService.errorToast('Failed to authorize the user!');
         });

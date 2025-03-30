@@ -12,8 +12,8 @@ import SharedUtil from 'src/app/lib/shared.util';
                 border-bottom-left-radius: 6px;
                 border-bottom-right-radius: 6px;
             }
-        `
-    ]
+        `,
+    ],
 })
 export class ProductDialogComponent extends SharedUtil implements OnInit, AfterViewInit {
     isLoading: boolean = true;
