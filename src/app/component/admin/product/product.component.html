@@ -4,11 +4,7 @@
             <div class="flex align-items-center justify-content-between mb-4">
                 <h5 class="category-title">Products</h5>
                 <div class="flex gap-2">
-                    <button
-                        pButton
-                        pRipple
-                        class="p-button"
-                        (click)="onEditProduct()"
+                    <button pButton pRipple class="p-button" (click)="onEditProduct()"
                         [disabled]="isEmpty(selectedProduct)">
                         Edit
                     </button>
@@ -17,35 +13,17 @@
             </div>
             <!-- scrollHeight="400px" -->
             <!-- [loading]="isLoading" -->
-            <p-table
-                #tb
-                dataKey="id"
-                [paginator]="true"
-                [pageLinks]="3"
-                [loading]="isLoading"
-                [rowsPerPageOptions]="[10, 20, 50, 100]"
-                [rows]="10"
-                [totalRecords]="pagingInfo.rowCount"
-                [lazy]="true"
-                [filterDelay]="500"
-                (onLazyLoad)="getProducts($event)"
-                [value]="products"
-                [rowHover]="true"
-                [scrollable]="true"
-                scrollDirection="both"
-                selectionMode="single"
-                [(selection)]="selectedProduct"
+            <p-table #tb dataKey="id" [paginator]="true" [pageLinks]="3" [loading]="isLoading"
+                [rowsPerPageOptions]="[10, 20, 50, 100]" [rows]="10" [totalRecords]="pagingInfo.rowCount" [lazy]="true"
+                [filterDelay]="500" (onLazyLoad)="getProducts($event)" [value]="products" [rowHover]="true"
+                [scrollable]="true" scrollDirection="both" selectionMode="single" [(selection)]="selectedProduct"
                 responsiveLayout="scroll">
                 <ng-template pTemplate="caption">
                     <div class="flex justify-content-end flex-column sm:flex-row">
                         <span class="p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input
-                                pInputText
-                                type="search"
-                                (input)="tb.filterGlobal($event.target.value, 'contains')"
-                                placeholder="Search ..."
-                                class="w-full" />
+                            <input pInputText type="search" (input)="tb.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Search ..." class="w-full" />
                         </span>
                     </div>
                 </ng-template>
@@ -69,19 +47,13 @@
                         </td>
                         <td style="min-width: 100px" class="product-badge text-capitalize">{{ product.name }}</td>
                         <td>
-                            <img
-                                onerror="this.src='assets/images/default_product.png'"
-                                [alt]="product.name"
-                                [src]="
+                            <img onerror="this.src='assets/images/default_product.png'" [alt]="product.name" [src]="
                                     product.image
                                         ? env.publicPath + product.image
                                         : env.imagePath + '/default_product.png'
-                                "
-                                class="shadow-4 object-fit-cover"
-                                width="80px"
-                                height="80px" />
+                                " class="shadow-4 object-fit-cover" width="80px" height="80px" />
                         </td>
-                        <td style="min-width: 10rem">{{ getCategoryOfProduct(product.categoryId) }}</td>
+                        <td style="min-width: 10rem">{{ getCategoryLabel(product.categoryId) }}</td>
                         <!-- <td style="min-width: 8rem">{{ product.price | currency: 'IDR' }}</td> -->
                         <td style="min-width: 8rem">{{ product.price | custom }}</td>
                         <td>
@@ -112,41 +84,19 @@
 
 <!-- PRODUCT DIALOG -->
 <div [formGroup]="productForm">
-    <p-dialog
-        [maximizable]="true"
-        [header]="selectedProduct ? 'Edit Product' : 'Add Product'"
-        [(visible)]="showProductDialog"
-        (onHide)="resetProductDialog()"
-        [style]="{ width: '40vw', height: 'auto' }"
-        [breakpoints]="dialogBreakpoints"
-        [dismissableMask]="false"
-        [closeOnEscape]="false"
-        [blockScroll]="true"
-        modal="true"
-        showEffect="fade">
-        <!-- <div class="flex align-items-center justify-content-center w-full h-full" *ngIf="isLoading">
-            <span class="font-semibold">Loading...</span>
-        </div> -->
+    <p-dialog [maximizable]="true" [header]="selectedProduct ? 'Edit Product' : 'Add Product'"
+        [(visible)]="showProductDialog" (onHide)="resetProductDialog()" [style]="{ width: '40vw', height: 'auto' }"
+        [breakpoints]="dialogBreakpoints" [dismissableMask]="false" [closeOnEscape]="false" [blockScroll]="true"
+        modal="true" showEffect="fade">
         <div class="p-fluid px-2" *ngIf="!isLoading">
             <div class="grid my-3">
                 <div class="col-12 flex justify-content-center" *ngIf="productForm.get('image').value">
-                    <img
-                        [src]="getPreviewImg()"
-                        (load)="isLoading = false"
-                        alt="preview"
-                        class="shadow-4 object-fit-cover"
-                        width="200px"
-                        height="200px" />
+                    <img [src]="getPreviewImg()" (load)="isLoading = false" alt="preview"
+                        class="shadow-4 object-fit-cover" width="200px" height="200px" />
                 </div>
                 <div class="col-12 flex justify-content-end mb-3">
-                    <p-fileUpload
-                        #fileUpload
-                        mode="basic"
-                        accept="image/*"
-                        [customUpload]="true"
-                        (uploadHandler)="onSelectImage($event, fileUpload)"
-                        [auto]="true"
-                        chooseLabel="Choose Image">
+                    <p-fileUpload #fileUpload mode="basic" accept="image/*" [customUpload]="true"
+                        (uploadHandler)="onSelectImage($event, fileUpload)" [auto]="true" chooseLabel="Choose Image">
                     </p-fileUpload>
                 </div>
                 <div class="col-12 flex justify-content-between">
@@ -160,36 +110,22 @@
                 <div class="col-12">
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
-                        <input
-                            pInputText
-                            type="text"
-                            placeholder="Name"
-                            formControlName="name"
+                        <input pInputText type="text" placeholder="Name" formControlName="name"
                             style="text-transform: capitalize" />
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon"><i class="pi pi-hashtag"></i></span>
-                        <input
-                            pInputText
-                            type="text"
-                            placeholder="Code"
-                            formControlName="code"
-                            (keydown.space)="$event.preventDefault()"
-                            class="text-uppercase" />
+                        <input pInputText type="text" placeholder="Code" formControlName="code"
+                            (keydown.space)="$event.preventDefault()" class="text-uppercase" />
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon"><i class="pi pi-tags"></i></span>
-                        <p-dropdown
-                            *ngIf="showProductDialog"
-                            [options]="categories"
-                            placeholder="Category"
-                            optionLabel="label"
-                            optionValue="id"
-                            formControlName="categoryId"
+                        <p-dropdown *ngIf="showProductDialog" [options]="sharedService.categories"
+                            placeholder="Category" optionLabel="label" optionValue="id" formControlName="categoryId"
                             [showClear]="true">
                         </p-dropdown>
                     </div>
@@ -206,80 +142,44 @@
                 <div class="col-12">
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon"><i class="pi pi-comment"></i></span>
-                        <textarea
-                            pInputTextarea
-                            type="text"
-                            formControlName="description"
-                            placeholder="Description"
-                            maxlength="100"
-                            rows="2"
-                            autoResize="autoResize"
-                            class="text-first">
+                        <textarea pInputTextarea type="text" formControlName="description" placeholder="Description"
+                            maxlength="100" rows="2" autoResize="autoResize" class="text-first">
                         </textarea>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon">Rp</span>
-                        <p-inputNumber
-                            [min]="0"
-                            [showButtons]="true"
-                            formControlName="price"
-                            required
-                            placeholder="Price"
-                            inputId="locale-user"
-                            step="10000">
+                        <p-inputNumber [min]="0" [showButtons]="true" formControlName="price" required
+                            placeholder="Price" inputId="locale-user" step="10000">
                         </p-inputNumber>
                     </div>
                 </div>
             </div>
             <div class="flex mt-4" [ngClass]="selectedProduct ? 'justify-content-between' : 'justify-content-end'">
                 <div *ngIf="selectedProduct">
-                    <button
-                        pButton
-                        pRipple
-                        icon="pi pi-trash"
-                        (click)="onDeleteProduct()"
+                    <button pButton pRipple icon="pi pi-trash" (click)="onDeleteProduct()"
                         class="p-button-danger p-button-outlined">
                     </button>
                 </div>
                 <div class="flex gap-2">
-                    <button
-                        pButton
-                        pRipple
-                        icon="pi pi-times"
-                        (click)="showProductDialog = false"
-                        label="Cancel"
+                    <button pButton pRipple icon="pi pi-times" (click)="showProductDialog = false" label="Cancel"
                         class="w-auto p-button-danger p-button-outlined">
                     </button>
-                    <button
-                        pButton
-                        pRipple
-                        icon="pi pi-check"
-                        (click)="onSubmit()"
-                        label="Save"
-                        [disabled]="isLoading"
+                    <button pButton pRipple icon="pi pi-check" (click)="onSubmit()" label="Save" [disabled]="isLoading"
                         class="w-auto p-button-outlined">
-                    </button
-                ></div>
+                    </button>
+                </div>
             </div>
         </div>
     </p-dialog>
     <!-- PRODUCT DIALOG -->
 
     <!-- OPTION DIALOG -->
-    <p-dialog
-        [maximizable]="true"
-        header="Add Options"
-        [(visible)]="showProductOptionsDialog"
-        (onHide)="onHideProductOptionsDialog()"
-        [style]="{ width: '40vw', height: 'auto' }"
-        [breakpoints]="dialogBreakpoints"
-        [dismissableMask]="false"
-        [closeOnEscape]="false"
-        modal="true"
-        [blockScroll]="true"
-        showEffect="fade">
+    <p-dialog [maximizable]="true" header="Add Options" [(visible)]="showProductOptionsDialog"
+        (onHide)="onHideProductOptionsDialog()" [style]="{ width: '40vw', height: 'auto' }"
+        [breakpoints]="dialogBreakpoints" [dismissableMask]="false" [closeOnEscape]="false" modal="true"
+        [blockScroll]="true" showEffect="fade">
         <div formArrayName="options" class="p-fluid px-2">
             <!-- <button (click)="addOption()" class="my-2">Add</button> -->
             <div class="flex gap-3 justify-content-between my-4">
@@ -292,17 +192,11 @@
             <div *ngFor="let option of options().controls; index as i" [formGroupName]="i" class="card p-1 mb-3">
                 <div class="col-12 flex align-items-center justify-content-between mt-2">
                     <div class="field-checkbox mb-0">
-                        <p-checkbox
-                            binary="true"
-                            label="Multiple Choices"
-                            formControlName="multiple"
+                        <p-checkbox binary="true" label="Multiple Choices" formControlName="multiple"
                             class="text-sm"></p-checkbox>
                     </div>
                     <div class="field-checkbox mb-0">
-                        <p-checkbox
-                            binary="true"
-                            label="Required"
-                            formControlName="required"
+                        <p-checkbox binary="true" label="Required" formControlName="required"
                             class="text-sm"></p-checkbox>
                     </div>
                 </div>
@@ -312,11 +206,7 @@
                         <span class="p-inputgroup-addon font-semibold">
                             {{ i + 1 }}
                         </span>
-                        <input
-                            pInputText
-                            type="text"
-                            formControlName="name"
-                            placeholder="Name, e.g Milk"
+                        <input pInputText type="text" formControlName="name" placeholder="Name, Example: Milk"
                             class="text-capitalize" />
                         <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteOption(i)">
                         </button>
@@ -325,62 +215,31 @@
                 <div formArrayName="values" class="col-12">
                     <div *ngFor="let value of optionValues(i).controls; index as j" [formGroupName]="j">
                         <div class="col-12">
-                            <input
-                                pInputText
-                                type="text"
-                                placeholder="Variant, e.g Extra Milk"
-                                formControlName="value"
-                                class="text-capitalize" />
+                            <input pInputText type="text" placeholder="Variant, Example: Extra Milk"
+                                formControlName="value" class="text-capitalize" />
                         </div>
                         <div class="col-12">
                             <div class="p-inputgroup">
-                                <p-inputNumber
-                                    [min]="0"
-                                    placeholder="Price, free = 0"
-                                    formControlName="price"
-                                    mode="currency"
-                                    currency="IDR"
-                                    inputId="locale-user"
-                                    step="10000">
+                                <p-inputNumber [min]="0" placeholder="Price, free = 0" formControlName="price"
+                                    mode="currency" currency="IDR" inputId="locale-user" step="10000">
                                 </p-inputNumber>
-                                <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-minus"
-                                    class="p-button-danger"
-                                    (click)="deleteOptionValues(i, j)"
-                                    [disabled]="optionValues(i).length === 1">
+                                <button pButton pRipple icon="pi pi-minus" class="p-button-danger"
+                                    (click)="deleteOptionValues(i, j)" [disabled]="optionValues(i).length === 1">
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button
-                    pButton
-                    pRipple
-                    label="Variant"
-                    icon="pi pi-plus"
-                    (click)="addOptionValues(i)"
+                <button pButton pRipple label="Variant" icon="pi pi-plus" (click)="addOptionValues(i)"
                     class="w-auto p-button-text text-sm ml-2 mb-2"></button>
             </div>
 
             <div class="flex justify-content-end gap-2 mt-4">
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-times"
-                    (click)="showProductOptionsDialog = false"
-                    label="Cancel"
+                <button pButton pRipple icon="pi pi-times" (click)="showProductOptionsDialog = false" label="Cancel"
                     class="w-auto p-button-danger p-button-outlined">
                 </button>
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-check"
-                    class="w-auto p-button-outlined"
-                    label="Save"
-                    (click)="onSaveProductOptions()"
-                    [disabled]="isLoading">
+                <button pButton pRipple icon="pi pi-check" class="w-auto p-button-outlined" label="Save"
+                    (click)="onSaveProductOptions()" [disabled]="isLoading">
                 </button>
             </div>
         </div>

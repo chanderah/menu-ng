@@ -55,10 +55,10 @@ export class UserComponent extends SharedUtil implements OnInit {
         this.showUserDialog = false;
         this.isLoading = true;
         this.pagingInfo = {
-            filter: e?.filters?.global?.value || '',
-            limit: e?.rows || 20,
-            offset: e?.first || 0,
-            sortField: e?.sortField || 'name',
+            filter: e?.filters?.global?.value ?? '',
+            limit: e?.rows ?? 20,
+            offset: e?.first ?? 0,
+            sortField: e?.sortField ?? 'name',
             sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
         };
         this.apiService.getUsers(this.pagingInfo).subscribe((res: any) => {
