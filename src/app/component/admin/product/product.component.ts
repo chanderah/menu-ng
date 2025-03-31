@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { LazyLoadEvent, TreeNode } from 'primeng/api';
+import { LazyLoadEvent } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { Product, ProductOptions } from 'src/app/interface/product';
 import SharedUtil from 'src/app/lib/shared.util';
@@ -9,6 +9,8 @@ import { UploadEvent } from '../../../interface/upload_event';
 import { resizeImg } from '../../../lib/image_resizer';
 import { ApiService } from '../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
+import { Nullable } from 'src/app/interface/common';
+import { fileToBase64 } from 'src/app/lib/utils';
 
 @Component({
   templateUrl: './product.component.html',
@@ -30,16 +32,14 @@ export class ProductComponent extends SharedUtil implements OnInit {
   pagingInfo = {} as PagingInfo;
 
   showProductDialog: boolean = false;
-  showCategoryDialog: boolean = false;
   saveProductOptions: boolean = false;
   showProductOptionsDialog: boolean = false;
 
   products = [] as Product[];
 
-  selectedCategory = {} as TreeNode;
-  selectedProduct = {} as Product;
+  selectedProduct!: Product;
+  selectedProductImage!: Nullable<{ file: File; preview: string }>;
   selectedProductOptions = [] as ProductOptions[];
-
   productForm: FormGroup;
 
   constructor(
@@ -52,7 +52,6 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.sharedService.loadCategories();
   }
 
   initForm() {
@@ -95,13 +94,6 @@ export class ProductComponent extends SharedUtil implements OnInit {
   getCategoryLabel(categoryId: number) {
     if (!categoryId) return;
     return this.sharedService.categories.find((d) => d.id === categoryId)?.label;
-  }
-
-  getPreviewImg() {
-    const img: string = this.productForm.get('image').value;
-    if (this.isEmpty(img)) return `${this.env.imagePath}/default_product_image.png`;
-    if (img.includes('assets')) return `${this.env.publicPath}/${img}`;
-    return img;
   }
 
   options(): FormArray {
@@ -178,10 +170,12 @@ export class ProductComponent extends SharedUtil implements OnInit {
   }
 
   async onSelectImage(e: UploadEvent, fileUpload: FileUpload) {
-    console.log(e.files);
     try {
-      const img = await resizeImg(e.files[0]);
-      this.productForm.get('image').setValue(img);
+      const file = await resizeImg<File>(e.files[0]);
+      this.selectedProductImage = {
+        file,
+        preview: await fileToBase64(file),
+      };
     } catch (err) {
       this.sharedService.errorToast(err);
     } finally {
@@ -191,37 +185,29 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
   async onSubmit() {
     this.isLoading = true;
-    try {
-      if (this.isEmpty(this.selectedProduct)) {
-        this.apiService.createProduct(this.productForm.value).subscribe((res: any) => {
-          if (res.status === 200) {
-            console.log(res.message);
-            return this.getProducts();
-          } else this.sharedService.errorToast(res.message);
-        });
+    this.apiService.saveProduct(this.productForm.value, [this.selectedProductImage.file]).subscribe((res) => {
+      if (res.status === 200) {
+        console.log('res', res);
+        // this.getProducts();
       } else {
-        this.apiService.updateProduct(this.productForm.value).subscribe((res: any) => {
-          if (res.status === 200) {
-            return this.getProducts();
-          } else this.sharedService.errorToast(res.message);
-        });
+        this.isLoading = false;
+        this.sharedService.errorToast(res.message);
       }
-    } finally {
-      this.isLoading = false;
-    }
+    });
   }
 
   resetProductDialog() {
     this.showProductDialog = false;
     this.selectedProduct = null;
-    this.options().clear();
+    this.selectedProductImage = null;
     this.productForm.reset();
+    this.productForm.get('status').setValue(true);
+    this.options().clear();
   }
 
   onAddProduct() {
     // this.getCategories();
     this.resetProductDialog();
-    this.productForm.get('status').setValue(true);
     this.showProductDialog = true;
   }
 

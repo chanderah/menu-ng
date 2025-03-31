@@ -90,8 +90,8 @@
         modal="true" showEffect="fade">
         <div class="p-fluid px-2" *ngIf="!isLoading">
             <div class="grid my-3">
-                <div class="col-12 flex justify-content-center" *ngIf="productForm.get('image').value">
-                    <img [src]="getPreviewImg()" (load)="isLoading = false" alt="preview"
+                <div class="col-12 flex justify-content-center" *ngIf="selectedProductImage">
+                    <img [src]="selectedProductImage.preview" (load)="isLoading = false" alt="preview"
                         class="shadow-4 object-fit-cover" width="200px" height="200px" />
                 </div>
                 <div class="col-12 flex justify-content-end mb-3">

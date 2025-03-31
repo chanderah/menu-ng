@@ -62,111 +62,111 @@ import { AppConfigComponent } from './layout/config/app.config.component';
 import { ConfigService } from './layout/service/app.config.service';
 import { MenuService } from './layout/service/app.menu.service';
 import { CustomCurrencyPipe } from './pipe/currency.pipe';
-import { ApiService } from './service/api.service';
+import { ApiInterceptor } from './interceptor/api.interceptor';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
-    overrides = <any>{
-        swipe: { direction: Hammer.DIRECTION_ALL },
-    };
+  overrides = <any>{
+    swipe: { direction: Hammer.DIRECTION_ALL },
+  };
 }
 
 const layoutComponents: any[] = [
-    AppComponent,
-    AppConfigComponent,
-    AppMainComponent,
-    AppTopBarComponent,
-    AppFooterComponent,
-    AppMenuComponent,
-    AppMenuitemComponent,
+  AppComponent,
+  AppConfigComponent,
+  AppMainComponent,
+  AppTopBarComponent,
+  AppFooterComponent,
+  AppMenuComponent,
+  AppMenuitemComponent,
 ];
 
 const adminComponents: any[] = [
-    UserComponent,
-    OrderComponent,
-    OrderLiveComponent,
-    ProductComponent,
-    CategoryComponent,
-    TableComponent,
+  UserComponent,
+  OrderComponent,
+  OrderLiveComponent,
+  ProductComponent,
+  CategoryComponent,
+  TableComponent,
 ];
 
 @NgModule({
-    declarations: [
-        ...layoutComponents,
-        ...adminComponents,
+  declarations: [
+    ...layoutComponents,
+    ...adminComponents,
 
-        /* PIPE */
-        CustomCurrencyPipe,
+    /* PIPE */
+    CustomCurrencyPipe,
 
-        /* DIALOG */
-        NotificationDialogComponent,
-        ProductDialogComponent,
-        OrderDialogComponent,
-        CartDialogComponent,
+    /* DIALOG */
+    NotificationDialogComponent,
+    ProductDialogComponent,
+    OrderDialogComponent,
+    CartDialogComponent,
 
-        /* MAIN COMPONENT */
-        SkeletonComponent,
-        LoginComponent,
-        DashboardComponent,
-    ],
-    imports: [
-        AppRoutingModule,
-        BrowserModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        BadgeModule,
-        ConfirmDialogModule,
-        DataViewModule,
-        DividerModule,
-        PasswordModule,
-        SidebarModule,
-        SkeletonModule,
-        ToastModule,
-        SwiperModule,
-        HammerModule,
-        ScrollPanelModule,
-        QrCodeModule,
-        ContextMenuModule,
-        AutoFocusModule,
-        InputTextModule,
-        InputTextareaModule,
-        InputNumberModule,
-        InputMaskModule,
-        InputSwitchModule,
-        CheckboxModule,
-        DropdownModule,
-        DialogModule,
-        TableModule,
-        TreeModule,
-        RadioButtonModule,
-        FileUploadModule,
-    ],
-    providers: [
-        { provide: LocationStrategy, useClass: PathLocationStrategy },
-        // { provide: LOCALE_ID, useValue: 'id-ID' },
-        {
-            provide: HAMMER_GESTURE_CONFIG,
-            useClass: MyHammerConfig,
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: ApiService,
-            multi: true,
-        },
-        MenuService,
-        ConfigService,
+    /* MAIN COMPONENT */
+    SkeletonComponent,
+    LoginComponent,
+    DashboardComponent,
+  ],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    BadgeModule,
+    ConfirmDialogModule,
+    DataViewModule,
+    DividerModule,
+    PasswordModule,
+    SidebarModule,
+    SkeletonModule,
+    ToastModule,
+    SwiperModule,
+    HammerModule,
+    ScrollPanelModule,
+    QrCodeModule,
+    ContextMenuModule,
+    AutoFocusModule,
+    InputTextModule,
+    InputTextareaModule,
+    InputNumberModule,
+    InputMaskModule,
+    InputSwitchModule,
+    CheckboxModule,
+    DropdownModule,
+    DialogModule,
+    TableModule,
+    TreeModule,
+    RadioButtonModule,
+    FileUploadModule,
+  ],
+  providers: [
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    // { provide: LOCALE_ID, useValue: 'id-ID' },
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptor,
+      multi: true,
+    },
+    MenuService,
+    ConfigService,
 
-        ConfirmationService,
-        MessageService,
-        DialogService,
-        OrderService,
+    ConfirmationService,
+    MessageService,
+    DialogService,
+    OrderService,
 
-        /* SHARED */
-        SharedService,
-    ],
-    bootstrap: [AppComponent],
+    /* SHARED */
+    SharedService,
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 
