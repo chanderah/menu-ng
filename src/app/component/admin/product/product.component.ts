@@ -161,7 +161,6 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
   openProductOptionsDialog() {
     this.selectedProductOptions = this.options().getRawValue();
-    console.log('previousOptions', this.options().getRawValue());
     if (this.options().length === 0) this.addOption();
 
     this.showProductOptionsDialog = true;

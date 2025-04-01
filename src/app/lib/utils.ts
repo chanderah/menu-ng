@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { environment } from 'src/environments/environment';
 
 export const isDevelopment = !environment.production;
@@ -90,3 +91,18 @@ export const clearLocalStorage = () => {
 export const refreshPage = () => {
   window.location.reload();
 };
+
+export const fadeInOut = trigger('fadeInOut', [
+  transition(':enter', [style({ opacity: 0 }), animate('{{duration}} ease-in', style({ opacity: 1 }))], {
+    params: { duration: '300ms' },
+  }),
+  transition(':leave', [animate('{{duration}} ease-out', style({ opacity: 0 }))], { params: { duration: '300ms' } }),
+]);
+
+export const moveUp = trigger('moveUp', [
+  transition(':enter', [
+    style({ transform: 'translateY(50px)', opacity: 0 }),
+    animate('300ms ease-out', style({ transform: 'translateY(0)', opacity: 1 })),
+  ]),
+  transition(':leave', [animate('300ms ease-in', style({ transform: 'translateY(-50px)', opacity: 0 }))]),
+]);

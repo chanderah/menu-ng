@@ -7,7 +7,8 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { Subscription, debounceTime } from 'rxjs';
 import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
-import { enableBodyScroll } from 'src/app/lib/utils';
+import { AppMainComponent } from 'src/app/layout/app.main.component';
+import { enableBodyScroll, fadeInOut, moveUp } from 'src/app/lib/utils';
 import SwiperCore, {
   A11y,
   Autoplay,
@@ -30,6 +31,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
 @Component({
   templateUrl: './dashboard.component.html',
   styleUrls: ['../../../assets/user.styles.scss'],
+  animations: [fadeInOut, moveUp],
 })
 export class DashboardComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;
@@ -48,6 +50,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   filterCtrl = new FormControl('');
 
   constructor(
+    public appMain: AppMainComponent,
     private sharedService: SharedService,
     private route: ActivatedRoute,
     private router: Router,

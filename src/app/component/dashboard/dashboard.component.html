@@ -1,6 +1,6 @@
 <div id="featuredProducts" class="grid">
     <div class="col-12">
-        <div class="card" *ngIf="!selectedCategory && featuredProducts.length > 1">
+        <div @moveUp class="card" *ngIf="!selectedCategory && featuredProducts.length > 1">
             <h5 class="category-title">Featured</h5>
             <swiper [config]="swiperOptions" #swiper>
                 <ng-template *ngFor="let product of featuredProducts" swiperSlide>
@@ -23,12 +23,12 @@
     </div>
 </div>
 
-<p-dataView #dv id="listProducts" layout="grid" [value]="products" [paginator]="true" [loading]="isLoading"
-    [lazy]="true" (onLazyLoad)="getProducts($event)" [rows]="20" [totalRecords]="pagingInfo.rowCount" [pageLinks]="5"
+<p-dataView id="listProducts" layout="grid" [value]="products" [paginator]="true" [loading]="isLoading" [lazy]="true"
+    (onLazyLoad)="getProducts($event)" [rows]="20" [totalRecords]="pagingInfo.rowCount" [pageLinks]="5"
     [alwaysShowPaginator]="true">
     <ng-template pTemplate="header">
         <div class="grid">
-            <div class="col-3 p-fluid" style="width: fit-content">
+            <div class="col-3 p-fluid pl-0" style="width: fit-content">
                 <button pButton [label]="selectedCategory?.label ?? 'Filter'" icon="pi pi-sliders-v"
                     (click)="appMain.toggleMenu($event)" class="p-button-plain p-button-rounded p-button-outlined"
                     style="height: 100%; text-transform: capitalize"></button>
