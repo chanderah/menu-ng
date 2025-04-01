@@ -106,3 +106,5 @@ export const moveUp = trigger('moveUp', [
   ]),
   transition(':leave', [animate('300ms ease-in', style({ transform: 'translateY(-50px)', opacity: 0 }))]),
 ]);
+
+export const isMobile = window.innerWidth < 768;

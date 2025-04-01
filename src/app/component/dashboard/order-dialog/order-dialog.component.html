@@ -17,10 +17,15 @@
                         <div formArrayName="options">
                             <div *ngFor="let option of options().controls; index as i" [formGroupName]="i"
                                 class="card my-3">
-                                <!-- <p>{{ option.value.name }}</p> -->
-
                                 <div class="flex justify-content-between pb-2">
-                                    <span class="text-md font-semibold text-capitalize">{{ option.value.name }}</span>
+                                    <span>
+                                        <span class="text-md font-semibold text-capitalize">
+                                            {{ option.value.name }}
+                                        </span>
+                                        <span class="text-xs">
+                                            ({{ option.value.multiple ? 'select one' : 'select multiple' }})
+                                        </span>
+                                    </span>
                                     <p class="text-xs font-semibold" style="color: grey">
                                         {{ option.value.required ? '*required' : '*optional' }}
                                     </p>

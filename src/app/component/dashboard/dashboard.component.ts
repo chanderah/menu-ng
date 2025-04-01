@@ -8,7 +8,7 @@ import { Subscription, debounceTime } from 'rxjs';
 import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
-import { enableBodyScroll, fadeInOut, moveUp } from 'src/app/lib/utils';
+import { enableBodyScroll, fadeInOut, isMobile, moveUp } from 'src/app/lib/utils';
 import SwiperCore, {
   A11y,
   Autoplay,
@@ -151,6 +151,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         closeOnEscape: true,
         dismissableMask: true,
         height: 'auto',
+        width: isMobile ? '95vw' : '40vw',
         // maximizable: true
       })
       .onClose.subscribe((res) => {
