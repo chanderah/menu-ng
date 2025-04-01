@@ -117,28 +117,6 @@ export class ApiService {
     for (const v of productImages.filter(Boolean)) formData.append('productImages', v);
     formData.append('product', jsonStringify(product));
 
-    // for (const [key, value] of Object.entries(product)) {
-    //   if (key === 'productOptions') {
-    //     formData.append(key, jsonStringify(value));
-    //   } else formData.append(key, jsonStringify(value));
-    // }
-
-    // formData.append('id', product.id);
-    // formData.append('image', product.image);
-    // formData.append('name', product.name);
-    // formData.append('code', product.code);
-    // formData.append('categoryId', product.categoryId?.toString());
-    // formData.append('description', product.description);
-    // formData.append('price', product.price?.toString());
-    // formData.append('featured', jsonStringify(product.featured));
-    // formData.append('status', jsonStringify(product.status));
-    // formData.append('userCreated', product.userCreated?.toString());
-    // formData.append('options', jsonStringify(product.options));
-
-    formData.forEach((v) => {
-      console.log('v', v);
-    });
-
     return this.httpClient.post<any>(`/product/${isEdit ? 'update' : 'create'}`, formData);
   }
 

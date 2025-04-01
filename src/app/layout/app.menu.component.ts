@@ -81,7 +81,7 @@ export class AppMenuComponent implements OnInit {
                   id: v.id,
                   label: v.label,
                   routerLink: ['/'],
-                  queryParams: { menu: v.param },
+                  queryParams: { category: v.param },
                 };
               }),
             ],
