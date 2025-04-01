@@ -76,7 +76,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'All',
                 routerLink: ['/'],
               },
-              ...categories.map((v) => {
+              ...categories?.map((v) => {
                 return {
                   id: v.id,
                   label: v.label,
