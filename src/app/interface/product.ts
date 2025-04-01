@@ -8,7 +8,7 @@ export interface Product {
   categoryId?: number;
   image?: string;
   rating?: number;
-  options?: ProductOptions[];
+  options?: ProductOption[];
 
   featured: boolean;
   status: boolean;
@@ -22,19 +22,19 @@ export interface Product {
   quantity?: number;
 }
 
-export interface ProductOptions {
+export interface ProductOption {
   id: number;
   productId: number;
   name: string;
   multiple: boolean;
   required: boolean;
 
-  values: ProductOptionValues[];
+  values: ProductOptionValue[];
   optionsName?: string;
   createdAt?: Date;
 }
 
-export interface ProductOptionValues {
+export interface ProductOptionValue {
   id: number;
   productOptionId: number;
   value: string;

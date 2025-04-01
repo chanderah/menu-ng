@@ -17,9 +17,8 @@
     <p-skeleton width="5rem" borderRadius="20px"> </p-skeleton>
 </div>
 <div class="text-center" [ngStyle]="{ visibility: isLoading ? 'hidden' : '' }">
-    <img [alt]="product.name"
-        [src]="product.image ? env.publicPath + product.image : env.imagePath + '/default_product.png'"
-        (load)="isLoading = false" class="shadow-4 w-full rounded object-fit-cover" width="300px" height="300px" />
+    <img [alt]="product.name" [src]="getImageUrl(product.image)" (load)="isLoading = false"
+        class="shadow-4 w-full rounded object-fit-cover" width="300px" height="300px" />
     <div>
         <h6 class="my-4 text-primary text-lg font-semibold">{{ product.price | custom }}</h6>
         <p class="my-1" style="width: 300px; text-align: justify">{{ capitalizeFirstLetter(product.description) }}</p>

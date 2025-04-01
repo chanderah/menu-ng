@@ -5,202 +5,202 @@ import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import { disableBodyScroll } from 'src/app/lib/utils';
-import { ProductOptionValues } from '../../../interface/product';
+import { ProductOptionValue } from '../../../interface/product';
 import { ApiService } from '../../../service/api.service';
 import { OrderService } from '../../../service/order.service';
 import { SharedService } from '../../../service/shared.service';
 
 @Component({
-    selector: 'app-cart-dialog',
-    templateUrl: './cart-dialog.component.html',
-    styleUrls: ['../../../../assets/user.styles.scss'],
+  selector: 'app-cart-dialog',
+  templateUrl: './cart-dialog.component.html',
+  styleUrls: ['../../../../assets/user.styles.scss'],
 })
 export class CartDialogComponent extends SharedUtil implements OnInit {
-    @Output() onChange = new EventEmitter<boolean>();
-    @Input() showDialog: boolean;
+  @Output() onChange = new EventEmitter<boolean>();
+  @Input() showDialog: boolean;
 
-    init: boolean = true;
-    isLoading: boolean = true;
+  init: boolean = true;
+  isLoading: boolean = true;
 
-    cartForm: FormGroup;
+  cartForm: FormGroup;
 
-    constructor(
-        public app: AppMainComponent,
-        private router: Router,
-        private formBuilder: FormBuilder,
-        private orderService: OrderService,
-        private sharedService: SharedService,
-        private apiService: ApiService
-    ) {
-        super();
+  constructor(
+    public app: AppMainComponent,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private orderService: OrderService,
+    private sharedService: SharedService,
+    private apiService: ApiService
+  ) {
+    super();
 
-        this.cartForm = formBuilder.group({
-            id: [null, []],
-            tableId: [null, []],
-            totalPrice: [0, []],
-            products: this.formBuilder.array([]),
-            createdAt: [null, []],
-        });
+    this.cartForm = formBuilder.group({
+      id: [null, []],
+      tableId: [null, []],
+      totalPrice: [0, []],
+      products: this.formBuilder.array([]),
+      createdAt: [null, []],
+    });
 
-        this.products().valueChanges.subscribe((products: Product[]) => {
-            if (!this.init) {
-                // count total
-                let totalPrice = 0;
+    this.products().valueChanges.subscribe((products: Product[]) => {
+      if (!this.init) {
+        // count total
+        let totalPrice = 0;
 
-                products.forEach((product) => {
-                    let price = product.price;
-                    product?.options?.forEach((option) => {
-                        option?.values?.forEach((data) => {
-                            if (data?.selected) price += data?.price;
-                        });
-                    });
-                    totalPrice += price * product.quantity;
-                });
-                this.cartForm.get('totalPrice').setValue(totalPrice);
-            }
-        });
-    }
-
-    ngOnInit(): void {
-        disableBodyScroll();
-        this.getProductsInCart();
-    }
-
-    getProductsInCart() {
-        const data: Product[] = this.orderService.getCart();
-        for (let i = 0; i < data.length; i++) {
-            this.addProduct();
-            for (let j = 0; j < data[i].options.length; j++) {
-                this.addOption(i);
-                for (let k = 0; k < data[i].options[j].values.length; k++) {
-                    this.addOptionValues(i, j);
-                }
-            }
-        }
-        this.init = false;
-        this.products().patchValue(data);
-    }
-
-    onSubmit() {
-        this.isLoading = true;
-        this.orderService.createOrder(this.cartForm.value).then((res: any) => {
-            this.isLoading = false;
-            if (res.status === 200) {
-                this.app.hideTopMenu();
-                this.showDialog = false;
-                this.router.navigate(['/order-complete'], {
-                    state: {
-                        totalPrice: this.cartForm.get('totalPrice').value,
-                    },
-                });
-            } else this.sharedService.showErrorNotification();
-        });
-    }
-
-    increment(productIndex: number) {
-        this.products()
-            .at(productIndex)
-            .get('quantity')
-            .setValue(this.products().at(productIndex).get('quantity').value + 1);
-    }
-
-    decrement(productIndex: number) {
-        let currentValue = this.products().at(productIndex).get('quantity').value;
-        if (currentValue > 1) {
-            this.products()
-                .at(productIndex)
-                .get('quantity')
-                .setValue(currentValue - 1);
-        } else {
-            this.sharedService.showConfirm('Are you sure to remove this item from cart?').then((res) => {
-                if (res) return this.deleteProduct(productIndex);
+        products.forEach((product) => {
+          let price = product.price;
+          product?.options?.forEach((option) => {
+            option?.values?.forEach((data) => {
+              if (data?.selected) price += data?.price;
             });
+          });
+          totalPrice += price * product.quantity;
+        });
+        this.cartForm.get('totalPrice').setValue(totalPrice);
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    disableBodyScroll();
+    this.getProductsInCart();
+  }
+
+  getProductsInCart() {
+    const data: Product[] = this.orderService.getCart();
+    for (let i = 0; i < data.length; i++) {
+      this.addProduct();
+      for (let j = 0; j < data[i].options.length; j++) {
+        this.addOption(i);
+        for (let k = 0; k < data[i].options[j].values.length; k++) {
+          this.addOptionValues(i, j);
         }
+      }
     }
+    this.init = false;
+    this.products().patchValue(data);
+  }
 
-    getSidebarStyle() {
-        return {
-            width: this.app.isDesktop() ? '50vw' : '100vw',
-            height: 'auto',
-            left: this.app.isDesktop() ? '25vw' : 0,
-            overflow: 'scroll',
-        };
+  onSubmit() {
+    this.isLoading = true;
+    this.orderService.createOrder(this.cartForm.value).then((res: any) => {
+      this.isLoading = false;
+      if (res.status === 200) {
+        this.app.hideTopMenu();
+        this.showDialog = false;
+        this.router.navigate(['/order-complete'], {
+          state: {
+            totalPrice: this.cartForm.get('totalPrice').value,
+          },
+        });
+      } else this.sharedService.showErrorNotification();
+    });
+  }
+
+  increment(productIndex: number) {
+    this.products()
+      .at(productIndex)
+      .get('quantity')
+      .setValue(this.products().at(productIndex).get('quantity').value + 1);
+  }
+
+  decrement(productIndex: number) {
+    let currentValue = this.products().at(productIndex).get('quantity').value;
+    if (currentValue > 1) {
+      this.products()
+        .at(productIndex)
+        .get('quantity')
+        .setValue(currentValue - 1);
+    } else {
+      this.sharedService.showConfirm('Are you sure to remove this item from cart?').then((res) => {
+        if (res) return this.deleteProduct(productIndex);
+      });
     }
+  }
 
-    products(): FormArray {
-        return this.cartForm.get('products') as FormArray;
+  getSidebarStyle() {
+    return {
+      width: this.app.isDesktop() ? '50vw' : '100vw',
+      height: 'auto',
+      left: this.app.isDesktop() ? '25vw' : 0,
+      overflow: 'scroll',
+    };
+  }
+
+  products(): FormArray {
+    return this.cartForm.get('products') as FormArray;
+  }
+
+  options(productIndex: number): FormArray {
+    return this.products().at(productIndex).get('options') as FormArray;
+  }
+
+  optionValues(productIndex: number, optionIndex: number): FormArray {
+    return this.options(productIndex).at(optionIndex).get('values') as FormArray;
+  }
+
+  deleteProduct(productIndex: number) {
+    this.init = true;
+    this.products().removeAt(productIndex);
+    this.orderService.setCart(this.products().value);
+    console.log([this.products().value]);
+    if (this.products().length === 0) this.hideDialog();
+  }
+
+  addProduct() {
+    this.products().push(
+      this.formBuilder.group({
+        id: [null, []],
+        image: [null, []],
+        name: ['', [Validators.required]],
+        code: ['', []],
+        categoryId: [null, []],
+        description: ['', []],
+        price: [0, [Validators.required]],
+        options: this.formBuilder.array([]),
+        totalPrice: [0, [Validators.required]],
+
+        notes: ['', []],
+        quantity: [0, []],
+      })
+    );
+  }
+
+  addOption(productIndex: number) {
+    this.options(productIndex).push(
+      this.formBuilder.group({
+        name: ['', [Validators.required]],
+        multiple: [false, [Validators.required]],
+        required: [false, [Validators.required]],
+        values: this.formBuilder.array([]),
+      })
+    );
+  }
+
+  addOptionValues(productIndex: number, optionIndex: number) {
+    this.optionValues(productIndex, optionIndex).push(
+      this.formBuilder.group({
+        value: ['', [Validators.required]],
+        price: [null, [Validators.required]],
+        selected: [false, [Validators.required]],
+      })
+    );
+  }
+
+  concatOptionValues(productOptionValues: ProductOptionValue[]) {
+    if (productOptionValues.length === 1) return productOptionValues[0].value.toString();
+    let value: string = productOptionValues[0].value;
+    for (let i = 1; i < productOptionValues.length; i++) {
+      value.concat(', ' + productOptionValues[i].value);
     }
+    return value;
+  }
 
-    options(productIndex: number): FormArray {
-        return this.products().at(productIndex).get('options') as FormArray;
-    }
+  hideDialog() {
+    this.onChange.emit((this.showDialog = false));
+  }
 
-    optionValues(productIndex: number, optionIndex: number): FormArray {
-        return this.options(productIndex).at(optionIndex).get('values') as FormArray;
-    }
-
-    deleteProduct(productIndex: number) {
-        this.init = true;
-        this.products().removeAt(productIndex);
-        this.orderService.setCart(this.products().value);
-        console.log([this.products().value]);
-        if (this.products().length === 0) this.hideDialog();
-    }
-
-    addProduct() {
-        this.products().push(
-            this.formBuilder.group({
-                id: [null, []],
-                image: [null, []],
-                name: ['', [Validators.required]],
-                code: ['', []],
-                categoryId: [null, []],
-                description: ['', []],
-                price: [0, [Validators.required]],
-                options: this.formBuilder.array([]),
-                totalPrice: [0, [Validators.required]],
-
-                notes: ['', []],
-                quantity: [0, []],
-            })
-        );
-    }
-
-    addOption(productIndex: number) {
-        this.options(productIndex).push(
-            this.formBuilder.group({
-                name: ['', [Validators.required]],
-                multiple: [false, [Validators.required]],
-                required: [false, [Validators.required]],
-                values: this.formBuilder.array([]),
-            })
-        );
-    }
-
-    addOptionValues(productIndex: number, optionIndex: number) {
-        this.optionValues(productIndex, optionIndex).push(
-            this.formBuilder.group({
-                value: ['', [Validators.required]],
-                price: [null, [Validators.required]],
-                selected: [false, [Validators.required]],
-            })
-        );
-    }
-
-    concatOptionValues(productOptionValues: ProductOptionValues[]) {
-        if (productOptionValues.length === 1) return productOptionValues[0].value.toString();
-        let value: string = productOptionValues[0].value;
-        for (let i = 1; i < productOptionValues.length; i++) {
-            value.concat(', ' + productOptionValues[i].value);
-        }
-        return value;
-    }
-
-    hideDialog() {
-        this.onChange.emit((this.showDialog = false));
-    }
-
-    ngOnDestroy() {
-        this.onChange.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.onChange.unsubscribe();
+  }
 }

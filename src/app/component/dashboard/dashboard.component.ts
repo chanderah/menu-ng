@@ -115,9 +115,9 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     });
   }
 
-  onShowOrderDialogChange(bool: boolean) {
-    if (bool === false) enableBodyScroll();
-    this.showOrderDialog = bool;
+  onShowOrderDialogChange(value: boolean) {
+    if (value === false) enableBodyScroll();
+    this.showOrderDialog = value;
   }
 
   onAddToCart(data: Product) {

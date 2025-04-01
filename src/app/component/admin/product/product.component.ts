@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
-import { Product, ProductOptions } from 'src/app/interface/product';
+import { Product, ProductOption, ProductOptionValue } from 'src/app/interface/product';
 import SharedUtil from 'src/app/lib/shared.util';
 import { PagingInfo } from '../../../interface/paging_info';
 import { UploadEvent } from '../../../interface/upload_event';
@@ -32,14 +32,13 @@ export class ProductComponent extends SharedUtil implements OnInit {
   pagingInfo = {} as PagingInfo;
 
   showProductDialog: boolean = false;
-  saveProductOptions: boolean = false;
   showProductOptionsDialog: boolean = false;
 
   products = [] as Product[];
 
   selectedProduct!: Product;
   selectedProductImage!: Nullable<{ file: File; preview: string }>;
-  selectedProductOptions = [] as ProductOptions[];
+  selectedProductOptions!: ProductOption[]; // temp
   productForm: FormGroup;
 
   constructor(
@@ -97,80 +96,6 @@ export class ProductComponent extends SharedUtil implements OnInit {
     return this.sharedService.categories.find((d) => d.id === categoryId)?.label;
   }
 
-  options(): FormArray {
-    return this.productForm.get('options') as FormArray;
-  }
-
-  addOption() {
-    this.options().push(
-      this.formBuilder.group({
-        id: [null],
-        name: ['', [Validators.required]],
-        multiple: [false],
-        required: [false],
-        values: this.formBuilder.array([]),
-      })
-    );
-    this.addOptionValues(this.options().length - 1);
-  }
-
-  deleteOption(index: number) {
-    this.options().removeAt(index);
-  }
-
-  optionValues(optionIndex: number): FormArray {
-    return this.options().at(optionIndex).get('values') as FormArray;
-  }
-
-  addOptionValues(optionIndex: number) {
-    this.optionValues(optionIndex).push(
-      this.formBuilder.group({
-        id: [null],
-        value: ['', [Validators.required]],
-        price: [null, [Validators.required]],
-      })
-    );
-  }
-
-  deleteOptionValues(optionIndex: number, optionValuesIndex: number) {
-    this.optionValues(optionIndex).removeAt(optionValuesIndex);
-  }
-
-  openProductOptionsDialog() {
-    if (this.isEmpty(this.selectedProductOptions)) {
-      this.selectedProductOptions = this.selectedProduct?.options;
-      console.log('selectedProductOptions', this.selectedProductOptions);
-    }
-    if (this.options().length === 0) this.addOption();
-    this.saveProductOptions = false;
-    this.showProductOptionsDialog = true;
-  }
-
-  onHideProductOptionsDialog() {
-    if (this.saveProductOptions) {
-      this.selectedProductOptions = this.options().value;
-    } else {
-      this.options().clear();
-      for (let i = 0; i < this.selectedProductOptions?.length; i++) this.addOption();
-      this.options().patchValue(this.selectedProductOptions);
-    }
-  }
-
-  onSaveProductOptions() {
-    // TODO: validate, change flag when done
-    this.saveProductOptions = true;
-    this.showProductOptionsDialog = false;
-  }
-
-  getSelectedProductOptionsName() {
-    let data: string[] = [];
-    this.options().controls.forEach((d: FormControl) => {
-      data.push(d.value.name);
-    });
-
-    return data.length === 0 ? 'No Options' : data.join(', ');
-  }
-
   async onSelectImage(e: UploadEvent, fileUpload: FileUpload) {
     try {
       const file = await resizeImg<File>(e.files[0]);
@@ -203,21 +128,17 @@ export class ProductComponent extends SharedUtil implements OnInit {
     this.showProductDialog = false;
     this.selectedProduct = null;
     this.selectedProductImage = null;
-    this.productForm.reset();
-    this.productForm.get('status').setValue(true);
+    this.initForm();
     this.options().clear();
   }
 
   onAddProduct() {
-    // this.getCategories();
     this.resetProductDialog();
     this.showProductDialog = true;
   }
 
   onEditProduct() {
-    if (this.isEmpty(this.selectedProduct)) return;
-    // this.getCategories();
-    if (this.selectedProduct.options) this.selectedProduct.options.forEach(() => this.addOption());
+    this.selectedProduct.options.forEach((v) => this.addOption(v));
     this.productForm.patchValue(this.selectedProduct);
     this.showProductDialog = true;
   }
@@ -238,18 +159,96 @@ export class ProductComponent extends SharedUtil implements OnInit {
     });
   }
 
-  resetNode() {
-    // const nodes = this.categories as TreeNode[];
-    // nodes.forEach((node) => {
-    //   if (node.partialSelected) node.partialSelected = false;
-    //   if (node.children) {
-    //     node.expanded = true;
-    //     for (let subChildren of node.children) {
-    //       subChildren.expanded = true;
-    //       if (subChildren.partialSelected) subChildren.partialSelected = false;
-    //     }
-    //   }
-    // });
-    // this.selectedCategory = null;
+  openProductOptionsDialog() {
+    this.selectedProductOptions = this.options().getRawValue();
+    console.log('previousOptions', this.options().getRawValue());
+    if (this.options().length === 0) this.addOption();
+
+    this.showProductOptionsDialog = true;
+  }
+
+  onHideProductOptionsDialog() {
+    if (this.selectedProductOptions) {
+      this.options().clear();
+      this.selectedProductOptions.forEach((v) => {
+        this.addOption(v);
+      });
+      this.selectedProductOptions = null;
+    }
+  }
+
+  onSaveProductOptions() {
+    // TODO: validate, change flag when done
+    this.selectedProductOptions = null;
+    this.showProductOptionsDialog = false;
+  }
+
+  getSelectedProductOptionsName() {
+    let data: string[] = [];
+    this.options().controls.forEach((d: FormControl) => {
+      data.push(d.value.name);
+    });
+
+    return data.length === 0 ? 'No Options' : data.join(', ');
+  }
+
+  options(): FormArray {
+    return this.productForm.get('options') as FormArray;
+  }
+
+  option(i: number) {
+    return this.options().at(i);
+  }
+
+  addOption(data?: ProductOption) {
+    this.options().push(
+      this.formBuilder.group({
+        id: [null],
+        productId: [null],
+        name: ['', [Validators.required]],
+        multiple: [false],
+        required: [false],
+        values: this.formBuilder.array([]),
+      })
+    );
+
+    const optionIndex = this.options().length - 1;
+    if (data) {
+      data.values.forEach((v) => this.addOptionValue(optionIndex, v));
+      this.options().at(optionIndex).patchValue(data);
+    } else {
+      this.addOptionValue(optionIndex);
+    }
+  }
+
+  deleteOption(index: number) {
+    this.options().removeAt(index);
+  }
+
+  optionValues(optionIndex: number): FormArray {
+    return this.options().at(optionIndex).get('values') as FormArray;
+  }
+
+  optionValue(optionIndex: number, i: number) {
+    return this.optionValues(optionIndex).at(i);
+  }
+
+  addOptionValue(optionIndex: number, data?: ProductOptionValue) {
+    this.optionValues(optionIndex).push(
+      this.formBuilder.group({
+        id: [null],
+        value: ['', [Validators.required]],
+        price: [null, [Validators.required]],
+      })
+    );
+
+    if (data) {
+      const i = this.optionValues(optionIndex).length - 1;
+      this.optionValue(optionIndex, i).patchValue(data);
+    }
+  }
+
+  deleteOptionValue(optionIndex: number, optionValueIndex: number) {
+    this.optionValues(optionIndex).removeAt(optionValueIndex);
   }
 }

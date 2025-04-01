@@ -6,11 +6,8 @@
                 <ng-template *ngFor="let product of featuredProducts" swiperSlide>
                     <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
                         <div class="m-2 mb-3" style="cursor: pointer">
-                            <img [alt]="product.name" [src]="
-                                    product.image
-                                        ? env.publicPath + product.image
-                                        : env.imagePath + '/default_product.png'
-                                " (click)="onClickImage(product)" class="shadow-4 object-fit-cover" width="300px"
+                            <img [alt]="product.name" [src]="getImageUrl(product.image)
+                                " (click)="onClickProduct(product)" class="shadow-4 object-fit-cover" width="300px"
                                 height="300px" />
                             <!-- width="100%"  -->
                         </div>
@@ -52,8 +49,7 @@
             <div class="card mat m-2 surface-border">
                 <div class="grid">
                     <div class="col-12 mb-2 cursor-pointer pa-2" (click)="onClickProduct(product)">
-                        <img class="object-fit-cover w-full shadow-2"
-                            [src]="product.image ? env.publicPath + product.image : env.imagePath + '/default_product.png'"
+                        <img class="object-fit-cover w-full shadow-2" [src]="getImageUrl(product.image)"
                             [alt]="product.name" />
                     </div>
                     <div class="col-12 mx-4">

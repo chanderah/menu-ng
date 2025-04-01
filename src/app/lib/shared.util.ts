@@ -1,3 +1,4 @@
+import { CONSTANTS } from './../constants/common';
 import { environment } from 'src/environments/environment';
 import {
   capitalize,
@@ -13,6 +14,7 @@ import {
 export default class SharedUtil {
   public env = environment;
   public isDevelopment: boolean = environment.production === false;
+  public readonly CONSTANTS = CONSTANTS;
 
   constructor() {}
 

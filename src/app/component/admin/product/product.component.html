@@ -222,7 +222,7 @@
                                     formControlName="value" class="text-capitalize" />
 
                                 <button pButton pRipple icon="pi pi-minus" class="p-button-danger"
-                                    (click)="deleteOptionValues(i, j)" [disabled]="optionValues(i).length === 1">
+                                    (click)="deleteOptionValue(i, j)" [disabled]="optionValues(i).length === 1">
                                 </button>
                             </div>
                         </div>
@@ -233,7 +233,7 @@
                         </div>
                     </div>
                 </div>
-                <button pButton pRipple label="Variant" icon="pi pi-plus" (click)="addOptionValues(i)"
+                <button pButton pRipple label="Variant" icon="pi pi-plus" (click)="addOptionValue(i)"
                     class="w-auto p-button-text text-sm ml-2 mb-2"></button>
             </div>
 

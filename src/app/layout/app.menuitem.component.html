@@ -1,28 +1,31 @@
 <ng-container>
-    <a *ngIf="(!item.routerLink || item.items) && item.visible !== false" pRipple [attr.href]="item.url"
-        (click)="itemClick($event)" [ngClass]="item.class" [attr.target]="item.target" [attr.tabindex]="0"
-        [attr.aria-label]="item.label" role="menuitem">
-        <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
-        <span>{{ item.label }}</span>
-        <span class="menuitem-badge" *ngIf="item.badge">{{ item.badge }}</span>
-        <i class="pi pi-fw {{ active ? 'pi-angle-up' : 'pi-angle-down' }} ml-auto" *ngIf="item.items"></i>
-    </a>
-    <a *ngIf="item.routerLink && !item.items && item.visible !== false" (click)="itemClick($event)"
-        [ngClass]="item.class" [routerLink]="item.routerLink"
-        routerLinkActive="active-menuitem-routerlink router-link-exact-active" [routerLinkActiveOptions]="
-            item.routerLinkActiveOptions || {
-                paths: 'exact',
-                queryParams: 'exact',
-                matrixParams: 'ignored',
-                fragment: 'ignored'
-            }
-        " [queryParams]="item.queryParams" [attr.target]="item.target" [attr.tabindex]="0"
-        [attr.aria-label]="item.label" role="menuitem" pRipple>
-        <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
-        <span>{{ item.label }}</span>
-        <span class="p-tag p-badge ml-auto" *ngIf="item.badge">{{ item.badge }}</span>
-        <i class="pi pi-fw {{ active ? 'pi-angle-up' : 'pi-angle-down' }} ml-auto" *ngIf="item.items"></i>
-    </a>
+    <ng-container *ngIf="(!item.routerLink || item.items) && item.visible !== false">
+        <a (click)="itemClick($event)" pRipple [ngClass]="item.class" [attr.href]="item.url" [attr.target]="item.target"
+            [attr.tabindex]="0" [attr.aria-label]="item.label" role="menuitem">
+            <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
+            <span>{{ item.label }}</span>
+            <span class="menuitem-badge" *ngIf="item.role">{{ CONSTANTS.USER_ROLE[item.role] }}</span>
+            <i class="pi pi-fw {{ active ? 'pi-angle-up' : 'pi-angle-down' }} ml-auto" *ngIf="item.items"></i>
+        </a>
+    </ng-container>
+    <ng-container *ngIf="item.routerLink && !item.items && item.visible !== false">
+        <a (click)="itemClick($event)" [ngClass]="item.class" [routerLink]="item.routerLink"
+            routerLinkActive="active-menuitem-routerlink router-link-exact-active" [routerLinkActiveOptions]="
+                item.routerLinkActiveOptions || {
+                    paths: 'exact',
+                    queryParams: 'exact',
+                    matrixParams: 'ignored',
+                    fragment: 'ignored'
+                }
+            " [queryParams]="item.queryParams" [attr.target]="item.target" [attr.tabindex]="0"
+            [attr.aria-label]="item.label" role="menuitem" pRipple>
+            <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
+            <span>{{ item.label }}</span>
+            <span class="p-tag p-badge ml-auto" *ngIf="item.role">{{ CONSTANTS.USER_ROLE[item.role] }}</span>
+            <i class="pi pi-fw {{ active ? 'pi-angle-up' : 'pi-angle-down' }} ml-auto" *ngIf="item.items"></i>
+        </a>
+    </ng-container>
+
     <ul *ngIf="item.items && active && item.visible !== false"
         [@children]="active ? 'visibleAnimated' : 'hiddenAnimated'" role="menu">
         <ng-template ngFor let-child let-i="index" [ngForOf]="item.items">
