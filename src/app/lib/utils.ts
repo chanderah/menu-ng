@@ -71,3 +71,14 @@ export const fileToBase64 = (file: File): Promise<string> => {
     reader.onerror = (error) => reject(error);
   });
 };
+
+export const getImageUrl = (filePath: string) => {
+  return `https://res.cloudinary.com/${environment.cloudinary.cloudName}/image/upload/${filePath}`;
+};
+
+export const toLetter = (num: number) => {
+  if (num < 0 || num > 25) {
+    throw new Error('Number must be between 0 and 25');
+  }
+  return String.fromCharCode(num + 97);
+};

@@ -71,7 +71,6 @@ export class ProductComponent extends SharedUtil implements OnInit {
   }
 
   getProducts(e?: LazyLoadEvent) {
-    this.isLoading = true;
     this.resetProductDialog();
     this.pagingInfo = {
       filter: e?.filters?.global?.value || '',
@@ -80,6 +79,8 @@ export class ProductComponent extends SharedUtil implements OnInit {
       sortField: e?.sortField || 'ID',
       sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
     };
+
+    this.isLoading = true;
     this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
       this.isLoading = false;
       if (res.status === 200) {
@@ -138,6 +139,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
   openProductOptionsDialog() {
     if (this.isEmpty(this.selectedProductOptions)) {
       this.selectedProductOptions = this.selectedProduct?.options;
+      console.log('selectedProductOptions', this.selectedProductOptions);
     }
     if (this.options().length === 0) this.addOption();
     this.saveProductOptions = false;
@@ -185,9 +187,10 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
   async onSubmit() {
     this.isLoading = true;
-    this.apiService.saveProduct(this.productForm.value, [this.selectedProductImage.file]).subscribe((res) => {
+    this.apiService.saveProduct(this.productForm.value, [this.selectedProductImage?.file]).subscribe((res) => {
       if (res.status === 200) {
         console.log('res', res);
+        this.isLoading = false;
         // this.getProducts();
       } else {
         this.isLoading = false;

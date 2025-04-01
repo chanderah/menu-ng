@@ -7,7 +7,6 @@ import {
   HttpResponse,
   HttpErrorResponse,
   HttpStatusCode,
-  HttpHeaders,
 } from '@angular/common/http';
 import { catchError, filter, map, Observable, of } from 'rxjs';
 import { isDevelopment, jsonParse } from '../lib/utils';
@@ -23,17 +22,18 @@ export class ApiInterceptor implements HttpInterceptor {
     if (req.url.includes('.json')) return next.handle(req);
     if (isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
-    const headers = req.headers.keys().reduce((acc, key) => {
-      acc[key] = req.headers.get(key);
-      return acc;
-    }, {});
+    const user = jsonParse<User>(localStorage.getItem('user'));
+    const headers = { ...(user?.id && { User: user.id.toString() }) };
+    const isFormData = req.body instanceof FormData;
+    if (!isFormData) {
+      headers['Accept'] = 'application/json';
+      headers['Content-Type'] = 'application/json';
+    }
 
-    // const isFormData = req.body instanceof FormData;
     req = req.clone({
       url: environment.apiUrl + req.url,
-      headers: this.getDefaultHeaders(headers),
-      body: req.body,
-      // body: isFormData ? req.body : this.aes256Service.encrypt(jsonStringify(req.body)),
+      setHeaders: headers,
+      // ...(!isFormData && { body: this.aes256Service.encrypt(jsonStringify(req.body)) }),
     });
 
     return next.handle(req).pipe(
@@ -60,15 +60,5 @@ export class ApiInterceptor implements HttpInterceptor {
         return of(new HttpResponse({ body: err }));
       })
     );
-  }
-
-  getDefaultHeaders(objHeaders: { [x: string]: string } = {}) {
-    const user = jsonParse<User>(localStorage.getItem('user'));
-    return new HttpHeaders({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      ...(user?.id && { User: user.id.toString() }),
-      ...objHeaders,
-    });
   }
 }

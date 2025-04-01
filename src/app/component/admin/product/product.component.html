@@ -48,9 +48,7 @@
                         <td style="min-width: 100px" class="product-badge text-capitalize">{{ product.name }}</td>
                         <td>
                             <img onerror="this.src='assets/images/default_product.png'" [alt]="product.name" [src]="
-                                    product.image
-                                        ? env.publicPath + product.image
-                                        : env.imagePath + '/default_product.png'
+                                    getImageUrl(product.image)
                                 " class="shadow-4 object-fit-cover" width="80px" height="80px" />
                         </td>
                         <td style="min-width: 10rem">{{ getCategoryLabel(product.categoryId) }}</td>
@@ -90,9 +88,10 @@
         modal="true" showEffect="fade">
         <div class="p-fluid px-2" *ngIf="!isLoading">
             <div class="grid my-3">
-                <div class="col-12 flex justify-content-center" *ngIf="selectedProductImage">
-                    <img [src]="selectedProductImage.preview" (load)="isLoading = false" alt="preview"
-                        class="shadow-4 object-fit-cover" width="200px" height="200px" />
+                <div class="col-12 flex justify-content-center" *ngIf="selectedProductImage || selectedProduct?.image">
+                    <img [src]=" selectedProductImage?.preview ?? getImageUrl(selectedProduct.image) "
+                        (load)="isLoading = false" alt="preview" class="shadow-4 object-fit-cover" width="200px"
+                        height="200px" />
                 </div>
                 <div class="col-12 flex justify-content-end mb-3">
                     <p-fileUpload #fileUpload mode="basic" accept="image/*" [customUpload]="true"
@@ -215,18 +214,22 @@
                 <div formArrayName="values" class="col-12">
                     <div *ngFor="let value of optionValues(i).controls; index as j" [formGroupName]="j">
                         <div class="col-12">
-                            <input pInputText type="text" placeholder="Variant, Example: Extra Milk"
-                                formControlName="value" class="text-capitalize" />
-                        </div>
-                        <div class="col-12">
                             <div class="p-inputgroup">
-                                <p-inputNumber [min]="0" placeholder="Price, free = 0" formControlName="price"
-                                    mode="currency" currency="IDR" inputId="locale-user" step="10000">
-                                </p-inputNumber>
+                                <span class="p-inputgroup-addon font-semibold">
+                                    {{ toLetter(j) }}
+                                </span>
+                                <input pInputText type="text" placeholder="Variant, Example: Extra Milk"
+                                    formControlName="value" class="text-capitalize" />
+
                                 <button pButton pRipple icon="pi pi-minus" class="p-button-danger"
                                     (click)="deleteOptionValues(i, j)" [disabled]="optionValues(i).length === 1">
                                 </button>
                             </div>
+                        </div>
+                        <div class="col-12">
+                            <p-inputNumber [min]="0" placeholder="Price, free = 0" formControlName="price"
+                                mode="currency" currency="IDR" inputId="locale-user" step="10000">
+                            </p-inputNumber>
                         </div>
                     </div>
                 </div>

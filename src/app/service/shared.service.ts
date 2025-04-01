@@ -10,145 +10,140 @@ import { Category } from '../interface/category';
 import { ApiService } from './api.service';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class SharedService {
-    private _user = new BehaviorSubject<User>({} as User);
-    user$ = this._user.asObservable();
+  private _user = new BehaviorSubject<User>({} as User);
+  user$ = this._user.asObservable();
 
-    private _categories = new BehaviorSubject<Category[]>([]);
-    categories$ = this._categories.asObservable();
+  private _categories = new BehaviorSubject<Category[]>([]);
+  categories$ = this._categories.asObservable();
 
-    constructor(
-        private apiService: ApiService,
-        public messageService: MessageService,
-        public dialogService: DialogService,
-        public confirmationService: ConfirmationService
-    ) {
-        this.load();
+  constructor(
+    private apiService: ApiService,
+    public messageService: MessageService,
+    public dialogService: DialogService,
+    public confirmationService: ConfirmationService
+  ) {
+    this.load();
+  }
+
+  load() {
+    this.loadCategories();
+    this.user = jsonParse(localStorage.getItem('user')) as User;
+  }
+
+  loadCategories() {
+    return this.apiService
+      .getCategories()
+      .pipe(
+        map((res) => {
+          this.categories = res.data.sort(sortArrayByLabelProperty);
+          return res;
+        })
+      )
+      .subscribe();
+  }
+
+  get user() {
+    return this._user.getValue();
+  }
+
+  set user(user: User) {
+    if (user?.id) {
+      localStorage.setItem('user', jsonStringify(user));
+      this._user.next(user);
     }
+  }
 
-    load() {
-        this.loadCategories();
-        this.user = jsonParse(localStorage.getItem('user')) as User;
-    }
+  get categories() {
+    return this._categories.getValue();
+  }
 
-    loadCategories() {
-        return this.apiService
-            .getCategories()
-            .pipe(
-                map((res) => {
-                    this.categories = res.data.sort(sortArrayByLabelProperty);
-                    return res;
-                })
-            )
-            .subscribe();
-    }
+  set categories(data: Category[]) {
+    this._categories.next(data);
+  }
 
-    get user() {
-        return this._user.getValue();
-    }
+  getShopConfig(): ShopConfig {
+    return jsonParse(localStorage.getItem('shopConfig'));
+  }
 
-    set user(user: User) {
-        if (user?.id) {
-            localStorage.setItem('user', jsonStringify(user));
-            this._user.next(user);
-        }
-    }
+  setShopConfig(shopConfig: ShopConfig) {
+    localStorage.setItem('shopConfig', jsonStringify(shopConfig));
+    return;
+  }
 
-    get categories() {
-        return this._categories.getValue();
-    }
+  /* TOAST */
+  showToast(severity: 'success' | 'error' | 'warn' | 'info' = 'success', detail: string, summary: string = 'Success') {
+    this.messageService.add({ severity, summary, detail });
+  }
 
-    set categories(data: Category[]) {
-        this._categories.next(data);
-    }
+  infoToast(message: string) {
+    this.showToast('info', message, 'Information');
+  }
 
-    removeUser() {
-        localStorage.removeItem('user');
-        return;
-    }
+  successToast(message: string) {
+    this.showToast('success', message);
+  }
 
-    getShopConfig(): ShopConfig {
-        return jsonParse(localStorage.getItem('shopConfig'));
-    }
+  warnToast(message: string) {
+    this.showToast('warn', message, 'Warn');
+  }
 
-    setShopConfig(shopConfig: ShopConfig) {
-        localStorage.setItem('shopConfig', jsonStringify(shopConfig));
-        return;
-    }
+  errorToast(message: string) {
+    this.showToast('error', message, 'Failed');
+  }
 
-    refreshPage() {
-        window.location.reload();
-    }
+  showNotification(message: string, icon?: string, timeout?: number): Promise<any> {
+    return new Promise((resolve) => {
+      this.dialogService.open(NotificationDialogComponent, {
+        showHeader: false,
+        width: 'auto',
+        modal: true,
+        closeOnEscape: true,
+        dismissableMask: true,
+        data: {
+          icon: icon,
+          message: message,
+          timeout: timeout,
+        },
+      });
+      resolve(true);
+      // .onClose.subscribe((res) => {
+      //     resolve(res);
+      // });
+    });
+  }
 
-    /* TOAST */
-    showToast(
-        severity: 'success' | 'error' | 'warn' | 'info' = 'success',
-        detail: string,
-        summary: string = 'Success'
-    ) {
-        this.messageService.add({ severity, summary, detail });
-    }
+  showErrorNotification() {
+    this.showNotification('Something went wrong. Please try again :(', '🥵', 5000);
+  }
 
-    infoToast(message: string) {
-        this.showToast('info', message, 'Information');
-    }
+  showConfirm(message: string = 'Are you sure to proceed?') {
+    return new Promise((resolve) => {
+      this.confirmationService.confirm({
+        icon: 'pi pi-exclamation-triangle',
+        header: `Caution`,
+        message: message,
+        accept: () => {
+          resolve(true);
+        },
+        reject: () => {
+          resolve(false);
+        },
+      });
+    });
+  }
 
-    successToast(message: string) {
-        this.showToast('success', message);
-    }
+  clearLocalStorage() {
+    localStorage.clear();
+  }
 
-    warnToast(message: string) {
-        this.showToast('warn', message, 'Warn');
-    }
+  refreshPage() {
+    window.location.reload();
+  }
 
-    errorToast(message: string) {
-        this.showToast('error', message, 'Failed');
-    }
-
-    showNotification(message: string, icon?: string, timeout?: number): Promise<any> {
-        return new Promise((resolve) => {
-            this.dialogService.open(NotificationDialogComponent, {
-                showHeader: false,
-                width: 'auto',
-                modal: true,
-                closeOnEscape: true,
-                dismissableMask: true,
-                data: {
-                    icon: icon,
-                    message: message,
-                    timeout: timeout,
-                },
-            });
-            resolve(true);
-            // .onClose.subscribe((res) => {
-            //     resolve(res);
-            // });
-        });
-    }
-
-    showErrorNotification() {
-        this.showNotification('Something went wrong. Please try again :(', '🥵', 5000);
-    }
-
-    showConfirm(message: string = 'Are you sure to proceed?') {
-        return new Promise((resolve) => {
-            this.confirmationService.confirm({
-                icon: 'pi pi-exclamation-triangle',
-                header: `Caution`,
-                message: message,
-                accept: () => {
-                    resolve(true);
-                },
-                reject: () => {
-                    resolve(false);
-                },
-            });
-        });
-    }
-
-    get isAdmin() {
-        return this.user?.role?.level >= 1;
-    }
+  get isAdmin() {
+    return this.user?.role?.level >= 1;
+  }
 }
