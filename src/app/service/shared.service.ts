@@ -38,7 +38,7 @@ export class SharedService {
       .getCategories()
       .pipe(
         map((res) => {
-          this.categories = res.data.sort(sortArrayByLabelProperty);
+          this.categories = res.data?.sort(sortArrayByLabelProperty);
           return res;
         })
       )

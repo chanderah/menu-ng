@@ -1,6 +1,6 @@
 import SharedUtil from 'src/app/lib/shared.util';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -51,9 +51,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   selectedProduct!: Product;
   showOrderDialog: boolean = false;
 
-  filter: FormGroup = this.formBuilder.group({
-    value: [''],
-  });
+  filterCtrl = new FormControl('');
 
   constructor(
     public app: AppComponent,
@@ -74,10 +72,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
       if (!this.init) this.getProducts();
     });
 
-    this.filter
-      .get('value')
-      .valueChanges.pipe(debounceTime(500))
-      .subscribe(() => this.getProducts());
+    this.filterCtrl.valueChanges.pipe(debounceTime(500)).subscribe(() => this.getProducts());
   }
 
   ngOnInit() {
@@ -87,7 +82,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   async getProducts(e?: LazyLoadEvent) {
     this.isLoading = true;
     this.pagingInfo = {
-      filter: this.filter.get('value').value,
+      filter: this.filterCtrl.value,
       condition: [
         {
           column: 'status',
