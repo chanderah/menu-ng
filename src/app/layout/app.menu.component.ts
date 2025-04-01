@@ -5,6 +5,7 @@ import { SharedService } from '../service/shared.service';
 import { environment } from './../../environments/environment';
 import { AppComponent } from '../app.component';
 import { Category } from '../interface/category';
+import { clearLocalStorage, refreshPage } from '../lib/utils';
 
 @Component({
   selector: 'app-menu',
@@ -30,7 +31,7 @@ import { Category } from '../interface/category';
         </ng-container>
       </ul>
       <p-divider></p-divider>
-      <ng-container *ngIf="sharedService.user?.id">
+      <ng-container *ngIf="sharedService.isLoggedIn">
         <button
           pButton
           pRipple
@@ -157,8 +158,8 @@ export class AppMenuComponent implements OnInit {
   }
 
   onLogout() {
-    this.sharedService.clearLocalStorage();
-    if (this.router.url == '/') this.sharedService.refreshPage();
+    clearLocalStorage();
+    if (this.router.url === '/') refreshPage();
     else this.router.navigate(['/']);
   }
 

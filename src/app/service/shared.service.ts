@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { User } from 'src/app/interface/user';
 import { NotificationDialogComponent } from '../component/_common/notification-dialog/notification-dialog.component';
 import { ShopConfig } from '../interface/shop_config';
-import { jsonParse, jsonStringify, sortArrayByLabelProperty } from '../lib/utils';
+import { clearLocalStorage, jsonParse, jsonStringify, sortArrayByLabelProperty } from '../lib/utils';
 import { BehaviorSubject, map } from 'rxjs';
 import { Category } from '../interface/category';
 import { ApiService } from './api.service';
@@ -45,6 +45,15 @@ export class SharedService {
       .subscribe();
   }
 
+  logoutUser() {
+    clearLocalStorage();
+    this.user = null;
+  }
+
+  get isLoggedIn() {
+    return !!this.user?.id;
+  }
+
   get user() {
     return this._user.getValue();
   }
@@ -53,6 +62,8 @@ export class SharedService {
     if (user?.id) {
       localStorage.setItem('user', jsonStringify(user));
       this._user.next(user);
+    } else {
+      this._user.next(null);
     }
   }
 
@@ -133,14 +144,6 @@ export class SharedService {
         },
       });
     });
-  }
-
-  clearLocalStorage() {
-    localStorage.clear();
-  }
-
-  refreshPage() {
-    window.location.reload();
   }
 
   get isAdmin() {

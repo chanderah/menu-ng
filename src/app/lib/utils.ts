@@ -82,3 +82,11 @@ export const toLetter = (num: number) => {
   }
   return String.fromCharCode(num + 97);
 };
+
+export const clearLocalStorage = () => {
+  localStorage.clear();
+};
+
+export const refreshPage = () => {
+  window.location.reload();
+};

@@ -6,43 +6,43 @@ import { OrderService } from '../service/order.service';
 import { SharedService } from '../service/shared.service';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class CustomerGuard implements CanActivate {
-    constructor(
-        private router: Router,
-        private sharedService: SharedService,
-        private orderService: OrderService
-    ) {}
+  constructor(
+    private router: Router,
+    private sharedService: SharedService,
+    private orderService: OrderService
+  ) {}
 
-    canActivate(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        if (route.queryParamMap.has('table')) {
-            this.orderService.setCustomerInfo({
-                tableId: Number(route.queryParamMap.get('table')),
-                createdAt: new Date(),
-            });
-            this.router.navigateByUrl('/');
-        } else {
-            if (isEmpty(this.orderService.getCustomerInfo())) {
-                if (!this.sharedService.user?.id) {
-                    this.router.navigateByUrl('/customer', { skipLocationChange: true });
-                }
-            } else this.checkExpiry();
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (route.queryParamMap.has('table')) {
+      this.orderService.setCustomerInfo({
+        tableId: Number(route.queryParamMap.get('table')),
+        createdAt: new Date(),
+      });
+      this.router.navigateByUrl('/');
+    } else {
+      if (isEmpty(this.orderService.getCustomerInfo())) {
+        if (!this.sharedService.isLoggedIn) {
+          this.router.navigateByUrl('/customer', { skipLocationChange: true });
         }
-        return true;
+      } else this.checkExpiry();
     }
+    return true;
+  }
 
-    checkExpiry() {
-        const customerInfo = this.orderService.getCustomerInfo();
-        if (
-            isNaN(customerInfo.tableId) ||
-            !customerInfo.createdAt ||
-            new Date(customerInfo.createdAt).getDate() < new Date().getDate()
-        ) {
-            localStorage.removeItem('customer');
-        }
+  checkExpiry() {
+    const customerInfo = this.orderService.getCustomerInfo();
+    if (
+      isNaN(customerInfo.tableId) ||
+      !customerInfo.createdAt ||
+      new Date(customerInfo.createdAt).getDate() < new Date().getDate()
+    ) {
+      localStorage.removeItem('customer');
     }
+  }
 }

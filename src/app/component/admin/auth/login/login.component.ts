@@ -8,48 +8,52 @@ import { ApiService } from '../../../../service/api.service';
 import { SharedService } from './../../../../service/shared.service';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent extends SharedUtil implements OnInit {
-    config: AppConfig;
+  config: AppConfig;
 
-    isLoading: boolean = false;
-    form: FormGroup;
+  isLoading: boolean = false;
+  form: FormGroup;
 
-    constructor(
-        public configService: ConfigService,
-        private sharedService: SharedService,
-        private router: Router,
-        private apiService: ApiService,
+  constructor(
+    public configService: ConfigService,
+    private sharedService: SharedService,
+    private router: Router,
+    private apiService: ApiService,
+    private formBuilder: FormBuilder
+  ) {
+    super();
 
-        private formBuilder: FormBuilder
-    ) {
-        super();
-        this.form = this.formBuilder.group({
-            username: ['', Validators.required],
-            password: ['', [Validators.minLength(8), Validators.required]],
-        });
+    if (router.getCurrentNavigation()?.extras?.state?.expired) {
+      this.sharedService.logoutUser();
     }
+  }
 
-    ngOnInit(): void {
-        this.config = this.configService.config;
-        this.sharedService.user$.subscribe((v) => {
-            if (v.id) this.router.navigate(['/']);
-        });
-    }
+  ngOnInit(): void {
+    this.config = this.configService.config;
+    this.form = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', [Validators.minLength(8), Validators.required]],
+    });
 
-    onSubmit() {
-        this.isLoading = true;
-        this.apiService.login(this.form.value).subscribe((res) => {
-            this.isLoading = false;
-            if (res.status === 200) {
-                console.log('res', res.data);
-                this.sharedService.user = res.data;
-                // this.router.navigate(['/']);
-                this.sharedService.successToast('Login success!');
-            } else this.sharedService.errorToast('Failed to authorize the user!');
-        });
-    }
+    this.sharedService.user$.subscribe(() => {
+      if (this.sharedService.isLoggedIn) this.router.navigateByUrl('/');
+    });
+  }
+
+  onSubmit() {
+    this.isLoading = true;
+    this.apiService.login(this.form.value).subscribe((res) => {
+      this.isLoading = false;
+      if (res.status === 200) {
+        console.log('res', res.data);
+        this.sharedService.user = res.data;
+        // this.router.navigate(['/']);
+        this.sharedService.successToast('Login success!');
+      } else this.sharedService.errorToast('Failed to authorize the user!');
+    });
+  }
 }

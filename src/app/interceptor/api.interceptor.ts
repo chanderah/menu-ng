@@ -13,10 +13,14 @@ import { isDevelopment, jsonParse } from '../lib/utils';
 import { Aes256Service } from '../service/aes256.service';
 import { environment } from 'src/environments/environment';
 import { User } from '../interface/user';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-  constructor(private aes256Service: Aes256Service) {}
+  constructor(
+    private router: Router,
+    private aes256Service: Aes256Service
+  ) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (req.url.includes('.json')) return next.handle(req);
@@ -53,12 +57,24 @@ export class ApiInterceptor implements HttpInterceptor {
         err = err.error?.message
           ? err.error
           : {
-              status: err.status === 0 ? HttpStatusCode.InternalServerError : err.status,
-              message: err.message ? err.message : 'Something went wrong.',
+              status: err.status || HttpStatusCode.InternalServerError,
+              message: err.message ?? 'Something went wrong.',
             };
+
+        const isLoggingIn = req.url.includes('/user/login');
+        if (!isLoggingIn && err.status === HttpStatusCode.Unauthorized) {
+          this.handleUnathorizedRequest();
+        }
+
         if (isDevelopment) console.error('ERROR:', req.method, req.url, err, req.body);
         return of(new HttpResponse({ body: err }));
       })
     );
+  }
+
+  handleUnathorizedRequest() {
+    this.router.navigateByUrl('/login', {
+      state: { expired: true },
+    });
   }
 }

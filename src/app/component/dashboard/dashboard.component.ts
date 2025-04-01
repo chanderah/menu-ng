@@ -1,6 +1,6 @@
 import SharedUtil from 'src/app/lib/shared.util';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -60,8 +60,6 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    // private orderService: OrderService,
-    private formBuilder: FormBuilder,
     private apiService: ApiService
   ) {
     super();
@@ -97,15 +95,18 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
     if (this.currentMenu) {
       this.selectedCategory = this.sharedService.categories.find((v) => v.param === this.currentMenu);
-      if (!this.selectedCategory) this.router.navigateByUrl('/');
-      else this.pagingInfo.condition.push({ column: 'category_id', value: this.selectedCategory.id });
+      if (this.selectedCategory) {
+        this.pagingInfo.condition.push({ column: 'category_id', value: this.selectedCategory.id });
+      } else {
+        this.router.navigateByUrl('/');
+      }
     }
 
-    this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
+    this.apiService.getProducts(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
         this.products = res.data;
-        if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
+        this.pagingInfo.rowCount = res.rowCount;
       } else this.sharedService.errorToast(res.message);
     });
   }

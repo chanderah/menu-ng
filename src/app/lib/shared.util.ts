@@ -3,10 +3,12 @@ import { environment } from 'src/environments/environment';
 import {
   capitalize,
   capitalizeFirstLetter,
+  clearLocalStorage,
   getImageUrl,
   isEmpty,
   jsonParse,
   jsonStringify,
+  refreshPage,
   toAscii,
   toLetter,
 } from './utils';
@@ -48,5 +50,13 @@ export default class SharedUtil {
 
   toLetter(num: number) {
     return toLetter(num);
+  }
+
+  clearLocalStorage() {
+    return clearLocalStorage();
+  }
+
+  refreshPage() {
+    return refreshPage();
   }
 }

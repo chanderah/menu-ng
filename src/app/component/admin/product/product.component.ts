@@ -64,7 +64,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
       price: [0, [Validators.required]],
       featured: [false],
       status: [true],
-      userCreated: ['', [Validators.required]],
+      userCreated: [0, [Validators.required]],
       options: this.formBuilder.array([]),
     });
   }
