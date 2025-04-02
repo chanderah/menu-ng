@@ -114,9 +114,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     this.isLoading = true;
     this.apiService.saveProduct(this.productForm.value, [this.selectedProductImage?.file]).subscribe((res) => {
       if (res.status === 200) {
-        console.log('res', res);
-        this.isLoading = false;
-        // this.getProducts();
+        this.getProducts();
       } else {
         this.isLoading = false;
         this.sharedService.errorToast(res.message);
