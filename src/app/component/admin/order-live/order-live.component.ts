@@ -4,22 +4,22 @@ import { Order } from 'src/app/interface/order';
 import { MessagingService } from 'src/app/service/messaging.service';
 import { environment } from '../../../../environments/environment';
 import { PagingInfo } from '../../../interface/paging_info';
-import { User } from '../../../interface/user';
 import { ApiService } from '../../../service/api.service';
 import { SharedService } from '../../../service/shared.service';
-import { isEmpty, jsonParse, refreshPage } from 'src/app/lib/utils';
+import { isEmpty, refreshPage } from 'src/app/lib/utils';
+import SharedUtil from 'src/app/lib/shared.util';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-order-live',
   templateUrl: './order-live.component.html',
   styleUrls: ['./order-live.component.scss', '../../../../assets/user.styles.scss'],
 })
-export class OrderLiveComponent implements OnInit, AfterViewInit {
+export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewInit {
   isLoading: boolean = true;
   rowsPerPageOptions: number[] = [20, 50, 100];
   dialogBreakpoints = { '768px': '90vw' };
 
-  user = {} as User;
   pagingInfo = {} as PagingInfo;
   audio = new Audio('../../../../../assets/sound/bell.mp3');
 
@@ -34,7 +34,7 @@ export class OrderLiveComponent implements OnInit, AfterViewInit {
     {
       label: 'Done',
       icon: 'pi pi-fw pi-check',
-      command: () => this.markAsDone(this.selectedOrder.id, this.selectedOrder.id),
+      command: () => this.markAsDone([this.selectedOrder.id]),
     },
   ];
 
@@ -45,10 +45,11 @@ export class OrderLiveComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService,
     private apiService: ApiService,
     private messagingService: MessagingService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
-    this.user = jsonParse(localStorage.getItem('user')) as User;
     this.pagingInfo.limit = this.rowsPerPageOptions[0];
   }
 
@@ -73,12 +74,10 @@ export class OrderLiveComponent implements OnInit, AfterViewInit {
           }
         } else refreshPage();
 
-        this.messagingService.messages.subscribe((res) => {
-          if (res) this.getOrders();
-        });
-
-        navigator.serviceWorker.addEventListener('message', (e) => {
-          if (e.data === 'new-order') return this.getOrders();
+        this.messagingService.messages$.pipe(debounceTime(300)).subscribe((res) => {
+          if (res.length && res[res.length - 1].notification.title.toLowerCase().includes('new order')) {
+            this.getOrders();
+          }
         });
       }
     });
@@ -96,7 +95,9 @@ export class OrderLiveComponent implements OnInit, AfterViewInit {
           if (this.orders.length > 0) {
             if (lastFetchedId === 0) {
               this.orders = res.data;
+              console.log('atas');
             } else {
+              console.log('bawah');
               this.orders = res.data.concat(this.orders).slice(0, this.pagingInfo.limit);
               this.showNewOrdersNotification(res.data.length);
             }
@@ -120,21 +121,23 @@ export class OrderLiveComponent implements OnInit, AfterViewInit {
   }
 
   countAwaitingOrders() {
-    this.awaitingOrdersCount = this.orders.filter((v) => !v.isCompleted).length;
+    this.awaitingOrdersCount = this.orders.filter((v) => !v.isServed).length;
   }
 
-  markAsDone(fromId: number, toId: number) {
-    this.apiService.markOrderAsDone(fromId, toId).subscribe((res) => {
+  markAsDone(listId: number[]) {
+    if (!listId.length) return;
+    this.apiService.markOrderAsDone(listId).subscribe((res) => {
       if (res.status === 200) {
-        this.orders.filter((v) => !v.isCompleted && v.id >= fromId && v.id <= toId).forEach((v) => (v.isCompleted = true));
+        this.showOrderDetailsDialog = false;
+        this.orders.filter((v) => listId.includes(v.id)).forEach((v) => (v.isServed = true));
         this.countAwaitingOrders();
       } else this.sharedService.errorToast('Failed to update orders');
     });
   }
 
   markAllAsDone() {
-    const ids = this.orders.filter((v) => !v.isCompleted).map((v) => v.id);
-    if (ids.length > 0) this.markAsDone(Math.min(...ids), Math.max(...ids));
+    const listId = this.orders.filter((v) => !v.isServed).map((v) => v.id);
+    this.markAsDone(listId);
   }
 
   playSound() {

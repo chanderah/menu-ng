@@ -202,7 +202,7 @@
                 <div class="flex flex-column">
                     <div class="col-12 pb-0" *ngFor="let option of product.options; index as j">
                         <div class="p-inputgroup">
-                            <span class="p-inputgroup-addon font-semibold"> {{ toAscii(j) }} </span>
+                            <span class="p-inputgroup-addon font-semibold"> {{ toLetter(j) }} </span>
                             <label pInputText class="text-capitalize">
                                 {{ option.name + ': ' + option.optionsName }}
                             </label>

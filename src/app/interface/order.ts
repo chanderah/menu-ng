@@ -1,42 +1,42 @@
 import { Product } from 'src/app/interface/product';
 
 export interface Order {
-    id?: number;
-    orderCode?: string;
-    tableId: number;
-    totalPrice: number;
-    createdAt: Date;
+  id?: number;
+  orderCode?: string;
+  tableId: number;
+  totalPrice: number;
+  createdAt: Date;
 
-    isCompleted: boolean;
+  isServed: boolean;
 
-    products: Product[];
-    productsName?: string;
+  products: Product[];
+  productsName?: string;
 }
 
 export interface OrderReceipt {
-    id?: number;
-    tableId: number;
-    orderCode: string;
-    paymentMethod: PaymentMethod;
+  id?: number;
+  tableId: number;
+  orderCode: string;
+  paymentMethod: PaymentMethod;
 
-    taxes: number;
-    subTotal: number;
-    total?: number;
-    receivedAmount: number;
-    changes?: number;
+  taxes: number;
+  subTotal: number;
+  total?: number;
+  receivedAmount: number;
+  changes?: number;
 
-    products: Product[];
+  products: Product[];
 
-    issuedAt: Date;
-    createdAt: Date;
+  issuedAt: Date;
+  createdAt: Date;
 }
 
 export interface PaymentMethod {
-    id: number;
-    name: string;
-    accountName: string;
-    accountNumber: number;
+  id: number;
+  name: string;
+  accountName: string;
+  accountNumber: number;
 
-    updatedAt: Date;
-    createdAt: Date;
+  updatedAt: Date;
+  createdAt: Date;
 }

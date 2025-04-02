@@ -66,8 +66,8 @@
                         [pContextMenuRow]="data"
                         (click)="viewOrder(data)"
                         [style]="{
-                            background: data.isCompleted ? '#c8e6c9' : '#ffcdd2',
-                            color: data.isCompleted ? '#256029' : '#c63737',
+                            background: data.isServed? '#c8e6c9' : '#ffcdd2',
+                            color: data.isServed ? '#256029' : '#c63737',
                             border: '1px'
                         }">
                         <td style="width: 40px" class="text-center">
@@ -131,7 +131,7 @@
                 <div class="flex flex-column">
                     <div class="col-12 pb-0" *ngFor="let option of product.options; index as j">
                         <div class="p-inputgroup">
-                            <span class="p-inputgroup-addon font-semibold"> {{ toAscii(j) }} </span>
+                            <span class="p-inputgroup-addon font-semibold"> {{ toLetter(j) }} </span>
                             <label pInputText class="text-capitalize">
                                 {{ option.name + ': ' + option.optionsName }}
                             </label>
@@ -151,13 +151,13 @@
                 class="w-auto p-button-danger p-button-outlined">
             </button>
             <button
+                *ngIf="!selectedOrder.isServed"
                 pButton
                 pRipple
-                *ngIf="!selectedOrder.isCompleted"
                 icon="pi pi-check"
                 class="w-auto p-button-outlined"
                 label="Done"
-                (click)="markAsDone(selectedOrder.id, selectedOrder.id)"
+                (click)="markAsDone([selectedOrder.id])"
                 [disabled]="isLoading">
             </button>
         </div>

@@ -1,10 +1,23 @@
 import { Injectable } from '@angular/core';
 import { FirebaseOptions, initializeApp } from 'firebase/app';
-import { Messaging, getMessaging, getToken, onMessage } from 'firebase/messaging';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Messaging, getMessaging, getToken } from 'firebase/messaging';
+import { BehaviorSubject } from 'rxjs';
 
 export interface FirebaseConfig extends FirebaseOptions {
   vapidKey: string;
+}
+
+export interface FcmMessage {
+  fcmMessageId: string;
+  priority: string;
+  from: string;
+  isFirebaseMessaging: boolean;
+  messageType: string;
+  notification: {
+    title: string;
+    body: string;
+    click_action: string;
+  };
 }
 
 @Injectable({
@@ -15,27 +28,23 @@ export interface FirebaseConfig extends FirebaseOptions {
  * FCM Notification Service
  */
 export class MessagingService {
-  private messages$: Subject<any> = new BehaviorSubject(null);
-  private fcmUrl: string = 'https://fcm.googleapis.com/v1/projects/menukita-56209/messages:send';
-  private fcmToken!: any;
+  private _messages = new BehaviorSubject<FcmMessage[]>([]);
+  messages$ = this._messages.asObservable();
 
-  private messaging: Messaging;
+  private messaging!: Messaging;
 
   constructor() {}
-
-  get messages() {
-    return this.messages$.asObservable();
-  }
 
   async registerFcm(firebaseConfig: FirebaseConfig, retry: boolean = true): Promise<string> {
     return new Promise((resolve, reject) => {
       const firebaseApp = initializeApp(firebaseConfig);
       this.messaging = getMessaging(firebaseApp);
+
       getToken(this.messaging, {
         vapidKey: firebaseConfig.vapidKey,
       })
         .then((token) => {
-          onMessage(this.messaging, (res) => this.messages$.next(res));
+          navigator.serviceWorker.addEventListener('message', (e) => (this.messages = [...this.messages, e.data]));
           resolve(token);
         })
         .catch((err) => {
@@ -58,5 +67,13 @@ export class MessagingService {
         )
         .then(() => resolve(true));
     });
+  }
+
+  get messages() {
+    return this._messages.getValue();
+  }
+
+  set messages(data: FcmMessage[]) {
+    this._messages.next(data);
   }
 }

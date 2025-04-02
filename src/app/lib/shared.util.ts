@@ -9,7 +9,6 @@ import {
   jsonParse,
   jsonStringify,
   refreshPage,
-  toAscii,
   toLetter,
 } from './utils';
 
@@ -31,10 +30,6 @@ export default class SharedUtil {
   capitalizeFirstLetter = (str: string) => {
     return capitalizeFirstLetter(str);
   };
-
-  toAscii(num: number) {
-    return toAscii(num);
-  }
 
   jsonParse(obj: string) {
     return jsonParse(obj);

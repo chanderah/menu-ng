@@ -128,8 +128,8 @@ export class ApiService {
     return this.httpClient.post<any>('/product/delete', product);
   }
 
-  markOrderAsDone(fromId: number, toId: number) {
-    return this.httpClient.post<any>('/order/markAsDone', { fromId, toId });
+  markOrderAsDone(listId: number[]) {
+    return this.httpClient.post<any>('/order/markAsDone', { listId });
   }
 
   getLiveOrders(lastFetchedId: number, limit: number) {
