@@ -9,18 +9,7 @@ import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import { enableBodyScroll, fadeInOut, isMobile, moveUp } from 'src/app/lib/utils';
-import SwiperCore, {
-  A11y,
-  Autoplay,
-  Controller,
-  Navigation,
-  Pagination,
-  Scrollbar,
-  SwiperOptions,
-  Thumbs,
-  Virtual,
-  Zoom,
-} from 'swiper';
+import SwiperCore, { A11y, Autoplay, Controller, Navigation, Pagination, Scrollbar, SwiperOptions, Thumbs, Virtual, Zoom } from 'swiper';
 import { SharedService } from '../../service/shared.service';
 import { PagingInfo } from './../../interface/paging_info';
 import { ApiService } from './../../service/api.service';
@@ -115,31 +104,29 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
   initSwiper() {
     if (!this.swiperOptions && !this.selectedCategory) {
-      this.apiService
-        .getProducts({ limit: 10, condition: [{ column: 'featured', value: true }] })
-        .subscribe((res: any) => {
-          if (res.status === 200) {
-            this.featuredProducts = res.data;
-            this.swiperOptions = {
-              autoHeight: true,
-              autoplay: {
-                delay: 2500,
-                pauseOnMouseEnter: true,
-                disableOnInteraction: false,
+      this.apiService.getProducts({ limit: 10, condition: [{ column: 'featured', value: true }] }).subscribe((res) => {
+        if (res.status === 200) {
+          this.featuredProducts = res.data;
+          this.swiperOptions = {
+            autoHeight: true,
+            autoplay: {
+              delay: 2500,
+              pauseOnMouseEnter: true,
+              disableOnInteraction: false,
+            },
+            loop: true,
+            centeredSlides: true,
+            breakpoints: {
+              0: {
+                slidesPerView: 1,
               },
-              loop: true,
-              centeredSlides: true,
-              breakpoints: {
-                0: {
-                  slidesPerView: 1,
-                },
-                768: {
-                  slidesPerView: 4,
-                },
+              768: {
+                slidesPerView: 4,
               },
-            };
-          }
-        });
+            },
+          };
+        }
+      });
     }
   }
 

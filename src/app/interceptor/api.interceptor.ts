@@ -42,7 +42,7 @@ export class ApiInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       filter((e) => e?.type !== 0),
-      map((res: any) => {
+      map((res) => {
         if (res instanceof HttpResponse) {
           if (res.body?.encryptedData) {
             res = res.clone({

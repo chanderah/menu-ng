@@ -80,7 +80,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     };
 
     this.isLoading = true;
-    this.apiService.getProducts(this.pagingInfo).subscribe((res: any) => {
+    this.apiService.getProducts(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
         this.products = res.data;
@@ -146,7 +146,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
     this.sharedService.showConfirm('Are you sure to delete this product?').then((res) => {
       if (res) {
         this.isLoading = true;
-        this.apiService.deleteProduct(this.selectedProduct).subscribe((res: any) => {
+        this.apiService.deleteProduct(this.selectedProduct).subscribe((res) => {
           this.isLoading = false;
           if (res.status === 200) {
             this.getProducts();

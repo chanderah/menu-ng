@@ -66,7 +66,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
   onDeleteCategory() {
     if (this.isEmpty(this.selectedCategory)) return;
     this.isLoading = true;
-    this.apiService.deleteCategory(this.form.value).subscribe((res: any) => {
+    this.apiService.deleteCategory(this.form.value).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
         this.refreshPage();
@@ -82,7 +82,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
 
   onEditCategory() {
     if (this.isEmpty(this.selectedCategory)) return;
-    this.apiService.findCategoryById(this.selectedCategory as Category).subscribe((res: any) => {
+    this.apiService.findCategoryById(this.selectedCategory as Category).subscribe((res) => {
       if (res.status === 200) {
         this.form.patchValue(res.data);
         this.showCategoryDialog = true;

@@ -83,7 +83,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
 
   onSubmit() {
     this.isLoading = true;
-    this.orderService.createOrder(this.cartForm.value).then((res: any) => {
+    this.orderService.createOrder(this.cartForm.value).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
         this.app.hideTopMenu();

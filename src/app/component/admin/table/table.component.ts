@@ -76,7 +76,7 @@ export class TableComponent extends SharedUtil implements OnInit {
       sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
     };
 
-    this.apiService.getTables(this.pagingInfo).subscribe((res: any) => {
+    this.apiService.getTables(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
         this.tables = res.data;
@@ -91,7 +91,7 @@ export class TableComponent extends SharedUtil implements OnInit {
     this.isLoading = true;
     try {
       if (this.isEmpty(this.selectedTable)) {
-        this.apiService.createTable(this.tableForm.value).subscribe((res: any) => {
+        this.apiService.createTable(this.tableForm.value).subscribe((res) => {
           if (res.status === 200) {
             this.getTables();
             this.sharedService.successToast('Success!');
@@ -100,7 +100,7 @@ export class TableComponent extends SharedUtil implements OnInit {
           }
         });
       } else {
-        this.apiService.updateTable(this.tableForm.value).subscribe((res: any) => {
+        this.apiService.updateTable(this.tableForm.value).subscribe((res) => {
           if (res.status === 200) {
             this.getTables();
             this.sharedService.successToast('Success!');

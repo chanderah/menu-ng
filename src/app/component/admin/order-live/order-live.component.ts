@@ -67,7 +67,7 @@ export class OrderLiveComponent implements OnInit, AfterViewInit {
           if (fcmToken != this.sharedService.user.fcmToken) {
             const user = { ...this.sharedService.user };
             user.fcmToken = fcmToken;
-            this.apiService.updateFcmToken(user).subscribe((res: any) => {
+            this.apiService.updateFcmToken(user).subscribe((res) => {
               if (res.status === 200) this.sharedService.user = user;
             });
           }
@@ -124,7 +124,7 @@ export class OrderLiveComponent implements OnInit, AfterViewInit {
   }
 
   markAsDone(fromId: number, toId: number) {
-    this.apiService.markOrderAsDone(fromId, toId).subscribe((res: any) => {
+    this.apiService.markOrderAsDone(fromId, toId).subscribe((res) => {
       if (res.status === 200) {
         this.orders.filter((v) => !v.isCompleted && v.id >= fromId && v.id <= toId).forEach((v) => (v.isCompleted = true));
         this.countAwaitingOrders();
