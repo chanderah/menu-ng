@@ -59,12 +59,7 @@ export class MessagingService {
     return new Promise((resolve) => {
       navigator.serviceWorker
         .getRegistrations()
-        .then((reg) =>
-          reg.map((r) => {
-            console.log(r);
-            r.unregister();
-          })
-        )
+        .then((reg) => reg.map((r) => r.unregister()))
         .then(() => resolve(true));
     });
   }

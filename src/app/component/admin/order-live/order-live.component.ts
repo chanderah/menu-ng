@@ -60,7 +60,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
   initFcm() {
     Notification.requestPermission(async (permission: NotificationPermission) => {
       if (permission === 'denied') {
-        this.sharedService.showNotification('Please refresh page & allow our browser notification!', '😢', 90000);
+        this.sharedService.showNotification('Please allow our browser notification and refresh page!', '😢', 90000);
       } else if (permission === 'granted') {
         this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
         const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
@@ -95,9 +95,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
           if (this.orders.length > 0) {
             if (lastFetchedId === 0) {
               this.orders = res.data;
-              console.log('atas');
             } else {
-              console.log('bawah');
               this.orders = res.data.concat(this.orders).slice(0, this.pagingInfo.limit);
               this.showNewOrdersNotification(res.data.length);
             }
