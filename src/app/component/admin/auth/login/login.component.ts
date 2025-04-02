@@ -27,8 +27,10 @@ export class LoginComponent extends SharedUtil implements OnInit {
   ) {
     super();
 
-    if (router.getCurrentNavigation()?.extras?.state?.expired) {
+    const state = router.getCurrentNavigation()?.extras?.state;
+    if (state?.expired || state?.logout) {
       this.sharedService.logoutUser();
+      if (state.logout) sharedService.showToast('success', 'Successfully logged out.');
     }
   }
 
@@ -36,7 +38,7 @@ export class LoginComponent extends SharedUtil implements OnInit {
     this.config = this.configService.config;
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', [Validators.minLength(8), Validators.required]],
+      password: ['', [Validators.minLength(5), Validators.required]],
     });
 
     this.sharedService.user$.subscribe(() => {

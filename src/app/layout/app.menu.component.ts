@@ -5,7 +5,6 @@ import { SharedService } from '../service/shared.service';
 import { environment } from './../../environments/environment';
 import { AppComponent } from '../app.component';
 import { Category } from '../interface/category';
-import { clearLocalStorage, refreshPage } from '../lib/utils';
 
 @Component({
   selector: 'app-menu',
@@ -32,14 +31,7 @@ import { clearLocalStorage, refreshPage } from '../lib/utils';
       </ul>
       <p-divider></p-divider>
       <ng-container *ngIf="sharedService.isLoggedIn">
-        <button
-          pButton
-          pRipple
-          type="button"
-          (click)="onLogout()"
-          icon="pi pi-power-off"
-          label="Logout"
-          class="p-button-outlined"></button>
+        <button pButton pRipple type="button" (click)="onLogout()" icon="pi pi-power-off" label="Logout" class="p-button-outlined"></button>
       </ng-container>
     </div>
   `,
@@ -158,9 +150,9 @@ export class AppMenuComponent implements OnInit {
   }
 
   onLogout() {
-    clearLocalStorage();
-    if (this.router.url === '/') refreshPage();
-    else this.router.navigate(['/']);
+    this.router.navigateByUrl('/login', {
+      state: { logout: true },
+    });
   }
 
   isAdminMenu(menu: Menu) {

@@ -35,11 +35,11 @@ export class UserComponent extends SharedUtil implements OnInit {
 
     this.form = this.formBuilder.group({
       id: [null],
-      name: ['', [Validators.maxLength(255), Validators.required]],
-      username: ['', [Validators.maxLength(255), Validators.required]],
-      password: ['', [Validators.maxLength(255), Validators.required]],
-      roleId: ['', [Validators.maxLength(255), Validators.required]],
-      status: [true, [Validators.maxLength(255), Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
+      password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(255)]],
+      roleId: [null, [Validators.required]],
+      status: [true, [Validators.required]],
       createdAt: [null],
     });
   }

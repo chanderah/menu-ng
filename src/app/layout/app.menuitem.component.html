@@ -1,4 +1,4 @@
-<ng-container>
+<ng-container *ngIf="!item.role || sharedService.hasAccess(item.role)">
     <ng-container *ngIf="(!item.routerLink || item.items) && item.visible !== false">
         <a (click)="itemClick($event)" pRipple [ngClass]="item.class" [attr.href]="item.url" [attr.target]="item.target"
             [attr.tabindex]="0" [attr.aria-label]="item.label" role="menuitem">

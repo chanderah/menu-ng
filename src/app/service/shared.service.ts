@@ -146,6 +146,10 @@ export class SharedService {
     });
   }
 
+  hasAccess(requiredRoleLevel: number) {
+    return this.user?.role?.level >= requiredRoleLevel;
+  }
+
   get isAdmin() {
     return this.user?.role?.level >= 1;
   }

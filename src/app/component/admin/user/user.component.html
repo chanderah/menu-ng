@@ -1,129 +1,180 @@
 <div class="grid">
-    <div class="col-12">
-        <div class="card">
-            <div class="flex align-items-center justify-content-between mb-4">
-                <h5 class="category-title">Users</h5>
-                <div class="flex gap-2">
-                    <button pButton pRipple class="p-button" label="Edit" [disabled]="isEmpty(selectedUser)"
-                        (click)="onEdit()">
-                    </button>
-                    <button pButton pRipple class="p-button" (click)="onAdd()" label="Add"></button>
-                </div>
-            </div>
-            <p-table #tb dataKey="id" [paginator]="true" [pageLinks]="3" [loading]="isLoading"
-                [rowsPerPageOptions]="[10, 20, 50, 100]" [rows]="10" [totalRecords]="pagingInfo.rowCount" [lazy]="true"
-                [filterDelay]="500" (onLazyLoad)="getUsers($event)" [value]="users" [rowHover]="true"
-                [scrollable]="true" scrollDirection="both" selectionMode="single" [(selection)]="selectedUser"
-                responsiveLayout="scroll">
-                <ng-template pTemplate="caption">
-                    <div class="flex justify-content-end flex-column sm:flex-row">
-                        <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="search" (input)="tb.filterGlobal($event.target.value, 'contains')"
-                                placeholder="Search ..." class="w-full" />
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="id">No<p-sortIcon field="id"></p-sortIcon> </th>
-                        <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon> </th>
-                        <th pSortableColumn="username">Username<p-sortIcon field="username"></p-sortIcon> </th>
-                        <th pSortableColumn="username">Role<p-sortIcon field="role"></p-sortIcon> </th>
-                        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon> </th>
-                        <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon> </th>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="body" let-data let-i="rowIndex">
-                    <tr [pSelectableRow]="data">
-                        <td>
-                            {{ data.id }}
-                        </td>
-                        <td>
-                            {{ data.name }}
-                        </td>
-                        <td>
-                            {{ data.username }}
-                        </td>
-                        <td>
-                            <span class="product-badge">
-                                {{ data.role.label }}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="product-badge">
-                                {{ data.status ? 'Active' : 'Inactive' }}
-                            </span>
-                        </td>
-                        <td style="min-width: 8rem">{{ data.createdAt | date: 'MMM d, y' }}</td>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="emptymessage" let-columns>
-                    <tr>
-                        <td colspan="100%">
-                            <div class="flex my-3 align-items-center justify-content-center"> No results found. </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+  <div class="col-12">
+    <div class="card">
+      <div class="flex align-items-center justify-content-between mb-4">
+        <h5 class="category-title">Users</h5>
+        <div class="flex gap-2">
+          <button pButton pRipple class="p-button" label="Edit" [disabled]="isEmpty(selectedUser)" (click)="onEdit()"></button>
+          <button pButton pRipple class="p-button" (click)="onAdd()" label="Add"></button>
         </div>
+      </div>
+      <p-table
+        #tb
+        dataKey="id"
+        [paginator]="true"
+        [pageLinks]="3"
+        [loading]="isLoading"
+        [rowsPerPageOptions]="[10, 20, 50, 100]"
+        [rows]="10"
+        [totalRecords]="pagingInfo.rowCount"
+        [lazy]="true"
+        [filterDelay]="500"
+        (onLazyLoad)="getUsers($event)"
+        [value]="users"
+        [rowHover]="true"
+        [scrollable]="true"
+        scrollDirection="both"
+        selectionMode="single"
+        [(selection)]="selectedUser"
+        responsiveLayout="scroll">
+        <ng-template pTemplate="caption">
+          <div class="flex justify-content-end flex-column sm:flex-row">
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="search"
+                (input)="tb.filterGlobal($event.target.value, 'contains')"
+                placeholder="Search ..."
+                class="w-full" />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="id">No<p-sortIcon field="id"></p-sortIcon></th>
+            <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="username">Username<p-sortIcon field="username"></p-sortIcon></th>
+            <th pSortableColumn="username">Role<p-sortIcon field="role"></p-sortIcon></th>
+            <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+            <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-data let-i="rowIndex">
+          <tr [pSelectableRow]="data">
+            <td>
+              {{ data.id }}
+            </td>
+            <td>
+              {{ data.name }}
+            </td>
+            <td>
+              {{ data.username }}
+            </td>
+            <td>
+              <span class="product-badge">
+                {{ data.role.label }}
+              </span>
+            </td>
+            <td>
+              <span class="product-badge">
+                {{ data.status ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td style="min-width: 8rem">{{ data.createdAt | date: 'MMM d, y' }}</td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td colspan="100%">
+              <div class="flex my-3 align-items-center justify-content-center">No results found.</div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
+  </div>
 </div>
 
 <!-- DIALOG -->
-<p-dialog [maximizable]="true" [header]="selectedUser ? 'Edit User' : 'Add User'" [(visible)]="showUserDialog"
-    (onHide)="resetUserDialog()" [contentStyle]="{ overflow: 'visible' }" [style]="{ width: '40vw', height: 'auto' }"
-    [dismissableMask]="false" [closeOnEscape]="false" [breakpoints]="dialogBreakpoints" [blockScroll]="true"
-    modal="true" showEffect="fade">
-    <div [formGroup]="form" (keyup.enter)="onSubmit()" class="p-fluid px-2">
-        <div class="col-12 mt-3">
-            <div class="field-checkbox mb-0">
-                <p-checkbox label="Active" formControlName="status" binary="true"></p-checkbox>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-user" style="line-height: 1.25"></i></span>
-                <input pInputText type="text" placeholder="Username" formControlName="username" />
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-id-card" style="line-height: 1.25"></i></span>
-                <input pInputText type="text" placeholder="Name" formControlName="name" class="text-capitalize"
-                    autocomplete="off" />
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-key" style="line-height: 1.25"></i></span>
-                <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="false"
-                    placeholder="Password" styleClass="w-full"></p-password>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
-                <p-dropdown [options]="userRoles" placeholder="Role" optionLabel="label" optionValue="id"
-                    formControlName="roleId" class="w-full" [showClear]="true">
-                </p-dropdown>
-            </div>
-        </div>
-
-        <div class="flex mt-4" [ngClass]="selectedUser ? 'justify-content-between' : 'justify-content-end'">
-            <button *ngIf="selectedUser" pButton pRipple (click)="onDelete()" [disabled]="isLoading"
-                class="p-button-danger p-button-outlined" icon="pi pi-trash">
-            </button>
-            <div class="flex gap-2">
-                <button pButton pRipple icon="pi pi-times" (click)="showUserDialog = false" label="Cancel"
-                    [disabled]="isLoading" class="w-auto p-button-danger p-button-outlined">
-                </button>
-                <button pButton pRipple icon="pi pi-check" (click)="onSubmit()" label="Save" [disabled]="isLoading"
-                    class="w-auto p-button-outlined">
-                </button>
-            </div>
-        </div>
+<p-dialog
+  [maximizable]="true"
+  [header]="selectedUser ? 'Edit User' : 'Add User'"
+  [(visible)]="showUserDialog"
+  (onHide)="resetUserDialog()"
+  [contentStyle]="{ overflow: 'visible' }"
+  [style]="{ width: '40vw', height: 'auto' }"
+  [dismissableMask]="false"
+  [closeOnEscape]="false"
+  [breakpoints]="dialogBreakpoints"
+  [blockScroll]="true"
+  modal="true"
+  showEffect="fade">
+  <div [formGroup]="form" (keyup.enter)="onSubmit()" class="p-fluid px-2">
+    <div class="col-12 mt-3">
+      <div class="field-checkbox mb-0">
+        <p-checkbox label="Active" formControlName="status" binary="true"></p-checkbox>
+      </div>
     </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-user" style="line-height: 1.25"></i></span>
+        <input pInputText type="text" placeholder="Username" formControlName="username" autocomplete="off" />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-id-card" style="line-height: 1.25"></i></span>
+        <input pInputText type="text" placeholder="Name" formControlName="name" class="text-capitalize" autocomplete="off" />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-key" style="line-height: 1.25"></i></span>
+        <p-password
+          id="password"
+          formControlName="password"
+          [toggleMask]="true"
+          [feedback]="false"
+          autocomplete="off"
+          placeholder="Password"
+          styleClass="w-full"></p-password>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
+        <p-dropdown
+          [options]="userRoles"
+          placeholder="Role"
+          optionLabel="label"
+          optionValue="id"
+          formControlName="roleId"
+          class="w-full"
+          [showClear]="true">
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="flex mt-4" [ngClass]="selectedUser ? 'justify-content-between' : 'justify-content-end'">
+      <button
+        *ngIf="selectedUser"
+        pButton
+        pRipple
+        (click)="onDelete()"
+        [disabled]="isLoading"
+        class="p-button-danger p-button-outlined"
+        icon="pi pi-trash"></button>
+      <div class="flex gap-2">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-times"
+          (click)="showUserDialog = false"
+          label="Cancel"
+          [disabled]="isLoading"
+          class="w-auto p-button-danger p-button-outlined"></button>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-check"
+          (click)="onSubmit()"
+          label="Save"
+          [disabled]="isLoading || form.invalid"
+          class="w-auto p-button-outlined"></button>
+      </div>
+    </div>
+  </div>
 </p-dialog>
