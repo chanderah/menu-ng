@@ -73,7 +73,7 @@ export const fileToBase64 = (file: File): Promise<string> => {
   });
 };
 
-export const getImageUrl = (filePath: string) => {
+export const getImageSrc = (filePath: string) => {
   return `https://res.cloudinary.com/${environment.cloudinary.cloudName}/image/upload/${filePath}`;
 };
 

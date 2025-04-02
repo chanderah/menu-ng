@@ -4,7 +4,7 @@ import {
   capitalize,
   capitalizeFirstLetter,
   clearLocalStorage,
-  getImageUrl,
+  getImageSrc,
   isEmpty,
   jsonParse,
   jsonStringify,
@@ -44,8 +44,8 @@ export default class SharedUtil {
     return jsonStringify(obj);
   }
 
-  getImageUrl(filePath: string) {
-    return getImageUrl(filePath);
+  getImageSrc(filePath: string) {
+    return getImageSrc(filePath);
   }
 
   toLetter(num: number) {

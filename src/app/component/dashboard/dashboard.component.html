@@ -8,7 +8,7 @@
             <div class="m-2 mb-3" style="cursor: pointer">
               <img
                 [alt]="product.name"
-                [src]="getImageUrl(product.image)"
+                [src]="getImageSrc(product.image)"
                 (click)="onClickProduct(product)"
                 class="shadow-4 object-fit-cover"
                 width="300px"
@@ -64,7 +64,7 @@
       <div class="card mat m-2 surface-border">
         <div class="grid">
           <div class="col-12 mb-2 cursor-pointer pa-2" (click)="onClickProduct(product)">
-            <img class="object-fit-cover w-full shadow-2" [src]="getImageUrl(product.image)" [alt]="product.name" />
+            <img class="object-fit-cover w-full shadow-2" [src]="getImageSrc(product.image)" [alt]="product.name" />
           </div>
           <div class="col-12 mx-4">
             <span class="text-left text-lg text-capitalize font-semibold max-lines-2">
@@ -75,7 +75,13 @@
             <span class="text-left text-md">{{ product.price | custom }}</span>
           </div>
           <div class="col-12 text-center mt-2">
-            <button pButton pRipple label="Add to Cart" class="p-button-rounded p-button-outlined" (click)="onAddToCart(product)" type="button"></button>
+            <button
+              pButton
+              pRipple
+              label="Add to Cart"
+              class="p-button-rounded p-button-outlined"
+              (click)="onAddToCart(product)"
+              type="button"></button>
           </div>
         </div>
         <!-- <div style="cursor: pointer">
@@ -110,5 +116,9 @@
   </ng-template>
 </p-dataView>
 
-<app-order-dialog *ngIf="showOrderDialog" [showDialog]="showOrderDialog" [selectedProduct]="selectedProduct" (onChange)="onShowOrderDialogChange($event)">
+<app-order-dialog
+  *ngIf="showOrderDialog"
+  [showDialog]="showOrderDialog"
+  [selectedProduct]="selectedProduct"
+  (onChange)="onShowOrderDialogChange($event)">
 </app-order-dialog>

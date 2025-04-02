@@ -1,81 +1,86 @@
 <div class="text-center">
-    <p-sidebar id="formDialog" [(visible)]="showDialog" (onHide)="hideDialog()" position="bottom" [blockScroll]="true"
-        [dismissible]="true" [showCloseIcon]="true" [closeOnEscape]="true" [style]="getSidebarStyle()"
-        [autoZIndex]="true" [modal]="true">
-        <!-- [baseZIndex]="1000" -->
-        <ng-template pTemplate="header">
-            <div class="flex justify-content-center w-full" (swipedown)="hideDialog()">
-                <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
+  <p-sidebar
+    id="formDialog"
+    [(visible)]="showDialog"
+    (onHide)="hideDialog()"
+    position="bottom"
+    [blockScroll]="true"
+    [dismissible]="true"
+    [showCloseIcon]="true"
+    [closeOnEscape]="true"
+    [style]="getSidebarStyle()"
+    [autoZIndex]="true"
+    [modal]="true">
+    <!-- [baseZIndex]="1000" -->
+    <ng-template pTemplate="header">
+      <div class="flex justify-content-center w-full" (swipedown)="hideDialog()">
+        <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="content" [formGroup]="cartForm">
+      <div class="grid formgrid px-4">
+        <h5 class="category-title mb-4">Your Cart</h5>
+
+        <div class="col-12">
+          <p-scrollPanel formArrayName="products" [style]="{ width: '100%', height: '60vh', overflow: 'auto' }">
+            <div *ngIf="products().length === 0" class="flex justify-content-center align-items-center w-full h-full">
+              <p class="text-md">Empty</p>
             </div>
-        </ng-template>
-        <ng-template pTemplate="content" [formGroup]="cartForm">
-            <div class="grid formgrid px-4">
-                <h5 class="category-title mb-4">Your Cart</h5>
+            <div *ngFor="let product of products().controls; index as i" [formGroupName]="i" class="my-3">
+              <div class="flex gap-3 align-items-start justify-content-start">
+                <img
+                  [alt]="product.value.name"
+                  [src]="getImageSrc(product.value.image)"
+                  (load)="isLoading = false"
+                  class="shadow-4 object-fit-cover"
+                  style="border-radius: 1rem"
+                  width="80px"
+                  height="80px" />
+                <!-- <div style="display: flex; flex-direction: column"> -->
+                <div class="flex flex-column align-items-start justify-content-between mt-2">
+                  <span class="text-md font-semibold text-capitalize"> {{ i + 1 }}. {{ product.value.name }} </span>
 
-                <div class="col-12">
-                    <p-scrollPanel formArrayName="products"
-                        [style]="{ width: '100%', height: '60vh', overflow: 'auto' }">
-                        <div *ngIf="products().length === 0"
-                            class="flex justify-content-center align-items-center w-full h-full">
-                            <p class="text-md">Empty</p>
-                        </div>
-                        <div *ngFor="let product of products().controls; index as i" [formGroupName]="i" class="my-3">
-                            <div class="flex gap-3 align-items-start justify-content-start">
-                                <img [alt]="product.value.name" [src]="
-                                    getImageUrl(product.value.image)
-                                    " (load)="isLoading = false" class="shadow-4 object-fit-cover"
-                                    style="border-radius: 1rem" width="80px" height="80px" />
-                                <!-- <div style="display: flex; flex-direction: column"> -->
-                                <div class="flex flex-column align-items-start justify-content-between mt-2">
-                                    <span class="text-md font-semibold text-capitalize">
-                                        {{ i + 1 }}. {{ product.value.name }}
-                                    </span>
+                  <div formArrayName="options" class="mt-2 mb-1">
+                    <div *ngFor="let option of options(i).controls; index as j" [formGroupName]="j">
+                      <div class="text-left text-sm">
+                        <span class="font-semibold text-capitalize"> {{ option.value.name }}: </span>
+                        <span class="text-capitalize">
+                          {{ concatOptionValues(option.value.values) }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-                                    <div formArrayName="options" class="mt-2 mb-1">
-                                        <div *ngFor="let option of options(i).controls; index as j" [formGroupName]="j">
-                                            <div class="text-left text-sm">
-                                                <span class="font-semibold text-capitalize">
-                                                    {{ option.value.name }}:
-                                                </span>
-                                                <span class="text-capitalize">
-                                                    {{ concatOptionValues(option.value.values) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                  <label class="font-semibold text-right text-sm" style="margin-top: 0.2rem">
+                    {{ product.value.totalPrice | custom }}
+                  </label>
+                </div>
+              </div>
 
-                                    <label class="font-semibold text-right text-sm" style="margin-top: 0.2rem">
-                                        {{ product.value.totalPrice | custom }}
-                                    </label>
-                                </div>
-                            </div>
+              <div class="p-inputgroup mt-3">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-comment" style="line-height: 1.25"></i>
+                </span>
+                <input pInputText type="text" placeholder="Leave me a note..." formControlName="notes" />
+              </div>
 
-                            <div class="p-inputgroup mt-3">
-                                <span class="p-inputgroup-addon">
-                                    <i class="pi pi-comment" style="line-height: 1.25"></i>
-                                </span>
-                                <input pInputText type="text" placeholder="Leave me a note..."
-                                    formControlName="notes" />
-                            </div>
+              <div class="flex align-items-center justify-content-end gap-3 mt-3">
+                <button pButton pRipple icon="pi pi-trash" class="p-button-text" (click)="deleteProduct(i)"></button>
 
-                            <div class="flex align-items-center justify-content-end gap-3 mt-3">
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-text"
-                                    (click)="deleteProduct(i)">
-                                </button>
+                <button pButton pRipple icon="pi pi-minus" class="p-button-outlined p-button-rounded" (click)="decrement(i)"></button>
 
-                                <button pButton pRipple icon="pi pi-minus" class="p-button-outlined p-button-rounded"
-                                    (click)="decrement(i)">
-                                </button>
+                <label class="font-bold">{{ product.value.quantity }}</label>
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-plus"
+                  class="p-button-outlined p-button-rounded p-button-quantity"
+                  (click)="increment(i)"></button>
+              </div>
 
-                                <label class="font-bold">{{ product.value.quantity }}</label>
-                                <button pButton pRipple icon="pi pi-plus"
-                                    class="p-button-outlined p-button-rounded p-button-quantity" (click)="increment(i)">
-                                </button>
-                            </div>
+              <p-divider></p-divider>
 
-                            <p-divider></p-divider>
-
-                            <!-- <div formArrayName="options">
+              <!-- <div formArrayName="options">
                                     <div
                                         *ngFor="let option of options(i).controls; index as j"
                                         [formGroupName]="i"
@@ -115,24 +120,27 @@
                                         </div>
                                     </div>
                                 </div> -->
-                        </div>
-                    </p-scrollPanel>
-                </div>
-
-                <div class="col-12 flex flex-col gap-3 py-3 h-auto" *ngIf="products().length > 0">
-                    <div pRipple
-                        class="col flex align-items-center justify-content-between bg-primary cursor-pointer px-4"
-                        style="height: 3rem; border-radius: 50px" (click)="onSubmit()" [disabled]="isLoading">
-                        <div>
-                            <i class="pi pi-check mr-2 font-bold"></i>
-                            <label class="font-bold cursor-pointer">Checkout</label>
-                        </div>
-                        <label class="font-bold cursor-pointer">
-                            {{ cartForm.get('totalPrice').value | custom }}
-                        </label>
-                    </div>
-                </div>
             </div>
-        </ng-template>
-    </p-sidebar>
+          </p-scrollPanel>
+        </div>
+
+        <div class="col-12 flex flex-col gap-3 py-3 h-auto" *ngIf="products().length > 0">
+          <div
+            pRipple
+            class="col flex align-items-center justify-content-between bg-primary cursor-pointer px-4"
+            style="height: 3rem; border-radius: 50px"
+            (click)="onSubmit()"
+            [disabled]="isLoading">
+            <div>
+              <i class="pi pi-check mr-2 font-bold"></i>
+              <label class="font-bold cursor-pointer">Checkout</label>
+            </div>
+            <label class="font-bold cursor-pointer">
+              {{ cartForm.get('totalPrice').value | custom }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-sidebar>
 </div>
