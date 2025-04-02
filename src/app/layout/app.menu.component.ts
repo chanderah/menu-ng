@@ -13,14 +13,7 @@ import { merge } from 'rxjs';
     <div class="layout-menu-container">
       <ul class="layout-menu" role="menu" (keydown)="onKeydown($event)">
         <ng-container *ngFor="let item of menus; let i = index">
-          <li
-            *ngIf="isAdminMenu(item) ? sharedService.isAdmin : true"
-            app-menu
-            class="layout-menuitem-category"
-            [item]="item"
-            [index]="i"
-            [root]="true"
-            role="none">
+          <li app-menu class="layout-menuitem-category" [item]="item" [index]="i" [root]="true" role="none">
             <div class="layout-menuitem-root-text" [attr.aria-label]="item.label">{{ item.label }}</div>
             <ul role="menu">
               <ng-container *ngFor="let child of item.items">
@@ -114,9 +107,5 @@ export class AppMenuComponent implements OnInit {
     this.router.navigateByUrl('/login', {
       state: { logout: true },
     });
-  }
-
-  isAdminMenu(menu: Menu) {
-    return menu.id === 1;
   }
 }
