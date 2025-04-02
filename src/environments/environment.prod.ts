@@ -7,6 +7,13 @@ export const environment = {
   imagePath: '/assets/images',
   aesKey: 'chandrachansa@18',
   aesIv: 'chandrachansa@19',
+  cloudinary: {
+    cloudName: 'disom1qwi',
+    folder: 'uploads',
+    apiKey: '387243642969926',
+    apiSecret: 'ReQ4un81jPjyZn82O5Art9aa3OA',
+    url: 'cloudinary://387243642969926:ReQ4un81jPjyZn82O5Art9aa3OA@disom1qwi',
+  },
   firebaseConfig: {
     apiKey: 'AIzaSyCUfFlUk0PT-Rswl2aoCiaNBZMYQIbllXo',
     vapidKey: 'BDpFnJzR0mL030pHC6WLWa0d73nya8mnNMaZ3F-emDnRKT_1ANYG9NXxjIgfbWQz2D0YnvsAGf8LXMQ---dQ1s0',
