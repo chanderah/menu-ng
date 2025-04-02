@@ -28,19 +28,18 @@ export interface FcmMessage {
  * FCM Notification Service
  */
 export class MessagingService {
+  private client!: Messaging;
   private _messages = new BehaviorSubject<FcmMessage[]>([]);
   messages$ = this._messages.asObservable();
-
-  private messaging!: Messaging;
 
   constructor() {}
 
   async registerFcm(firebaseConfig: FirebaseConfig, retry: boolean = true): Promise<string> {
     return new Promise((resolve, reject) => {
       const firebaseApp = initializeApp(firebaseConfig);
-      this.messaging = getMessaging(firebaseApp);
+      this.client = getMessaging(firebaseApp);
 
-      getToken(this.messaging, {
+      getToken(this.client, {
         vapidKey: firebaseConfig.vapidKey,
       })
         .then((token) => {

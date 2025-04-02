@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { PagingInfo } from '../../../interface/paging_info';
 import { ApiService } from '../../../service/api.service';
 import { SharedService } from '../../../service/shared.service';
-import { isEmpty, refreshPage } from 'src/app/lib/utils';
+import { filterUniqueArr, isEmpty, refreshPage } from 'src/app/lib/utils';
 import SharedUtil from 'src/app/lib/shared.util';
 import { debounceTime } from 'rxjs';
 
@@ -50,7 +50,8 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
   }
 
   ngOnInit() {
-    this.pagingInfo.limit = this.rowsPerPageOptions[0];
+    const pageSize = localStorage.getItem('liveOrderPageSize');
+    this.pagingInfo.limit = Number(pageSize) || this.rowsPerPageOptions[0];
   }
 
   ngAfterViewInit(): void {
@@ -83,25 +84,21 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     });
   }
 
-  async getOrders(lastFetchedId?: number) {
+  async getOrders(lastFetchedId: number = this.getLastFetchedId()) {
     this.isLoading = true;
+    localStorage.setItem('liveOrderPageSize', this.pagingInfo.limit.toString());
 
-    if (!lastFetchedId) lastFetchedId = this.getLastFetchedId();
     this.apiService.getLiveOrders(lastFetchedId, this.pagingInfo.limit).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
         this.lastUpdated = new Date();
-        if (res.data.length > 0) {
-          if (this.orders.length > 0) {
-            if (lastFetchedId === 0) {
-              this.orders = res.data;
-            } else {
-              this.orders = res.data.concat(this.orders).slice(0, this.pagingInfo.limit);
-              this.showNewOrdersNotification(res.data.length);
-            }
-          } else this.orders = res.data;
-          this.countAwaitingOrders();
+        if (lastFetchedId === 0) {
+          this.orders = res.data;
+        } else {
+          this.orders = filterUniqueArr([...res.data, ...this.orders], 'id').slice(0, this.pagingInfo.limit);
+          this.showNewOrdersNotification(res.data.length);
         }
+        this.countAwaitingOrders();
       } else this.sharedService.errorToast('Failed to get orders data');
     });
 
@@ -110,12 +107,14 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
   }
 
   getLastFetchedId() {
-    return this.orders.length > 0 ? Math.max(...this.orders.map((v) => v.id)) : 0;
+    return this.orders.length ? Math.max(...this.orders.map((v) => v.id)) : 0;
   }
 
   showNewOrdersNotification(count: number) {
-    this.playSound();
-    this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000).then(() => this.appRef.tick());
+    if (count) {
+      this.playSound();
+      this.sharedService.showNotification(`There is ${count} new order!`, '🛎', 30000).then(() => this.appRef.tick());
+    }
   }
 
   countAwaitingOrders() {

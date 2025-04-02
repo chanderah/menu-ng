@@ -80,6 +80,15 @@ export const toLetter = (num: number) => {
   return String.fromCharCode(num + 97);
 };
 
+export const filterUniqueArr = (arr: any[], key?: string) => {
+  if (key) {
+    return arr.filter((v, i, self) => {
+      return self.findIndex((obj) => obj.id === v.id) === i;
+    });
+  }
+  return arr.filter((v, i, self) => self.indexOf(v) === i);
+};
+
 export const clearLocalStorage = () => {
   localStorage.clear();
 };
