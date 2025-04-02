@@ -150,7 +150,11 @@ export class SharedService {
     return this.user?.role?.level >= requiredRoleLevel;
   }
 
+  get roleLevel() {
+    return this.user?.role?.level ?? 0;
+  }
+
   get isAdmin() {
-    return this.user?.role?.level >= 1;
+    return this.roleLevel >= 1;
   }
 }

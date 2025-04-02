@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SharedService } from '../service/shared.service';
+import { CONSTANTS } from '../constants/common';
 
 @Injectable({
   providedIn: 'root',
@@ -21,17 +15,25 @@ export class AdminGuard implements CanActivate, CanActivateChild {
 
   canActivate(
     _route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    if (state.url.substring(state.url.lastIndexOf('/')) === '/admin') this.router.navigateByUrl('/');
+    _state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return true;
   }
 
-  canActivateChild(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (!this.sharedService.isAdmin) {
-      this.router.navigateByUrl('/unauthorized', { skipLocationChange: true });
+  canActivateChild(
+    _route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (!this.sharedService.isAdmin || !this.hasAccess(state.url)) {
+      this.router.navigateByUrl('/');
       return false;
     }
+    return true;
+  }
+
+  hasAccess(url: string) {
+    const menu = CONSTANTS.ADMIN_MENU.find((v) => v.routerLink === url);
+    if (menu) return this.sharedService.hasAccess(menu.role);
     return true;
   }
 }

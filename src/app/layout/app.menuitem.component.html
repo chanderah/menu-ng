@@ -1,10 +1,10 @@
-<ng-container *ngIf="!item.role || sharedService.hasAccess(item.role)">
+<ng-container>
     <ng-container *ngIf="(!item.routerLink || item.items) && item.visible !== false">
         <a (click)="itemClick($event)" pRipple [ngClass]="item.class" [attr.href]="item.url" [attr.target]="item.target"
             [attr.tabindex]="0" [attr.aria-label]="item.label" role="menuitem">
             <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
             <span>{{ item.label }}</span>
-            <span class="menuitem-badge" *ngIf="item.role">{{ CONSTANTS.USER_ROLE[item.role] }}</span>
+            <span class="menuitem-badge" *ngIf="item.badge">{{ item.badge }}</span>
             <i class="pi pi-fw {{ active ? 'pi-angle-up' : 'pi-angle-down' }} ml-auto" *ngIf="item.items"></i>
         </a>
     </ng-container>
@@ -21,7 +21,7 @@
             [attr.aria-label]="item.label" role="menuitem" pRipple>
             <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
             <span>{{ item.label }}</span>
-            <span class="p-tag p-badge ml-auto" *ngIf="item.role">{{ CONSTANTS.USER_ROLE[item.role] }}</span>
+            <span class="p-tag p-badge ml-auto" *ngIf="item.badge">{{ item.badge }}</span>
             <i class="pi pi-fw {{ active ? 'pi-angle-up' : 'pi-angle-down' }} ml-auto" *ngIf="item.items"></i>
         </a>
     </ng-container>

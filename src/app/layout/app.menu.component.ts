@@ -4,7 +4,8 @@ import { Menu } from '../interface/menu';
 import { SharedService } from '../service/shared.service';
 import { environment } from './../../environments/environment';
 import { AppComponent } from '../app.component';
-import { Category } from '../interface/category';
+import { CONSTANTS } from '../constants/common';
+import { merge } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -47,16 +48,15 @@ export class AppMenuComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sharedService.categories$.subscribe((v) => {
-      this.buildMenu(v);
+    merge(this.sharedService.categories$, this.sharedService.user$).subscribe(() => {
+      this.buildMenu();
     });
   }
 
-  buildMenu(categories: Category[]) {
+  buildMenu() {
     this.menus = [
       {
-        id: 0,
-        // icon: 'pi pi-fw pi-briefcase',
+        id: 1,
         label: 'Menu',
         items: [
           {
@@ -68,7 +68,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'All',
                 routerLink: ['/'],
               },
-              ...categories?.map((v) => {
+              ...this.sharedService.categories.map((v) => {
                 return {
                   id: v.id,
                   label: v.label,
@@ -80,65 +80,26 @@ export class AppMenuComponent implements OnInit {
           },
         ],
       },
-      {
-        id: 1,
-        // icon: 'pi pi-fw pi-briefcase',
-        label: 'Management',
-        items: [
-          {
-            label: 'Live Orders',
-            icon: 'pi pi-fw pi-eye',
-            routerLink: ['/admin/order/live'],
-            role: 1,
-          },
-          {
-            label: 'Manage Orders',
-            icon: 'pi pi-fw pi-eye',
-            routerLink: ['/admin/order'],
-            role: 1,
-          },
-          {
-            label: 'Manage Categories',
-            icon: 'pi pi-fw pi-eye',
-            routerLink: ['/admin/category'],
-            role: 1,
-          },
-          {
-            label: 'Manage Products',
-            icon: 'pi pi-fw pi-eye',
-            routerLink: ['/admin/product'],
-            role: 1,
-          },
-          {
-            label: 'Manage Tables',
-            icon: 'pi pi-fw pi-eye',
-            routerLink: ['/admin/table'],
-            role: 1,
-          },
-          {
-            label: 'Manage Users',
-            icon: 'pi pi-fw pi-eye',
-            routerLink: ['/admin/user'],
-            role: 2,
-          },
-        ],
-      },
     ];
+
+    if (this.sharedService.isAdmin) {
+      this.menus.push(this.menuAdmin);
+    }
   }
 
-  async getDBMenu() {
-    // this.app.categories.pipe(take(2)).subscribe((categories) => {
-    //     if (categories) {
-    //         categories.forEach((c) => {
-    //             this.menus[0].items[0].items.push({
-    //                 id: c.id,
-    //                 label: c.label,
-    //                 routerLink: ['/'],
-    //                 queryParams: { menu: c.param },
-    //             });
-    //         });
-    //     }
-    // });
+  get menuAdmin() {
+    return {
+      id: 2,
+      label: 'Management',
+      items: CONSTANTS.ADMIN_MENU.filter((v) => this.sharedService.hasAccess(v.role)).map((v) => {
+        return {
+          ...v,
+          icon: 'pi pi-fw pi-eye',
+          badge: CONSTANTS.USER_ROLE[v.role],
+          routerLink: [v.routerLink],
+        };
+      }),
+    };
   }
 
   onKeydown(event: KeyboardEvent) {

@@ -81,15 +81,13 @@ export class AppMenuitemComponent extends SharedUtil implements OnInit, OnDestro
   }
 
   updateActiveStateFromRoute() {
-    this.active =
-      //   this.item.label === 'Categories' ||
-      this.router.isActive(this.item.routerLink[0], {
-        paths: 'exact',
-        queryParams: 'ignored',
-        // queryParams: this.item.items ? 'ignored' : 'exact',
-        matrixParams: 'ignored',
-        fragment: 'ignored',
-      });
+    this.active = this.router.isActive(this.item.routerLink[0], {
+      paths: 'exact',
+      queryParams: 'ignored',
+      // queryParams: this.item.items ? 'ignored' : 'exact',
+      matrixParams: 'ignored',
+      fragment: 'ignored',
+    });
   }
 
   itemClick(event: Event) {

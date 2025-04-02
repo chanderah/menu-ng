@@ -15,37 +15,38 @@ import { CustomerGuard } from './guard/customer.guard';
 import { AppMainComponent } from './layout/app.main.component';
 
 @NgModule({
-    imports: [
-        RouterModule.forRoot(
-            [
-                {
-                    path: '',
-                    component: AppMainComponent,
-                    children: [
-                        { path: '', canActivate: [CustomerGuard], component: DashboardComponent },
-                        { path: 'order-complete', component: OrderCompleteComponent },
-                        {
-                            path: 'admin',
-                            canActivate: [AdminGuard],
-                            canActivateChild: [AdminGuard],
-                            children: [
-                                { path: 'user', component: UserComponent },
-                                { path: 'order', component: OrderComponent },
-                                { path: 'order/live', component: OrderLiveComponent },
-                                { path: 'product', component: ProductComponent },
-                                { path: 'category', component: CategoryComponent },
-                                { path: 'table', component: TableComponent },
-                            ],
-                        },
-                    ],
-                },
-                { path: 'customer', component: CustomerComponent },
-                { path: 'login', component: LoginComponent },
-                { path: '**', redirectTo: '' },
-            ],
-            { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }
-        ),
-    ],
-    exports: [RouterModule],
+  imports: [
+    RouterModule.forRoot(
+      [
+        {
+          path: '',
+          component: AppMainComponent,
+          children: [
+            { path: '', canActivate: [CustomerGuard], component: DashboardComponent },
+            { path: 'order-complete', component: OrderCompleteComponent },
+            {
+              path: 'admin',
+              canActivate: [AdminGuard],
+              canActivateChild: [AdminGuard],
+              children: [
+                { path: '', redirectTo: '/', pathMatch: 'full' },
+                { path: 'user', component: UserComponent },
+                { path: 'order', component: OrderComponent },
+                { path: 'order/live', component: OrderLiveComponent },
+                { path: 'product', component: ProductComponent },
+                { path: 'category', component: CategoryComponent },
+                { path: 'table', component: TableComponent },
+              ],
+            },
+          ],
+        },
+        { path: 'customer', component: CustomerComponent },
+        { path: 'login', component: LoginComponent },
+        { path: '**', redirectTo: '' },
+      ],
+      { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }
+    ),
+  ],
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
