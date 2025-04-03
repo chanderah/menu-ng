@@ -21,7 +21,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
   dialogBreakpoints = { '768px': '90vw' };
 
   pagingInfo = {} as PagingInfo;
-  audio = new Audio('../../../../../assets/sound/bell.mp3');
+  audio = new Audio('/assets/sound/bell.mp3');
 
   showOrderDetailsDialog: boolean = false;
 
@@ -29,6 +29,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
   orders = [] as Order[];
 
   timeoutId!: any;
+  refreshTimer: number = 120000;
   lastUpdated: Date = new Date();
   contextMenus: MenuItem[] = [
     {
@@ -66,13 +67,12 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
         this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
         const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
         if (fcmToken) {
-          if (fcmToken != this.sharedService.user.fcmToken) {
-            const user = { ...this.sharedService.user };
-            user.fcmToken = fcmToken;
-            this.apiService.updateFcmToken(user).subscribe((res) => {
-              if (res.status === 200) this.sharedService.user = user;
-            });
-          }
+          const user = { ...this.sharedService.user, fcmToken };
+          this.apiService.updateFcmToken(user).subscribe((res) => {
+            if (res.status === 200) {
+              this.sharedService.user = user;
+            }
+          });
         } else refreshPage();
 
         this.messagingService.messages$.pipe(debounceTime(300)).subscribe((res) => {
@@ -103,7 +103,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     });
 
     if (this.timeoutId) clearTimeout(this.timeoutId);
-    this.timeoutId = setTimeout(() => this.getOrders(), 120000);
+    this.timeoutId = setTimeout(() => this.getOrders(), this.refreshTimer);
   }
 
   getLastFetchedId() {
@@ -123,7 +123,10 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
 
   markAsDone(listId: number[]) {
     if (!listId.length) return;
+
+    this.isLoading = true;
     this.apiService.markOrderAsDone(listId).subscribe((res) => {
+      this.isLoading = false;
       if (res.status === 200) {
         this.showOrderDetailsDialog = false;
         this.orders.filter((v) => listId.includes(v.id)).forEach((v) => (v.isServed = true));
