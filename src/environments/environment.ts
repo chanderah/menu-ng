@@ -5,8 +5,8 @@ export const environment = {
   // apiUrl: 'https://api.chandrasa.fun/api',
   publicPath: 'https://public.chandrasa.fun',
   imagePath: '/assets/images',
-  aesKey: 'chandrachansa@18',
-  aesIv: 'chandrachansa@19',
+  secretKey: 'chandrachansa@18',
+  secretIV: 'chandrachansa@19',
   cloudinary: {
     cloudName: 'disom1qwi',
     folder: 'uploads',

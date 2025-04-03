@@ -27,7 +27,7 @@ export class ApiInterceptor implements HttpInterceptor {
     if (isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
     const user = jsonParse<User>(localStorage.getItem('user'));
-    const headers = { ...(user?.id && { User: user.id.toString() }) };
+    const headers = { ...(user?.token && { Authorization: `Bearer ${user.token}` }) };
     const isFormData = req.body instanceof FormData;
     if (!isFormData) {
       headers['Accept'] = 'application/json';
