@@ -29,8 +29,8 @@ export class SharedService {
   }
 
   load() {
+    this.user = jsonParse<User>(localStorage.getItem('user'));
     this.loadCategories();
-    this.user = jsonParse(localStorage.getItem('user')) as User;
   }
 
   loadCategories() {
@@ -59,7 +59,7 @@ export class SharedService {
   }
 
   set user(user: User) {
-    if (user?.id) {
+    if (user?.token) {
       localStorage.setItem('user', jsonStringify(user));
       this._user.next(user);
     } else {

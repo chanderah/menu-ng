@@ -51,9 +51,7 @@ export class LoginComponent extends SharedUtil implements OnInit {
     this.apiService.login(this.form.value).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
-        console.log('res', res.data);
         this.sharedService.user = res.data;
-        // this.router.navigate(['/']);
         this.sharedService.successToast('Login success!');
       } else this.sharedService.errorToast('Failed to authorize the user!');
     });

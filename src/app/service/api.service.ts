@@ -38,6 +38,10 @@ export class ApiService {
     return this.httpClient.post<any>('/user/findByUsername', user);
   }
 
+  findUserByToken() {
+    return this.httpClient.post<any>('/user/findByToken', null);
+  }
+
   updateUser(user: User) {
     return this.httpClient.post<any>('/user/update', user);
   }
