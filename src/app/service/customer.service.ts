@@ -1,33 +1,52 @@
+import { ProductOrder } from 'src/app/interface/order';
 import { Injectable } from '@angular/core';
-import { Order } from '../interface/order';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
 import { BehaviorSubject } from 'rxjs';
 import { Customer } from '../interface/customer';
+import { jsonParse, jsonStringify } from '../lib/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomerService {
-  private _customer = new BehaviorSubject<Customer>(null);
+  private _customer = new BehaviorSubject<Customer>({} as Customer);
   customer$ = this._customer.asObservable();
 
-  private _cart = new BehaviorSubject<Order[]>([]);
+  private _cart = new BehaviorSubject<ProductOrder[]>([]);
   cart$ = this._cart.asObservable();
 
-  private _orders = new BehaviorSubject<Order[]>([]);
+  private _orders = new BehaviorSubject<ProductOrder[]>([]);
   orders$ = this._orders.asObservable();
 
   constructor(
     private sharedService: SharedService,
     private apiService: ApiService
-  ) {}
+  ) {
+    this.load();
+  }
 
-  addToCart(order: Order) {
-    // this.orders = [
-    //   ...this.orders,
-    //   product
-    // ]
+  load() {
+    this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart')) ?? [];
+    this.customer = jsonParse<Customer>(localStorage.getItem('customer'));
+    // this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart'));
+    // this.apiService.getOrders({
+    //   limit: 100,
+    //   condition: [
+    //     {
+    //       column: 'is_served',
+    //       value: false,
+    //     },
+    //     {
+    //       column: 'tableId',
+    //       'value'
+    //     }
+    //   ],
+    // });
+  }
+
+  addToCart(data: ProductOrder) {
+    this.cart = [...this.cart, data];
   }
 
   get isCustomer() {
@@ -47,14 +66,17 @@ export class CustomerService {
   }
 
   set customer(data: Customer) {
+    localStorage.setItem('customer', jsonStringify(data));
     this._customer.next(data);
   }
 
-  set cart(data: Order[]) {
+  set cart(data: ProductOrder[]) {
+    console.log('data', data);
+    localStorage.setItem('cart', jsonStringify(data));
     this._cart.next(data);
   }
 
-  set orders(data: Order[]) {
+  set orders(data: ProductOrder[]) {
     this._orders.next(data);
   }
 

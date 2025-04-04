@@ -91,6 +91,8 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     if (this.isDisabledAddToCartBtn) {
       return this.sharedService.errorToast('Please select the required variant.');
     }
+
+    this.customerService.addToCart(this.form.value);
     this.hideDialog();
   }
 

@@ -69,8 +69,10 @@ export const fileToBase64 = (file: File): Promise<string> => {
   });
 };
 
-export const getImageSrc = (filePath: string) => {
-  return `https://res.cloudinary.com/${environment.cloudinary.cloudName}/image/upload/${filePath}`;
+export const getImageSrc = (filePath: string, size?: number) => {
+  let url = `https://res.cloudinary.com/${environment.cloudinary.cloudName}/image/upload/`;
+  if (size) url += `h_${size},w_${size}/`;
+  return url + filePath;
 };
 
 export const toLetter = (num: number) => {

@@ -17,7 +17,11 @@ export class CustomerGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const tableId = Number(route.queryParamMap.get('table'));
     if (tableId > 0) {
-      this.customerService.customer.tableId = tableId;
+      this.customerService.customer = {
+        ...this.customerService.customer,
+        tableId,
+        createdAt: new Date(),
+      };
       this.router.navigateByUrl('/');
       return true;
     } else if (!this.sharedService.isLoggedIn && !this.customerService.isCustomer) {

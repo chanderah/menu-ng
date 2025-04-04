@@ -74,13 +74,15 @@ export class OrderComponent extends SharedUtil implements OnInit {
     this.apiService.getOrders(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
-        // this.orders = res.data;
-        this.orders = this.getProductsName(res.data);
         this.lastUpdated = new Date();
-        if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
-      } else {
-        this.sharedService.errorToast('Failed to get Orders data.');
-      }
+        this.pagingInfo.rowCount = res.rowCount;
+        this.orders = res.data.map((v: Order) => {
+          return {
+            ...v,
+            productsName: v.products.map((v) => v.name).join(', '),
+          };
+        });
+      } else this.sharedService.errorToast('Failed to get Orders data.');
     });
   }
 
@@ -189,15 +191,6 @@ export class OrderComponent extends SharedUtil implements OnInit {
     } finally {
       this.isLoading = false;
     }
-  }
-
-  getProductsName(orders: Order[]) {
-    orders.forEach((data) => {
-      let productsName = [];
-      data.products.forEach((product) => productsName.push(product.name));
-      data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
-    });
-    return orders;
   }
 
   getRowStyle(data: boolean) {

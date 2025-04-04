@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { SnapRequest, SnapResponse, Transaction } from '../interface/midtrans';
 import { BehaviorSubject } from 'rxjs';
 
-declare var snap: any;
 @Injectable({
   providedIn: 'root',
 })
