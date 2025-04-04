@@ -12,6 +12,7 @@ import { SharedService } from '../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { ProductOptionValue } from 'src/app/interface/product';
 import { ProductOrder } from 'src/app/interface/order';
+import { interval, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-cart-dialog',
@@ -69,34 +70,22 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     this.product(i).get('quantity').setValue(value - 1 || 1); // prettier-ignore
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.midtransService.transaction.isLoading) return;
+    const isSuccess = await this.orderService.createOrder(this.form.value);
+    if (isSuccess) {
+      // start polling
 
-    // this.isLoading = true;
-    this.orderService.createOrder(this.form.value);
-
-    // transaction_details: {
-    //   gross_amount: 123500,
-    //   order_id: `ORDER-${new Date().getTime()}`,
-    // },
-    // customer_details: {
-    //   first_name: 'Chandra',
-    //   last_name: 'Sukmagalih Arifin',
-    //   phone: '087798992777',
-    // },
-
-    // this.orderService.createOrder(this.form.value).subscribe((res) => {
-    //   this.isLoading = false;
-    //   if (res.status === 200) {
-    //     this.app.hideTopMenu();
-    //     this.showDialog = false;
-    //     this.router.navigate(['/order-complete'], {
-    //       state: {
-    //         totalPrice: this.form.get('totalPrice').value,
-    //       },
-    //     });
-    //   } else this.sharedService.showErrorNotification();
-    // });
+      const orderId = this.midtransService.transaction.response.order_id;
+      interval(3000)
+        .pipe(switchMap(() => this.apiService.getOrderByCode(orderId)))
+        .subscribe((res) => {
+          if (res.data.status === 'paid') {
+            this.midtransService.transaction.isLoading = false;
+            alert('SUCCESS!!');
+          }
+        });
+    }
   }
 
   // FORMS

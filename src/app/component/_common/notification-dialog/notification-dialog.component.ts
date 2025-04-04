@@ -23,7 +23,7 @@ export class NotificationDialogComponent implements OnInit {
             timeout: this.config.data.timeout ? this.config.data.timeout : 3000,
         };
 
-        document.getElementsByClassName('p-dialog-content')[0].className += ' rounded-radius';
+        document.getElementsByClassName('p-dialog-content')[0].className += ' rounded-radius'; // ini
         setTimeout(() => this.dismiss(), this.notification.timeout);
     }
 

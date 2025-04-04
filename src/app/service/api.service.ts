@@ -149,6 +149,10 @@ export class ApiService {
     return this.httpClient.post<any>('/order/findById', { orderId });
   }
 
+  getOrderByCode(orderCode: string) {
+    return this.httpClient.post<ApiResponse<Order>>('/order/findByCode', { orderCode });
+  }
+
   createOrder(order: Order) {
     return this.httpClient.post<ApiResponse<Order>>('/order/create', order);
   }

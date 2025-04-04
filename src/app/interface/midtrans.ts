@@ -1,6 +1,7 @@
 export interface Transaction {
   isLoading: boolean;
   type: 'payment' | 'payout';
+  response: SnapResponse;
 }
 
 export interface SnapRequest {

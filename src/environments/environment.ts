@@ -4,6 +4,11 @@ export const environment = {
     name: 'Restaurant Menu Kita',
     whatsapp: 6287798992777,
     phone: 6221870123,
+    address: {
+      line1: 'Jl. Teratai 3 Blok A6 No. 8',
+      line2: 'Perumahan Taman Duta, Cisalak',
+      line3: 'Depok, Jawa Barat 16416',
+    },
   },
   appUrl: 'http://localhost:4200',
   apiUrl: 'http://localhost:3000/api',

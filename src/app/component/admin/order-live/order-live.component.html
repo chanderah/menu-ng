@@ -114,10 +114,10 @@
     [blockScroll]="true"
     showEffect="fade">
     <div class="p-fluid px-2">
-        <div class="card p-1 mb-3">
+        <div class="card p-1 pb-2 mb-3">
             <div class="flex col-12">
                 <div class="col-6">
-                    <p class="font-semibold ml-2 mt-2">Table {{ selectedOrder.tableId }}</p>
+                    <p class="font-semibold ml-2 mt-2">Table {{ selectedOrder.table }}</p>
                 </div>
                 <div class="col-6 text-right">
                     <p class="text-sm font-semibold mr-2 mt-2">{{ selectedOrder.totalPrice | custom }}</p>
@@ -129,14 +129,12 @@
                     <label pInputText class="font-semibold text-capitalize">{{ product.name }}</label>
                 </div>
 
-                <div class="flex flex-column">
-                    <div class="col-12 pb-0" *ngFor="let option of product.options; index as j">
-                        <div class="p-inputgroup">
-                            <span class="p-inputgroup-addon font-semibold"> {{ toLetter(j) }} </span>
-                            <label pInputText class="text-capitalize">
-                                {{ option.name + ': ' + option.optionsName }}
-                            </label>
-                        </div>
+                <div class="col-12 pr-0 pb-0" *ngFor="let option of product.options; index as j">
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon font-semibold"> {{ toLetter(j) }} </span>
+                        <label pInputText class="text-capitalize">
+                            {{ option.name + ': ' + option.optionsName }}
+                        </label>
                     </div>
                 </div>
             </div>
