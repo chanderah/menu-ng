@@ -148,7 +148,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   }
 
   getOptionValues(data: ProductOptionValue[]) {
-    return data.map((v) => `${v.value} (${this.customCurrencyPipe.transform(v.price.toString())})`).join(', ');
+    return data.map((v) => v.value).join(', ');
   }
 
   hideDialog() {

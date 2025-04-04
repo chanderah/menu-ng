@@ -31,7 +31,7 @@
             </div>
 
             <div class="my-2" *ngFor="let product of products().controls; index as i" [formGroupName]="i">
-              <div class="flex gap-4 w-full">
+              <div class="flex gap-3 w-full">
                 <div class="w-fit">
                   <img
                     [alt]="product.value['name']"
@@ -44,18 +44,17 @@
                 </div>
 
                 <div class="flex flex-column w-full align-items-start justify-space-between gap-2 py-2" formArrayName="options">
-                  <span class="text-md font-semibold text-capitalize"> {{ i + 1 }}. {{ product.value.name }} </span>
+                  <span class="text-md font-semibold text-capitalize">{{ product.value['name'] }} </span>
+
                   <ng-container *ngFor="let option of product.get('options').value; index as j">
                     <div class="text-left text-sm">
                       <span class="font-semibold text-capitalize"> {{ option.name }}: </span>
-                      <span class="text-capitalize"> {{ getOptionValues(option.values) }} </span>
+                      <span class="truncate text-capitalize"> {{ getOptionValues(option.values) }} </span>
                     </div>
                   </ng-container>
-                  <div class="flex justify-space-between align-items-center w-full py-1 gap-2 mt-auto text-sm font-semibold">
-                    <label class="text-start w-full">
-                      {{ product.value['price'] | custom }}
-                    </label>
-                    <label class="text-end text-right w-full">
+
+                  <div class="flex w-full justify-content-end mt-auto">
+                    <label class="text-sm font-semibold">
                       {{ product.value['totalPrice'] | custom }}
                     </label>
                   </div>
@@ -66,7 +65,7 @@
                 <span class="p-inputgroup-addon">
                   <i class="pi pi-comment" style="line-height: 1.25"></i>
                 </span>
-                <input pInputText type="text" placeholder="Leave me a note..." formControlName="notes" />
+                <input pInputText type="text" placeholder="Leave me a note ..." formControlName="notes" />
               </div>
 
               <div class="flex align-items-center justify-content-end gap-3 mt-3">
