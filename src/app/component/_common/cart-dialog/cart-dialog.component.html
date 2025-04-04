@@ -26,34 +26,35 @@
             <div *ngIf="products().length === 0" class="flex justify-content-center align-items-center w-full h-full">
               <p class="text-md">Empty</p>
             </div>
-            <div *ngFor="let product of products().controls; index as i" [formGroupName]="i" class="my-3">
-              <div class="flex gap-3 align-items-start justify-content-start">
-                <img
-                  [alt]="product.value.name"
-                  [src]="getImageSrc(product.value.image)"
-                  (load)="isLoading = false"
-                  class="shadow-4 object-fit-cover"
-                  style="border-radius: 1rem"
-                  width="80px"
-                  height="80px" />
-                <!-- <div style="display: flex; flex-direction: column"> -->
-                <div class="flex flex-column align-items-start justify-content-between my-2 w-full gap-2">
-                  <span class="text-md font-semibold text-capitalize"> {{ i + 1 }}. {{ product.value.name }} </span>
 
-                  <ng-container formArrayName="options">
+            <div class="my-2" *ngFor="let product of products().controls; index as i" [formGroupName]="i">
+              <div class="flex gap-3 w-full">
+                <div class="w-fit">
+                  <img
+                    [alt]="product.value['name']"
+                    [src]="getImageSrc(product.value['image'])"
+                    (load)="isLoading = false"
+                    class="shadow-4 object-fit-cover"
+                    style="border-radius: 1rem"
+                    width="80px"
+                    height="80px" />
+                </div>
+
+                <div class="flex flex-column w-full align-items-start justify-space-between gap-2 mt-2 mb-3">
+                  <span class="text-md font-semibold text-capitalize"> {{ i + 1 }}. {{ product.value.name }} </span>
+                  <div formArrayName="options">
                     <div *ngFor="let option of product.get('options').value; index as j">
                       <div class="text-left text-sm">
                         <span class="font-semibold text-capitalize"> {{ option.name }}: </span>
                         <span class="text-capitalize"> {{ getOptionValues(option.values) }} </span>
                       </div>
                     </div>
-                  </ng-container>
-
-                  <div class="flex w-full text-sm">
-                    <label class="font-semibold">
+                  </div>
+                  <div class="flex justify-space-between align-items-center w-full gap-2 mt-auto text-sm font-semibold">
+                    <label class="text-start w-full">
                       {{ product.value['price'] | custom }}
                     </label>
-                    <label class="font-semibold text-right">
+                    <label class="text-end text-right w-full">
                       {{ product.value['totalPrice'] | custom }}
                     </label>
                   </div>
@@ -86,47 +87,6 @@
               </div>
 
               <p-divider></p-divider>
-
-              <!-- <div formArrayName="options">
-                                    <div
-                                        *ngFor="let option of options(i).controls; index as j"
-                                        [formGroupName]="i"
-                                        class="card my-3">
-
-                                        <div class="flex justify-content-between pb-2">
-                                            <span class="text-md font-semibold">{{ option.value.name }}</span>
-                                            <p class="text-xs font-semibold" style="color: grey">
-                                                {{ option.value.required ? '*required' : '*optional' }}
-                                            </p>
-                                        </div>
-
-                                        <div formArrayName="values" class="cursor-pointer">
-                                            <div
-                                                *ngFor="let optionValue of optionValues(i, j).controls; index as k"
-                                                [formGroupName]="j"
-                                                class="flex flex-col align-items-center justify-content-between"
-                                                style="padding-top: 10px">
-                                                <label [for]="'selected' + i + j + k" class="text-sm w-full">
-                                                    {{ optionValue.value.value }}
-                                                </label>
-                                                <div class="flex align-items-center gap-2">
-                                                    <label class="text-xs font-semibold">
-                                                        {{
-                                                            optionValue.value.price === 0
-                                                                ? 'Free'
-                                                                : '+' + (optionValue.value.price | custom)
-                                                        }}
-                                                    </label>
-                                                    <p-checkbox
-                                                        [inputId]="'selected' + i + j + k"
-                                                        binary="true"
-                                                        formControlName="selected"
-                                                        class="text-sm mr-2"></p-checkbox>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
             </div>
           </p-scrollPanel>
         </div>

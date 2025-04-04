@@ -1,3 +1,4 @@
+import { CustomCurrencyPipe } from './../../../pipe/currency.pipe';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -32,7 +33,8 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     private orderService: OrderService,
     private sharedService: SharedService,
     private apiService: ApiService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private customCurrencyPipe: CustomCurrencyPipe
   ) {
     super();
   }
@@ -127,6 +129,8 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         this.product(i).get('totalPrice').setValue(productTotalPrice, { emitEvent: false });
       });
       this.form.get('totalPrice').setValue(orderTotalPrice, { emitEvent: false });
+
+      // clo
     });
 
     this.products().patchValue(this.customerService.cart);
@@ -168,7 +172,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   }
 
   getProductTotalPrice(data: ProductOrder) {
-    let productTotalPrice = 0;
+    let productTotalPrice = data.price;
     data.options.forEach((v) => {
       v.values.forEach((v) => {
         productTotalPrice += v.price;
@@ -178,7 +182,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   }
 
   getOptionValues(data: ProductOptionValue[]) {
-    return data.map((v) => v.value).join(', ');
+    return data.map((v) => `${v.value} (${this.customCurrencyPipe.transform(v.price.toString())})`).join(', ');
   }
 
   // options(i: number) {

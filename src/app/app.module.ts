@@ -158,6 +158,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
 
     /* SHARED */
     SharedService,
+    CustomCurrencyPipe,
   ],
   bootstrap: [AppComponent],
 })
