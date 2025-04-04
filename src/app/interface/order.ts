@@ -5,12 +5,13 @@ export interface Order {
   orderCode?: string;
   tableId: number;
   totalPrice: number;
-  createdAt: Date;
 
   isServed: boolean;
 
   products: Product[];
   productsName?: string;
+
+  createdAt: Date;
 }
 
 export interface OrderReceipt {

@@ -74,9 +74,11 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   }
 
   onSubmit() {
-    if (this.isDisabledBtn) return;
+    if (this.isLoading) return;
 
     this.isLoading = true;
+
+    this.orderService.createOrder(this.form.value);
 
     // transaction_details: {
     //   gross_amount: 123500,
@@ -88,7 +90,6 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     //   phone: '087798992777',
     // },
 
-    console.log('this.form.value', this.form.value);
     // this.orderService.createOrder(this.form.value).subscribe((res) => {
     //   this.isLoading = false;
     //   if (res.status === 200) {
@@ -185,144 +186,9 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     return data.map((v) => `${v.value} (${this.customCurrencyPipe.transform(v.price.toString())})`).join(', ');
   }
 
-  // options(i: number) {
-  //   return this.product(i).get('options') as FormArray;
-  // }
-
-  // addOption(i: number, data: ProductOption) {
-  //   this.options(i).push(
-  //     this.fb.group({
-  //       name: [''],
-  //       multiple: [false],
-  //       required: [false],
-  //       values: this.fb.array([]),
-  //     })
-  //   );
-
-  //   const index = this.options(i).length - 1;
-  //   data.values.forEach(() => this.addOptionValue(index));
-  // }
-
-  // optionValues(i: number) {
-  //   return this.options().at(i).get('values') as FormArray;
-  // }
-
-  // addOptionValue(i: number) {
-  //   this.optionValues(i).push(
-  //     this.fb.group({
-  //       value: [''],
-  //       price: [0],
-  //       selected: [false],
-  //     })
-  //   );
-  // }
-
-  get isDisabledBtn() {
-    // const productOrder = this.form.value as ProductOrder;
-    // productOrder.options.forEach((option) => {
-    //   if (option.required) {
-    //     const selectedOption = option.values.filter((v) => v.selected);
-    //     if (!selectedOption.length) return true;
-    //   }
-    // });
-
-    if (this.isLoading) return true;
-    return false;
-  }
-
-  // increment(productIndex: number) {
-  //   const { value } = this.products().at(productIndex).get('quantity');
-  //   this.products().at(productIndex).get('quantity').setValue(value + 1); // prettier-ignore
-  // }
-
-  // decrement(productIndex: number) {
-  //   let currentValue = this.products().at(productIndex).get('quantity').value;
-  //   if (currentValue > 1) {
-  //     this.products()
-  //       .at(productIndex)
-  //       .get('quantity')
-  //       .setValue(currentValue - 1);
-  //   } else {
-  //     this.sharedService.showConfirm('Are you sure to remove this item from cart?').then((res) => {
-  //       if (res) return this.deleteProduct(productIndex);
-  //     });
-  //   }
-  // }
-
-  // products(): FormArray {
-  //   return this.form.get('products') as FormArray;
-  // }
-
-  // options(productIndex: number): FormArray {
-  //   return this.products().at(productIndex).get('options') as FormArray;
-  // }
-
-  // optionValues(productIndex: number, optionIndex: number): FormArray {
-  //   return this.options(productIndex).at(optionIndex).get('values') as FormArray;
-  // }
-
-  // addProduct() {
-  //   this.products().push(
-  //     this.fb.group({
-  //       id: [null, []],
-  //       image: [null, []],
-  //       name: ['', [Validators.required]],
-  //       code: ['', []],
-  //       categoryId: [null, []],
-  //       description: ['', []],
-  //       price: [0, [Validators.required]],
-  //       options: this.fb.array([]),
-  //       totalPrice: [0, [Validators.required]],
-
-  //       notes: ['', []],
-  //       quantity: [0, []],
-  //     })
-  //   );
-  // }
-
-  // addOption(productIndex: number) {
-  //   this.options(productIndex).push(
-  //     this.fb.group({
-  //       name: ['', [Validators.required]],
-  //       multiple: [false, [Validators.required]],
-  //       required: [false, [Validators.required]],
-  //       values: this.fb.array([]),
-  //     })
-  //   );
-  // }
-
-  // addOptionValues(productIndex: number, optionIndex: number) {
-  //   this.optionValues(productIndex, optionIndex).push(
-  //     this.fb.group({
-  //       value: ['', [Validators.required]],
-  //       price: [null, [Validators.required]],
-  //       selected: [false, [Validators.required]],
-  //     })
-  //   );
-  // }
-
-  concatOptionValues(productOptionValues: ProductOptionValue[]) {
-    return 'wi';
-    // if (productOptionValues.length === 1) return productOptionValues[0].value.toString();
-    // let value: string = productOptionValues[0].value;
-    // for (let i = 1; i < productOptionValues.length; i++) {
-    //   value.concat(', ' + productOptionValues[i].value);
-    // }
-    // return value;
-  }
-
   hideDialog() {
     enableBodyScroll();
     this.customerService.cart = this.products().value;
     this.onShowCartDialogChange.emit(false);
-  }
-
-  getSidebarStyle() {
-    return {
-      width: this.app.isDesktop() ? '50vw' : '100vw',
-      height: 'auto',
-      left: this.app.isDesktop() ? '25vw' : 0,
-      overflow: 'scroll',
-    };
   }
 }

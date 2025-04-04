@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import SharedUtil from 'src/app/lib/shared.util';
-import { capitalize, disableBodyScroll, enableBodyScroll, isMobile } from 'src/app/lib/utils';
+import { capitalize, disableBodyScroll, enableBodyScroll } from 'src/app/lib/utils';
 import { Product, ProductOption } from '../../../interface/product';
 import { SharedService } from '../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
@@ -69,15 +69,6 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
   hideDialog() {
     enableBodyScroll();
     this.onHide.emit(true);
-  }
-
-  getSidebarStyle() {
-    return {
-      width: isMobile ? '100vw' : '50vw',
-      height: 'auto',
-      left: isMobile ? 0 : 'unset',
-      overflow: 'scroll',
-    };
   }
 
   // FORMS

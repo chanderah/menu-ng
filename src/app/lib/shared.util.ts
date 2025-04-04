@@ -6,6 +6,7 @@ import {
   clearLocalStorage,
   getImageSrc,
   isEmpty,
+  isMobile,
   jsonParse,
   jsonStringify,
   refreshPage,
@@ -53,5 +54,14 @@ export default class SharedUtil {
 
   refreshPage() {
     return refreshPage();
+  }
+
+  get bottomSheetStyle() {
+    return {
+      width: isMobile ? '100vw' : '50vw',
+      height: 'auto',
+      left: isMobile ? 0 : '25vw',
+      overflow: 'scroll',
+    };
   }
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
+import { Order } from '../interface/order';
+import { MidtransService } from './midtrans.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +13,13 @@ export class OrderService {
 
   constructor(
     private sharedService: SharedService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private midtransService: MidtransService
   ) {}
+
+  createOrder(data: Order) {
+    return this.apiService.createOrder(data);
+  }
 
   // getOrders(): Order {
   //   const data = jsonParse(localStorage.getItem('order')) as Order;

@@ -8,7 +8,7 @@
     [dismissible]="true"
     [showCloseIcon]="true"
     [closeOnEscape]="true"
-    [style]="getSidebarStyle()"
+    [style]="bottomSheetStyle"
     [autoZIndex]="true"
     [modal]="true">
     <!-- [baseZIndex]="1000" -->
@@ -22,13 +22,16 @@
         <h5 class="category-title mb-4">Your Cart</h5>
 
         <div class="col-12">
-          <p-scrollPanel formArrayName="products" [style]="{ width: '100%', height: '60vh', overflow: 'auto' }">
-            <div *ngIf="products().length === 0" class="flex justify-content-center align-items-center w-full h-full">
+          <p-scrollPanel
+            class="no-scrollbar"
+            [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }"
+            formArrayName="products">
+            <div *ngIf="products().length === 0" class="flex justify-content-center align-items-start w-full h-full">
               <p class="text-md">Empty</p>
             </div>
 
             <div class="my-2" *ngFor="let product of products().controls; index as i" [formGroupName]="i">
-              <div class="flex gap-3 w-full">
+              <div class="flex gap-4 w-full">
                 <div class="w-fit">
                   <img
                     [alt]="product.value['name']"
@@ -40,17 +43,15 @@
                     height="80px" />
                 </div>
 
-                <div class="flex flex-column w-full align-items-start justify-space-between gap-2 mt-2 mb-3">
+                <div class="flex flex-column w-full align-items-start justify-space-between gap-2 py-2" formArrayName="options">
                   <span class="text-md font-semibold text-capitalize"> {{ i + 1 }}. {{ product.value.name }} </span>
-                  <div formArrayName="options">
-                    <div *ngFor="let option of product.get('options').value; index as j">
-                      <div class="text-left text-sm">
-                        <span class="font-semibold text-capitalize"> {{ option.name }}: </span>
-                        <span class="text-capitalize"> {{ getOptionValues(option.values) }} </span>
-                      </div>
+                  <ng-container *ngFor="let option of product.get('options').value; index as j">
+                    <div class="text-left text-sm">
+                      <span class="font-semibold text-capitalize"> {{ option.name }}: </span>
+                      <span class="text-capitalize"> {{ getOptionValues(option.values) }} </span>
                     </div>
-                  </div>
-                  <div class="flex justify-space-between align-items-center w-full gap-2 mt-auto text-sm font-semibold">
+                  </ng-container>
+                  <div class="flex justify-space-between align-items-center w-full py-1 gap-2 mt-auto text-sm font-semibold">
                     <label class="text-start w-full">
                       {{ product.value['price'] | custom }}
                     </label>

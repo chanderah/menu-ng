@@ -8,7 +8,7 @@
     [dismissible]="true"
     [showCloseIcon]="true"
     [closeOnEscape]="true"
-    [style]="getSidebarStyle()"
+    [style]="bottomSheetStyle"
     [autoZIndex]="true"
     [modal]="true">
     <!-- [baseZIndex]="1000" -->
@@ -22,7 +22,7 @@
         <div class="col-12" style="display: inline-block">
           <h5 class="category-title mb-4">{{ form.get('name').value }}</h5>
           <!-- <p-divider></p-divider> -->
-          <p-scrollPanel [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }">
+          <p-scrollPanel class="no-scrollbar" [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }">
             <div formArrayName="options">
               <div *ngFor="let option of options().controls; index as i" [formGroupName]="i" class="card my-3">
                 <div class="flex justify-content-between pb-2">

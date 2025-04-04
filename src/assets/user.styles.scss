@@ -32,7 +32,7 @@
         margin-top: 1rem;
     }
 
-    .p-datatable .p-datatable-thead > tr > th {
+    .p-datatable .p-datatable-thead>tr>th {
         font-weight: 600;
     }
 
@@ -131,6 +131,7 @@
 
 .text-lowercase {
     text-transform: lowercase;
+
     ::placeholder {
         text-transform: initial;
     }
@@ -138,6 +139,7 @@
 
 .text-uppercase {
     text-transform: uppercase;
+
     ::placeholder {
         text-transform: initial;
     }
@@ -145,6 +147,7 @@
 
 .text-capitalize {
     text-transform: capitalize !important;
+
     ::placeholder {
         text-transform: initial !important;
     }
@@ -370,17 +373,20 @@
     background: #fff;
     box-shadow: 0 7px 15px rgba(0, 0, 0, 0.2);
 }
+
 .swiper-button-prev1.swiper-button-disabled,
 .swiper-button-next1.swiper-button-disabled {
     opacity: 0.35;
     cursor: auto;
     pointer-events: none;
 }
+
 .swiper-button-prev1:hover,
 .swiper-button-next1:hover {
     color: #000000;
     border: 2px solid #7c7d7e;
 }
+
 .swiper-button-prev1:after,
 .swiper-button-next1:after {
     font-family: swiper-icons;
@@ -389,20 +395,24 @@
     letter-spacing: 0;
     font-variant: initial;
 }
+
 .swiper-button-prev1,
 .swiper-container-rtl .swiper-button-next1 {
     left: 10px;
     right: auto;
 }
+
 .swiper-button-prev1:after,
 .swiper-container-rtl .swiper-button-next1:after {
     content: '';
 }
+
 .swiper-button-next1,
 .swiper-container-rtl .swiper-button-prev1 {
     right: 10px;
     left: auto;
 }
+
 .swiper-button-next1:after,
 .swiper-container-rtl .swiper-button-prev1:after {
     content: '';
@@ -414,3 +424,15 @@
     width: 100%;
     fill: #757575;
 }
+
+.no-scrollbar {
+    scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+// .no-scrollbar .p-scrollpanel-bar {
+//     display: none !important;
+// }
