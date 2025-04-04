@@ -26,8 +26,8 @@
             class="no-scrollbar"
             [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }"
             formArrayName="products">
-            <div *ngIf="products().length === 0" class="flex justify-content-center align-items-start w-full h-full">
-              <p class="text-md">Empty</p>
+            <div *ngIf="products().length === 0" class="flex justify-content-center align-items-center w-full" style="height: 200px">
+              <p class="text-md font-semibold">Empty</p>
             </div>
 
             <div class="my-2" *ngFor="let product of products().controls; index as i" [formGroupName]="i">

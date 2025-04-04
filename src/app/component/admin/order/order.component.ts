@@ -82,7 +82,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
             productsName: v.products.map((v) => v.name).join(', '),
           };
         });
-      } else this.sharedService.errorToast('Failed to get Orders data.');
+      } else this.sharedService.errorToast('Failed to get orders data.');
     });
   }
 

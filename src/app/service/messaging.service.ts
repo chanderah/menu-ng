@@ -35,11 +35,15 @@ export class MessagingService {
   constructor() {}
 
   async registerFcm(firebaseConfig: FirebaseConfig, retry: boolean = true): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const firebaseApp = initializeApp(firebaseConfig);
       this.client = getMessaging(firebaseApp);
 
+      const serviceWorkerRegistration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      await navigator.serviceWorker.ready;
+
       getToken(this.client, {
+        serviceWorkerRegistration,
         vapidKey: firebaseConfig.vapidKey,
       })
         .then((token) => {

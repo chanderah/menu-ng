@@ -1,3 +1,4 @@
+import { MidtransService } from './../../../service/midtrans.service';
 import { CustomCurrencyPipe } from './../../../pipe/currency.pipe';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -30,6 +31,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     public app: AppMainComponent,
     private router: Router,
     private fb: FormBuilder,
+    private midtransService: MidtransService,
     private orderService: OrderService,
     private sharedService: SharedService,
     private apiService: ApiService,
@@ -42,25 +44,19 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   ngOnInit(): void {
     disableBodyScroll();
 
-    // this.products().valueChanges.subscribe((products: Product[]) => {
-    //   if (!this.init) {
-    //     // count total
-    //     let totalPrice = 0;
-
-    //     products.forEach((product) => {
-    //       let price = product.price;
-    //       product?.options?.forEach((option) => {
-    //         option?.values?.forEach((data) => {
-    //           if (data?.selected) price += data?.price;
-    //         });
-    //       });
-    //       totalPrice += price * product.quantity;
-    //     });
-    //     this.form.get('totalPrice').setValue(totalPrice);
-    //   }
-    // });
-
     this.setForm();
+    this.customerService.cart.forEach(() => this.addProduct());
+    this.products().valueChanges.subscribe((v: ProductOrder[]) => {
+      let orderTotalPrice = 0; // calculate order total price -> sum product.totalPrice
+      v.forEach((v, i) => {
+        let productTotalPrice = this.getProductTotalPrice(v); // calculate product total price -> product.price * product.quantity
+        orderTotalPrice += productTotalPrice;
+        this.product(i).get('totalPrice').setValue(productTotalPrice, { emitEvent: false });
+      });
+      this.form.get('totalPrice').setValue(orderTotalPrice, { emitEvent: false });
+    });
+
+    this.products().patchValue(this.customerService.cart);
   }
 
   increment(i: number) {
@@ -74,10 +70,9 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   }
 
   onSubmit() {
-    if (this.isLoading) return;
+    if (this.midtransService.transaction.isLoading) return;
 
-    this.isLoading = true;
-
+    // this.isLoading = true;
     this.orderService.createOrder(this.form.value);
 
     // transaction_details: {
@@ -109,32 +104,14 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     this.form = this.fb.group({
       id: [null],
       orderCode: [null],
-      tableId: [this.customerService.customer.tableId, [Validators.required]],
+      table: [this.customerService.customer.table.name, [Validators.required]],
       totalPrice: [0, [Validators.required, Validators.min(1)]],
       products: this.fb.array([]),
       notes: [''],
+      token: [''],
+      status: ['pending_payment'],
       createdAt: [null, []],
-      status: [true],
     });
-
-    this.customerService.cart.forEach(() => this.addProduct());
-
-    this.products().valueChanges.subscribe((v: ProductOrder[]) => {
-      // 1. calculate product total price -> product.price * product.quantity
-      // 2. calculate order total price -> sum product.totalPrice
-
-      let orderTotalPrice = 0;
-      v.forEach((v, i) => {
-        let productTotalPrice = this.getProductTotalPrice(v);
-        orderTotalPrice += productTotalPrice;
-        this.product(i).get('totalPrice').setValue(productTotalPrice, { emitEvent: false });
-      });
-      this.form.get('totalPrice').setValue(orderTotalPrice, { emitEvent: false });
-
-      // clo
-    });
-
-    this.products().patchValue(this.customerService.cart);
   }
 
   products() {
@@ -152,7 +129,6 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
         image: [''],
         code: [''],
         name: [''],
-        categoryId: [0],
         price: [0],
         options: [[]],
 

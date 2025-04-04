@@ -30,7 +30,7 @@ export class CustomerService {
     this.customer = jsonParse<Customer>(localStorage.getItem('customer'));
     this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart')) ?? [];
 
-    this.loadOrders();
+    if (this.isCustomer) this.loadOrders();
   }
 
   loadOrders() {
@@ -39,7 +39,7 @@ export class CustomerService {
         limit: 100,
         condition: [
           { column: 'is_served', value: false },
-          { column: 'table_id', value: this.customer.tableId },
+          { column: 'table_id', value: this.customer.table.id },
         ],
       })
       .subscribe((res) => {
@@ -50,15 +50,18 @@ export class CustomerService {
   addToCart(value: ProductOrder) {
     const data = [...this.cart, value];
     data.forEach((v) => {
-      v.options.forEach((v) => {
-        v.values = v.values.filter((v) => v.selected);
-      });
+      v.options = v.options
+        .map((v) => ({
+          ...v,
+          values: v.values.filter((v) => v.selected),
+        }))
+        .filter((v) => v.values.length > 0);
     });
     this.cart = data;
   }
 
   get isCustomer() {
-    return !!this.customer?.tableId;
+    return !!this.customer?.table?.id;
   }
 
   get customer() {
@@ -74,8 +77,16 @@ export class CustomerService {
   }
 
   set customer(data: Customer) {
-    localStorage.setItem('customer', jsonStringify(data));
-    this._customer.next(data);
+    if (data.table?.id && !data.table?.name) {
+      this.apiService.findTableById(data.table.id).subscribe((res) => {
+        const value: Customer = { ...data, table: res.data };
+        localStorage.setItem('customer', jsonStringify(value));
+        this._customer.next(value);
+      });
+    } else {
+      localStorage.setItem('customer', jsonStringify(data));
+      this._customer.next(data);
+    }
   }
 
   set cart(data: ProductOrder[]) {

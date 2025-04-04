@@ -7,6 +7,7 @@ import { PagingInfo } from './../interface/paging_info';
 import { Table } from './../interface/table';
 import { User } from './../interface/user';
 import { jsonStringify } from '../lib/utils';
+import { ApiResponse } from '../interface/api';
 
 @Injectable({
   providedIn: 'root',
@@ -78,8 +79,8 @@ export class ApiService {
     return this.httpClient.post<any>('/table/findAll', pagingInfo);
   }
 
-  findTableById(table: Table) {
-    return this.httpClient.post<any>('/table/findById', table);
+  findTableById(id: number) {
+    return this.httpClient.post<any>('/table/findById', { id });
   }
 
   createTable(table: Table) {
@@ -149,7 +150,7 @@ export class ApiService {
   }
 
   createOrder(order: Order) {
-    return this.httpClient.post<any>('/order/create', order);
+    return this.httpClient.post<ApiResponse<Order>>('/order/create', order);
   }
 
   updateOrder(orderId: number) {

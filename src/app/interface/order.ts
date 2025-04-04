@@ -11,6 +11,7 @@ export interface Order {
   products: Product[];
   productsName?: string;
 
+  token?: string;
   createdAt: Date;
 }
 
@@ -47,7 +48,6 @@ export interface ProductOrder {
   image: string;
   code: string;
   name: string;
-  categoryId: number;
   price: number;
   options: ProductOrderOption[];
   notes: string;

@@ -17,10 +17,14 @@ export class CustomerGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const tableId = Number(route.queryParamMap.get('table'));
     if (tableId > 0) {
+      const customer = this.customerService.customer;
       this.customerService.customer = {
-        ...this.customerService.customer,
-        tableId,
+        ...customer,
         createdAt: new Date(),
+        table: {
+          ...customer?.table,
+          id: tableId,
+        },
       };
       this.router.navigateByUrl('/');
       return true;
@@ -35,7 +39,7 @@ export class CustomerGuard implements CanActivate {
 
   checkExpiry() {
     const { customer } = this.customerService;
-    if (isNaN(customer.tableId) || !customer.createdAt || new Date(customer.createdAt).getDate() < new Date().getDate()) {
+    if (isNaN(customer.table.id) || !customer.createdAt || new Date(customer.createdAt).getDate() < new Date().getDate()) {
       this.router.navigateByUrl('/customer', { skipLocationChange: true });
       return false;
     }

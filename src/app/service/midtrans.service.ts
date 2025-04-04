@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SnapRequest, SnapResponse, Transaction } from '../interface/midtrans';
+import { SnapResponse, Transaction } from '../interface/midtrans';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -13,15 +12,7 @@ export class MidtransService {
   });
   transaction$ = this._transaction.asObservable();
 
-  constructor(private httpClient: HttpClient) {}
-
-  async createTransaction(req: SnapRequest) {
-    this.transaction.isLoading = true;
-    return this.httpClient.post<{ data: string }>('/transaction/create', req).subscribe({
-      next: (res) => this.showSnapTransaction(res.data),
-      error: () => (this.transaction.isLoading = false),
-    });
-  }
+  constructor() {}
 
   showSnapTransaction(token: string) {
     snap.pay(token, {

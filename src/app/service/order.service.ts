@@ -18,8 +18,23 @@ export class OrderService {
   ) {}
 
   createOrder(data: Order) {
-    return this.apiService.createOrder(data);
+    // this.midtransService.showSnapTransaction(token)
+    this.midtransService.transaction.isLoading = true;
+    return this.apiService.createOrder(data).subscribe((res) => {
+      if (res.status === 200) {
+        console.log('res.data', res.data);
+        this.midtransService.showSnapTransaction(res.data.token);
+      } else this.midtransService.transaction.isLoading = false;
+    });
   }
+
+  // async createTransaction(req: SnapRequest) {
+  //   this.transaction.isLoading = true;
+  //   return this.httpClient.post<{ data: string }>('/transaction/create', req).subscribe({
+  //     next: (res) => this.showSnapTransaction(res.data),
+  //     error: () => (this.transaction.isLoading = false),
+  //   });
+  // }
 
   // getOrders(): Order {
   //   const data = jsonParse(localStorage.getItem('order')) as Order;

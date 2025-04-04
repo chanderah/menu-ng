@@ -1,112 +1,110 @@
-<div>
-  <p-sidebar
-    id="formDialog"
-    [(visible)]="showDialog"
-    (onHide)="hideDialog()"
-    position="bottom"
-    [blockScroll]="true"
-    [dismissible]="true"
-    [showCloseIcon]="true"
-    [closeOnEscape]="true"
-    [style]="bottomSheetStyle"
-    [autoZIndex]="true"
-    [modal]="true">
-    <!-- [baseZIndex]="1000" -->
-    <ng-template pTemplate="header">
-      <div class="flex justify-content-center w-full" (swipedown)="hideDialog()">
-        <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="content" [formGroup]="form">
-      <div class="grid formgrid px-3">
-        <div class="col-12" style="display: inline-block">
-          <h5 class="category-title mb-4">{{ form.get('name').value }}</h5>
-          <!-- <p-divider></p-divider> -->
-          <p-scrollPanel class="no-scrollbar" [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }">
-            <div formArrayName="options">
-              <div *ngFor="let option of options().controls; index as i" [formGroupName]="i" class="card my-3">
-                <div class="flex justify-content-between pb-2">
-                  <span>
-                    <span class="text-md font-semibold text-capitalize">
-                      {{ option.value.name }}
-                    </span>
-                    <span class="text-xs"> ({{ option.value.multiple ? 'select multiple' : 'select one' }}) </span>
+<p-sidebar
+  id="formDialog"
+  [(visible)]="showDialog"
+  (onHide)="hideDialog()"
+  position="bottom"
+  [blockScroll]="true"
+  [dismissible]="true"
+  [showCloseIcon]="true"
+  [closeOnEscape]="true"
+  [style]="bottomSheetStyle"
+  [autoZIndex]="true"
+  [modal]="true">
+  <!-- [baseZIndex]="1000" -->
+  <ng-template pTemplate="header">
+    <div class="flex justify-content-center w-full" (swipedown)="hideDialog()">
+      <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="content" [formGroup]="form">
+    <div class="grid formgrid px-3">
+      <div class="col-12" style="display: inline-block">
+        <h5 class="category-title mb-4">{{ form.get('name').value }}</h5>
+        <!-- <p-divider></p-divider> -->
+        <p-scrollPanel class="no-scrollbar" [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }">
+          <div formArrayName="options">
+            <div *ngFor="let option of options().controls; index as i" [formGroupName]="i" class="card my-3">
+              <div class="flex justify-content-between pb-2">
+                <span>
+                  <span class="text-md font-semibold text-capitalize">
+                    {{ option.value.name }}
                   </span>
-                  <p class="text-xs font-semibold" style="color: grey">
-                    {{ option.value.required ? '*required' : '*optional' }}
-                  </p>
-                </div>
+                  <span class="text-xs"> ({{ option.value.multiple ? 'select multiple' : 'select one' }}) </span>
+                </span>
+                <p class="text-xs font-semibold" style="color: grey">
+                  {{ option.value.required ? '*required' : '*optional' }}
+                </p>
+              </div>
 
-                <div formArrayName="values" class="cursor-pointer">
-                  <div
-                    *ngFor="let optionValue of optionValues(i).controls; index as j"
-                    [formGroupName]="j"
-                    class="flex flex-col align-items-center justify-content-between"
-                    style="padding-top: 10px">
-                    <label [for]="'selected' + i + j" class="text-sm w-full text-capitalize">
-                      {{ optionValue.value.value }}
+              <div formArrayName="values" class="cursor-pointer">
+                <div
+                  *ngFor="let optionValue of optionValues(i).controls; index as j"
+                  [formGroupName]="j"
+                  class="flex flex-col align-items-center justify-content-between"
+                  style="padding-top: 10px">
+                  <label [for]="'selected' + i + j" class="text-sm w-full text-capitalize">
+                    {{ optionValue.value.value }}
+                  </label>
+                  <div class="flex align-items-center gap-2">
+                    <label [for]="'selected' + i + j" class="text-xs font-semibold">
+                      {{ optionValue.value.price === 0 ? 'Free' : '+' + (optionValue.value.price | custom) }}
                     </label>
-                    <div class="flex align-items-center gap-2">
-                      <label [for]="'selected' + i + j" class="text-xs font-semibold">
-                        {{ optionValue.value.price === 0 ? 'Free' : '+' + (optionValue.value.price | custom) }}
-                      </label>
-                      <p-checkbox
-                        [inputId]="'selected' + i + j"
-                        binary="true"
-                        formControlName="selected"
-                        class="text-sm mr-2"
-                        (onChange)="onSelectOptionValue(option.value.multiple, i, j)">
-                      </p-checkbox>
+                    <p-checkbox
+                      [inputId]="'selected' + i + j"
+                      binary="true"
+                      formControlName="selected"
+                      class="text-sm mr-2"
+                      (onChange)="onSelectOptionValue(option.value.multiple, i, j)">
+                    </p-checkbox>
 
-                      <!-- <p-radiobutton [inputId]="'selected' + i + j" [value]="true"
+                    <!-- <p-radiobutton [inputId]="'selected' + i + j" [value]="true"
                                                 formControlName="selected" class="text-sm mr-2"></p-radiobutton> -->
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </p-scrollPanel>
-        </div>
-
-        <div class="col-12 flex align-items-center justify-content-between pb-2" style="height: auto">
-          <label class="font-semibold">Quantity</label>
-          <div class="flex flex-col align-items-center gap-3">
-            <button
-              pButton
-              pRipple
-              icon="pi pi-minus"
-              class="p-button-outlined p-button-rounded"
-              [disabled]="form.value['quantity'] === 1"
-              (click)="decrement()"></button>
-
-            <label class="font-bold">{{ form.value['quantity'] }}</label>
-            <button
-              pButton
-              pRipple
-              icon="pi pi-plus"
-              class="p-button-outlined p-button-rounded p-button-quantity"
-              (click)="increment()"></button>
           </div>
-        </div>
-        <div class="flex flex-col col-12 gap-3 py-3" style="height: auto; z-index: 10000">
+        </p-scrollPanel>
+      </div>
+
+      <div class="col-12 flex align-items-center justify-content-between pb-2" style="height: auto">
+        <label class="font-semibold">Quantity</label>
+        <div class="flex flex-col align-items-center gap-3">
           <button
             pButton
             pRipple
-            icon="pi pi-whatsapp"
-            class="p-button-outlined p-button-rounded cursor-pointer"
-            (click)="onClickWhatsapp()"></button>
-          <div
+            icon="pi pi-minus"
+            class="p-button-outlined p-button-rounded"
+            [disabled]="form.value['quantity'] === 1"
+            (click)="decrement()"></button>
+
+          <label class="font-bold">{{ form.value['quantity'] }}</label>
+          <button
+            pButton
             pRipple
-            class="col flex align-items-center justify-content-between bg-primary cursor-pointer px-4"
-            style="border-radius: 50px"
-            (click)="onSubmit()">
-            <label class="font-semibold cursor-pointer">+ Add to Cart</label>
-            <label class="font-bold cursor-pointer">
-              {{ form.value['totalPrice'] | custom }}
-            </label>
-          </div>
+            icon="pi pi-plus"
+            class="p-button-outlined p-button-rounded p-button-quantity"
+            (click)="increment()"></button>
         </div>
       </div>
-    </ng-template>
-  </p-sidebar>
-</div>
+      <div class="flex flex-col col-12 gap-3 py-3" style="height: auto; z-index: 10000">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-whatsapp"
+          class="p-button-outlined p-button-rounded cursor-pointer"
+          (click)="onClickWhatsapp()"></button>
+        <div
+          pRipple
+          class="col flex align-items-center justify-content-between bg-primary cursor-pointer px-4"
+          style="border-radius: 50px"
+          (click)="onSubmit()">
+          <label class="font-semibold cursor-pointer">+ Add to Cart</label>
+          <label class="font-bold cursor-pointer">
+            {{ form.value['totalPrice'] | custom }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-sidebar>
