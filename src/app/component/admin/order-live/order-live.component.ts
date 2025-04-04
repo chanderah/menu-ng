@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, Component, OnInit } from '@angular/core';
+import { ApplicationRef, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import { MessagingService } from 'src/app/service/messaging.service';
@@ -15,7 +15,7 @@ import { debounceTime } from 'rxjs';
   templateUrl: './order-live.component.html',
   styleUrls: ['./order-live.component.scss', '../../../../assets/user.styles.scss'],
 })
-export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewInit {
+export class OrderLiveComponent extends SharedUtil implements OnInit {
   rowsPerPageOptions: number[] = [20, 50, 100];
   dialogBreakpoints = { '768px': '90vw' };
 
@@ -54,8 +54,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     this.pagingInfo.limit = Number(pageSize) || this.rowsPerPageOptions[0];
     this.getOrders();
   }
-
-  ngAfterViewInit(): void {}
 
   async initFcm() {
     if (this.isListening) return;

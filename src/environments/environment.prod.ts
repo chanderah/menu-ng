@@ -1,5 +1,10 @@
 export const environment = {
   production: true,
+  shop: {
+    name: 'Restaurant Menu Kita',
+    whatsapp: 6287798992777,
+    phone: 6221870123,
+  },
   appUrl: 'https://menu-ng.vercel.app',
   // appUrl: 'https://chandrasa.fun',
   // apiUrl: 'https://api.chandrasa.fun/api',
