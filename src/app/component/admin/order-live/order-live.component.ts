@@ -2,12 +2,12 @@ import { AfterViewInit, ApplicationRef, Component, OnInit } from '@angular/core'
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import { MessagingService } from 'src/app/service/messaging.service';
-import { environment } from '../../../../environments/environment';
 import { PagingInfo } from '../../../interface/paging_info';
 import { ApiService } from '../../../service/api.service';
 import { SharedService } from '../../../service/shared.service';
-import { filterUniqueArr, isEmpty, refreshPage } from 'src/app/lib/utils';
+import { filterUniqueArr, isEmpty } from 'src/app/lib/utils';
 import SharedUtil from 'src/app/lib/shared.util';
+import { environment } from 'src/environments/environment';
 import { debounceTime } from 'rxjs';
 
 @Component({
@@ -16,17 +16,18 @@ import { debounceTime } from 'rxjs';
   styleUrls: ['./order-live.component.scss', '../../../../assets/user.styles.scss'],
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewInit {
-  isLoading: boolean = true;
   rowsPerPageOptions: number[] = [20, 50, 100];
   dialogBreakpoints = { '768px': '90vw' };
 
   pagingInfo = {} as PagingInfo;
   audio = new Audio('/assets/sound/bell.mp3');
 
+  isLoading: boolean = true;
+  isListening: boolean = false;
   showOrderDetailsDialog: boolean = false;
 
   selectedOrder = {} as Order;
-  orders = [] as Order[];
+  orders: Order[] = [];
 
   timeoutId!: any;
   refreshTimer: number = 120000;
@@ -38,8 +39,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
       command: () => this.markAsDone([this.selectedOrder.id]),
     },
   ];
-
-  awaitingOrdersCount: number = 0;
 
   constructor(
     private appRef: ApplicationRef,
@@ -53,35 +52,35 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
   ngOnInit() {
     const pageSize = localStorage.getItem('liveOrderPageSize');
     this.pagingInfo.limit = Number(pageSize) || this.rowsPerPageOptions[0];
+    this.getOrders();
   }
 
-  ngAfterViewInit(): void {
-    this.initFcm();
-  }
+  ngAfterViewInit(): void {}
 
-  initFcm() {
-    Notification.requestPermission(async (permission: NotificationPermission) => {
-      if (permission === 'denied') {
-        this.sharedService.showNotification('Please allow our browser notification and refresh page!', '😢', 90000);
-      } else if (permission === 'granted') {
-        this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
-        const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
-        if (fcmToken) {
-          const user = { ...this.sharedService.user, fcmToken };
-          this.apiService.updateFcmToken(user).subscribe((res) => {
-            if (res.status === 200) {
-              this.sharedService.user = user;
-            }
-          });
-        } else refreshPage();
+  async initFcm() {
+    if (this.isListening) return;
 
-        this.messagingService.messages$.pipe(debounceTime(300)).subscribe((res) => {
-          if (res.length && res[res.length - 1].notification.title.toLowerCase().includes('new order')) {
-            this.getOrders();
+    const permission = await Notification.requestPermission();
+    if (permission === 'denied') {
+      this.sharedService.showNotification('Please allow our browser notification and refresh page!', '😢', 90000);
+    } else if (permission === 'granted') {
+      const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
+      if (fcmToken) {
+        const user = { ...this.sharedService.user, fcmToken };
+        this.apiService.updateFcmToken(user).subscribe((res) => {
+          if (res.status === 200) {
+            this.isListening = true;
+            this.sharedService.user = user;
+            this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
+
+            this.messagingService.messages$.pipe(debounceTime(300)).subscribe((res) => {
+              const isNewOrderNotif = res.length && res[res.length - 1].notification.title.toLowerCase().includes('new order');
+              if (isNewOrderNotif) this.getOrders();
+            });
           }
         });
-      }
-    });
+      } else this.refreshPage();
+    }
   }
 
   async getOrders(lastFetchedId: number = this.getLastFetchedId()) {
@@ -91,6 +90,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     this.apiService.getLiveOrders(lastFetchedId, this.pagingInfo.limit).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
+        this.initFcm();
         this.lastUpdated = new Date();
         if (lastFetchedId === 0) {
           this.orders = res.data;
@@ -98,7 +98,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
           this.orders = filterUniqueArr([...res.data, ...this.orders], 'id').slice(0, this.pagingInfo.limit);
           this.showNewOrdersNotification(res.data.length);
         }
-        this.countAwaitingOrders();
       } else this.sharedService.errorToast('Failed to get orders data');
     });
 
@@ -117,10 +116,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
     }
   }
 
-  countAwaitingOrders() {
-    this.awaitingOrdersCount = this.orders.filter((v) => !v.isServed).length;
-  }
-
   markAsDone(listId: number[]) {
     if (!listId.length) return;
 
@@ -130,7 +125,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
       if (res.status === 200) {
         this.showOrderDetailsDialog = false;
         this.orders.filter((v) => listId.includes(v.id)).forEach((v) => (v.isServed = true));
-        this.countAwaitingOrders();
       } else this.sharedService.errorToast('Failed to update orders');
     });
   }
@@ -170,5 +164,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit, AfterViewI
 
   ngOnDestroy() {
     clearTimeout(this.timeoutId);
+  }
+
+  get awaitingOrdersCount() {
+    return this.orders.filter((v) => !v.isServed).length;
   }
 }

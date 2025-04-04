@@ -1,4 +1,4 @@
-import { CONSTANTS } from './../constants/common';
+import { CONSTANTS } from '../constant/common';
 import { environment } from 'src/environments/environment';
 import {
   capitalize,

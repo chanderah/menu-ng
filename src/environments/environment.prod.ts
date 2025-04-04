@@ -15,6 +15,11 @@ export const environment = {
     apiSecret: 'ReQ4un81jPjyZn82O5Art9aa3OA',
     url: 'cloudinary://387243642969926:ReQ4un81jPjyZn82O5Art9aa3OA@disom1qwi',
   },
+  midtrans: {
+    merchantId: 'G841504940',
+    clientKey: 'SB-Mid-client-GgpC4e1u-jwZ2Txg',
+    serverKey: 'SB-Mid-server-P3Ycuyiw8g6CzU3KHB4zO_Im',
+  },
   firebaseConfig: {
     apiKey: 'AIzaSyCUfFlUk0PT-Rswl2aoCiaNBZMYQIbllXo',
     vapidKey: 'BDpFnJzR0mL030pHC6WLWa0d73nya8mnNMaZ3F-emDnRKT_1ANYG9NXxjIgfbWQz2D0YnvsAGf8LXMQ---dQ1s0',

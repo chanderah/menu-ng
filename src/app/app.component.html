@@ -2,17 +2,17 @@
 <p-toast position="top-right"></p-toast>
 <!-- <p-confirmPopup></p-confirmPopup> -->
 <p-confirmDialog
-    appendTo="body"
-    [breakpoints]="{ '768px': '80vw' }"
-    [style]="{ width: '40vw' }"
-    styleClass="dialog-header-padding"
-    acceptIcon=""
-    rejectIcon=""
-    acceptLabel="Yes"
-    rejectLabel="No"
-    acceptButtonStyleClass="p-button-danger p-button-outlined"
-    rejectButtonStyleClass="p-button-text">
-    <ng-template pTemplate="body">
-        <span class="msg">{{ message }}</span>
-    </ng-template>
+  appendTo="body"
+  [breakpoints]="{ '768px': '80vw' }"
+  [style]="{ width: '40vw' }"
+  styleClass="dialog-header-padding"
+  acceptIcon=""
+  rejectIcon=""
+  acceptLabel="Yes"
+  rejectLabel="No"
+  acceptButtonStyleClass="p-button-danger p-button-outlined"
+  rejectButtonStyleClass="p-button-text">
+  <ng-template pTemplate="body">
+    <span class="msg">{{ message }}</span>
+  </ng-template>
 </p-confirmDialog>

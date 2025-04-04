@@ -1,5 +1,10 @@
 export const environment = {
   production: false,
+  shop: {
+    name: 'Restaurant Menu Kita',
+    whatsapp: 6287798992777,
+    phone: 6221870123,
+  },
   appUrl: 'http://localhost:4200',
   apiUrl: 'http://localhost:3000/api',
   // apiUrl: 'https://api.chandrasa.fun/api',
@@ -13,6 +18,11 @@ export const environment = {
     apiKey: '387243642969926',
     apiSecret: 'ReQ4un81jPjyZn82O5Art9aa3OA',
     url: 'cloudinary://387243642969926:ReQ4un81jPjyZn82O5Art9aa3OA@disom1qwi',
+  },
+  midtrans: {
+    merchantId: 'G841504940',
+    clientKey: 'SB-Mid-client-GgpC4e1u-jwZ2Txg',
+    serverKey: 'SB-Mid-server-P3Ycuyiw8g6CzU3KHB4zO_Im',
   },
   firebaseConfig: {
     apiKey: 'AIzaSyCUfFlUk0PT-Rswl2aoCiaNBZMYQIbllXo',

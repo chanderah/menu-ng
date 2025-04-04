@@ -120,9 +120,6 @@ export class SharedService {
         },
       });
       resolve(true);
-      // .onClose.subscribe((res) => {
-      //     resolve(res);
-      // });
     });
   }
 

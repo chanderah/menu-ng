@@ -40,3 +40,28 @@ export interface PaymentMethod {
   updatedAt: Date;
   createdAt: Date;
 }
+
+export interface ProductOrder {
+  id: number;
+  image: string;
+  code: string;
+  name: string;
+  categoryId: number;
+  price: number;
+  options: ProductOrderOption[];
+  notes: string;
+  quantity: number;
+  totalPrice: number;
+}
+
+export interface ProductOrderOption {
+  name: string;
+  multiple: boolean;
+  required: boolean;
+  values: ProductOrderValue[];
+}
+export interface ProductOrderValue {
+  value: string;
+  price: number;
+  selected: boolean;
+}

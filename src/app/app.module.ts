@@ -81,14 +81,7 @@ const layoutComponents: any[] = [
   AppMenuitemComponent,
 ];
 
-const adminComponents: any[] = [
-  UserComponent,
-  OrderComponent,
-  OrderLiveComponent,
-  ProductComponent,
-  CategoryComponent,
-  TableComponent,
-];
+const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponent, ProductComponent, CategoryComponent, TableComponent];
 
 @NgModule({
   declarations: [

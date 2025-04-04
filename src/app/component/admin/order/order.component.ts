@@ -123,23 +123,23 @@ export class OrderComponent extends SharedUtil implements OnInit {
     this.isLoading = true;
 
     this.form.enable();
-    this.orderService
-      .generateOrderReceipt({
-        tableId: this.selectedOrder.tableId,
-        orderCode: this.selectedOrder.orderCode,
-        receivedAmount: this.form.get('receivedAmount').value,
-        paymentMethod: this.form.get('paymentMethod').value,
-        taxes: this.selectedOrder.totalPrice * 0.1, // sharedService
-        subTotal: this.selectedOrder.totalPrice,
-        total: this.selectedOrderGrandTotal,
-        products: this.selectedOrder.products,
-        issuedAt: this.selectedOrder.createdAt,
-        createdAt: new Date(),
-      })
-      .then((res) => {
-        this.selectedOrderReceipt = res;
-        setTimeout(() => this.printAsPdf(), 10);
-      });
+    // this.orderService
+    //   .generateOrderReceipt({
+    //     tableId: this.selectedOrder.tableId,
+    //     orderCode: this.selectedOrder.orderCode,
+    //     receivedAmount: this.form.get('receivedAmount').value,
+    //     paymentMethod: this.form.get('paymentMethod').value,
+    //     taxes: this.selectedOrder.totalPrice * 0.1, // sharedService
+    //     subTotal: this.selectedOrder.totalPrice,
+    //     total: this.selectedOrderGrandTotal,
+    //     products: this.selectedOrder.products,
+    //     issuedAt: this.selectedOrder.createdAt,
+    //     createdAt: new Date(),
+    //   })
+    //   .then((res) => {
+    //     this.selectedOrderReceipt = res;
+    //     setTimeout(() => this.printAsPdf(), 10);
+    //   });
   }
 
   printAsPdf() {

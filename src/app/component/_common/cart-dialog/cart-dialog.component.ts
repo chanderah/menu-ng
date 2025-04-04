@@ -67,34 +67,46 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   }
 
   getProductsInCart() {
-    const data: Product[] = this.orderService.getCart();
-    for (let i = 0; i < data.length; i++) {
-      this.addProduct();
-      for (let j = 0; j < data[i].options.length; j++) {
-        this.addOption(i);
-        for (let k = 0; k < data[i].options[j].values.length; k++) {
-          this.addOptionValues(i, j);
-        }
-      }
-    }
-    this.init = false;
-    this.products().patchValue(data);
+    // const data: Product[] = this.orderService.getCart();
+    // for (let i = 0; i < data.length; i++) {
+    //   this.addProduct();
+    //   for (let j = 0; j < data[i].options.length; j++) {
+    //     this.addOption(i);
+    //     for (let k = 0; k < data[i].options[j].values.length; k++) {
+    //       this.addOptionValues(i, j);
+    //     }
+    //   }
+    // }
+    // this.init = false;
+    // this.products().patchValue(data);
   }
 
   onSubmit() {
     this.isLoading = true;
-    this.orderService.createOrder(this.cartForm.value).subscribe((res) => {
-      this.isLoading = false;
-      if (res.status === 200) {
-        this.app.hideTopMenu();
-        this.showDialog = false;
-        this.router.navigate(['/order-complete'], {
-          state: {
-            totalPrice: this.cartForm.get('totalPrice').value,
-          },
-        });
-      } else this.sharedService.showErrorNotification();
-    });
+
+    // transaction_details: {
+    //   gross_amount: 123500,
+    //   order_id: `ORDER-${new Date().getTime()}`,
+    // },
+    // customer_details: {
+    //   first_name: 'Chandra',
+    //   last_name: 'Sukmagalih Arifin',
+    //   phone: '087798992777',
+    // },
+
+    console.log('this.cartForm.value', this.cartForm.value);
+    // this.orderService.createOrder(this.cartForm.value).subscribe((res) => {
+    //   this.isLoading = false;
+    //   if (res.status === 200) {
+    //     this.app.hideTopMenu();
+    //     this.showDialog = false;
+    //     this.router.navigate(['/order-complete'], {
+    //       state: {
+    //         totalPrice: this.cartForm.get('totalPrice').value,
+    //       },
+    //     });
+    //   } else this.sharedService.showErrorNotification();
+    // });
   }
 
   increment(productIndex: number) {
@@ -142,7 +154,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   deleteProduct(productIndex: number) {
     this.init = true;
     this.products().removeAt(productIndex);
-    this.orderService.setCart(this.products().value);
+    // this.orderService.setCart(this.products().value);
     console.log([this.products().value]);
     if (this.products().length === 0) this.hideDialog();
   }

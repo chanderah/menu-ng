@@ -15,12 +15,12 @@ export class OrderCompleteComponent implements OnInit, AfterViewInit {
     private router: Router,
     private orderService: OrderService
   ) {
-    this.totalPrice = router.getCurrentNavigation().extras.state?.totalPrice ?? 0;
+    // this.totalPrice = router.getCurrentNavigation().extras.state?.totalPrice ?? 0;
   }
 
   ngOnInit(): void {
-    if (this.totalPrice === 0) this.router.navigate(['/']);
-    else this.orderService.finishOrder(this.totalPrice);
+    // if (this.totalPrice === 0) this.router.navigate(['/']);
+    // else this.orderService.finishOrder(this.totalPrice);
   }
 
   ngAfterViewInit(): void {

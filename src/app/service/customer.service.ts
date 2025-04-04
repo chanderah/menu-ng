@@ -1,18 +1,66 @@
 import { Injectable } from '@angular/core';
+import { Order } from '../interface/order';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
+import { BehaviorSubject } from 'rxjs';
+import { Customer } from '../interface/customer';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrderService {
-  // private _customer = new BehaviorSubject<Customer>(null);
-  // customer$ = this._customer.asObservable();
+export class CustomerService {
+  private _customer = new BehaviorSubject<Customer>(null);
+  customer$ = this._customer.asObservable();
+
+  private _cart = new BehaviorSubject<Order[]>([]);
+  cart$ = this._cart.asObservable();
+
+  private _orders = new BehaviorSubject<Order[]>([]);
+  orders$ = this._orders.asObservable();
 
   constructor(
     private sharedService: SharedService,
     private apiService: ApiService
   ) {}
+
+  addToCart(order: Order) {
+    // this.orders = [
+    //   ...this.orders,
+    //   product
+    // ]
+  }
+
+  get isCustomer() {
+    return !!this.customer?.tableId;
+  }
+
+  get customer() {
+    return this._customer.getValue();
+  }
+
+  get cart() {
+    return this._cart.getValue();
+  }
+
+  get orders() {
+    return this._orders.getValue();
+  }
+
+  set customer(data: Customer) {
+    this._customer.next(data);
+  }
+
+  set cart(data: Order[]) {
+    this._cart.next(data);
+  }
+
+  set orders(data: Order[]) {
+    this._orders.next(data);
+  }
+
+  // set customer(customer: Customer) {}
+  // set orders(orders: Order[]) {}
+  // set orders(orders: Order[]) {}
 
   // getOrders(): Order {
   //   const data = jsonParse(localStorage.getItem('order')) as Order;

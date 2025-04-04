@@ -84,41 +84,10 @@
               type="button"></button>
           </div>
         </div>
-        <!-- <div style="cursor: pointer">
-                    <img
-                        class="w-full shadow-2"
-                        [src]="product.image ? env.publicPath + product.image : env.imagePath + '/default_product.png'"
-                        [alt]="product.name"
-                        (click)="onClickImage(product)" />
-
-                    <div class="text-md font-semibold m-3">
-                        <div class="col-12">
-                            <span class="text-left text-capitalize max-lines-2">{{ product.name }}</span>
-                        </div>
-                        <div class="col-12">
-                            <span class="text-left text-sm">{{ product.price | custom }}</span>
-                            <button
-                                pButton
-                                pRipple
-                                class="p-button-rounded p-button-outlined"
-                                (click)="onAddToCart(product)"
-                                type="button">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div> -->
-        <!-- <div class="flex align-items-center justify-content-between pb-3 pr-3 pl-3"> -->
-        <!-- <p-divider class="my-0"></p-divider> -->
-        <!-- <div class="product-footer px-4"> </div> -->
       </div>
     </div>
   </ng-template>
 </p-dataView>
 
-<app-order-dialog
-  *ngIf="showOrderDialog"
-  [showDialog]="showOrderDialog"
-  [selectedProduct]="selectedProduct"
-  (onChange)="onShowOrderDialogChange($event)">
+<app-order-dialog *ngIf="showOrderDialog" [showDialog]="true" [data]="selectedProduct" (onHide)="showOrderDialog = false">
 </app-order-dialog>

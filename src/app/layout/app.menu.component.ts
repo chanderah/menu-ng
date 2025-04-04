@@ -4,7 +4,7 @@ import { Menu } from '../interface/menu';
 import { SharedService } from '../service/shared.service';
 import { environment } from './../../environments/environment';
 import { AppComponent } from '../app.component';
-import { CONSTANTS } from '../constants/common';
+import { CONSTANTS } from '../constant/common';
 import { merge } from 'rxjs';
 
 @Component({
