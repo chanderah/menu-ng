@@ -27,22 +27,24 @@ export class CustomerService {
   }
 
   load() {
-    this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart')) ?? [];
     this.customer = jsonParse<Customer>(localStorage.getItem('customer'));
-    // this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart'));
-    // this.apiService.getOrders({
-    //   limit: 100,
-    //   condition: [
-    //     {
-    //       column: 'is_served',
-    //       value: false,
-    //     },
-    //     {
-    //       column: 'tableId',
-    //       'value'
-    //     }
-    //   ],
-    // });
+    this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart')) ?? [];
+
+    this.loadOrders();
+  }
+
+  loadOrders() {
+    this.apiService
+      .getOrders({
+        limit: 100,
+        condition: [
+          { column: 'is_served', value: false },
+          { column: 'table_id', value: this.customer.tableId },
+        ],
+      })
+      .subscribe((res) => {
+        this.orders = res.data;
+      });
   }
 
   addToCart(data: ProductOrder) {
@@ -71,7 +73,6 @@ export class CustomerService {
   }
 
   set cart(data: ProductOrder[]) {
-    console.log('data', data);
     localStorage.setItem('cart', jsonStringify(data));
     this._cart.next(data);
   }
