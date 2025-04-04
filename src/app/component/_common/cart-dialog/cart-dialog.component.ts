@@ -93,12 +93,12 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     this.form = this.fb.group({
       id: [null],
       orderCode: [null],
-      table: [this.customerService.customer.table.name, [Validators.required]],
+      tableName: [this.customerService.customer.table.name, [Validators.required]],
       totalPrice: [0, [Validators.required, Validators.min(1)]],
       products: this.fb.array([]),
       notes: [''],
       token: [''],
-      status: ['pending_payment'],
+      status: [null],
       createdAt: [null, []],
     });
   }

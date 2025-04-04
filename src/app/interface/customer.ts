@@ -1,8 +1,9 @@
 export interface Customer {
   table?: Table;
   name?: string;
-  orderId?: number;
   phone?: number;
+
+  listOrderId: string[];
   createdAt: Date;
 }
 

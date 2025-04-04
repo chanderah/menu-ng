@@ -27,11 +27,28 @@
             [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }"
             formArrayName="products">
             <div *ngIf="products().length === 0" class="flex justify-content-center align-items-center w-full" style="height: 200px">
-              <p class="text-md font-semibold">Empty</p>
+              <p class="font-semibold">Empty</p>
             </div>
 
             <div class="my-2" *ngFor="let product of products().controls; index as i" [formGroupName]="i">
               <div class="flex gap-3 w-full">
+                <div class="flex flex-column w-full align-items-start justify-space-between gap-2 py-2" formArrayName="options">
+                  <span class="font-semibold text-capitalize">{{ product.value['name'] }} </span>
+
+                  <ng-container *ngFor="let option of product.get('options').value; index as j">
+                    <div class="text-left text-xs text-capitalize">
+                      <span class="truncate"> {{ option.name }}: </span>
+                      <span class="truncate"> {{ getOptionValues(option.values) }} </span>
+                    </div>
+                  </ng-container>
+
+                  <div class="flex w-full justify-content-start mt-auto">
+                    <label class="text-sm font-semibold">
+                      {{ product.value['totalPrice'] | custom }}
+                    </label>
+                  </div>
+                </div>
+
                 <div class="w-fit">
                   <img
                     [alt]="product.value['name']"
@@ -42,30 +59,13 @@
                     width="80px"
                     height="80px" />
                 </div>
-
-                <div class="flex flex-column w-full align-items-start justify-space-between gap-2 py-2" formArrayName="options">
-                  <span class="text-md font-semibold text-capitalize">{{ product.value['name'] }} </span>
-
-                  <ng-container *ngFor="let option of product.get('options').value; index as j">
-                    <div class="text-left text-sm">
-                      <span class="font-semibold text-capitalize"> {{ option.name }}: </span>
-                      <span class="truncate text-capitalize"> {{ getOptionValues(option.values) }} </span>
-                    </div>
-                  </ng-container>
-
-                  <div class="flex w-full justify-content-end mt-auto">
-                    <label class="text-sm font-semibold">
-                      {{ product.value['totalPrice'] | custom }}
-                    </label>
-                  </div>
-                </div>
               </div>
 
               <div class="p-inputgroup mt-3">
                 <span class="p-inputgroup-addon">
                   <i class="pi pi-comment" style="line-height: 1.25"></i>
                 </span>
-                <input pInputText type="text" placeholder="Leave me a note ..." formControlName="notes" />
+                <input pInputText type="text" placeholder="Leave me a note" formControlName="notes" />
               </div>
 
               <div class="flex align-items-center justify-content-end gap-3 mt-3">

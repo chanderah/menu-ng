@@ -61,7 +61,7 @@
           <tr (click)="viewOrder(data)" style="cursor: pointer">
             <td>{{ data.id }}</td>
             <td>{{ data.orderCode }}</td>
-            <td style="min-width: 100px" class="text-capitalize">Table {{ data.table }}</td>
+            <td style="min-width: 100px" class="text-capitalize">Table {{ data.tableName }}</td>
             <td style="min-width: 100px" class="text-capitalize">
               {{ data.productsName }}
             </td>
@@ -181,7 +181,7 @@
     <div class="card p-1 mb-3">
       <div class="flex col-12">
         <div class="col-6">
-          <p class="font-semibold ml-2 mt-2">Table {{ selectedOrder.table }}</p>
+          <p class="font-semibold ml-2 mt-2">Table {{ selectedOrder.tableName }}</p>
         </div>
         <div class="col-6 text-right">
           <p class="text-sm font-semibold mr-2 mt-2">{{ selectedOrder.totalPrice | custom }}</p>

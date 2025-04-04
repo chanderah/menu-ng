@@ -3,7 +3,7 @@ import { Product } from 'src/app/interface/product';
 export interface Order {
   id?: number;
   orderCode?: string;
-  table: number;
+  tableName: string;
   totalPrice: number;
 
   isServed: boolean;
