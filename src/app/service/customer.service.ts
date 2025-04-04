@@ -34,14 +34,13 @@ export class CustomerService {
   }
 
   loadOrders() {
-    // if (!this.customer.listOrderId?.length) return;
+    if (!this.customer.listOrderId?.length) return;
     this.apiService
       .getOrders({
         limit: 100,
         condition: [
           { column: 'is_served', value: false },
-          { column: 'id', value: [123, 231, 222] },
-          { column: 'table_name', value: ['a', 'b', 'c'] },
+          { column: 'id', value: this.customer.listOrderId },
         ],
       })
       .subscribe((res) => {
