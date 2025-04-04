@@ -17,7 +17,7 @@
         <p-divider [style]="{ 'width': '50px', 'margin-left': '2rem' }"></p-divider>
       </div>
     </ng-template>
-    <ng-template pTemplate="content" [formGroup]="cartForm">
+    <ng-template pTemplate="content" [formGroup]="form">
       <div class="grid formgrid px-4">
         <h5 class="category-title mb-4">Your Cart</h5>
 
@@ -37,23 +37,26 @@
                   width="80px"
                   height="80px" />
                 <!-- <div style="display: flex; flex-direction: column"> -->
-                <div class="flex flex-column align-items-start justify-content-between mt-2">
+                <div class="flex flex-column align-items-start justify-content-between my-2 w-full gap-2">
                   <span class="text-md font-semibold text-capitalize"> {{ i + 1 }}. {{ product.value.name }} </span>
 
-                  <div formArrayName="options" class="mt-2 mb-1">
-                    <div *ngFor="let option of options(i).controls; index as j" [formGroupName]="j">
+                  <ng-container formArrayName="options">
+                    <div *ngFor="let option of product.get('options').value; index as j">
                       <div class="text-left text-sm">
-                        <span class="font-semibold text-capitalize"> {{ option.value.name }}: </span>
-                        <span class="text-capitalize">
-                          {{ concatOptionValues(option.value.values) }}
-                        </span>
+                        <span class="font-semibold text-capitalize"> {{ option.name }}: </span>
+                        <span class="text-capitalize"> {{ getOptionValues(option.values) }} </span>
                       </div>
                     </div>
-                  </div>
+                  </ng-container>
 
-                  <label class="font-semibold text-right text-sm" style="margin-top: 0.2rem">
-                    {{ product.value.totalPrice | custom }}
-                  </label>
+                  <div class="flex w-full text-sm">
+                    <label class="font-semibold">
+                      {{ product.value['price'] | custom }}
+                    </label>
+                    <label class="font-semibold text-right">
+                      {{ product.value['totalPrice'] | custom }}
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -65,11 +68,15 @@
               </div>
 
               <div class="flex align-items-center justify-content-end gap-3 mt-3">
-                <button pButton pRipple icon="pi pi-trash" class="p-button-text" (click)="deleteProduct(i)"></button>
-
-                <button pButton pRipple icon="pi pi-minus" class="p-button-outlined p-button-rounded" (click)="decrement(i)"></button>
-
-                <label class="font-bold">{{ product.value.quantity }}</label>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-text" (click)="removeProduct(i)"></button>
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-minus"
+                  class="p-button-outlined p-button-rounded"
+                  [disabled]="product.value['quantity'] === 1"
+                  (click)="decrement(i)"></button>
+                <label class="font-bold">{{ product.value['quantity'] }}</label>
                 <button
                   pButton
                   pRipple
@@ -136,7 +143,7 @@
               <label class="font-bold cursor-pointer">Checkout</label>
             </div>
             <label class="font-bold cursor-pointer">
-              {{ cartForm.get('totalPrice').value | custom }}
+              {{ form.value['totalPrice'] | custom }}
             </label>
           </div>
         </div>

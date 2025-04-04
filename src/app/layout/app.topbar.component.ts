@@ -12,7 +12,7 @@ export class AppTopBarComponent {
     private customerService: CustomerService
   ) {}
 
-  get countCartItems() {
-    return this.customerService.cart.length;
+  get cartLength() {
+    return this.customerService.cart.length.toString();
   }
 }

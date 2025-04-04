@@ -131,7 +131,7 @@ export class SharedService {
     return new Promise((resolve) => {
       this.confirmationService.confirm({
         icon: 'pi pi-exclamation-triangle',
-        header: `Caution`,
+        header: `Warning`,
         message: message,
         accept: () => {
           resolve(true);

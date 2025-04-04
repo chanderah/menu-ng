@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import SharedUtil from 'src/app/lib/shared.util';
-import { capitalize, disableBodyScroll, isMobile } from 'src/app/lib/utils';
+import { capitalize, disableBodyScroll, enableBodyScroll, isMobile } from 'src/app/lib/utils';
 import { Product, ProductOption } from '../../../interface/product';
 import { SharedService } from '../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
@@ -20,48 +19,13 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
 
   showDialog: boolean = true;
   form!: FormGroup;
-  // orderForm: FormGroup;
 
   constructor(
-    // public app: AppMainComponent,
     private fb: FormBuilder,
-    private router: Router,
     private customerService: CustomerService,
     private sharedService: SharedService
   ) {
     super();
-
-    // this.orderForm = this.formBuilder.group({
-    //     // categoryId: [{ value: null, disabled: true }],
-    //     tableId: [{ value: null, disabled: true }, [Validators.required]],
-    //     notes: ['', [Validators.maxLength(255)]],
-    //     listProduct: this.formBuilder.array([])
-    // });
-
-    // this.orderForm = this.formBuilder.group({
-    //   id: [null],
-    //   image: [null],
-    //   name: ['', [Validators.required]],
-    //   code: [''],
-    //   categoryId: [null],
-    //   description: [''],
-    //   price: [0, [Validators.required]],
-    //   options: this.formBuilder.array([]),
-
-    //   notes: ['', []],
-    //   quantity: [0, []],
-    // });
-
-    // this.orderForm.valueChanges.subscribe((product: Product) => {
-    //   // count total
-    //   let price = product.price;
-    //   product.options.forEach((option) => {
-    //     option.values.forEach((data) => {
-    //       if (data.selected) price += data.price;
-    //     });
-    //   });
-    //   this.totalPrice = price * product.quantity;
-    // });
   }
 
   ngOnInit(): void {
@@ -103,6 +67,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
   }
 
   hideDialog() {
+    enableBodyScroll();
     this.onHide.emit(true);
   }
 

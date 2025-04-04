@@ -47,8 +47,14 @@ export class CustomerService {
       });
   }
 
-  addToCart(data: ProductOrder) {
-    this.cart = [...this.cart, data];
+  addToCart(value: ProductOrder) {
+    const data = [...this.cart, value];
+    data.forEach((v) => {
+      v.options.forEach((v) => {
+        v.values = v.values.filter((v) => v.selected);
+      });
+    });
+    this.cart = data;
   }
 
   get isCustomer() {
