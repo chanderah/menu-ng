@@ -82,7 +82,7 @@
                         </td>
                         <td style="min-width: 8rem; text-align: right">
                             <div class="flex flex-column">
-                                <p class="font-semibold">Table {{ data.tableId }}</p>
+                                <p class="font-semibold">{{ data.tableName }}</p>
                                 <p>{{ data.createdAt | date: 'MMM d, HH:mm' }}</p>
                             </div>
                         </td>
@@ -117,7 +117,7 @@
         <div class="card p-1 pb-2 mb-3">
             <div class="flex col-12">
                 <div class="col-6">
-                    <p class="font-semibold ml-2 mt-2">Table {{ selectedOrder.tableName }}</p>
+                    <p class="font-semibold ml-2 mt-2">{{ selectedOrder.tableName }}</p>
                 </div>
                 <div class="col-6 text-right">
                     <p class="text-sm font-semibold mr-2 mt-2">{{ selectedOrder.totalPrice | custom }}</p>

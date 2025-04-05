@@ -3,9 +3,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, startWith, Subscription, switchMap } from 'rxjs';
 import { Order } from 'src/app/interface/order';
+import SharedUtil from 'src/app/lib/shared.util';
+import { enableBodyScroll } from 'src/app/lib/utils';
 import { ApiService } from 'src/app/service/api.service';
 import { CustomerService } from 'src/app/service/customer.service';
-import { OrderService } from 'src/app/service/order.service';
 import { SharedService } from 'src/app/service/shared.service';
 
 interface OrderState {
@@ -18,7 +19,7 @@ interface OrderState {
   templateUrl: './order-customer.component.html',
   styleUrls: ['./order-customer.component.scss'],
 })
-export class OrderCustomerComponent implements OnInit, OnDestroy {
+export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDestroy {
   isLoading: boolean = true;
   isPolling: boolean = false;
   state!: OrderState;
@@ -26,20 +27,20 @@ export class OrderCustomerComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
 
   constructor(
-    // private app: AppComponent,
     private router: Router,
     private midtransService: MidtransService,
-    private customerService: CustomerService,
-    private orderService: OrderService,
     private apiService: ApiService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    public customerService: CustomerService
   ) {
+    super();
     // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.state = router.getCurrentNavigation()?.extras?.state as OrderState;
+    this.state = this.router.getCurrentNavigation()?.extras?.state as OrderState;
     console.log('state', this.state);
   }
 
   ngOnInit(): void {
+    enableBodyScroll();
     if (this.state?.isCheckout) {
       this.customerService.customer = {
         ...this.customerService.customer,
@@ -50,6 +51,9 @@ export class OrderCustomerComponent implements OnInit, OnDestroy {
       this.processCheckout();
     } else {
       this.customerService.loadOrders();
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
     }
   }
 

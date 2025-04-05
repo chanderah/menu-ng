@@ -29,6 +29,7 @@ import { AppTopBarComponent } from './layout/app.topbar.component';
 import { OrderService } from './service/order.service';
 import { SharedService } from './service/shared.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ChipModule } from 'primeng/chip';
 
 import { AutoFocusModule } from 'primeng/autofocus';
 
@@ -141,6 +142,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     RadioButtonModule,
     FileUploadModule,
     ProgressSpinnerModule,
+    ChipModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },

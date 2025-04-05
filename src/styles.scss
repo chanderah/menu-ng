@@ -22,6 +22,14 @@
     height: 100% !important;
 }
 
+.w-half {
+    width: 50% !important;
+}
+
+.h-half {
+    height: 50% !important;
+}
+
 .text-center {
     text-align: center;
 }
@@ -50,6 +58,11 @@
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+
+.grid-cols-1 {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
 
 .grid-cols-2 {
     display: grid;

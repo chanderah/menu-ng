@@ -82,7 +82,7 @@ export class CustomerService {
   }
 
   set customer(data: Customer) {
-    if (data.table?.id && !data.table?.name) {
+    if (data?.table?.id && !data?.table?.name) {
       this.apiService.findTableById(data.table.id).subscribe((res) => {
         console.log('data', data);
         const value: Customer = { ...data, table: res.data };

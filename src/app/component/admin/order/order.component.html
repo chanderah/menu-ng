@@ -61,7 +61,7 @@
           <tr (click)="viewOrder(data)" style="cursor: pointer">
             <td>{{ data.id }}</td>
             <td>{{ data.orderCode }}</td>
-            <td style="min-width: 100px" class="text-capitalize">Table {{ data.tableName }}</td>
+            <td style="min-width: 100px" class="text-capitalize">{{ data.tableName }}</td>
             <td style="min-width: 100px" class="text-capitalize">
               {{ data.productsName }}
             </td>
@@ -90,7 +90,7 @@
       <div id="pdfContent">
         <!-- <div class="orderNo">{ selectedOrderReceipt.tableId + '#' + selectedOrderReceipt.orderCode }}</div> -->
         <!-- <div class="orderNo">{{ '#' + selectedOrderReceipt.orderCode }}</div> -->
-        <div class="orderNo">Table {{ selectedOrderReceipt.table }} #{{ selectedOrderReceipt.orderCode }}</div>
+        <div class="orderNo">{{ selectedOrderReceipt.table }} #{{ selectedOrderReceipt.orderCode }}</div>
         <div class="headerSubTitle font-bold py-1">Order Receipt</div>
         <div id="date">{{ env.shop.name }}, +{{ env.shop.phone }}</div>
         <div id="date">{{ env.shop.address.line1 }}</div>
@@ -181,7 +181,7 @@
     <div class="card p-1 mb-3">
       <div class="flex col-12">
         <div class="col-6">
-          <p class="font-semibold ml-2 mt-2">Table {{ selectedOrder.tableName }}</p>
+          <p class="font-semibold ml-2 mt-2">{{ selectedOrder.tableName }}</p>
         </div>
         <div class="col-6 text-right">
           <p class="text-sm font-semibold mr-2 mt-2">{{ selectedOrder.totalPrice | custom }}</p>

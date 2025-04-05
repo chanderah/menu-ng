@@ -15,6 +15,7 @@ import {
 
 export default class SharedUtil {
   public env = environment;
+  public isMobile: boolean = isMobile;
   public isDevelopment: boolean = environment.production === false;
   public readonly CONSTANTS = CONSTANTS;
 
