@@ -42,6 +42,8 @@ export class CustomerService {
           { column: 'is_served', value: false },
           { column: 'id', value: this.customer.listOrderId },
         ],
+        sortField: 'created_at',
+        sortOrder: 'DESC',
       })
       .subscribe((res) => {
         this.orders = res.data;
