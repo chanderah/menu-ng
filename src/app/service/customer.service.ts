@@ -34,7 +34,7 @@ export class CustomerService {
   }
 
   loadOrders() {
-    if (!this.customer.listOrderId?.length) return;
+    if (!this.customer?.listOrderId?.length) return;
     return this.apiService
       .getOrders({
         limit: 100,
