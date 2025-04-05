@@ -39,7 +39,7 @@ export class CustomerService {
       .getOrders({
         limit: 100,
         condition: [
-          { column: 'is_served', value: false },
+          // { column: 'is_served', value: false },
           { column: 'id', value: this.customer.listOrderId },
         ],
         sortField: 'created_at',
