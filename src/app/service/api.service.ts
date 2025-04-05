@@ -145,8 +145,8 @@ export class ApiService {
     return this.httpClient.post<any>('/order/findAll', pagingInfo);
   }
 
-  getOrderById(orderId: number) {
-    return this.httpClient.post<ApiResponse<Order>>('/order/findById', { orderId });
+  getOrderById(id: number) {
+    return this.httpClient.post<ApiResponse<Order>>('/order/findById', { id });
   }
 
   getOrderByCode(orderCode: string) {

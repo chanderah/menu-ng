@@ -1,0 +1,10 @@
+<div class="w-full h-full relative flex justify-content-center align-items-center">
+  <ng-content></ng-content>
+  <p-progressSpinner
+    *ngIf="isLoading"
+    [strokeWidth]="16"
+    fill="transparent"
+    animationDuration=".5s"
+    class="absolute mt-1"
+    [style]="{ 'width': size + 'px', 'height': size + 'px', '--spinnerColor': color + '!important' }"></p-progressSpinner>
+</div>

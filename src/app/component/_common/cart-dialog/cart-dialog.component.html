@@ -92,20 +92,22 @@
         </div>
 
         <div class="col-12 flex flex-col gap-3 py-3 h-auto" *ngIf="products().length > 0">
-          <div
-            pRipple
-            class="col flex align-items-center justify-content-between bg-primary cursor-pointer px-4"
-            style="height: 3rem; border-radius: 50px"
-            (click)="onSubmit()"
-            [disabled]="isLoading">
-            <div>
-              <i class="pi pi-check mr-2 font-bold"></i>
-              <label class="font-bold cursor-pointer">Checkout</label>
+          <loading-container class="w-full cursor-pointer" [isLoading]="isLoading">
+            <div
+              pRipple
+              class="col flex align-items-center justify-content-between bg-primary hover-effect px-4"
+              style="height: 3rem; border-radius: 50px"
+              (click)="onSubmit()"
+              [disabled]="isLoading">
+              <div>
+                <i class="pi pi-check mr-2 font-bold"></i>
+                <label class="font-bold cursor-pointer">Checkout</label>
+              </div>
+              <label class="font-bold cursor-pointer">
+                {{ form.value['totalPrice'] | custom }}
+              </label>
             </div>
-            <label class="font-bold cursor-pointer">
-              {{ form.value['totalPrice'] | custom }}
-            </label>
-          </div>
+          </loading-container>
         </div>
       </div>
     </ng-template>

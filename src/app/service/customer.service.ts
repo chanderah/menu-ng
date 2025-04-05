@@ -84,11 +84,13 @@ export class CustomerService {
   set customer(data: Customer) {
     if (data.table?.id && !data.table?.name) {
       this.apiService.findTableById(data.table.id).subscribe((res) => {
+        console.log('data', data);
         const value: Customer = { ...data, table: res.data };
         localStorage.setItem('customer', jsonStringify(value));
         this._customer.next(value);
       });
     } else {
+      console.log('data', data);
       localStorage.setItem('customer', jsonStringify(data));
       this._customer.next(data);
     }

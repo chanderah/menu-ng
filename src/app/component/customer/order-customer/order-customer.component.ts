@@ -1,7 +1,7 @@
 import { MidtransService } from './../../../service/midtrans.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { interval, Subscription, switchMap } from 'rxjs';
+import { interval, startWith, Subscription, switchMap } from 'rxjs';
 import { Order } from 'src/app/interface/order';
 import { ApiService } from 'src/app/service/api.service';
 import { CustomerService } from 'src/app/service/customer.service';
@@ -36,11 +36,16 @@ export class OrderCustomerComponent implements OnInit, OnDestroy {
   ) {
     // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.state = router.getCurrentNavigation()?.extras?.state as OrderState;
+    console.log('state', this.state);
   }
 
   ngOnInit(): void {
     if (this.state?.isCheckout) {
-      this.customerService.customer.listOrderId = [...(this.customerService.customer.listOrderId ?? []), this.state.order.id];
+      this.customerService.customer = {
+        ...this.customerService.customer,
+        listOrderId: [...this.customerService.customer.listOrderId, this.state.order.id],
+      };
+
       this.customerService.clearCart();
       this.processCheckout();
     } else {
@@ -50,11 +55,11 @@ export class OrderCustomerComponent implements OnInit, OnDestroy {
 
   async processCheckout() {
     const res = await this.midtransService.showSnapTransaction(this.state.order.token);
-    // console.log('res', res);
+    const isCancelled = !res.response;
     if (res.isSuccess) {
       this.startPolling();
     } else {
-      this.sharedService.showErrorNotification();
+      if (!isCancelled) this.sharedService.showErrorNotification();
       this.customerService.loadOrders();
     }
   }
@@ -62,7 +67,10 @@ export class OrderCustomerComponent implements OnInit, OnDestroy {
   startPolling() {
     this.customerService.loadOrders();
     this.subscription = interval(3000)
-      .pipe(switchMap(() => this.apiService.getOrderById(this.state.order.id)))
+      .pipe(
+        startWith(0),
+        switchMap(() => this.apiService.getOrderById(this.state.order.id))
+      )
       .subscribe((res) => {
         const isPending = res.data.status === 'pending';
         if (isPending) {

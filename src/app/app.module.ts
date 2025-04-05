@@ -28,6 +28,7 @@ import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { AppTopBarComponent } from './layout/app.topbar.component';
 import { OrderService } from './service/order.service';
 import { SharedService } from './service/shared.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { AutoFocusModule } from 'primeng/autofocus';
 
@@ -64,6 +65,7 @@ import { MenuService } from './layout/service/app.menu.service';
 import { CustomCurrencyPipe } from './pipe/currency.pipe';
 import { ApiInterceptor } from './interceptor/api.interceptor';
 import { OrderCustomerComponent } from './component/customer/order-customer/order-customer.component';
+import { LoadingContainerComponent } from './component/_common/loading-container/loading-container.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -103,6 +105,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     LoginComponent,
     DashboardComponent,
     OrderCustomerComponent,
+    LoadingContainerComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -137,6 +140,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     TreeModule,
     RadioButtonModule,
     FileUploadModule,
+    ProgressSpinnerModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },

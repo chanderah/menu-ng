@@ -88,3 +88,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.hover-effect:hover {
+    // background-color: var(--surface-card) !important;
+    background-color: var(--surface-700) !important;
+}

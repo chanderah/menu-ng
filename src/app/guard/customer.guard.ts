@@ -17,10 +17,13 @@ export class CustomerGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const tableId = Number(route.queryParamMap.get('table'));
     if (tableId > 0) {
+      this.customerService.clearCart();
+
       const customer = this.customerService.customer;
       this.customerService.customer = {
         ...customer,
         createdAt: new Date(),
+        listOrderId: [],
         table: {
           ...customer?.table,
           id: tableId,
