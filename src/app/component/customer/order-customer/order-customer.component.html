@@ -16,7 +16,7 @@
       <div *ngFor="let item of customerService.orders" class="card flex flex-column p-4 m-0">
         <div class="flex align-items-center justify-content-between">
           <p class="font-semibold mb-0"># {{ item.orderCode }}</p>
-          <div class="p-chip text-uppercase font-semibold">
+          <div class="p-chip text-uppercase font-semibold" [style]="{ 'background-color': item.isServed ? '#9bdcac' : '#dee2e6' }">
             <p class="text-xs p-1 py-2">{{ item.isServed ? 'Completed' : item.status }}</p>
           </div>
         </div>
@@ -25,6 +25,8 @@
         <div class="flex w-full h-full p-0" *ngIf="item.products[0] as product">
           <div class="flex flex-column gap-1 w-full h-full text-sm pb-1">
             <span class="font-semibold">{{ product.name }}</span>
+            <span class="text-sm">{{ item.options }}</span>
+
             <div class="flex flex-column gap-1 w-full mt-auto">
               <span class="text-sm">{{ item.tableName }}</span>
               <span class="text-sm">{{ item.totalPrice | custom }}</span>
