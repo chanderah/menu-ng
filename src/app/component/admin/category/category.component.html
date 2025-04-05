@@ -1,44 +1,72 @@
 <div class="grid">
-    <div class="col-12">
-        <div class="card">
-            <div class="flex align-items-center justify-content-between mb-4">
-                <h5 class="category-title">Categories</h5>
-                <div class="flex gap-2">
-                    <button pButton pRipple class="p-button" (click)="onAddCategory()">Add</button>
-                </div>
-            </div>
-            <p-tree [value]="sharedService.categories" selectionMode="single" [loading]="isLoading"
-                [(selection)]="selectedCategory" (onNodeSelect)="onEditCategory()"></p-tree>
+  <div class="col-12">
+    <div class="card">
+      <div class="flex align-items-center justify-content-between mb-4">
+        <h5 class="card-title">Categories</h5>
+        <div class="flex gap-2">
+          <button pButton pRipple class="p-button" (click)="onAddCategory()">Add</button>
         </div>
+      </div>
+      <p-tree
+        [value]="sharedService.categories"
+        selectionMode="single"
+        [loading]="isLoading"
+        [(selection)]="selectedCategory"
+        (onNodeSelect)="onEditCategory()"></p-tree>
     </div>
+  </div>
 </div>
 
 <!-- CATEGORY DIALOG -->
-<p-dialog [maximizable]="true" [header]="selectedCategory ? 'Edit Category' : 'Add Category'"
-    [(visible)]="showCategoryDialog" (onHide)="this.form.reset()" [contentStyle]="{ overflow: 'visible' }"
-    [style]="{ width: '40vw', height: 'auto' }" [dismissableMask]="true" [closeOnEscape]="true"
-    [breakpoints]="dialogBreakpoints" modal="true" [blockScroll]="true" showEffect="fade">
-    <div [formGroup]="form" (keyup.enter)="onSubmit()" class="p-fluid px-2">
-        <div class="col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
-                <input pInputText type="text" placeholder="Name" formControlName="label" class="text-capitalize" />
-            </div>
-        </div>
-
-        <div class="flex mt-4" [ngClass]="selectedCategory ? 'justify-content-between' : 'justify-content-end'">
-            <button *ngIf="selectedCategory" pButton pRipple (click)="onDeleteCategory()" [disabled]="isLoading"
-                class="p-button-danger p-button-outlined" icon="pi pi-trash">
-            </button>
-            <div class="flex gap-2">
-                <button pButton pRipple icon="pi pi-times" (click)="showCategoryDialog = false" label="Cancel"
-                    [disabled]="isLoading" class="w-auto p-button-danger p-button-outlined">
-                </button>
-                <button pButton pRipple icon="pi pi-check" (click)="onSubmit()" label="Save" [disabled]="isLoading"
-                    class="w-auto p-button-outlined">
-                </button>
-            </div>
-        </div>
+<p-dialog
+  [maximizable]="true"
+  [header]="selectedCategory ? 'Edit Category' : 'Add Category'"
+  [(visible)]="showCategoryDialog"
+  (onHide)="this.form.reset()"
+  [contentStyle]="{ overflow: 'visible' }"
+  [style]="{ width: '40vw', height: 'auto' }"
+  [dismissableMask]="true"
+  [closeOnEscape]="true"
+  [breakpoints]="dialogBreakpoints"
+  modal="true"
+  [blockScroll]="true"
+  showEffect="fade">
+  <div [formGroup]="form" (keyup.enter)="onSubmit()" class="p-fluid px-2">
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
+        <input pInputText type="text" placeholder="Name" formControlName="label" class="text-capitalize" />
+      </div>
     </div>
+
+    <div class="flex mt-4" [ngClass]="selectedCategory ? 'justify-content-between' : 'justify-content-end'">
+      <button
+        *ngIf="selectedCategory"
+        pButton
+        pRipple
+        (click)="onDeleteCategory()"
+        [disabled]="isLoading"
+        class="p-button-danger p-button-outlined"
+        icon="pi pi-trash"></button>
+      <div class="flex gap-2">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-times"
+          (click)="showCategoryDialog = false"
+          label="Cancel"
+          [disabled]="isLoading"
+          class="w-auto p-button-danger p-button-outlined"></button>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-check"
+          (click)="onSubmit()"
+          label="Save"
+          [disabled]="isLoading"
+          class="w-auto p-button-outlined"></button>
+      </div>
+    </div>
+  </div>
 </p-dialog>
 <!-- CATEGORY DIALOG -->

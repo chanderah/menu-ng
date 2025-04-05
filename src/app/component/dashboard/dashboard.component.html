@@ -1,7 +1,7 @@
 <div id="featuredProducts" class="grid">
   <div class="col-12">
     <div @moveUp class="card" *ngIf="!selectedCategory && featuredProducts.length > 1">
-      <h5 class="category-title">Featured</h5>
+      <h5 class="card-title">Featured</h5>
       <swiper [config]="swiperOptions" #swiper>
         <ng-template *ngFor="let product of featuredProducts" swiperSlide>
           <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">

@@ -19,7 +19,7 @@
   <ng-template pTemplate="content" [formGroup]="form">
     <div class="grid formgrid px-3">
       <div class="col-12" style="display: inline-block">
-        <h5 class="category-title mb-4">{{ form.get('name').value }}</h5>
+        <h5 class="card-title mb-4">{{ form.get('name').value }}</h5>
         <!-- <p-divider></p-divider> -->
         <p-scrollPanel class="no-scrollbar" [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }">
           <div formArrayName="options">

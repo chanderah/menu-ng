@@ -1,173 +1,157 @@
 <div class="grid">
-    <div class="col-12">
-        <div class="card">
-            <div class="flex align-items-center justify-content-between mb-4">
-                <h5 class="category-title">Tables</h5>
-                <div class="flex gap-2">
-                    <button
-                        pButton
-                        pRipple
-                        class="p-button"
-                        label="Edit"
-                        [disabled]="isEmpty(selectedTable)"
-                        (click)="onEdit()">
-                    </button>
-                    <button pButton pRipple class="p-button" (click)="onAdd()" label="Add"></button>
-                </div>
-            </div>
-            <p-table
-                #tb
-                dataKey="id"
-                [paginator]="true"
-                [pageLinks]="3"
-                [loading]="isLoading"
-                [rowsPerPageOptions]="[10, 20, 50, 100]"
-                [rows]="10"
-                [totalRecords]="pagingInfo.rowCount"
-                [lazy]="true"
-                [filterDelay]="500"
-                (onLazyLoad)="getTables($event)"
-                [value]="tables"
-                [rowHover]="true"
-                [scrollable]="true"
-                scrollDirection="both"
-                selectionMode="single"
-                [(selection)]="selectedTable"
-                responsiveLayout="scroll">
-                <ng-template pTemplate="caption">
-                    <div class="flex justify-content-end flex-column sm:flex-row">
-                        <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input
-                                pInputText
-                                type="search"
-                                (input)="tb.filterGlobal($event.target.value, 'contains')"
-                                placeholder="Search ..."
-                                class="w-full" />
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width: 4rem"></th>
-                        <th pSortableColumn="name"> Name <p-sortIcon field="name"></p-sortIcon> </th>
-                        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-                        <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="body" let-table>
-                    <tr [pSelectableRow]="table">
-                        <td>
-                            <p-tableCheckbox [pSelectableRow]="table" [value]="table"></p-tableCheckbox>
-                        </td>
-                        <td style="min-width: 100px" class="product-badge text-capitalize">{{ table.name }}</td>
-                        <td>
-                            <span class="product-badge">
-                                {{ table.status ? 'Active' : 'Inactive' }}
-                            </span>
-                        </td>
-                        <td style="min-width: 8rem">{{ table.createdAt | date: 'MMM d, y' }}</td>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="emptymessage" let-columns>
-                    <tr>
-                        <td colspan="100%">
-                            <div class="flex my-3 align-items-center justify-content-center"> No results found. </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+  <div class="col-12">
+    <div class="card">
+      <div class="flex align-items-center justify-content-between mb-4">
+        <h5 class="card-title">Tables</h5>
+        <div class="flex gap-2">
+          <button pButton pRipple class="p-button" label="Edit" [disabled]="isEmpty(selectedTable)" (click)="onEdit()"></button>
+          <button pButton pRipple class="p-button" (click)="onAdd()" label="Add"></button>
         </div>
+      </div>
+      <p-table
+        #tb
+        dataKey="id"
+        [paginator]="true"
+        [pageLinks]="3"
+        [loading]="isLoading"
+        [rowsPerPageOptions]="[10, 20, 50, 100]"
+        [rows]="10"
+        [totalRecords]="pagingInfo.rowCount"
+        [lazy]="true"
+        [filterDelay]="500"
+        (onLazyLoad)="getTables($event)"
+        [value]="tables"
+        [rowHover]="true"
+        [scrollable]="true"
+        scrollDirection="both"
+        selectionMode="single"
+        [(selection)]="selectedTable"
+        responsiveLayout="scroll">
+        <ng-template pTemplate="caption">
+          <div class="flex justify-content-end flex-column sm:flex-row">
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="search"
+                (input)="tb.filterGlobal($event.target.value, 'contains')"
+                placeholder="Search ..."
+                class="w-full" />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 4rem"></th>
+            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+            <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-table>
+          <tr [pSelectableRow]="table">
+            <td>
+              <p-tableCheckbox [pSelectableRow]="table" [value]="table"></p-tableCheckbox>
+            </td>
+            <td style="min-width: 100px" class="product-badge text-capitalize">{{ table.name }}</td>
+            <td>
+              <span class="product-badge">
+                {{ table.status ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td style="min-width: 8rem">{{ table.createdAt | date: 'MMM d, y' }}</td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td colspan="100%">
+              <div class="flex my-3 align-items-center justify-content-center">No results found.</div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
+  </div>
 </div>
 
 <!-- DIALOG -->
 <p-dialog
-    [maximizable]="true"
-    [header]="selectedTable ? 'Edit Table' : 'Add Table'"
-    [(visible)]="showTableDialog"
-    (onHide)="resetTableDialog()"
-    [contentStyle]="{ overflow: 'visible' }"
-    [style]="{ width: '40vw', height: 'auto' }"
-    [dismissableMask]="false"
-    [closeOnEscape]="false"
-    [breakpoints]="dialogBreakpoints"
-    [blockScroll]="true"
-    modal="true"
-    showEffect="fade">
-    <div [formGroup]="tableForm" (keyup.enter)="onSubmit()" class="p-fluid px-2">
-        <div class="col-12 flex justify-content-center" *ngIf="selectedTable">
-            <qr-code
-                #qrcode
-                id="qrcode"
-                [value]="env.appUrl + '/?table=' + tableForm.get('id').value"
-                margin="4"
-                size="200"
-                errorCorrectionLevel="H"></qr-code>
-        </div>
-        <div class="col-12 flex justify-content-end" *ngIf="selectedTable">
-            <!-- <button pButton pRipple (click)="downloadQrCode()" label="Download"></button> -->
-            <button
-                *ngIf="selectedTable"
-                pButton
-                pRipple
-                (click)="downloadQrCode()"
-                [disabled]="isLoading"
-                label="Download QR Code"
-                class="p-button-primary p-button-outlined"
-                icon="pi pi-download">
-            </button>
-        </div>
-
-        <div class="col-12 mt-3">
-            <div class="field-checkbox mb-0">
-                <p-checkbox label="Active" formControlName="status" binary="true"></p-checkbox>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
-                <input
-                    pInputText
-                    type="text"
-                    placeholder="Name, e.g Table Outdoor 1 OR Table 7"
-                    formControlName="name"
-                    class="text-capitalize" />
-            </div>
-        </div>
-
-        <div class="flex mt-4" [ngClass]="selectedTable ? 'justify-content-between' : 'justify-content-end'">
-            <button
-                *ngIf="selectedTable"
-                pButton
-                pRipple
-                (click)="onDelete()"
-                [disabled]="isLoading"
-                class="p-button-danger p-button-outlined"
-                icon="pi pi-trash">
-            </button>
-            <div class="flex gap-2">
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-times"
-                    (click)="showTableDialog = false"
-                    label="Cancel"
-                    [disabled]="isLoading"
-                    class="w-auto p-button-danger p-button-outlined">
-                </button>
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-check"
-                    (click)="onSubmit()"
-                    label="Save"
-                    [disabled]="isLoading"
-                    class="w-auto p-button-outlined">
-                </button>
-            </div>
-        </div>
+  [maximizable]="true"
+  [header]="selectedTable ? 'Edit Table' : 'Add Table'"
+  [(visible)]="showTableDialog"
+  (onHide)="resetTableDialog()"
+  [contentStyle]="{ overflow: 'visible' }"
+  [style]="{ width: '40vw', height: 'auto' }"
+  [dismissableMask]="false"
+  [closeOnEscape]="false"
+  [breakpoints]="dialogBreakpoints"
+  [blockScroll]="true"
+  modal="true"
+  showEffect="fade">
+  <div [formGroup]="tableForm" (keyup.enter)="onSubmit()" class="p-fluid px-2">
+    <div class="col-12 flex justify-content-center" *ngIf="selectedTable">
+      <qr-code
+        #qrcode
+        id="qrcode"
+        [value]="env.appUrl + '/?table=' + tableForm.get('id').value"
+        margin="4"
+        size="200"
+        errorCorrectionLevel="H"></qr-code>
     </div>
+    <div class="col-12 flex justify-content-end" *ngIf="selectedTable">
+      <!-- <button pButton pRipple (click)="downloadQrCode()" label="Download"></button> -->
+      <button
+        *ngIf="selectedTable"
+        pButton
+        pRipple
+        (click)="downloadQrCode()"
+        [disabled]="isLoading"
+        label="Download QR Code"
+        class="p-button-primary p-button-outlined"
+        icon="pi pi-download"></button>
+    </div>
+
+    <div class="col-12 mt-3">
+      <div class="field-checkbox mb-0">
+        <p-checkbox label="Active" formControlName="status" binary="true"></p-checkbox>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-pencil" style="line-height: 1.25"></i></span>
+        <input pInputText type="text" placeholder="Name, e.g Table Outdoor 1 OR Table 7" formControlName="name" class="text-capitalize" />
+      </div>
+    </div>
+
+    <div class="flex mt-4" [ngClass]="selectedTable ? 'justify-content-between' : 'justify-content-end'">
+      <button
+        *ngIf="selectedTable"
+        pButton
+        pRipple
+        (click)="onDelete()"
+        [disabled]="isLoading"
+        class="p-button-danger p-button-outlined"
+        icon="pi pi-trash"></button>
+      <div class="flex gap-2">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-times"
+          (click)="showTableDialog = false"
+          label="Cancel"
+          [disabled]="isLoading"
+          class="w-auto p-button-danger p-button-outlined"></button>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-check"
+          (click)="onSubmit()"
+          label="Save"
+          [disabled]="isLoading"
+          class="w-auto p-button-outlined"></button>
+      </div>
+    </div>
+  </div>
 </p-dialog>
