@@ -3,7 +3,7 @@ import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
 import { Order } from '../interface/order';
 import { MidtransService } from './midtrans.service';
-import { lastValueFrom } from 'rxjs';
+import { CustomerService } from './customer.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,20 +15,21 @@ export class OrderService {
   constructor(
     private sharedService: SharedService,
     private apiService: ApiService,
-    private midtransService: MidtransService
+    private midtransService: MidtransService,
+    private customerService: CustomerService
   ) {}
 
   async createOrder(data: Order) {
-    this.midtransService.transaction.isLoading = true;
-    this.midtransService.transaction.type = 'payment';
-
-    const res = await lastValueFrom(this.apiService.createOrder(data));
-    if (res.status === 200) {
-      return this.midtransService.showSnapTransaction(res.data.token);
-    } else {
-      this.midtransService.transaction.isLoading = false;
-      return Promise.resolve(false);
-    }
+    // this.midtransService.transaction.isLoading = true;
+    // this.midtransService.transaction.type = 'payment';
+    // const res = await lastValueFrom(this.apiService.createOrder(data));
+    // if (res.status === 200) {
+    //   this.customerService.clearCart();
+    //   return this.midtransService.showSnapTransaction(res.data.token);
+    // } else {
+    //   this.midtransService.transaction.isLoading = false;
+    //   return Promise.resolve(false);
+    // }
   }
 
   // async createTransaction(req: SnapRequest) {

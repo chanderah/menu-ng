@@ -3,7 +3,7 @@ export interface Customer {
   name?: string;
   phone?: number;
 
-  listOrderId: string[];
+  listOrderId: number[];
   createdAt: Date;
 }
 

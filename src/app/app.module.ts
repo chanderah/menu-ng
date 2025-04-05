@@ -63,6 +63,7 @@ import { ConfigService } from './layout/service/app.config.service';
 import { MenuService } from './layout/service/app.menu.service';
 import { CustomCurrencyPipe } from './pipe/currency.pipe';
 import { ApiInterceptor } from './interceptor/api.interceptor';
+import { OrderCustomerComponent } from './component/customer/order-customer/order-customer.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -101,6 +102,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     SkeletonComponent,
     LoginComponent,
     DashboardComponent,
+    OrderCustomerComponent,
   ],
   imports: [
     AppRoutingModule,

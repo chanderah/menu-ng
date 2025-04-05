@@ -1,4 +1,4 @@
-import { ProductOrder } from 'src/app/interface/order';
+import { Order, ProductOrder } from 'src/app/interface/order';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
@@ -16,7 +16,7 @@ export class CustomerService {
   private _cart = new BehaviorSubject<ProductOrder[]>([]);
   cart$ = this._cart.asObservable();
 
-  private _orders = new BehaviorSubject<ProductOrder[]>([]);
+  private _orders = new BehaviorSubject<Order[]>([]);
   orders$ = this._orders.asObservable();
 
   constructor(
@@ -35,7 +35,7 @@ export class CustomerService {
 
   loadOrders() {
     if (!this.customer.listOrderId?.length) return;
-    this.apiService
+    return this.apiService
       .getOrders({
         limit: 100,
         condition: [
@@ -59,6 +59,10 @@ export class CustomerService {
         .filter((v) => v.values.length > 0);
     });
     this.cart = data;
+  }
+
+  clearCart() {
+    this.cart = [];
   }
 
   get isCustomer() {
@@ -95,7 +99,7 @@ export class CustomerService {
     this._cart.next(data);
   }
 
-  set orders(data: ProductOrder[]) {
+  set orders(data: Order[]) {
     this._orders.next(data);
   }
 

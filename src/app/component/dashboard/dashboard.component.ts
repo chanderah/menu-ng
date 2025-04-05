@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Subscription, debounceTime } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';

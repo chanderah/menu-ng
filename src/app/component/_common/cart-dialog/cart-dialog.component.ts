@@ -1,5 +1,4 @@
 import { MidtransService } from './../../../service/midtrans.service';
-import { CustomCurrencyPipe } from './../../../pipe/currency.pipe';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -12,7 +11,6 @@ import { SharedService } from '../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { ProductOptionValue } from 'src/app/interface/product';
 import { ProductOrder } from 'src/app/interface/order';
-import { interval, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-cart-dialog',
@@ -36,8 +34,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     private orderService: OrderService,
     private sharedService: SharedService,
     private apiService: ApiService,
-    private customerService: CustomerService,
-    private customCurrencyPipe: CustomCurrencyPipe
+    private customerService: CustomerService
   ) {
     super();
   }
@@ -71,21 +68,23 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   }
 
   async onSubmit() {
-    if (this.midtransService.transaction.isLoading) return;
-    const isSuccess = await this.orderService.createOrder(this.form.value);
-    if (isSuccess) {
-      // start polling
+    if (this.isLoading) return;
 
-      const orderId = this.midtransService.transaction.response.order_id;
-      interval(3000)
-        .pipe(switchMap(() => this.apiService.getOrderByCode(orderId)))
-        .subscribe((res) => {
-          if (res.data.status === 'paid') {
-            this.midtransService.transaction.isLoading = false;
-            alert('SUCCESS!!');
-          }
-        });
-    }
+    this.isLoading = true;
+    this.apiService.createOrder(this.form.value).subscribe((res) => {
+      this.isLoading = false;
+      if (res.status === 200) {
+        this.router.navigateByUrl('/order', { state: { isCheckout: true, order: res.data } });
+      } else {
+        this.sharedService.showErrorNotification();
+      }
+    });
+
+    // if (this.midtransService.transaction.isLoading) return;
+    // const isSuccess = await this.orderService.createOrder(this.form.value);
+    // if (isSuccess) {
+    // start polling
+    // const orderId = this.midtransService.transaction.response.order_id;
   }
 
   // FORMS
@@ -151,9 +150,9 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     return data.map((v) => v.value).join(', ');
   }
 
-  hideDialog() {
+  hideDialog(isCheckout: boolean = false) {
     enableBodyScroll();
-    this.customerService.cart = this.products().value;
+    this.customerService.cart = isCheckout ? [] : this.products().value;
     this.onShowCartDialogChange.emit(false);
   }
 }

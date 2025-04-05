@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { LoginComponent } from './component/admin/auth/login/login.component';
 import { CategoryComponent } from './component/admin/category/category.component';
 import { OrderLiveComponent } from './component/admin/order-live/order-live.component';
@@ -13,40 +13,42 @@ import { OrderCompleteComponent } from './component/dashboard/order-complete/ord
 import { AdminGuard } from './guard/admin.guard';
 import { CustomerGuard } from './guard/customer.guard';
 import { AppMainComponent } from './layout/app.main.component';
+import { OrderCustomerComponent } from './component/customer/order-customer/order-customer.component';
 
+const routes: Route[] = [
+  {
+    path: '',
+    component: AppMainComponent,
+    children: [
+      { path: '', canActivate: [CustomerGuard], component: DashboardComponent },
+      { path: 'order', component: OrderCustomerComponent },
+      { path: 'order-complete', component: OrderCompleteComponent },
+      {
+        path: 'admin',
+        canActivate: [AdminGuard],
+        canActivateChild: [AdminGuard],
+        children: [
+          { path: '', redirectTo: '/', pathMatch: 'full' },
+          { path: 'user', component: UserComponent },
+          { path: 'order', component: OrderComponent },
+          { path: 'order/live', component: OrderLiveComponent },
+          { path: 'product', component: ProductComponent },
+          { path: 'category', component: CategoryComponent },
+          { path: 'table', component: TableComponent },
+        ],
+      },
+    ],
+  },
+  { path: 'customer', component: CustomerComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '**', redirectTo: '' },
+];
 @NgModule({
   imports: [
-    RouterModule.forRoot(
-      [
-        {
-          path: '',
-          component: AppMainComponent,
-          children: [
-            { path: '', canActivate: [CustomerGuard], component: DashboardComponent },
-            { path: 'order-complete', component: OrderCompleteComponent },
-            {
-              path: 'admin',
-              canActivate: [AdminGuard],
-              canActivateChild: [AdminGuard],
-              children: [
-                { path: '', redirectTo: '/', pathMatch: 'full' },
-                { path: 'user', component: UserComponent },
-                { path: 'order', component: OrderComponent },
-                { path: 'order/live', component: OrderLiveComponent },
-                { path: 'product', component: ProductComponent },
-                { path: 'category', component: CategoryComponent },
-                { path: 'table', component: TableComponent },
-              ],
-            },
-          ],
-        },
-        { path: 'customer', component: CustomerComponent },
-        { path: 'login', component: LoginComponent },
-        { path: '**', redirectTo: '' },
-      ],
-      { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }
-    ),
+    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' }),
   ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
+// router.routeReuseStrategy.shouldReuseRoute = () => false;
+// router.onSameUrlNavigation = 'reload';

@@ -15,31 +15,15 @@ export class MidtransService {
 
   constructor() {}
 
-  showSnapTransaction(token: string): Promise<boolean> {
+  showSnapTransaction(token: string): Promise<{ isSuccess: boolean; response: SnapResponse }> {
     return new Promise((resolve) => {
       snap.pay(token, {
-        onSuccess: (res: SnapResponse) => {
-          this.transaction.response = res;
-          resolve(true);
-        },
-        onClose: (_res: SnapResponse) => {
-          this.transaction.isLoading = false;
-          resolve(false);
-        },
-        onError: (_res: SnapResponse) => {
-          this.transaction.isLoading = false;
-          resolve(false);
-        },
-        onPending: (_res: SnapResponse) => {
-          this.transaction.isLoading = false;
-          resolve(false);
-        },
+        onSuccess: (response: SnapResponse) => resolve({ isSuccess: true, response }),
+        onPending: (response: SnapResponse) => resolve({ isSuccess: false, response }),
+        onClose: (response: SnapResponse) => resolve({ isSuccess: false, response }),
+        onError: (response: SnapResponse) => resolve({ isSuccess: false, response }),
       });
     });
-  }
-
-  onCloseSnapTransaction(isSuccess: boolean, res: SnapResponse) {
-    this.transaction.isLoading = false;
   }
 
   get transaction() {
