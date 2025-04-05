@@ -69,8 +69,8 @@ export class OrderCustomerComponent implements OnInit, OnDestroy {
           // keep pooling
         } else {
           this.isLoading = false;
-          this.customerService.loadOrders();
           this.subscription?.unsubscribe();
+          this.customerService.loadOrders();
 
           console.log('res.data', res.data);
           alert(`Your last transaction status is: ${res.data.status}`);
