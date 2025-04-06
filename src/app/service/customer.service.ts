@@ -76,7 +76,12 @@ export class CustomerService {
     return this._orders.getValue();
   }
 
-  set customer(data: Customer) {
+  set customer(value: Customer) {
+    const data: Customer = {
+      ...value,
+      listOrderId: value?.listOrderId ?? [],
+    };
+
     localStorage.setItem('customer', jsonStringify(data));
     this._customer.next(data);
   }

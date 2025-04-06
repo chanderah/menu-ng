@@ -26,7 +26,6 @@ export class CustomerGuard implements CanActivate {
         this.customerService.customer = {
           ...this.customerService.customer,
           tableId,
-          listOrderId: [],
           createdAt: new Date(),
         };
       } catch (err) {
