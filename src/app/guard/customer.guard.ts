@@ -22,10 +22,11 @@ export class CustomerGuard implements CanActivate {
       this.customerService.clearCart();
 
       try {
-        const tableId = Number(this.aes256Service.decrypt(tableParam));
+        const decoded = decodeURIComponent(tableParam);
+        const tableId = this.aes256Service.decrypt(decoded);
         this.customerService.customer = {
           ...this.customerService.customer,
-          tableId,
+          tableId: Number(tableId),
           createdAt: new Date(),
         };
       } catch (err) {
