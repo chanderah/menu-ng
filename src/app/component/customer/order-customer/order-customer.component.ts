@@ -93,7 +93,7 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
             this.sharedService.showNotification(`Your order is placed!`, '😘');
           } else {
             this.sharedService.showNotification(
-              `We are sorry, your transaction status is ${this.CONSTANTS.ORDER_STATUS[res.data.status]}`,
+              `We are sorry, your transaction is ${this.CONSTANTS.ORDER_STATUS[res.data.status] ?? 'failed'}`,
               '😢'
             );
           }
