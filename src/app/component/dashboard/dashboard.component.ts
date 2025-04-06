@@ -14,6 +14,7 @@ import { SharedService } from '../../service/shared.service';
 import { PagingInfo } from './../../interface/paging_info';
 import { ApiService } from './../../service/api.service';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
+import { CustomerService } from 'src/app/service/customer.service';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
 
@@ -40,6 +41,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
   constructor(
     public appMain: AppMainComponent,
+    public customerService: CustomerService,
     private sharedService: SharedService,
     private route: ActivatedRoute,
     private router: Router,
@@ -144,6 +146,10 @@ export class DashboardComponent extends SharedUtil implements OnInit {
       .onClose.subscribe((res) => {
         if (res) this.onAddToCart(data);
       });
+  }
+
+  onClickOrders() {
+    this.router.navigateByUrl('/order');
   }
 
   ngOnDestroy() {

@@ -9,26 +9,7 @@ import { merge } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
-  template: `
-    <div class="layout-menu-container">
-      <ul class="layout-menu" role="menu" (keydown)="onKeydown($event)">
-        <ng-container *ngFor="let item of menus; let i = index">
-          <li app-menu class="layout-menuitem-category" [item]="item" [index]="i" [root]="true" role="none">
-            <div class="layout-menuitem-root-text" [attr.aria-label]="item.label">{{ item.label }}</div>
-            <ul role="menu">
-              <ng-container *ngFor="let child of item.items">
-                <li app-menuitem [item]="child" [index]="i" role="none"></li>
-              </ng-container>
-            </ul>
-          </li>
-        </ng-container>
-      </ul>
-      <p-divider></p-divider>
-      <ng-container *ngIf="sharedService.isLoggedIn">
-        <button pButton pRipple type="button" (click)="onLogout()" icon="pi pi-power-off" label="Logout" class="p-button-outlined"></button>
-      </ng-container>
-    </div>
-  `,
+  templateUrl: './app.menu.component.html',
 })
 export class AppMenuComponent implements OnInit {
   isDevelopment: boolean = environment.production === false;

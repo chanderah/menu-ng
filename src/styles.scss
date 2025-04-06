@@ -106,3 +106,10 @@
     // background-color: var(--surface-card) !important;
     background-color: var(--surface-700) !important;
 }
+
+.fab-button {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+}
