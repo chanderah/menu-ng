@@ -85,4 +85,9 @@ export default class SharedUtil {
       overflow: 'scroll',
     };
   }
+
+  getOrderStatus(isServed: boolean, status: string) {
+    if (isServed) return CONSTANTS.ORDER_STATUS['complete'];
+    return CONSTANTS.ORDER_STATUS[status];
+  }
 }

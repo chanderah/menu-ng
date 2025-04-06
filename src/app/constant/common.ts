@@ -38,4 +38,11 @@ export const CONSTANTS = {
       role: 2,
     },
   ],
+  ORDER_STATUS: {
+    expire: 'Expired',
+    deny: 'Denied',
+    capture: 'Paid',
+    settlement: 'Paid',
+    complete: 'Completed',
+  },
 };

@@ -17,8 +17,8 @@
       <div class="card flex flex-column p-4 m-0" (click)="onClickOrder(item)" *ngFor="let item of customerService.orders">
         <div class="flex align-items-center justify-content-between">
           <p class="font-semibold mb-0"># {{ item.orderCode }}</p>
-          <div class="p-chip text-uppercase font-semibold" [style]="{ 'background-color': item.isServed ? '#9bdcac' : '#dee2e6' }">
-            <p class="text-xs p-1 py-2">{{ item.isServed ? 'Completed' : item.status }}</p>
+          <div class="p-chip" [style]="{ 'background-color': item.isServed ? '#9bdcac' : '#dee2e6' }">
+            <p class="text-xs text-uppercase font-semibold p-1 py-2">{{ getOrderStatus(item.isServed, item.status) }}</p>
           </div>
         </div>
 
