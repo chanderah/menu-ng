@@ -12,7 +12,6 @@ export const environment = {
   },
   appUrl: 'https://menu-ng.vercel.app',
   apiUrl: 'http://localhost:3000/api',
-  // apiUrl: 'https://api.chandrasa.fun/api',
   publicPath: 'https://public.chandrasa.fun',
   imagePath: '/assets/images',
   secretKey: 'chandrachansa@18',
