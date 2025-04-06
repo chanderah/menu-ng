@@ -1,4 +1,3 @@
-import { MidtransService } from './../../../service/midtrans.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, startWith, Subscription, switchMap } from 'rxjs';
@@ -23,14 +22,15 @@ interface OrderState {
 })
 export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDestroy {
   isLoading: boolean = true;
-  isPolling: boolean = false;
+
+  showOrderDialog: boolean = false;
+  selectedOrder!: Order;
 
   state!: OrderState;
   subscription!: Subscription;
 
   constructor(
     private router: Router,
-    private midtransService: MidtransService,
     private apiService: ApiService,
     private sharedService: SharedService,
     public customerService: CustomerService
@@ -51,8 +51,9 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
     };
 
     this.customerService.clearCart();
-    if (this.state.isSuccess) this.startPolling();
-    else {
+    if (this.state.isSuccess) {
+      this.startPolling();
+    } else {
       if (this.state.response) this.sharedService.showErrorNotification();
       this.getOrders();
     }
@@ -65,10 +66,18 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
     });
   }
 
+  onClickOrder(order: Order) {
+    this.selectedOrder = order;
+    this.showOrderDialog = true;
+  }
+
   startPolling() {
+    this.isLoading = true;
+
+    this.stopPolling();
     this.subscription = interval(3000)
       .pipe(
-        startWith(),
+        startWith(0),
         switchMap(() => this.apiService.getOrderById(this.state.order.id))
       )
       .subscribe((res) => {
@@ -76,21 +85,23 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
         if (isPending) {
           // keep pooling
         } else {
-          this.isLoading = false;
-          this.subscription?.unsubscribe();
+          this.stopPolling();
           this.getOrders();
 
-          console.log('res.data', res.data);
-          alert(`Your last transaction status is: ${res.data.status}`);
+          this.sharedService.showNotification(`Your last transaction status is: ${res.data.status}`, '😘');
         }
       });
   }
 
   stopPolling() {
-    console.log('stop polling');
+    this.subscription?.unsubscribe();
+  }
+
+  get isPolling() {
+    return !!this.subscription && !this.subscription.closed;
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.stopPolling();
   }
 }

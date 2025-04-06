@@ -19,7 +19,18 @@
     </ng-template>
     <ng-template pTemplate="content" [formGroup]="form">
       <div class="grid formgrid px-4">
-        <h5 class="card-title mb-4">Your Cart</h5>
+        <div class="flex justify-content-start w-full mb-4">
+          <span class="card-title" *ngIf="!isOrdered">Your Cart</span>
+
+          <div class="flex flex-column w-full" *ngIf="isOrdered">
+            <div class="w-full flex align-items-center justify-content-between">
+              <span class="font-semibold text-lg">Order ID #{{ data.orderCode }}</span>
+              <div class="p-chip text-uppercase font-semibold" [style]="{ 'background-color': data.isServed ? '#9bdcac' : '#dee2e6' }">
+                <p class="text-xs p-1 py-2">{{ data.isServed ? 'Completed' : data.status }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="col-12">
           <p-scrollPanel
@@ -61,30 +72,32 @@
                 </div>
               </div>
 
-              <div class="p-inputgroup mt-3">
-                <span class="p-inputgroup-addon">
-                  <i class="pi pi-comment" style="line-height: 1.25"></i>
-                </span>
-                <input pInputText type="text" placeholder="Leave me a note" formControlName="notes" />
-              </div>
+              <ng-container *ngIf="!isOrdered">
+                <div class="p-inputgroup mt-3">
+                  <span class="p-inputgroup-addon">
+                    <i class="pi pi-comment" style="line-height: 1.25"></i>
+                  </span>
+                  <input pInputText type="text" placeholder="Leave me a note" formControlName="notes" />
+                </div>
 
-              <div class="flex align-items-center justify-content-end gap-3 mt-3">
-                <button pButton pRipple icon="pi pi-trash" class="p-button-text" (click)="removeProduct(i)"></button>
-                <button
-                  pButton
-                  pRipple
-                  icon="pi pi-minus"
-                  class="p-button-outlined p-button-rounded"
-                  [disabled]="product.value['quantity'] === 1"
-                  (click)="decrement(i)"></button>
-                <label class="font-bold">{{ product.value['quantity'] }}</label>
-                <button
-                  pButton
-                  pRipple
-                  icon="pi pi-plus"
-                  class="p-button-outlined p-button-rounded p-button-quantity"
-                  (click)="increment(i)"></button>
-              </div>
+                <div class="flex align-items-center justify-content-end gap-3 mt-3">
+                  <button pButton pRipple icon="pi pi-trash" class="p-button-text" (click)="removeProduct(i)"></button>
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-minus"
+                    class="p-button-outlined p-button-rounded"
+                    [disabled]="product.value['quantity'] === 1"
+                    (click)="decrement(i)"></button>
+                  <label class="font-bold">{{ product.value['quantity'] }}</label>
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-plus"
+                    class="p-button-outlined p-button-rounded p-button-quantity"
+                    (click)="increment(i)"></button>
+                </div>
+              </ng-container>
 
               <p-divider></p-divider>
             </div>
@@ -97,15 +110,20 @@
               pRipple
               class="col flex align-items-center justify-content-between bg-primary hover-effect px-4"
               style="height: 3rem; border-radius: 50px"
-              (click)="onSubmit()"
-              [disabled]="isLoading">
-              <div>
-                <i class="pi pi-check mr-2 font-bold"></i>
-                <label class="font-bold cursor-pointer">Checkout</label>
-              </div>
-              <label class="font-bold cursor-pointer">
-                {{ form.value['totalPrice'] | custom }}
+              (click)="onSubmit()">
+              <label class="w-full font-bold text-center cursor-pointer" *ngIf="isOrdered && data.status !== 'pending'; else payment">
+                Close
               </label>
+
+              <ng-template #payment>
+                <div>
+                  <i class="pi pi-check mr-2 font-bold"></i>
+                  <label class="font-bold cursor-pointer">
+                    {{ isOrdered ? 'Payment' : 'Checkout' }}
+                  </label>
+                </div>
+                <label class="font-bold cursor-pointer"> {{ form.value['totalPrice'] | custom }} </label>
+              </ng-template>
             </div>
           </loading-container>
         </div>

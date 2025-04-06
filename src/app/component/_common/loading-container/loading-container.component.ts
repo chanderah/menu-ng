@@ -6,9 +6,10 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./loading-container.component.scss'],
 })
 export class LoadingContainerComponent {
-  @Input() 'isLoading': boolean = false;
-  @Input() 'size': number = 16;
-  @Input() 'color': string = '#fff';
+  @Input() isLoading: boolean = false;
+  @Input() hideWhenLoading: boolean = false;
+  @Input() size: number = 16;
+  @Input() color: string = '#fff';
 
-  'constructor'() {}
+  constructor() {}
 }

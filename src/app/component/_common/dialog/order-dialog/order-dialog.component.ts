@@ -6,11 +6,10 @@ import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import { disableBodyScroll, enableBodyScroll } from 'src/app/lib/utils';
 import { ApiService } from '../../../../service/api.service';
-import { OrderService } from '../../../../service/order.service';
 import { SharedService } from '../../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { ProductOptionValue } from 'src/app/interface/product';
-import { ProductOrder } from 'src/app/interface/order';
+import { Order, ProductOrder } from 'src/app/interface/order';
 
 @Component({
   selector: 'app-order-dialog',
@@ -20,10 +19,11 @@ import { ProductOrder } from 'src/app/interface/order';
 export class OrderDialogComponent extends SharedUtil implements OnInit {
   @Output() onShowCartDialogChange = new EventEmitter<boolean>();
   @Input() showDialog: boolean;
-  @Input() action!: 'VIEW' | 'ADD';
+  @Input() data?: Order;
 
   init: boolean = true;
   isLoading: boolean = true;
+  isOrdered: boolean = false;
 
   form: FormGroup;
 
@@ -32,7 +32,6 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private midtransService: MidtransService,
-    private orderService: OrderService,
     private sharedService: SharedService,
     private apiService: ApiService,
     private customerService: CustomerService
@@ -43,21 +42,28 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
   ngOnInit(): void {
     disableBodyScroll();
 
-    this.getTableName();
     this.setForm();
+    this.isOrdered = !!this.data;
+    if (this.isOrdered) {
+      this.data.products.forEach(() => this.addProduct());
+      this.form.patchValue(this.data);
+    } else {
+      // add
+      this.getTableName();
+      this.customerService.cart.forEach(() => this.addProduct());
 
-    this.customerService.cart.forEach(() => this.addProduct());
-    this.products().valueChanges.subscribe((v: ProductOrder[]) => {
-      let orderTotalPrice = 0; // calculate order total price -> sum product.totalPrice
-      v.forEach((v, i) => {
-        let productTotalPrice = this.getProductTotalPrice(v); // calculate product total price -> product.price * product.quantity
-        orderTotalPrice += productTotalPrice;
-        this.product(i).get('totalPrice').setValue(productTotalPrice, { emitEvent: false });
+      this.products().valueChanges.subscribe((v: ProductOrder[]) => {
+        let orderTotalPrice = 0; // calculate order total price -> sum product.totalPrice
+        v.forEach((v, i) => {
+          let productTotalPrice = this.getProductTotalPrice(v); // calculate product total price -> product.price * product.quantity
+          orderTotalPrice += productTotalPrice;
+          this.product(i).get('totalPrice').setValue(productTotalPrice, { emitEvent: false });
+        });
+        this.form.get('totalPrice').setValue(orderTotalPrice, { emitEvent: false });
       });
-      this.form.get('totalPrice').setValue(orderTotalPrice, { emitEvent: false });
-    });
 
-    this.products().patchValue(this.customerService.cart);
+      this.products().patchValue(this.customerService.cart);
+    }
   }
 
   getTableName() {
@@ -78,6 +84,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
 
   async onSubmit() {
     if (this.isLoading || this.form.invalid) return;
+    else if (this.isOrdered && this.data.status !== 'pending') return this.hideDialog();
 
     this.isLoading = true;
     this.apiService.createOrder(this.form.value).subscribe(async (res) => {
@@ -160,9 +167,9 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     return data.map((v) => v.value).join(', ');
   }
 
-  hideDialog(isCheckout: boolean = false) {
+  hideDialog() {
     enableBodyScroll();
-    this.customerService.cart = isCheckout ? [] : this.products().value;
+    if (!this.isOrdered) this.customerService.cart = this.products().value;
     this.onShowCartDialogChange.emit(false);
   }
 }
