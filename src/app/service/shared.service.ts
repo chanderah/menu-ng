@@ -105,7 +105,7 @@ export class SharedService {
     this.showToast('error', message, 'Failed');
   }
 
-  showNotification(message: string, icon?: string, timeout?: number): Promise<any> {
+  showNotification(message: string, icon: string, timeout?: number): Promise<any> {
     return new Promise((resolve) => {
       this.dialogService.open(NotificationDialogComponent, {
         showHeader: false,

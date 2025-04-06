@@ -54,8 +54,10 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
     if (this.state.isSuccess) {
       this.startPolling();
     } else {
-      if (this.state.response) this.sharedService.showErrorNotification();
       this.getOrders();
+      if (this.state.response && this.state.response.transaction_status !== 'pending') {
+        this.sharedService.showErrorNotification();
+      }
     }
   }
 

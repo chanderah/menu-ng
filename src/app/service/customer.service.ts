@@ -29,7 +29,7 @@ export class CustomerService {
   load() {
     this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart')) ?? [];
     this.customer = jsonParse<Customer>(localStorage.getItem('customer'));
-    if (this.isCustomer) this.loadOrders().subscribe();
+    if (this.isCustomer) this.loadOrders()?.subscribe();
   }
 
   loadOrders() {

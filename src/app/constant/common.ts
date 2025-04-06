@@ -41,6 +41,7 @@ export const CONSTANTS = {
   ORDER_STATUS: {
     expire: 'Expired',
     deny: 'Denied',
+    pending: 'Pending',
     capture: 'Paid',
     settlement: 'Paid',
     complete: 'Completed',
