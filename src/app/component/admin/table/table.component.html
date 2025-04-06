@@ -81,7 +81,7 @@
   [maximizable]="true"
   [header]="selectedTable ? 'Edit Table' : 'Add Table'"
   [(visible)]="showTableDialog"
-  (onHide)="resetTableDialog()"
+  (onHide)="setForm()"
   [contentStyle]="{ overflow: 'visible' }"
   [style]="{ width: '40vw', height: 'auto' }"
   [dismissableMask]="false"
@@ -90,15 +90,9 @@
   [blockScroll]="true"
   modal="true"
   showEffect="fade">
-  <div [formGroup]="tableForm" (keyup.enter)="onSubmit()" class="p-fluid px-2">
+  <div [formGroup]="form" (keyup.enter)="onSubmit()" class="p-fluid px-2">
     <div class="col-12 flex justify-content-center" *ngIf="selectedTable">
-      <qr-code
-        #qrcode
-        id="qrcode"
-        [value]="env.appUrl + '/?table=' + tableForm.get('id').value"
-        margin="4"
-        size="200"
-        errorCorrectionLevel="H"></qr-code>
+      <qr-code #qrcode id="qrcode" [value]="form.get('barcode').value" margin="4" size="200" errorCorrectionLevel="H"></qr-code>
     </div>
     <div class="col-12 flex justify-content-end" *ngIf="selectedTable">
       <!-- <button pButton pRipple (click)="downloadQrCode()" label="Download"></button> -->

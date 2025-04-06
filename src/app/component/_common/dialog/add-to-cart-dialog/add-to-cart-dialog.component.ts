@@ -2,18 +2,18 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import SharedUtil from 'src/app/lib/shared.util';
 import { capitalize, disableBodyScroll, enableBodyScroll } from 'src/app/lib/utils';
-import { Product, ProductOption } from '../../../interface/product';
-import { SharedService } from '../../../service/shared.service';
+import { Product, ProductOption } from '../../../../interface/product';
+import { SharedService } from '../../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { environment } from 'src/environments/environment';
 import { ProductOrder } from 'src/app/interface/order';
 
 @Component({
-  selector: 'app-order-dialog',
-  templateUrl: './order-dialog.component.html',
-  styleUrls: ['../../../../assets/user.styles.scss'],
+  selector: 'app-add-to-cart-dialog',
+  templateUrl: './add-to-cart-dialog.component.html',
+  styleUrls: ['../../../../../assets/user.styles.scss'],
 })
-export class OrderDialogComponent extends SharedUtil implements OnInit {
+export class AddToCartDialogComponent extends SharedUtil implements OnInit {
   @Output() onHide = new EventEmitter<boolean>();
   @Input() data!: Product;
 

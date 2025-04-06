@@ -27,7 +27,6 @@ export class CustomerService {
   }
 
   load() {
-    console.log('service');
     this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart')) ?? [];
     this.customer = jsonParse<Customer>(localStorage.getItem('customer'));
     if (this.isCustomer) this.loadOrders().subscribe();

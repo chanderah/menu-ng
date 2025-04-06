@@ -23,7 +23,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { ToastModule } from 'primeng/toast';
 import { TreeModule } from 'primeng/tree';
 import { AppRoutingModule } from './app-routing.module';
-import { CartDialogComponent } from './component/_common/cart-dialog/cart-dialog.component';
+import { OrderDialogComponent } from './component/_common/dialog/order-dialog/order-dialog.component';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { AppTopBarComponent } from './layout/app.topbar.component';
 import { OrderService } from './service/order.service';
@@ -46,7 +46,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { SwiperModule } from 'swiper/angular';
-import { NotificationDialogComponent } from './component/_common/notification-dialog/notification-dialog.component';
+import { NotificationDialogComponent } from './component/_common/dialog/notification-dialog/notification-dialog.component';
 import { LoginComponent } from './component/admin/auth/login/login.component';
 import { CategoryComponent } from './component/admin/category/category.component';
 import { OrderLiveComponent } from './component/admin/order-live/order-live.component';
@@ -54,7 +54,7 @@ import { OrderComponent } from './component/admin/order/order.component';
 import { ProductComponent } from './component/admin/product/product.component';
 import { TableComponent } from './component/admin/table/table.component';
 import { UserComponent } from './component/admin/user/user.component';
-import { OrderDialogComponent } from './component/dashboard/order-dialog/order-dialog.component';
+import { AddToCartDialogComponent } from './component/_common/dialog/add-to-cart-dialog/add-to-cart-dialog.component';
 import { ProductDialogComponent } from './component/dashboard/product-dialog/product-dialog.component';
 import { AppFooterComponent } from './layout/app.footer.component';
 import { AppMainComponent } from './layout/app.main.component';
@@ -98,8 +98,8 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     /* DIALOG */
     NotificationDialogComponent,
     ProductDialogComponent,
+    AddToCartDialogComponent,
     OrderDialogComponent,
-    CartDialogComponent,
 
     /* MAIN COMPONENT */
     SkeletonComponent,

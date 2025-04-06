@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 <div
     class="layout-wrapper"
     [ngClass]="{
@@ -25,5 +26,5 @@
     <div *ngIf="menuActiveMobile" class="layout-mask p-component-overlay"></div>
 </div>
 
-<app-cart-dialog *ngIf="showCartDialog" (onShowCartDialogChange)="showCartDialog = $event" [showDialog]="showCartDialog">
-</app-cart-dialog>
+<app-order-dialog *ngIf="showCartDialog" (onShowCartDialogChange)="showCartDialog = $event" [showDialog]="showCartDialog">
+</app-order-dialog>

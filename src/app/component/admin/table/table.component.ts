@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LazyLoadEvent, TreeNode } from 'primeng/api';
+import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Product, ProductOption } from 'src/app/interface/product';
-import { User } from 'src/app/interface/user';
 import SharedUtil from 'src/app/lib/shared.util';
 import { trim } from 'src/app/lib/utils';
-import { Category } from './../../../interface/category';
 import { PagingInfo } from './../../../interface/paging_info';
 import { ApiService } from './../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
@@ -20,29 +17,13 @@ export class TableComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;
   dialogBreakpoints = { '768px': '90vw' };
 
-  user = {} as User;
   pagingInfo = {} as PagingInfo;
 
   showTableDialog: boolean = false;
-  showProductDialog: boolean = false;
-  showCategoryDialog: boolean = false;
-  saveProductOptions: boolean = false;
-  showProductOptionsDialog: boolean = false;
 
-  categories = [] as Category[];
-  products = [] as Product[];
   tables = [] as Table[];
-
-  selectedTable = {} as Table;
-  selectedCategory = {} as TreeNode;
-  selectedProduct = {} as Product;
-  selectedProductOptions = [] as ProductOption[];
-
-  categoryForm: FormGroup;
-  productForm: FormGroup;
-  tableForm: FormGroup;
-
-  goblok: string = 'goblok';
+  selectedTable!: Table;
+  form!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,23 +31,13 @@ export class TableComponent extends SharedUtil implements OnInit {
     private apiService: ApiService
   ) {
     super();
-
-    this.tableForm = this.formBuilder.group({
-      id: [null],
-      name: ['', [Validators.maxLength(255), Validators.required]],
-      barcode: ['', [Validators.maxLength(255), Validators.required]],
-      status: [true, [Validators.maxLength(255), Validators.required]],
-      userCreated: [null, []],
-    });
   }
 
   ngOnInit() {
-    this.user = this.jsonParse(localStorage.getItem('user')) as User;
     this.getTables();
   }
 
   getTables(e?: LazyLoadEvent) {
-    this.resetTableDialog();
     this.isLoading = true;
     this.pagingInfo = {
       filter: e?.filters?.global?.value || '',
@@ -91,7 +62,7 @@ export class TableComponent extends SharedUtil implements OnInit {
     this.isLoading = true;
     try {
       if (this.isEmpty(this.selectedTable)) {
-        this.apiService.createTable(this.tableForm.value).subscribe((res) => {
+        this.apiService.createTable(this.form.value).subscribe((res) => {
           if (res.status === 200) {
             this.getTables();
             this.sharedService.successToast('Success!');
@@ -100,7 +71,7 @@ export class TableComponent extends SharedUtil implements OnInit {
           }
         });
       } else {
-        this.apiService.updateTable(this.tableForm.value).subscribe((res) => {
+        this.apiService.updateTable(this.form.value).subscribe((res) => {
           if (res.status === 200) {
             this.getTables();
             this.sharedService.successToast('Success!');
@@ -115,31 +86,36 @@ export class TableComponent extends SharedUtil implements OnInit {
   }
 
   onAdd() {
-    this.resetTableDialog();
+    this.setForm();
+    this.form.get('status').setValue(true);
     this.showTableDialog = true;
-    this.tableForm.get('status').setValue(true);
   }
 
   onEdit() {
+    this.setForm();
+    this.form.patchValue(this.selectedTable);
     this.showTableDialog = true;
-    this.tableForm.patchValue(this.selectedTable);
-  }
-
-  resetTableDialog() {
-    this.showTableDialog = false;
-    this.selectedTable = null;
-    this.tableForm.reset();
   }
 
   downloadQrCode() {
     const canvas = document.getElementById('qrcode').children[0] as HTMLCanvasElement;
 
     const a = document.createElement('a');
-    a.setAttribute('download', trim(this.tableForm.get('name').value).toLowerCase() + '.png');
+    a.setAttribute('download', trim(this.form.get('name').value).toLowerCase() + '.png');
     canvas.toBlob(function (blob) {
       const url = URL.createObjectURL(blob);
       a.setAttribute('href', url);
       a.click();
+    });
+  }
+
+  setForm() {
+    this.form = this.formBuilder.group({
+      id: [null],
+      name: ['', [Validators.maxLength(255), Validators.required]],
+      barcode: ['', [Validators.maxLength(255), Validators.required]],
+      status: [true, [Validators.maxLength(255), Validators.required]],
+      userCreated: [this.sharedService.user.id],
     });
   }
 }

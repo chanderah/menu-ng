@@ -1,25 +1,26 @@
-import { MidtransService } from './../../../service/midtrans.service';
+import { MidtransService } from '../../../../service/midtrans.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
 import { disableBodyScroll, enableBodyScroll } from 'src/app/lib/utils';
-import { ApiService } from '../../../service/api.service';
-import { OrderService } from '../../../service/order.service';
-import { SharedService } from '../../../service/shared.service';
+import { ApiService } from '../../../../service/api.service';
+import { OrderService } from '../../../../service/order.service';
+import { SharedService } from '../../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { ProductOptionValue } from 'src/app/interface/product';
 import { ProductOrder } from 'src/app/interface/order';
 
 @Component({
-  selector: 'app-cart-dialog',
-  templateUrl: './cart-dialog.component.html',
-  styleUrls: ['../../../../assets/user.styles.scss'],
+  selector: 'app-order-dialog',
+  templateUrl: './order-dialog.component.html',
+  styleUrls: ['../../../../../assets/user.styles.scss'],
 })
-export class CartDialogComponent extends SharedUtil implements OnInit {
+export class OrderDialogComponent extends SharedUtil implements OnInit {
   @Output() onShowCartDialogChange = new EventEmitter<boolean>();
   @Input() showDialog: boolean;
+  @Input() action!: 'VIEW' | 'ADD';
 
   init: boolean = true;
   isLoading: boolean = true;

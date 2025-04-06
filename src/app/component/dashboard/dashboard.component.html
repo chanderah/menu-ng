@@ -91,8 +91,8 @@
   </p-dataView>
 </div>
 
-<app-order-dialog *ngIf="showOrderDialog" [showDialog]="true" [data]="selectedProduct" (onHide)="showOrderDialog = false">
-</app-order-dialog>
+<app-add-to-cart-dialog *ngIf="showOrderDialog" [showDialog]="true" [data]="selectedProduct" (onHide)="showOrderDialog = false">
+</app-add-to-cart-dialog>
 
 <!-- <button pButton class="p-button-rounded p-button-primary fab-button" (click)="onClickOrders()" *ngIf="customerService.orders.length">
   <i class="pi pi-shopping-bag text-xl" pBadge [value]="customerService.orders.length"></i>
