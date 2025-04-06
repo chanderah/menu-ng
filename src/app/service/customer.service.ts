@@ -1,7 +1,6 @@
 import { Order, ProductOrder } from 'src/app/interface/order';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { SharedService } from './shared.service';
 import { BehaviorSubject, tap } from 'rxjs';
 import { Customer } from '../interface/customer';
 import { jsonParse, jsonStringify } from '../lib/utils';
@@ -19,10 +18,7 @@ export class CustomerService {
   private _orders = new BehaviorSubject<Order[]>([]);
   orders$ = this._orders.asObservable();
 
-  constructor(
-    private sharedService: SharedService,
-    private apiService: ApiService
-  ) {
+  constructor(private apiService: ApiService) {
     this.load();
   }
 

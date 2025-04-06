@@ -4,6 +4,7 @@ import {
   capitalize,
   capitalizeFirstLetter,
   clearLocalStorage,
+  filterUniqueArr,
   getImageSrc,
   isEmpty,
   isMobile,
@@ -59,7 +60,8 @@ export default class SharedUtil {
   }
 
   getProductsName(products: Product[]) {
-    const names = products.map((v) => v.name).filter((v, i, self) => self.indexOf(v) === i);
+    // const names = products.map((v) => v.name).filter((v, i, self) => self.indexOf(v) === i);
+    const names = filterUniqueArr(products, 'name');
     return names.join(', ');
   }
 

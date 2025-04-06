@@ -4,7 +4,7 @@ import { interval, startWith, Subscription, switchMap } from 'rxjs';
 import { SnapResponse } from 'src/app/interface/midtrans';
 import { Order } from 'src/app/interface/order';
 import SharedUtil from 'src/app/lib/shared.util';
-import { enableBodyScroll } from 'src/app/lib/utils';
+import { enableBodyScroll, filterUniqueArr } from 'src/app/lib/utils';
 import { ApiService } from 'src/app/service/api.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { SharedService } from 'src/app/service/shared.service';
@@ -47,7 +47,7 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
 
     this.customerService.customer = {
       ...this.customerService.customer,
-      listOrderId: [...this.customerService.customer.listOrderId, this.state.order.id],
+      listOrderId: filterUniqueArr([...this.customerService.customer.listOrderId, this.state.order.id]),
     };
 
     this.customerService.clearCart();
