@@ -98,7 +98,7 @@ export class TableComponent extends SharedUtil implements OnInit {
   onEdit() {
     this.setForm();
 
-    const tableParam = this.aes256Service.encrypt(this.selectedTable.id);
+    const tableParam = this.aes256Service.encrypt(this.selectedTable.id.toString());
     const barcode = `${environment.appUrl}?table=${encodeURIComponent(tableParam)}`;
     this.form.patchValue({
       ...this.selectedTable,
