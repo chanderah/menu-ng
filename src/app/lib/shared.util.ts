@@ -59,7 +59,8 @@ export default class SharedUtil {
   }
 
   getProductsName(products: Product[]) {
-    return products.map((v) => v.name).join(', ');
+    const names = products.map((v) => v.name).filter((v, i, self) => self.indexOf(v) === i);
+    return names.join(', ');
   }
 
   getProductOptions(product: Product) {
