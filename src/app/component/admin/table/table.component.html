@@ -91,21 +91,22 @@
   modal="true"
   showEffect="fade">
   <div [formGroup]="form" (keyup.enter)="onSubmit()" class="p-fluid px-2">
-    <div class="col-12 flex justify-content-center" *ngIf="selectedTable">
-      <qr-code #qrcode id="qrcode" [value]="form.get('barcode').value" margin="4" size="200" errorCorrectionLevel="H"></qr-code>
-    </div>
-    <div class="col-12 flex justify-content-end" *ngIf="selectedTable">
-      <!-- <button pButton pRipple (click)="downloadQrCode()" label="Download"></button> -->
-      <button
-        *ngIf="selectedTable"
-        pButton
-        pRipple
-        (click)="downloadQrCode()"
-        [disabled]="isLoading"
-        label="Download QR Code"
-        class="p-button-primary p-button-outlined"
-        icon="pi pi-download"></button>
-    </div>
+    <ng-container *ngIf="form.value['barcode']">
+      <div class="col-12 flex justify-content-center">
+        <qr-code #qrcode id="qrcode" [value]="form.value['barcode']" margin="4" size="200" errorCorrectionLevel="H"></qr-code>
+      </div>
+      <div class="col-12 flex justify-content-end">
+        <button
+          *ngIf="form.value['barcode']"
+          pButton
+          pRipple
+          (click)="downloadQrCode()"
+          [disabled]="isLoading"
+          label="Download QR Code"
+          class="p-button-primary p-button-outlined"
+          icon="pi pi-download"></button>
+      </div>
+    </ng-container>
 
     <div class="col-12 mt-3">
       <div class="field-checkbox mb-0">

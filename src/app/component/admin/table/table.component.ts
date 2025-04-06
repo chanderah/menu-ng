@@ -1,3 +1,4 @@
+import { Aes256Service } from './../../../service/aes256.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
@@ -7,6 +8,7 @@ import { trim } from 'src/app/lib/utils';
 import { PagingInfo } from './../../../interface/paging_info';
 import { ApiService } from './../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-table',
@@ -28,12 +30,14 @@ export class TableComponent extends SharedUtil implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private aes256Service: Aes256Service
   ) {
     super();
   }
 
   ngOnInit() {
+    this.setForm();
     this.getTables();
   }
 
@@ -93,7 +97,12 @@ export class TableComponent extends SharedUtil implements OnInit {
 
   onEdit() {
     this.setForm();
-    this.form.patchValue(this.selectedTable);
+
+    const barcode = `${environment.appUrl}?table=${this.aes256Service.encrypt(this.selectedTable.id.toString())}`;
+    this.form.patchValue({
+      ...this.selectedTable,
+      barcode,
+    });
     this.showTableDialog = true;
   }
 

@@ -21,13 +21,18 @@ export class CustomerGuard implements CanActivate {
     if (tableParam?.length) {
       this.customerService.clearCart();
 
-      const tableId = Number(this.aes256Service.decrypt(tableParam));
-      this.customerService.customer = {
-        ...this.customerService.customer,
-        tableId,
-        listOrderId: [],
-        createdAt: new Date(),
-      };
+      try {
+        const tableId = Number(this.aes256Service.decrypt(tableParam));
+        this.customerService.customer = {
+          ...this.customerService.customer,
+          tableId,
+          listOrderId: [],
+          createdAt: new Date(),
+        };
+      } catch (err) {
+        // invalid table param
+      }
+
       this.router.navigateByUrl('/');
       return true;
     } else if (!this.sharedService.isLoggedIn && !this.customerService.isCustomer) {

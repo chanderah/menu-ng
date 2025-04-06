@@ -10,7 +10,7 @@ export const environment = {
       line3: 'Depok, Jawa Barat 16416',
     },
   },
-  appUrl: 'http://localhost:4200',
+  appUrl: 'https://menu-ng.vercel.app',
   apiUrl: 'http://localhost:3000/api',
   // apiUrl: 'https://api.chandrasa.fun/api',
   publicPath: 'https://public.chandrasa.fun',
