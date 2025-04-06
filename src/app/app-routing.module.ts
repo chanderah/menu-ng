@@ -21,7 +21,7 @@ const routes: Route[] = [
     component: AppMainComponent,
     children: [
       { path: '', canActivate: [CustomerGuard], component: DashboardComponent },
-      { path: 'order', component: OrderCustomerComponent },
+      { path: 'order', component: OrderCustomerComponent, canActivate: [CustomerGuard] },
       { path: 'order-complete', component: OrderCompleteComponent },
       {
         path: 'admin',

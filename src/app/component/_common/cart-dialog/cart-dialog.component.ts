@@ -42,7 +42,9 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   ngOnInit(): void {
     disableBodyScroll();
 
+    this.getTableName();
     this.setForm();
+
     this.customerService.cart.forEach(() => this.addProduct());
     this.products().valueChanges.subscribe((v: ProductOrder[]) => {
       let orderTotalPrice = 0; // calculate order total price -> sum product.totalPrice
@@ -57,6 +59,12 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     this.products().patchValue(this.customerService.cart);
   }
 
+  getTableName() {
+    this.apiService.findTableById(this.customerService.customer.tableId).subscribe((res) => {
+      this.form.get('tableName').setValue(res.data.name);
+    });
+  }
+
   increment(i: number) {
     const value = this.product(i).get('quantity').value;
     this.product(i).get('quantity').setValue(value + 1); // prettier-ignore
@@ -68,23 +76,24 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
   }
 
   async onSubmit() {
-    if (this.isLoading) return;
+    if (this.isLoading || this.form.invalid) return;
 
     this.isLoading = true;
-    this.apiService.createOrder(this.form.value).subscribe((res) => {
+    this.apiService.createOrder(this.form.value).subscribe(async (res) => {
       this.isLoading = false;
       if (res.status === 200) {
-        this.router.navigateByUrl('/order', { state: { isCheckout: true, order: res.data } });
+        const { isSuccess, response } = await this.midtransService.showSnapTransaction(res.data.token);
+        this.router.navigateByUrl('/order', {
+          state: {
+            isSuccess,
+            response,
+            order: res.data,
+          },
+        });
       } else {
         this.sharedService.showErrorNotification();
       }
     });
-
-    // if (this.midtransService.transaction.isLoading) return;
-    // const isSuccess = await this.orderService.createOrder(this.form.value);
-    // if (isSuccess) {
-    // start polling
-    // const orderId = this.midtransService.transaction.response.order_id;
   }
 
   // FORMS
@@ -92,7 +101,7 @@ export class CartDialogComponent extends SharedUtil implements OnInit {
     this.form = this.fb.group({
       id: [null],
       orderCode: [null],
-      tableName: [this.customerService.customer.table.name, [Validators.required]],
+      tableName: ['', [Validators.required]],
       totalPrice: [0, [Validators.required, Validators.min(1)]],
       products: this.fb.array([]),
       notes: [''],

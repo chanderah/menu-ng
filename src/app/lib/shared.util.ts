@@ -12,6 +12,7 @@ import {
   refreshPage,
   toLetter,
 } from './utils';
+import { Product } from '../interface/product';
 
 export default class SharedUtil {
   public env = environment;
@@ -55,6 +56,20 @@ export default class SharedUtil {
 
   refreshPage() {
     return refreshPage();
+  }
+
+  getProductsName(products: Product[]) {
+    return products.map((v) => v.name).join(', ');
+  }
+
+  getProductOptions(product: Product) {
+    return product.options.map((v) => {
+      const values = v.values.map((v) => v.value).join(', ');
+      return {
+        option: v.name,
+        values: values,
+      };
+    });
   }
 
   get bottomSheetStyle() {

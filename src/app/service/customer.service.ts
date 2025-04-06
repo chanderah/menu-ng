@@ -27,9 +27,9 @@ export class CustomerService {
   }
 
   load() {
-    this.customer = jsonParse<Customer>(localStorage.getItem('customer'));
+    console.log('service');
     this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart')) ?? [];
-
+    this.customer = jsonParse<Customer>(localStorage.getItem('customer'));
     if (this.isCustomer) this.loadOrders();
   }
 
@@ -68,7 +68,7 @@ export class CustomerService {
   }
 
   get isCustomer() {
-    return !!this.customer?.table?.id;
+    return !!this.customer?.tableId;
   }
 
   get customer() {
@@ -84,18 +84,8 @@ export class CustomerService {
   }
 
   set customer(data: Customer) {
-    if (data?.table?.id && !data?.table?.name) {
-      this.apiService.findTableById(data.table.id).subscribe((res) => {
-        console.log('data', data);
-        const value: Customer = { ...data, table: res.data };
-        localStorage.setItem('customer', jsonStringify(value));
-        this._customer.next(value);
-      });
-    } else {
-      console.log('data', data);
-      localStorage.setItem('customer', jsonStringify(data));
-      this._customer.next(data);
-    }
+    localStorage.setItem('customer', jsonStringify(data));
+    this._customer.next(data);
   }
 
   set cart(data: ProductOrder[]) {

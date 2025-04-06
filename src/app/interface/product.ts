@@ -30,7 +30,6 @@ export interface ProductOption {
   required: boolean;
 
   values: ProductOptionValue[];
-  optionsName?: string;
   createdAt?: Date;
 }
 

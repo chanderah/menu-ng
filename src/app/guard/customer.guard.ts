@@ -1,3 +1,4 @@
+import { Aes256Service } from './../service/aes256.service';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -11,23 +12,21 @@ export class CustomerGuard implements CanActivate {
   constructor(
     private router: Router,
     private sharedService: SharedService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private aes256Service: Aes256Service
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const tableId = Number(route.queryParamMap.get('table'));
-    if (tableId > 0) {
+    const tableParam = route.queryParamMap.get('table');
+    if (tableParam?.length) {
       this.customerService.clearCart();
 
-      const customer = this.customerService.customer;
+      const tableId = Number(this.aes256Service.decrypt(tableParam));
       this.customerService.customer = {
-        ...customer,
-        createdAt: new Date(),
+        ...this.customerService.customer,
+        tableId,
         listOrderId: [],
-        table: {
-          ...customer?.table,
-          id: tableId,
-        },
+        createdAt: new Date(),
       };
       this.router.navigateByUrl('/');
       return true;
@@ -42,7 +41,7 @@ export class CustomerGuard implements CanActivate {
 
   checkExpiry() {
     const { customer } = this.customerService;
-    if (isNaN(customer.table.id) || !customer.createdAt || new Date(customer.createdAt).getDate() < new Date().getDate()) {
+    if (isNaN(customer.tableId) || !customer.createdAt || new Date(customer.createdAt).getDate() < new Date().getDate()) {
       this.router.navigateByUrl('/customer', { skipLocationChange: true });
       return false;
     }

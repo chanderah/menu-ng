@@ -88,15 +88,15 @@ export class OrderComponent extends SharedUtil implements OnInit {
 
   viewOrder(data: Order) {
     if (!data) return;
-    data.products.forEach((product) => {
-      product.options.forEach((option) => {
-        let optionsName = [];
-        option.values.forEach((value) => {
-          optionsName.push(value.value);
-        });
-        option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
-      });
-    });
+    // data.products.forEach((product) => {
+    //   product.options.forEach((option) => {
+    //     let optionsName = [];
+    //     option.values.forEach((value) => {
+    //       optionsName.push(value.value);
+    //     });
+    //     option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
+    //   });
+    // });
 
     this.selectedOrder = data;
     this.showOrderDetailsDialog = true;

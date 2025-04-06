@@ -2,6 +2,7 @@ import { MidtransService } from './../../../service/midtrans.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, startWith, Subscription, switchMap } from 'rxjs';
+import { SnapResponse } from 'src/app/interface/midtrans';
 import { Order } from 'src/app/interface/order';
 import SharedUtil from 'src/app/lib/shared.util';
 import { enableBodyScroll } from 'src/app/lib/utils';
@@ -10,7 +11,8 @@ import { CustomerService } from 'src/app/service/customer.service';
 import { SharedService } from 'src/app/service/shared.service';
 
 interface OrderState {
-  isCheckout: boolean;
+  isSuccess: boolean;
+  response: SnapResponse;
   order: Order;
 }
 
@@ -41,35 +43,28 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
 
   ngOnInit(): void {
     enableBodyScroll();
-    if (this.state?.isCheckout) {
+    if (this.state?.order) {
       this.customerService.customer = {
         ...this.customerService.customer,
         listOrderId: [...this.customerService.customer.listOrderId, this.state.order.id],
       };
 
       this.customerService.clearCart();
-      this.processCheckout();
+      if (this.state.isSuccess) this.startPolling();
+      else {
+        if (this.state.response) this.sharedService.showErrorNotification();
+        this.getOrders();
+      }
     } else {
-      this.customerService.loadOrders();
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 1000);
+      this.getOrders();
     }
   }
 
-  async processCheckout() {
-    const res = await this.midtransService.showSnapTransaction(this.state.order.token);
-    const isCancelled = !res.response;
-    if (res.isSuccess) {
-      this.startPolling();
-    } else {
-      if (!isCancelled) this.sharedService.showErrorNotification();
-      this.customerService.loadOrders();
-    }
+  getOrders() {
+    this.customerService.loadOrders();
   }
 
   startPolling() {
-    this.customerService.loadOrders();
     this.subscription = interval(3000)
       .pipe(
         startWith(0),

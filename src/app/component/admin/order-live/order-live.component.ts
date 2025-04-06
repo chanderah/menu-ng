@@ -138,18 +138,18 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
   }
 
   viewOrder(data: Order) {
-    if (isEmpty(data.productsName)) {
-      let productsName = [];
-      data.products.forEach((product) => {
-        productsName.push(product.name);
-        product.options.forEach((option) => {
-          let optionsName = [];
-          option.values.forEach((value) => optionsName.push(value.value));
-          option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
-        });
-      });
-      data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
-    }
+    // if (isEmpty(data.productsName)) {
+    //   let productsName = [];
+    //   data.products.forEach((product) => {
+    //     productsName.push(product.name);
+    //     product.options.forEach((option) => {
+    //       let optionsName = [];
+    //       option.values.forEach((value) => optionsName.push(value.value));
+    //       option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
+    //     });
+    //   });
+    //   data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
+    // }
     this.selectedOrder = data;
     this.showOrderDetailsDialog = true;
   }

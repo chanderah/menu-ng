@@ -25,8 +25,8 @@
         <p-divider class="m-0 p-0"></p-divider>
         <div class="flex w-full h-full p-0" *ngIf="item.products[0] as product">
           <div class="flex flex-column gap-1 w-full h-full text-sm pb-1">
-            <span class="font-semibold">{{ product.name }}</span>
-            <span class="text-sm">{{ item.options }}</span>
+            <span class="font-semibold">{{ getProductsName(item.products) }}</span>
+            <!-- <span class="text-sm">{{ item.options }}</span> -->
 
             <div class="flex flex-column gap-1 w-full mt-auto">
               <span class="text-sm">{{ item.tableName }}</span>

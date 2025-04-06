@@ -1,5 +1,5 @@
 export interface Customer {
-  table?: Table;
+  tableId: number;
   name?: string;
   phone?: number;
 

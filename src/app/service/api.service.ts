@@ -4,10 +4,10 @@ import { Product } from 'src/app/interface/product';
 import { Category } from './../interface/category';
 import { Order } from './../interface/order';
 import { PagingInfo } from './../interface/paging_info';
-import { Table } from './../interface/table';
 import { User } from './../interface/user';
 import { jsonStringify } from '../lib/utils';
 import { ApiResponse } from '../interface/api';
+import { Table } from '../interface/customer';
 
 @Injectable({
   providedIn: 'root',
@@ -80,7 +80,7 @@ export class ApiService {
   }
 
   findTableById(id: number) {
-    return this.httpClient.post<any>('/table/findById', { id });
+    return this.httpClient.post<ApiResponse<Table>>('/table/findById', { id });
   }
 
   createTable(table: Table) {
