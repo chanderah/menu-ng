@@ -63,7 +63,7 @@
             <td>{{ data.orderCode }}</td>
             <td style="min-width: 100px" class="text-capitalize">{{ data.tableName }}</td>
             <td style="min-width: 100px" class="text-capitalize">
-              {{ data.productsName }}
+              {{ getProductsName(data.products) }}
             </td>
             <td style="min-width: 8rem">
               {{ data.totalPrice | custom }}
@@ -196,9 +196,7 @@
         <div class="col-12 pr-0 pb-0" *ngFor="let option of product.options; index as j">
           <div class="p-inputgroup">
             <span class="p-inputgroup-addon font-semibold"> {{ toLetter(j) }} </span>
-            <label pInputText class="text-capitalize">
-              {{ option.name + ': ' + option.optionsName }}
-            </label>
+            <label pInputText class="text-capitalize"> {{ option.name + ': ' + getOptionValuesName(option.values) }} </label>
           </div>
         </div>
       </div>

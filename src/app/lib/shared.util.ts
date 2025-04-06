@@ -12,7 +12,7 @@ import {
   refreshPage,
   toLetter,
 } from './utils';
-import { Product } from '../interface/product';
+import { Product, ProductOption, ProductOptionValue } from '../interface/product';
 
 export default class SharedUtil {
   public env = environment;
@@ -63,14 +63,18 @@ export default class SharedUtil {
     return names.join(', ');
   }
 
-  getProductOptions(product: Product) {
-    return product.options.map((v) => {
+  getProductOptions(options: ProductOption[]) {
+    return options.map((v) => {
       const values = v.values.map((v) => v.value).join(', ');
       return {
         option: v.name,
         values: values,
       };
     });
+  }
+
+  getOptionValuesName(values: ProductOptionValue[]) {
+    return values.map((v) => v.value).join(', ');
   }
 
   get bottomSheetStyle() {

@@ -5,7 +5,7 @@ import { MessagingService } from 'src/app/service/messaging.service';
 import { PagingInfo } from '../../../interface/paging_info';
 import { ApiService } from '../../../service/api.service';
 import { SharedService } from '../../../service/shared.service';
-import { filterUniqueArr, isEmpty } from 'src/app/lib/utils';
+import { filterUniqueArr } from 'src/app/lib/utils';
 import SharedUtil from 'src/app/lib/shared.util';
 import { environment } from 'src/environments/environment';
 import { debounceTime } from 'rxjs';
@@ -138,18 +138,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
   }
 
   viewOrder(data: Order) {
-    // if (isEmpty(data.productsName)) {
-    //   let productsName = [];
-    //   data.products.forEach((product) => {
-    //     productsName.push(product.name);
-    //     product.options.forEach((option) => {
-    //       let optionsName = [];
-    //       option.values.forEach((value) => optionsName.push(value.value));
-    //       option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
-    //     });
-    //   });
-    //   data.productsName = productsName.length === 1 ? productsName[0] : productsName.join(', ');
-    // }
     this.selectedOrder = data;
     this.showOrderDetailsDialog = true;
   }

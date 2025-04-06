@@ -76,28 +76,12 @@ export class OrderComponent extends SharedUtil implements OnInit {
       if (res.status === 200) {
         this.lastUpdated = new Date();
         this.pagingInfo.rowCount = res.rowCount;
-        this.orders = res.data.map((v: Order) => {
-          return {
-            ...v,
-            productsName: v.products.map((v) => v.name).join(', '),
-          };
-        });
+        this.orders = res.data;
       } else this.sharedService.errorToast('Failed to get orders data.');
     });
   }
 
   viewOrder(data: Order) {
-    if (!data) return;
-    // data.products.forEach((product) => {
-    //   product.options.forEach((option) => {
-    //     let optionsName = [];
-    //     option.values.forEach((value) => {
-    //       optionsName.push(value.value);
-    //     });
-    //     option.optionsName = optionsName.length === 1 ? optionsName[0] : optionsName.join(', ');
-    //   });
-    // });
-
     this.selectedOrder = data;
     this.showOrderDetailsDialog = true;
   }

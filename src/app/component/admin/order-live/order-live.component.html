@@ -1,164 +1,147 @@
 <div class="grid">
-    <div class="col-12">
-        <div class="card">
-            <div class="flex align-items-center justify-content-between mb-4">
-                <h5 class="card-title">
-                    <i class="pi pi-bell text-3xl mr-2" pBadge [value]="awaitingOrdersCount"></i> Live Orders
-                </h5>
-                <div class="flex gap-2">
-                    <button
-                        pButton
-                        pRipple
-                        type="button"
-                        [disabled]="isLoading"
-                        (click)="getOrders()"
-                        icon="pi pi-refresh"
-                        class="p-button-outlined"></button>
-                    <button
-                        pButton
-                        pRipple
-                        [disabled]="isLoading"
-                        (click)="markAllAsDone()"
-                        label="Mark All as Done"
-                        icon="pi pi-check"
-                        class="p-button-outlined">
-                    </button>
-                </div>
-            </div>
-
-            <p-contextMenu #cm [model]="contextMenus"></p-contextMenu>
-
-            <p-table
-                #tb
-                [loading]="isLoading"
-                dataKey="id"
-                [rows]="pagingInfo.limit"
-                sortField="id"
-                [sortOrder]="-1"
-                [lazy]="true"
-                [filterDelay]="500"
-                [value]="orders"
-                [rowHover]="true"
-                [scrollable]="true"
-                scrollDirection="both"
-                selectionMode="single"
-                [(selection)]="selectedOrder"
-                [(contextMenuSelection)]="selectedOrder"
-                [contextMenu]="cm"
-                responsiveLayout="scroll">
-                <ng-template pTemplate="caption">
-                    <div class="flex align-items-end justify-content-between">
-                        <div class="flex align-items-end">
-                            <p class="text-sm font-normal">
-                                Last updated at: {{ lastUpdated | date: 'MMM d, HH:mm:ss' }}
-                            </p>
-                        </div>
-                        <p-dropdown
-                            [options]="rowsPerPageOptions"
-                            [(ngModel)]="pagingInfo.limit"
-                            (onChange)="getOrders(0)"
-                            placeholder="Data per Page">
-                        </p-dropdown>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="body" let-data let-i="rowIndex">
-                    <tr
-                        [pSelectableRow]="data"
-                        [pContextMenuRow]="data"
-                        (click)="viewOrder(data)"
-                        [style]="{
-                            background: data.isServed? '#c8e6c9' : '#ffcdd2',
-                            color: data.isServed ? '#256029' : '#c63737',
-                            border: '1px'
-                        }">
-                        <td style="width: 40px" class="text-center">
-                            <p class="font-semibold">{{ data.id }}</p>
-                        </td>
-                        <td style="min-width: 100px" class="text-left text-capitalize">
-                            <div class="flex flex-column">
-                                <p class="font-semibold">#{{ data.orderCode }}</p>
-                                <p>{{ data.totalPrice | custom }}</p>
-                            </div>
-                        </td>
-                        <td style="min-width: 8rem; text-align: right">
-                            <div class="flex flex-column">
-                                <p class="font-semibold">{{ data.tableName }}</p>
-                                <p>{{ data.createdAt | date: 'MMM d, HH:mm' }}</p>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="emptymessage" let-columns>
-                    <tr>
-                        <td attr.colspan="100%">
-                            <div class="flex my-3 align-items-center justify-content-center"> No results found. </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+  <div class="col-12">
+    <div class="card">
+      <div class="flex align-items-center justify-content-between mb-4">
+        <h5 class="card-title"><i class="pi pi-bell text-3xl mr-2" pBadge [value]="awaitingOrdersCount"></i> Live Orders</h5>
+        <div class="flex gap-2">
+          <button
+            pButton
+            pRipple
+            type="button"
+            [disabled]="isLoading"
+            (click)="getOrders()"
+            icon="pi pi-refresh"
+            class="p-button-outlined"></button>
+          <button
+            pButton
+            pRipple
+            [disabled]="isLoading"
+            (click)="markAllAsDone()"
+            label="Mark All as Done"
+            icon="pi pi-check"
+            class="p-button-outlined"></button>
         </div>
+      </div>
+
+      <p-contextMenu #cm [model]="contextMenus"></p-contextMenu>
+
+      <p-table
+        #tb
+        [loading]="isLoading"
+        dataKey="id"
+        [rows]="pagingInfo.limit"
+        sortField="id"
+        [sortOrder]="-1"
+        [lazy]="true"
+        [filterDelay]="500"
+        [value]="orders"
+        [rowHover]="true"
+        [scrollable]="true"
+        scrollDirection="both"
+        selectionMode="single"
+        [(selection)]="selectedOrder"
+        [(contextMenuSelection)]="selectedOrder"
+        [contextMenu]="cm"
+        responsiveLayout="scroll">
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-end justify-content-between">
+            <div class="flex align-items-end">
+              <p class="text-sm font-normal">Last updated at: {{ lastUpdated | date: 'MMM d, HH:mm:ss' }}</p>
+            </div>
+            <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="pagingInfo.limit" (onChange)="getOrders(0)" placeholder="Data per Page">
+            </p-dropdown>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="body" let-data let-i="rowIndex">
+          <tr
+            [pSelectableRow]="data"
+            [pContextMenuRow]="data"
+            (click)="viewOrder(data)"
+            [style]="{ background: data.isServed ? '#c8e6c9' : '#ffcdd2', color: data.isServed ? '#256029' : '#c63737', border: '1px' }">
+            <td style="width: 40px" class="text-center">
+              <p class="font-semibold">{{ data.id }}</p>
+            </td>
+            <td style="min-width: 100px" class="text-left text-capitalize">
+              <div class="flex flex-column">
+                <p class="font-semibold">#{{ data.orderCode }}</p>
+                <p>{{ data.totalPrice | custom }}</p>
+              </div>
+            </td>
+            <td style="min-width: 8rem; text-align: right">
+              <div class="flex flex-column">
+                <p class="font-semibold">{{ data.tableName }}</p>
+                <p>{{ data.createdAt | date: 'MMM d, HH:mm' }}</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td attr.colspan="100%">
+              <div class="flex my-3 align-items-center justify-content-center">No results found.</div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
+  </div>
 </div>
 
 <p-dialog
-    [maximizable]="true"
-    header="Order #{{ selectedOrder.orderCode }}"
-    [(visible)]="showOrderDetailsDialog"
-    (onHide)="onHideOrderDetailsDialog()"
-    [style]="{ width: '40vw', height: 'auto' }"
-    [breakpoints]="dialogBreakpoints"
-    [dismissableMask]="true"
-    [closeOnEscape]="true"
-    modal="true"
-    [blockScroll]="true"
-    showEffect="fade">
-    <div class="p-fluid px-2">
-        <div class="card p-1 pb-2 mb-3">
-            <div class="flex col-12">
-                <div class="col-6">
-                    <p class="font-semibold ml-2 mt-2">{{ selectedOrder.tableName }}</p>
-                </div>
-                <div class="col-6 text-right">
-                    <p class="text-sm font-semibold mr-2 mt-2">{{ selectedOrder.totalPrice | custom }}</p>
-                </div>
-            </div>
-            <div class="col-12" *ngFor="let product of selectedOrder.products; index as i">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon font-semibold">{{ i + 1 }} </span>
-                    <label pInputText class="font-semibold text-capitalize">{{ product.name }}</label>
-                </div>
-
-                <div class="col-12 pr-0 pb-0" *ngFor="let option of product.options; index as j">
-                    <div class="p-inputgroup">
-                        <span class="p-inputgroup-addon font-semibold"> {{ toLetter(j) }} </span>
-                        <label pInputText class="text-capitalize">
-                            {{ option.name + ': ' + option.optionsName }}
-                        </label>
-                    </div>
-                </div>
-            </div>
+  [maximizable]="true"
+  header="Order #{{ selectedOrder.orderCode }}"
+  [(visible)]="showOrderDetailsDialog"
+  (onHide)="onHideOrderDetailsDialog()"
+  [style]="{ width: '40vw', height: 'auto' }"
+  [breakpoints]="dialogBreakpoints"
+  [dismissableMask]="true"
+  [closeOnEscape]="true"
+  modal="true"
+  [blockScroll]="true"
+  showEffect="fade">
+  <div class="p-fluid px-2">
+    <div class="card p-1 pb-2 mb-3">
+      <div class="flex col-12">
+        <div class="col-6">
+          <p class="font-semibold ml-2 mt-2">{{ selectedOrder.tableName }}</p>
+        </div>
+        <div class="col-6 text-right">
+          <p class="text-sm font-semibold mr-2 mt-2">{{ selectedOrder.totalPrice | custom }}</p>
+        </div>
+      </div>
+      <div class="col-12" *ngFor="let product of selectedOrder.products; index as i">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon font-semibold">{{ i + 1 }} </span>
+          <label pInputText class="font-semibold text-capitalize">{{ product.name }}</label>
         </div>
 
-        <div class="flex justify-content-end gap-2 mt-4">
-            <button
-                pButton
-                pRipple
-                icon="pi pi-times"
-                (click)="showOrderDetailsDialog = false"
-                label="Close"
-                class="w-auto p-button-danger p-button-outlined">
-            </button>
-            <button
-                *ngIf="!selectedOrder.isServed"
-                pButton
-                pRipple
-                icon="pi pi-check"
-                class="w-auto p-button-outlined"
-                label="Done"
-                (click)="markAsDone([selectedOrder.id])"
-                [disabled]="isLoading">
-            </button>
+        <div class="col-12 pr-0 pb-0" *ngFor="let option of product.options; index as j">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon font-semibold"> {{ toLetter(j) }} </span>
+            <label pInputText class="text-capitalize"> {{ option.name + ': ' + getOptionValuesName(option.values) }} </label>
+          </div>
         </div>
+      </div>
     </div>
+
+    <div class="flex justify-content-end gap-2 mt-4">
+      <button
+        pButton
+        pRipple
+        icon="pi pi-times"
+        (click)="showOrderDetailsDialog = false"
+        label="Close"
+        class="w-auto p-button-danger p-button-outlined"></button>
+      <button
+        *ngIf="!selectedOrder.isServed"
+        pButton
+        pRipple
+        icon="pi pi-check"
+        class="w-auto p-button-outlined"
+        label="Done"
+        (click)="markAsDone([selectedOrder.id])"
+        [disabled]="isLoading"></button>
+    </div>
+  </div>
 </p-dialog>
