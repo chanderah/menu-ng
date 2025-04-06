@@ -142,7 +142,7 @@ export class ApiService {
   }
 
   getOrders(pagingInfo: PagingInfo) {
-    return this.httpClient.post<any>('/order/findAll', pagingInfo);
+    return this.httpClient.post<ApiResponse<Order[]>>('/order/findAll', pagingInfo);
   }
 
   getOrderById(id: number) {

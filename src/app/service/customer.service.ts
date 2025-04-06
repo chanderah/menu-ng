@@ -2,7 +2,7 @@ import { Order, ProductOrder } from 'src/app/interface/order';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { SharedService } from './shared.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { Customer } from '../interface/customer';
 import { jsonParse, jsonStringify } from '../lib/utils';
 
@@ -30,7 +30,7 @@ export class CustomerService {
     console.log('service');
     this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart')) ?? [];
     this.customer = jsonParse<Customer>(localStorage.getItem('customer'));
-    if (this.isCustomer) this.loadOrders();
+    if (this.isCustomer) this.loadOrders().subscribe();
   }
 
   loadOrders() {
@@ -45,9 +45,7 @@ export class CustomerService {
         sortField: 'created_at',
         sortOrder: 'DESC',
       })
-      .subscribe((res) => {
-        this.orders = res.data;
-      });
+      .pipe(tap((res) => (this.orders = res.data)));
   }
 
   addToCart(value: ProductOrder) {

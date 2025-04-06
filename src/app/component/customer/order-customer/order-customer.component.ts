@@ -24,8 +24,8 @@ interface OrderState {
 export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDestroy {
   isLoading: boolean = true;
   isPolling: boolean = false;
-  state!: OrderState;
 
+  state!: OrderState;
   subscription!: Subscription;
 
   constructor(
@@ -38,36 +38,37 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
     super();
     // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.state = this.router.getCurrentNavigation()?.extras?.state as OrderState;
-    console.log('state', this.state);
   }
 
   ngOnInit(): void {
     enableBodyScroll();
-    if (this.state?.order) {
-      this.customerService.customer = {
-        ...this.customerService.customer,
-        listOrderId: [...this.customerService.customer.listOrderId, this.state.order.id],
-      };
 
-      this.customerService.clearCart();
-      if (this.state.isSuccess) this.startPolling();
-      else {
-        if (this.state.response) this.sharedService.showErrorNotification();
-        this.getOrders();
-      }
-    } else {
+    if (!this.state?.order) return this.getOrders();
+
+    this.customerService.customer = {
+      ...this.customerService.customer,
+      listOrderId: [...this.customerService.customer.listOrderId, this.state.order.id],
+    };
+
+    this.customerService.clearCart();
+    if (this.state.isSuccess) this.startPolling();
+    else {
+      if (this.state.response) this.sharedService.showErrorNotification();
       this.getOrders();
     }
   }
 
   getOrders() {
-    this.customerService.loadOrders();
+    this.isLoading = true;
+    this.customerService.loadOrders().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   startPolling() {
     this.subscription = interval(3000)
       .pipe(
-        startWith(0),
+        startWith(),
         switchMap(() => this.apiService.getOrderById(this.state.order.id))
       )
       .subscribe((res) => {
@@ -77,7 +78,7 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
         } else {
           this.isLoading = false;
           this.subscription?.unsubscribe();
-          this.customerService.loadOrders();
+          this.getOrders();
 
           console.log('res.data', res.data);
           alert(`Your last transaction status is: ${res.data.status}`);
