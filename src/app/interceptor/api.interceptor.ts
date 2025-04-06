@@ -74,6 +74,7 @@ export class ApiInterceptor implements HttpInterceptor {
 
   handleUnathorizedRequest() {
     this.router.navigateByUrl('/login', {
+      replaceUrl: true,
       state: { expired: true },
     });
   }
