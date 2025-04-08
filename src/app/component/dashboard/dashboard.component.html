@@ -1,5 +1,5 @@
 <div class="w-full h-full">
-  <div id="featuredProducts" class="grid" *ngIf="!isLoading && !selectedCategory && featuredProducts.length > 1">
+  <div id="featuredProducts" class="grid" *ngIf="!isLoading && !filterCtrl.dirty && !selectedCategory && featuredProducts.length > 1">
     <div class="col-12">
       <div @moveUp class="card">
         <h5 class="card-title">Featured</h5>
