@@ -11,6 +11,7 @@ import { CustomerService } from 'src/app/service/customer.service';
 import { ProductOptionValue } from 'src/app/interface/product';
 import { Order, ProductOrder } from 'src/app/interface/order';
 import { lastValueFrom } from 'rxjs';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-order-dialog',
@@ -109,8 +110,9 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
             order: res.data,
           },
         });
-      } else if (res.status === 410) {
+      } else if (res.status === HttpStatusCode.Gone) {
         this.sharedService.showNotification('This transaction is expired, please place your order again.', '🙈');
+        this.customerService.loadOrders()?.subscribe();
       } else {
         this.sharedService.showErrorNotification();
       }
