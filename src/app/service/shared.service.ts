@@ -111,12 +111,8 @@ export class SharedService {
         icon: 'pi pi-exclamation-triangle',
         header: `Warning`,
         message: message,
-        accept: () => {
-          resolve(true);
-        },
-        reject: () => {
-          resolve(false);
-        },
+        accept: () => resolve(true),
+        reject: () => resolve(false),
       });
     });
   }
