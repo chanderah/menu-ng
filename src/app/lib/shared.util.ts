@@ -60,8 +60,7 @@ export default class SharedUtil {
   }
 
   getProductsName(products: Product[]) {
-    // const names = products.map((v) => v.name).filter((v, i, self) => self.indexOf(v) === i);
-    const names = filterUniqueArr(products, 'name');
+    const names = filterUniqueArr(products.map((v) => v.name));
     return names.join(', ');
   }
 
@@ -79,6 +78,15 @@ export default class SharedUtil {
     return values.map((v) => v.value).join(', ');
   }
 
+  getOrderStatus(isServed: boolean, status: string) {
+    if (isServed) return CONSTANTS.ORDER_STATUS['complete'];
+    return CONSTANTS.ORDER_STATUS[status];
+  }
+
+  getEmptyMessage(isLoading: boolean) {
+    return isLoading ? 'Loading...' : 'No data found.';
+  }
+
   get bottomSheetStyle() {
     return {
       width: isMobile ? '100vw' : '50vw',
@@ -86,10 +94,5 @@ export default class SharedUtil {
       left: isMobile ? 0 : '25vw',
       overflow: 'scroll',
     };
-  }
-
-  getOrderStatus(isServed: boolean, status: string) {
-    if (isServed) return CONSTANTS.ORDER_STATUS['complete'];
-    return CONSTANTS.ORDER_STATUS[status];
   }
 }

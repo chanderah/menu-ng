@@ -5,13 +5,10 @@ export interface Order {
   orderCode?: string;
   tableName: string;
   totalPrice: number;
-
   isServed: boolean;
-
   products: Product[];
-  productsName?: string;
-
   token?: string;
+  paymentType?: string;
   status: string;
   createdAt: Date;
 }

@@ -23,7 +23,6 @@ export class OrderComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;
   dialogBreakpoints = { '768px': '90vw' };
 
-  user = {} as User;
   pagingInfo = {} as PagingInfo;
 
   showOrderDetailsDialog: boolean = false;
@@ -55,10 +54,10 @@ export class OrderComponent extends SharedUtil implements OnInit {
   }
 
   ngOnInit() {
-    this.user = this.jsonParse(localStorage.getItem('user')) as User;
-    this.apiService.getPaymentMethods().subscribe((res) => {
-      if (res.status === 200) this.paymentMethods = res.data;
-    });
+    // this.user = this.jsonParse(localStorage.getItem('user')) as User;
+    // this.apiService.getPaymentMethods().subscribe((res) => {
+    //   if (res.status === 200) this.paymentMethods = res.data;
+    // });
   }
 
   getOrders(e?: LazyLoadEvent) {
@@ -101,14 +100,15 @@ export class OrderComponent extends SharedUtil implements OnInit {
   }
 
   async onPrintReceipt() {
-    if ((this.form.get('paymentMethod').value as PaymentMethod).id === 1) {
-      if (this.form.get('receivedAmount').value < this.selectedOrderGrandTotal) {
-        return this.sharedService.errorToast("Received amount can't be lower than Grand Total Price.");
-      }
-    }
-    this.isLoading = true;
+    // if ((this.form.get('paymentMethod').value as PaymentMethod).id === 1) {
+    //   if (this.form.get('receivedAmount').value < this.selectedOrderGrandTotal) {
+    //     return this.sharedService.errorToast("Received amount can't be lower than Grand Total Price.");
+    //   }
+    // }
+    // this.isLoading = true;
 
-    this.form.enable();
+    // this.form.enable();
+
     // this.orderService
     //   .generateOrderReceipt({
     //     tableId: this.selectedOrder.tableId,

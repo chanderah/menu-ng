@@ -67,7 +67,9 @@
         <ng-template pTemplate="emptymessage" let-columns>
           <tr>
             <td colspan="100%">
-              <div class="flex my-3 align-items-center justify-content-center">No results found.</div>
+              <div class="flex my-3 align-items-center justify-content-center">
+                {{ getEmptyMessage(isLoading) }}
+              </div>
             </td>
           </tr>
         </ng-template>
@@ -91,22 +93,19 @@
   modal="true"
   showEffect="fade">
   <div [formGroup]="form" (keyup.enter)="onSubmit()" class="p-fluid px-2">
-    <ng-container *ngIf="form.value['barcode']">
-      <div class="col-12 flex justify-content-center">
-        <qr-code #qrcode id="qrcode" [value]="form.value['barcode']" margin="4" size="200" errorCorrectionLevel="H"></qr-code>
-      </div>
-      <div class="col-12 flex justify-content-end">
-        <button
-          *ngIf="form.value['barcode']"
-          pButton
-          pRipple
-          (click)="downloadQrCode()"
-          [disabled]="isLoading"
-          label="Download QR Code"
-          class="p-button-primary p-button-outlined"
-          icon="pi pi-download"></button>
-      </div>
-    </ng-container>
+    <div class="col-12 flex flex-column align-items-center justify-content-center gap-2" *ngIf="form.value['barcode']">
+      <qr-code #qrcode id="qrcode" [value]="form.value['barcode']" margin="4" size="200" errorCorrectionLevel="H"></qr-code>
+      <a [href]="form.value['barcode']" target="_blank" *ngIf="!env.production">{{ form.value['barcode'] }}</a>
+
+      <button
+        pButton
+        pRipple
+        (click)="downloadQrCode()"
+        [disabled]="isLoading"
+        label="Download QR Code"
+        class="p-button-primary p-button-outlined"
+        icon="pi pi-download"></button>
+    </div>
 
     <div class="col-12 mt-3">
       <div class="field-checkbox mb-0">
