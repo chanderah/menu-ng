@@ -6,6 +6,7 @@ import { ConfigService } from 'src/app/layout/service/app.config.service';
 import SharedUtil from 'src/app/lib/shared.util';
 import { ApiService } from '../../../../service/api.service';
 import { SharedService } from './../../../../service/shared.service';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent extends SharedUtil implements OnInit {
   constructor(
     public configService: ConfigService,
     private sharedService: SharedService,
+    private toastService: ToastService,
     private router: Router,
     private apiService: ApiService,
     private formBuilder: FormBuilder
@@ -30,7 +32,7 @@ export class LoginComponent extends SharedUtil implements OnInit {
     const state = router.getCurrentNavigation()?.extras?.state;
     if (state?.expired || state?.logout) {
       this.sharedService.logoutUser();
-      if (state.logout) sharedService.showToast('success', 'Successfully logged out.');
+      if (state.logout) this.toastService.showToast('success', 'Successfully logged out.');
     }
   }
 
@@ -52,8 +54,8 @@ export class LoginComponent extends SharedUtil implements OnInit {
       this.isLoading = false;
       if (res.status === 200) {
         this.sharedService.user = res.data;
-        this.sharedService.successToast('Login success!');
-      } else this.sharedService.errorToast('Failed to authorize the user!');
+        this.toastService.successToast('Login success!');
+      } else this.toastService.errorToast('Failed to authorize the user!');
     });
   }
 }

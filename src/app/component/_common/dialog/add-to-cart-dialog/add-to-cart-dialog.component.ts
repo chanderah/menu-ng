@@ -3,10 +3,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import SharedUtil from 'src/app/lib/shared.util';
 import { capitalize, disableBodyScroll, enableBodyScroll } from 'src/app/lib/utils';
 import { Product, ProductOption } from '../../../../interface/product';
-import { SharedService } from '../../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { environment } from 'src/environments/environment';
 import { ProductOrder } from 'src/app/interface/order';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-add-to-cart-dialog',
@@ -23,7 +23,7 @@ export class AddToCartDialogComponent extends SharedUtil implements OnInit {
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
-    private sharedService: SharedService
+    private toastService: ToastService
   ) {
     super();
   }
@@ -53,7 +53,7 @@ export class AddToCartDialogComponent extends SharedUtil implements OnInit {
 
   onSubmit() {
     if (this.isDisabledAddToCartBtn) {
-      return this.sharedService.errorToast('Please select the required variant.');
+      return this.toastService.errorToast('Please select the required variant.');
     }
 
     this.customerService.addToCart(this.form.value);

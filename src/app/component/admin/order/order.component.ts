@@ -5,7 +5,6 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import { OrderReceipt, PaymentMethod } from './../../../interface/order';
 import { PagingInfo } from './../../../interface/paging_info';
-import { User } from './../../../interface/user';
 import { ApiService } from './../../../service/api.service';
 import { OrderService } from './../../../service/order.service';
 import { SharedService } from './../../../service/shared.service';
@@ -13,6 +12,7 @@ import { SharedService } from './../../../service/shared.service';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import SharedUtil from 'src/app/lib/shared.util';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-order',
@@ -47,6 +47,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
     private router: Router,
     private apiService: ApiService,
     private sharedService: SharedService,
+    private toastService: ToastService,
     private orderService: OrderService,
     private formBuilder: FormBuilder
   ) {
@@ -76,7 +77,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
         this.lastUpdated = new Date();
         this.pagingInfo.rowCount = res.rowCount;
         this.orders = res.data;
-      } else this.sharedService.errorToast('Failed to get orders data.');
+      } else this.toastService.errorToast('Failed to get orders data.');
     });
   }
 
@@ -102,13 +103,11 @@ export class OrderComponent extends SharedUtil implements OnInit {
   async onPrintReceipt() {
     // if ((this.form.get('paymentMethod').value as PaymentMethod).id === 1) {
     //   if (this.form.get('receivedAmount').value < this.selectedOrderGrandTotal) {
-    //     return this.sharedService.errorToast("Received amount can't be lower than Grand Total Price.");
+    //     return this.toastService.errorToast("Received amount can't be lower than Grand Total Price.");
     //   }
     // }
     // this.isLoading = true;
-
     // this.form.enable();
-
     // this.orderService
     //   .generateOrderReceipt({
     //     tableId: this.selectedOrder.tableId,

@@ -6,6 +6,7 @@ import { Category } from '../../../interface/category';
 import { PagingInfo } from '../../../interface/paging_info';
 import { ApiService } from '../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-category',
@@ -30,6 +31,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     public sharedService: SharedService,
+    private toastService: ToastService,
     private apiService: ApiService
   ) {
     super();
@@ -49,7 +51,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
       observable.subscribe((res) => {
         if (res.status === 200) {
           this.resetCategoryDialog();
-        } else this.sharedService.errorToast(res.message);
+        } else this.toastService.errorToast(res.message);
       });
     } finally {
       this.isLoading = false;
@@ -70,7 +72,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
       this.isLoading = false;
       if (res.status === 200) {
         this.refreshPage();
-      } else this.sharedService.errorToast(res.message);
+      } else this.toastService.errorToast(res.message);
     });
   }
 
@@ -87,7 +89,7 @@ export class CategoryComponent extends SharedUtil implements OnInit {
         this.form.patchValue(res.data);
         this.showCategoryDialog = true;
       } else {
-        this.sharedService.errorToast('Invalid session!');
+        this.toastService.errorToast('Invalid session!');
         return this.refreshPage();
       }
     });

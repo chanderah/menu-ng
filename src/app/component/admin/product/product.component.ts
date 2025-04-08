@@ -11,6 +11,7 @@ import { ApiService } from '../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
 import { Nullable } from 'src/app/interface/common';
 import { fileToBase64 } from 'src/app/lib/utils';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   templateUrl: './product.component.html',
@@ -44,7 +45,8 @@ export class ProductComponent extends SharedUtil implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    private toastService: ToastService
   ) {
     super();
   }
@@ -86,7 +88,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
         this.products = res.data;
         if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
       } else {
-        this.sharedService.errorToast(res.message);
+        this.toastService.errorToast(res.message);
       }
     });
   }
@@ -104,7 +106,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
         preview: await fileToBase64(file),
       };
     } catch (err) {
-      this.sharedService.errorToast(err);
+      this.toastService.errorToast(err);
     } finally {
       fileUpload.clear();
     }
@@ -117,7 +119,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
         this.getProducts();
       } else {
         this.isLoading = false;
-        this.sharedService.errorToast(res.message);
+        this.toastService.errorToast(res.message);
       }
     });
   }
@@ -150,8 +152,8 @@ export class ProductComponent extends SharedUtil implements OnInit {
           this.isLoading = false;
           if (res.status === 200) {
             this.getProducts();
-            this.sharedService.successToast('Product is deleted!');
-          } else this.sharedService.errorToast('Failed to delete the product.');
+            this.toastService.successToast('Product is deleted!');
+          } else this.toastService.errorToast('Failed to delete the product.');
         });
       }
     });

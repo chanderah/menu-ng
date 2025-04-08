@@ -1,5 +1,5 @@
 import { DialogService } from 'primeng/dynamicdialog';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/interface/user';
 import { NotificationDialogComponent } from '../component/_common/dialog/notification-dialog/notification-dialog.component';
@@ -21,7 +21,6 @@ export class SharedService {
 
   constructor(
     private apiService: ApiService,
-    public messageService: MessageService,
     public dialogService: DialogService,
     public confirmationService: ConfirmationService
   ) {
@@ -82,27 +81,6 @@ export class SharedService {
   setShopConfig(shopConfig: ShopConfig) {
     localStorage.setItem('shopConfig', jsonStringify(shopConfig));
     return;
-  }
-
-  /* TOAST */
-  showToast(severity: 'success' | 'error' | 'warn' | 'info' = 'success', detail: string, summary: string = 'Success') {
-    this.messageService.add({ severity, summary, detail });
-  }
-
-  infoToast(message: string) {
-    this.showToast('info', message, 'Information');
-  }
-
-  successToast(message: string) {
-    this.showToast('success', message);
-  }
-
-  warnToast(message: string) {
-    this.showToast('warn', message, 'Warn');
-  }
-
-  errorToast(message: string) {
-    this.showToast('error', message, 'Failed');
   }
 
   showNotification(message: string, icon: string, timeout?: number): Promise<any> {

@@ -15,6 +15,7 @@ import { PagingInfo } from './../../interface/paging_info';
 import { ApiService } from './../../service/api.service';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 import { CustomerService } from 'src/app/service/customer.service';
+import { ToastService } from 'src/app/service/toast.service';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Thumbs, Controller]);
 
@@ -43,6 +44,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     public appMain: AppMainComponent,
     public customerService: CustomerService,
     private sharedService: SharedService,
+    private toastService: ToastService,
     private route: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
@@ -90,7 +92,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
       if (res.status === 200) {
         this.products = res.data;
         this.pagingInfo.rowCount = res.rowCount;
-      } else this.sharedService.errorToast(res.message);
+      } else this.toastService.errorToast(res.message);
     });
   }
 

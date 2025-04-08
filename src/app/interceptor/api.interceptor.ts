@@ -8,18 +8,20 @@ import {
   HttpErrorResponse,
   HttpStatusCode,
 } from '@angular/common/http';
-import { catchError, filter, map, Observable, of } from 'rxjs';
+import { catchError, filter, map, Observable } from 'rxjs';
 import { isDevelopment, jsonParse } from '../lib/utils';
 import { Aes256Service } from '../service/aes256.service';
 import { environment } from 'src/environments/environment';
 import { User } from '../interface/user';
 import { Router } from '@angular/router';
+import { ToastService } from '../service/toast.service';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
-    private aes256Service: Aes256Service
+    private aes256Service: Aes256Service,
+    private toastService: ToastService
   ) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -67,7 +69,11 @@ export class ApiInterceptor implements HttpInterceptor {
         }
 
         if (isDevelopment) console.error('ERROR:', req.method, req.url, err, req.body);
-        return of(new HttpResponse({ body: err }));
+
+        this.toastService.errorToast('Something went wrong.');
+        throw new Error('Something went wrong.');
+
+        // return of(new HttpResponse({ body: err }));
       })
     );
   }

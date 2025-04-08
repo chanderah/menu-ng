@@ -9,6 +9,7 @@ import { filterUniqueArr } from 'src/app/lib/utils';
 import SharedUtil from 'src/app/lib/shared.util';
 import { environment } from 'src/environments/environment';
 import { debounceTime } from 'rxjs';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-order-live',
@@ -43,6 +44,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
   constructor(
     private appRef: ApplicationRef,
     private sharedService: SharedService,
+    private toastService: ToastService,
     private apiService: ApiService,
     private messagingService: MessagingService
   ) {
@@ -96,7 +98,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
           this.orders = filterUniqueArr([...res.data, ...this.orders], 'id').slice(0, this.pagingInfo.limit);
           this.showNewOrdersNotification(res.data.length);
         }
-      } else this.sharedService.errorToast('Failed to get orders data');
+      } else this.toastService.errorToast('Failed to get orders data');
     });
 
     if (this.timeoutId) clearTimeout(this.timeoutId);
@@ -123,7 +125,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
       if (res.status === 200) {
         this.showOrderDetailsDialog = false;
         this.orders.filter((v) => listId.includes(v.id)).forEach((v) => (v.isServed = true));
-      } else this.sharedService.errorToast('Failed to update orders');
+      } else this.toastService.errorToast('Failed to update orders');
     });
   }
 

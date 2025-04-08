@@ -5,7 +5,7 @@ import { PagingInfo } from 'src/app/interface/paging_info';
 import { User, UserRole } from 'src/app/interface/user';
 import SharedUtil from 'src/app/lib/shared.util';
 import { ApiService } from './../../../service/api.service';
-import { SharedService } from './../../../service/shared.service';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-user',
@@ -28,7 +28,7 @@ export class UserComponent extends SharedUtil implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private sharedService: SharedService,
+    private toastService: ToastService,
     private apiService: ApiService
   ) {
     super();
@@ -66,18 +66,18 @@ export class UserComponent extends SharedUtil implements OnInit {
       if (res.status === 200) {
         this.users = res.data;
         if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
-      } else this.sharedService.errorToast('Failed to get Users.');
+      } else this.toastService.errorToast('Failed to get Users.');
     });
   }
 
   onSubmit() {
     const value: User = this.form.getRawValue();
     if (this.isEmpty(value.roleId) || this.isEmpty(value.username)) {
-      return this.sharedService.errorToast('Please fill the required field');
+      return this.toastService.errorToast('Please fill the required field');
     }
 
     if (this.isEmpty(value.password)) {
-      return this.sharedService.errorToast('Please enter user password to continue');
+      return this.toastService.errorToast('Please enter user password to continue');
     }
 
     value.name = this.capitalize(value.name);
@@ -86,12 +86,12 @@ export class UserComponent extends SharedUtil implements OnInit {
       if (this.selectedUser) {
         this.apiService.updateUser(value).subscribe((res) => {
           if (res.status === 200) this.getUsers();
-          else this.sharedService.errorToast(res.message);
+          else this.toastService.errorToast(res.message);
         });
       } else {
         this.apiService.register(value).subscribe((res) => {
           if (res.status === 200) this.getUsers();
-          else this.sharedService.errorToast(res.message);
+          else this.toastService.errorToast(res.message);
         });
       }
     } finally {

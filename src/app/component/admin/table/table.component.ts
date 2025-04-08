@@ -9,6 +9,7 @@ import { PagingInfo } from './../../../interface/paging_info';
 import { ApiService } from './../../../service/api.service';
 import { SharedService } from './../../../service/shared.service';
 import { environment } from 'src/environments/environment';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-table',
@@ -30,6 +31,7 @@ export class TableComponent extends SharedUtil implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
+    private toastService: ToastService,
     private apiService: ApiService,
     private aes256Service: Aes256Service
   ) {
@@ -57,7 +59,7 @@ export class TableComponent extends SharedUtil implements OnInit {
         this.tables = res.data;
         if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
       } else {
-        this.sharedService.errorToast('Failed to get Tables data.');
+        this.toastService.errorToast('Failed to get Tables data.');
       }
     });
   }
@@ -69,18 +71,18 @@ export class TableComponent extends SharedUtil implements OnInit {
         this.apiService.createTable(this.form.value).subscribe((res) => {
           if (res.status === 200) {
             this.getTables();
-            this.sharedService.successToast('Success!');
+            this.toastService.successToast('Success!');
           } else {
-            this.sharedService.errorToast('Failed to create.');
+            this.toastService.errorToast('Failed to create.');
           }
         });
       } else {
         this.apiService.updateTable(this.form.value).subscribe((res) => {
           if (res.status === 200) {
             this.getTables();
-            this.sharedService.successToast('Success!');
+            this.toastService.successToast('Success!');
           } else {
-            this.sharedService.errorToast('Failed to create.');
+            this.toastService.errorToast('Failed to create.');
           }
         });
       }
