@@ -160,11 +160,9 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
   }
 
   removeProduct(i: number) {
-    this.sharedService.showConfirm('Are you sure to remove this item from cart?').then((res) => {
-      if (res) {
-        this.products().removeAt(i);
-        if (this.products().length === 0) this.hideDialog();
-      }
+    this.sharedService.showConfirm('Are you sure to remove this item from cart?', () => {
+      this.products().removeAt(i);
+      if (this.products().length === 0) this.hideDialog();
     });
   }
 

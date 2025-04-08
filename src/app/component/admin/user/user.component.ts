@@ -112,7 +112,12 @@ export class UserComponent extends SharedUtil implements OnInit {
     }
   }
 
-  onDelete() {}
+  onDelete() {
+    this.sharedService.showConfirm('Are you sure to delete this user?', () => {
+      this.sharedService.showNotification('Success!', '😍');
+      this.resetUserDialog();
+    });
+  }
 
   resetUserDialog() {
     this.showUserDialog = false;
