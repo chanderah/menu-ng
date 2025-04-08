@@ -105,12 +105,18 @@ export class SharedService {
     this.showNotification('Something went wrong. Please try again :(', '🥵', 5000);
   }
 
-  showConfirm(message: string = 'Are you sure to proceed?') {
+  showConfirm(message: string = 'Are you sure to proceed?', acceptEvent?: () => void, rejectEvent?: () => void) {
     return new Promise((resolve) => {
       this.confirmationService.confirm({
+        message,
+        header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
-        header: `Warning`,
-        message: message,
+        dismissableMask: true,
+        closeOnEscape: true,
+        acceptLabel: 'Yes',
+        acceptButtonStyleClass: 'p-button-danger p-button-outlined',
+        rejectLabel: 'Cancel',
+        rejectButtonStyleClass: 'p-button-outlined',
         accept: () => resolve(true),
         reject: () => resolve(false),
       });

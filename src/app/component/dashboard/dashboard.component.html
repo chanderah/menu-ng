@@ -1,5 +1,5 @@
 <div class="w-full h-full">
-  <div id="featuredProducts" class="grid" *ngIf="!selectedCategory && featuredProducts.length > 1">
+  <div id="featuredProducts" class="grid" *ngIf="!isLoading && !selectedCategory && featuredProducts.length > 1">
     <div class="col-12">
       <div @moveUp class="card">
         <h5 class="card-title">Featured</h5>
@@ -7,9 +7,14 @@
           <ng-template *ngFor="let product of featuredProducts" swiperSlide>
             <div class="border-round my-2 text-center" style="border: 1px solid var(--surface-d)">
               <div class="m-2 mb-3" style="cursor: pointer">
-                <img onerror="this.src='assets/images/default_product.png'" [alt]="product.name"
-                  [src]="getImageSrc(product.image)" (click)="onClickProduct(product)" class="shadow-4 object-fit-cover"
-                  width="300px" height="300px" />
+                <img
+                  onerror="this.src='assets/images/default_product.png'"
+                  [alt]="product.name"
+                  [src]="getImageSrc(product.image)"
+                  (click)="onClickProduct(product)"
+                  class="shadow-4 object-fit-cover"
+                  width="300px"
+                  height="300px" />
               </div>
               <div>
                 <h6 class="text-capitalize my-2">{{ product.name }}</h6>
@@ -24,14 +29,29 @@
     </div>
   </div>
 
-  <p-dataView id="listProducts" layout="grid" [value]="products" [paginator]="true" [loading]="isLoading" [lazy]="true"
-    (onLazyLoad)="getProducts($event)" [rows]="20" [totalRecords]="pagingInfo.rowCount" [pageLinks]="5"
-    [emptyMessage]="getEmptyMessage(isLoading)" [alwaysShowPaginator]="true" [ngClass]="true && 'loading'">
+  <p-dataView
+    id="listProducts"
+    layout="grid"
+    [value]="products"
+    [paginator]="true"
+    [loading]="isLoading"
+    [lazy]="true"
+    (onLazyLoad)="getProducts($event)"
+    [rows]="20"
+    [totalRecords]="pagingInfo.rowCount"
+    [pageLinks]="5"
+    [emptyMessage]="getEmptyMessage(isLoading)"
+    [alwaysShowPaginator]="true"
+    [ngClass]="true && 'loading'">
     <ng-template pTemplate="header">
       <div class="grid">
         <div class="col-3 p-fluid pl-0 pr-1" style="width: fit-content">
-          <button pButton [label]="selectedCategory?.label ?? 'Filter'" icon="pi pi-sliders-v"
-            (click)="appMain.toggleMenu($event)" class="p-button-plain p-button-rounded p-button-outlined"
+          <button
+            pButton
+            [label]="selectedCategory?.label ?? 'Filter'"
+            icon="pi pi-sliders-v"
+            (click)="appMain.toggleMenu($event)"
+            class="p-button-plain p-button-rounded p-button-outlined"
             style="height: 100%; text-transform: capitalize"></button>
         </div>
         <div class="col p-fluid">
@@ -48,8 +68,11 @@
         <div class="card mat m-2 surface-border">
           <div class="grid">
             <div class="col-12 mb-2 cursor-pointer pa-2" (click)="onClickProduct(product)">
-              <img onerror="this.src='assets/images/default_product.png'" class="object-fit-cover w-full shadow-2"
-                [src]="getImageSrc(product.image)" [alt]="product.name" />
+              <img
+                onerror="this.src='assets/images/default_product.png'"
+                class="object-fit-cover w-full shadow-2"
+                [src]="getImageSrc(product.image)"
+                [alt]="product.name" />
             </div>
             <div class="col-12 mx-4">
               <span class="text-left text-lg text-capitalize font-semibold max-lines-2">
@@ -60,8 +83,13 @@
               <span class="text-left text-md">{{ product.price | custom }}</span>
             </div>
             <div class="col-12 text-center mt-2">
-              <button pButton pRipple label="Add to Cart" class="p-button-rounded p-button-outlined"
-                (click)="onAddToCart(product)" type="button"></button>
+              <button
+                pButton
+                pRipple
+                label="Add to Cart"
+                class="p-button-rounded p-button-outlined"
+                (click)="onAddToCart(product)"
+                type="button"></button>
             </div>
           </div>
         </div>
@@ -70,8 +98,7 @@
   </p-dataView>
 </div>
 
-<app-add-to-cart-dialog *ngIf="showOrderDialog" [showDialog]="true" [data]="selectedProduct"
-  (onHide)="showOrderDialog = false">
+<app-add-to-cart-dialog *ngIf="showOrderDialog" [showDialog]="true" [data]="selectedProduct" (onHide)="showOrderDialog = false">
 </app-add-to-cart-dialog>
 
 <!-- <button pButton class="p-button-rounded p-button-primary fab-button" (click)="onClickOrders()" *ngIf="customerService.orders.length">
@@ -87,7 +114,12 @@
   My Orders
 </button> -->
 
-<button *ngIf="customerService.orders.length" pButton icon="pi pi-shopping-bag" label="Order"
-  class="p-button-rounded fab-button" (click)="onClickOrders()">
+<button
+  *ngIf="customerService.orders.length"
+  pButton
+  icon="pi pi-shopping-bag"
+  label="Order"
+  class="p-button-rounded fab-button"
+  (click)="onClickOrders()">
   <!-- <p-badge [value]="2"></p-badge> -->
 </button>

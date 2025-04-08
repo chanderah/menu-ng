@@ -6,6 +6,7 @@ import { User, UserRole } from 'src/app/interface/user';
 import SharedUtil from 'src/app/lib/shared.util';
 import { ApiService } from './../../../service/api.service';
 import { ToastService } from 'src/app/service/toast.service';
+import { SharedService } from 'src/app/service/shared.service';
 
 @Component({
   selector: 'app-user',
@@ -18,8 +19,6 @@ export class UserComponent extends SharedUtil implements OnInit {
   pagingInfo = {} as PagingInfo;
   showUserDialog: boolean = false;
 
-  user = {} as User;
-
   users = [] as User[];
   userRoles = [] as UserRole[];
   selectedUser = {} as User;
@@ -28,6 +27,7 @@ export class UserComponent extends SharedUtil implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private sharedService: SharedService,
     private toastService: ToastService,
     private apiService: ApiService
   ) {
@@ -45,7 +45,6 @@ export class UserComponent extends SharedUtil implements OnInit {
   }
 
   ngOnInit() {
-    this.user = this.jsonParse(localStorage.getItem('user')) as User;
     this.apiService.getUserRoles().subscribe((res) => {
       if (res.status === 200) this.userRoles = res.data;
     });
@@ -61,6 +60,7 @@ export class UserComponent extends SharedUtil implements OnInit {
       sortField: e?.sortField ?? 'name',
       sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
     };
+
     this.apiService.getUsers(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
@@ -71,25 +71,19 @@ export class UserComponent extends SharedUtil implements OnInit {
   }
 
   onSubmit() {
-    const value: User = this.form.getRawValue();
-    if (this.isEmpty(value.roleId) || this.isEmpty(value.username)) {
-      return this.toastService.errorToast('Please fill the required field');
-    }
+    if (this.isLoading || this.form.invalid) return;
+    this.isLoading = true;
 
-    if (this.isEmpty(value.password)) {
-      return this.toastService.errorToast('Please enter user password to continue');
-    }
-
-    value.name = this.capitalize(value.name);
+    const req: User = this.form.getRawValue();
+    req.name = this.capitalize(req.name);
     try {
-      this.isLoading = true;
       if (this.selectedUser) {
-        this.apiService.updateUser(value).subscribe((res) => {
+        this.apiService.updateUser(req).subscribe((res) => {
           if (res.status === 200) this.getUsers();
           else this.toastService.errorToast(res.message);
         });
       } else {
-        this.apiService.register(value).subscribe((res) => {
+        this.apiService.register(req).subscribe((res) => {
           if (res.status === 200) this.getUsers();
           else this.toastService.errorToast(res.message);
         });
@@ -110,6 +104,12 @@ export class UserComponent extends SharedUtil implements OnInit {
     this.showUserDialog = true;
     this.form.patchValue(this.selectedUser);
     this.form.get('username').disable();
+
+    if (this.selectedUser.id === this.sharedService.user.id) {
+      this.form.get('roleId').disable();
+    } else {
+      this.form.get('roleId').enable();
+    }
   }
 
   onDelete() {}
