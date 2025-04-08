@@ -107,7 +107,7 @@ export class SharedService {
 
   showConfirm(message: string, acceptEvent: () => void, rejectEvent?: () => void) {
     this.confirmationService.confirm({
-      icon: 'pi pi-exclamation-triangle',
+      icon: 'pi pi-exclamation-triangle md:mx-2',
       header: 'Confirmation',
       message: message ?? 'Are you sure to proceed?',
       dismissableMask: true,
@@ -116,6 +116,7 @@ export class SharedService {
       acceptButtonStyleClass: 'p-button-danger p-button-outlined',
       rejectLabel: 'Cancel',
       rejectButtonStyleClass: 'p-button-outlined',
+      defaultFocus: 'none',
       accept: () => acceptEvent(),
       reject: () => rejectEvent?.(),
     });
