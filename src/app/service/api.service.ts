@@ -5,7 +5,7 @@ import { Category } from './../interface/category';
 import { Order } from './../interface/order';
 import { PagingInfo } from './../interface/paging_info';
 import { User } from './../interface/user';
-import { jsonStringify } from '../lib/utils';
+import { getImageSrc, jsonStringify } from '../lib/utils';
 import { ApiResponse } from '../interface/api';
 import { Table } from '../interface/customer';
 
@@ -167,5 +167,15 @@ export class ApiService {
 
   getPaymentMethods() {
     return this.httpClient.post<any>('/payment/findAllMethod', null);
+  }
+
+  getImage(filePath: string) {
+    const url = getImageSrc(filePath);
+    return this.httpClient.get(url, { responseType: 'blob' });
+  }
+
+  getImageThumbnail(filePath: string, size: number = 40) {
+    const url = getImageSrc(filePath, size);
+    return this.httpClient.get(url, { responseType: 'blob' });
   }
 }

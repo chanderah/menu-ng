@@ -50,7 +50,6 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
       listOrderId: filterUniqueArr([...this.customerService.customer.listOrderId, this.state.order.id]),
     };
 
-    this.customerService.clearCart();
     if (this.state.isSuccess) {
       this.startPolling();
     } else {

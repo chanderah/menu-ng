@@ -23,7 +23,7 @@ export class ApiInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (req.url.includes('.json')) return next.handle(req);
+    if (['cloudinary', '.json'].some((v) => req.url.includes(v))) return next.handle(req);
     if (isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
     const user = jsonParse<User>(localStorage.getItem('user'));

@@ -4,10 +4,8 @@ export interface Product {
   name: string;
   description?: string;
   price: number;
-  inventoryStatus?: string;
   categoryId?: number;
   image?: string;
-  rating?: number;
   options?: ProductOption[];
 
   featured: boolean;
@@ -15,9 +13,7 @@ export interface Product {
   userCreated?: number;
   createdAt?: Date;
 
-  //for order
   totalPrice?: number;
-  optionsDetails?: string;
   notes?: string;
   quantity?: number;
 }

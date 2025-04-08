@@ -87,6 +87,14 @@ export default class SharedUtil {
     return isLoading ? 'Loading...' : 'No data found.';
   }
 
+  blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(blob);
+    });
+  }
+
   get bottomSheetStyle() {
     return {
       width: isMobile ? '100vw' : '50vw',

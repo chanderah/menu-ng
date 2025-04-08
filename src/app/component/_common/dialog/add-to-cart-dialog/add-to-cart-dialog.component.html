@@ -46,8 +46,8 @@
                     {{ optionValue.value.value }}
                   </label>
                   <div class="flex align-items-center gap-2">
-                    <label [for]="'selected' + i + j" class="text-xs font-semibold">
-                      {{ optionValue.value.price === 0 ? 'Free' : '+' + (optionValue.value.price | custom) }}
+                    <label [for]="'selected' + i + j" class="text-xs font-semibold" *ngIf="optionValue.value.price">
+                      +{{ optionValue.value.price | custom }}
                     </label>
                     <p-checkbox
                       [inputId]="'selected' + i + j"

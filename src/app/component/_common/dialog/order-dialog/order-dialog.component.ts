@@ -10,6 +10,7 @@ import { SharedService } from '../../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { ProductOptionValue } from 'src/app/interface/product';
 import { Order, ProductOrder } from 'src/app/interface/order';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-order-dialog',
@@ -87,9 +88,19 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     else if (this.isOrdered && this.data.status !== 'pending') return this.hideDialog();
 
     this.isLoading = true;
-    this.apiService.createOrder(this.form.value).subscribe(async (res) => {
+    const req = this.form.value as Order;
+    for (const v of req.products) {
+      if (!v.image.includes('base64')) {
+        const res = await lastValueFrom(this.apiService.getImageThumbnail(v.image));
+        v.image = await this.blobToBase64(res);
+      }
+    }
+
+    this.apiService.createOrder(req).subscribe(async (res) => {
       this.isLoading = false;
       if (res.status === 200) {
+        this.customerService.clearCart();
+
         const { isSuccess, response } = await this.midtransService.showSnapTransaction(res.data.token);
         this.router.navigateByUrl('/order', {
           state: {
