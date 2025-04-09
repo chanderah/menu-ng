@@ -1,6 +1,4 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { OrderService } from '../../../service/order.service';
 
 @Component({
   selector: 'app-order-complete',
@@ -11,10 +9,7 @@ export class OrderCompleteComponent implements OnInit, AfterViewInit {
   timeout: number = 10;
   totalPrice!: number;
 
-  constructor(
-    private router: Router,
-    private orderService: OrderService
-  ) {
+  constructor() {
     // this.totalPrice = router.getCurrentNavigation().extras.state?.totalPrice ?? 0;
   }
 

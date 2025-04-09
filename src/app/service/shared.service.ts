@@ -3,11 +3,11 @@ import { ConfirmationService } from 'primeng/api';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/interface/user';
 import { NotificationDialogComponent } from '../component/_common/dialog/notification-dialog/notification-dialog.component';
-import { ShopConfig } from '../interface/shop_config';
-import { clearLocalStorage, jsonParse, jsonStringify, sortArrayByLabelProperty } from '../lib/utils';
+import { clearLocalStorage, sortArrayByLabelProperty } from '../lib/utils';
 import { BehaviorSubject, map } from 'rxjs';
 import { Category } from '../interface/category';
 import { ApiService } from './api.service';
+import { StorageService } from '../storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,15 +20,16 @@ export class SharedService {
   categories$ = this._categories.asObservable();
 
   constructor(
-    private apiService: ApiService,
     public dialogService: DialogService,
-    public confirmationService: ConfirmationService
+    public confirmationService: ConfirmationService,
+    private apiService: ApiService,
+    private storageService: StorageService
   ) {
     this.load();
   }
 
   load() {
-    this.user = jsonParse<User>(localStorage.getItem('user'));
+    this.user = this.storageService.getWithExpiry('user', {});
     this.loadCategories();
   }
 
@@ -57,10 +58,10 @@ export class SharedService {
     return this._user.getValue();
   }
 
-  set user(user: User) {
-    if (user?.token) {
-      localStorage.setItem('user', jsonStringify(user));
-      this._user.next(user);
+  set user(data: User) {
+    if (data?.token) {
+      this.storageService.setWithExpiry('user', data);
+      this._user.next(data);
     } else {
       this._user.next(null);
     }
@@ -72,15 +73,6 @@ export class SharedService {
 
   set categories(data: Category[]) {
     this._categories.next(data);
-  }
-
-  getShopConfig(): ShopConfig {
-    return jsonParse(localStorage.getItem('shopConfig'));
-  }
-
-  setShopConfig(shopConfig: ShopConfig) {
-    localStorage.setItem('shopConfig', jsonStringify(shopConfig));
-    return;
   }
 
   showNotification(message: string, icon: string, timeout?: number): Promise<any> {

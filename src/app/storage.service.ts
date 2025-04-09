@@ -14,12 +14,12 @@ interface DataWithExpiry<T = any> {
 export class StorageService {
   constructor(private aes256Service: Aes256Service) {}
 
-  get<T = any>(key: string): Nullable<T> {
+  get<T = any>(key: string, coalesce?: any): Nullable<T> {
     const localData = localStorage.getItem(key);
-    if (!localData) return null;
+    if (!localData) return coalesce ?? null;
 
     const value = this.aes256Service.decrypt(localData);
-    return jsonParse(value) as T;
+    return jsonParse<T>(value);
   }
 
   set(key: string, data: any) {
@@ -27,9 +27,9 @@ export class StorageService {
     localStorage.setItem(key, value);
   }
 
-  getWithExpiry<T = any>(key: string): Nullable<T> {
+  getWithExpiry<T = any>(key: string, coalesce?: any): Nullable<T> {
     const localData = this.get(key);
-    if (!localData) return null;
+    if (!localData) return coalesce ?? null;
 
     const { data, expiry } = jsonParse<DataWithExpiry<T>>(localData);
     if (Date.now() > expiry) {

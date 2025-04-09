@@ -15,20 +15,22 @@ import { environment } from 'src/environments/environment';
 import { User } from '../interface/user';
 import { Router } from '@angular/router';
 import { ToastService } from '../service/toast.service';
+import { StorageService } from '../storage.service';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
     private aes256Service: Aes256Service,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private storageService: StorageService
   ) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (['cloudinary', '.json'].some((v) => req.url.includes(v))) return next.handle(req);
     if (isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
-    const user = jsonParse<User>(localStorage.getItem('user'));
+    const user = this.storageService.getWithExpiry<User>('user');
     const headers = { ...(user?.token && { Authorization: `Bearer ${user.token}` }) };
     const isFormData = req.body instanceof FormData;
     if (!isFormData) {

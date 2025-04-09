@@ -1,35 +1,37 @@
 import { Order, ProductOrder } from 'src/app/interface/order';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, of, tap } from 'rxjs';
 import { Customer } from '../interface/customer';
-import { jsonParse, jsonStringify } from '../lib/utils';
+import { StorageService } from '../storage.service';
+import { ApiResponse } from '../interface/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomerService {
-  private _customer = new BehaviorSubject<Customer>({} as Customer);
+  private _customer = new BehaviorSubject<Customer>(this.storageService.getWithExpiry('customer', {}));
   customer$ = this._customer.asObservable();
 
-  private _cart = new BehaviorSubject<ProductOrder[]>([]);
+  private _cart = new BehaviorSubject<ProductOrder[]>(this.storageService.getWithExpiry('cart', []));
   cart$ = this._cart.asObservable();
 
   private _orders = new BehaviorSubject<Order[]>([]);
   orders$ = this._orders.asObservable();
 
-  constructor(private apiService: ApiService) {
-    this.load();
-  }
-
-  load() {
-    this.cart = jsonParse<ProductOrder[]>(localStorage.getItem('cart')) ?? [];
-    this.customer = jsonParse<Customer>(localStorage.getItem('customer'));
-    if (this.isCustomer) this.loadOrders()?.subscribe();
+  constructor(
+    private apiService: ApiService,
+    private storageService: StorageService
+  ) {
+    this.loadOrders().subscribe();
   }
 
   loadOrders() {
-    if (!this.customer?.listOrderId?.length) return;
+    if (!this.isCustomer || !this.customer?.listOrderId?.length) {
+      this.orders = [];
+      return of({ data: [] } as ApiResponse<Order[]>);
+    }
+
     return this.apiService
       .getOrders({
         limit: 100,
@@ -81,13 +83,12 @@ export class CustomerService {
       ...value,
       listOrderId: value?.listOrderId ?? [],
     };
-
-    localStorage.setItem('customer', jsonStringify(data));
+    this.storageService.setWithExpiry('customer', data);
     this._customer.next(data);
   }
 
   set cart(data: ProductOrder[]) {
-    localStorage.setItem('cart', jsonStringify(data));
+    this.storageService.setWithExpiry('cart', data);
     this._cart.next(data);
   }
 

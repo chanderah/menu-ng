@@ -26,7 +26,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { OrderDialogComponent } from './component/_common/dialog/order-dialog/order-dialog.component';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { AppTopBarComponent } from './layout/app.topbar.component';
-import { OrderService } from './service/order.service';
 import { SharedService } from './service/shared.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ChipModule } from 'primeng/chip';
@@ -162,7 +161,6 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     ConfirmationService,
     MessageService,
     DialogService,
-    OrderService,
 
     /* SHARED */
     SharedService,

@@ -10,6 +10,7 @@ import SharedUtil from 'src/app/lib/shared.util';
 import { environment } from 'src/environments/environment';
 import { debounceTime } from 'rxjs';
 import { ToastService } from 'src/app/service/toast.service';
+import { StorageService } from 'src/app/storage.service';
 
 @Component({
   selector: 'app-order-live',
@@ -46,13 +47,14 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     private sharedService: SharedService,
     private toastService: ToastService,
     private apiService: ApiService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private storageService: StorageService
   ) {
     super();
   }
 
   ngOnInit() {
-    const pageSize = localStorage.getItem('liveOrderPageSize');
+    const pageSize = this.storageService.get('liveOrderPageSize');
     this.pagingInfo.limit = Number(pageSize) || this.rowsPerPageOptions[0];
     this.getOrders();
   }
@@ -85,7 +87,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
   async getOrders(lastFetchedId: number = this.getLastFetchedId()) {
     this.isLoading = true;
-    localStorage.setItem('liveOrderPageSize', this.pagingInfo.limit.toString());
+    this.storageService.set('liveOrderPageSize', this.pagingInfo.limit);
 
     this.apiService.getLiveOrders(lastFetchedId, this.pagingInfo.limit).subscribe((res) => {
       this.isLoading = false;

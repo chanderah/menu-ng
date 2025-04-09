@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
 import { OrderReceipt, PaymentMethod } from './../../../interface/order';
 import { PagingInfo } from './../../../interface/paging_info';
 import { ApiService } from './../../../service/api.service';
-import { OrderService } from './../../../service/order.service';
 import { SharedService } from './../../../service/shared.service';
 
 import html2canvas from 'html2canvas';
@@ -44,22 +42,15 @@ export class OrderComponent extends SharedUtil implements OnInit {
   });
 
   constructor(
-    private router: Router,
     private apiService: ApiService,
     private sharedService: SharedService,
     private toastService: ToastService,
-    private orderService: OrderService,
     private formBuilder: FormBuilder
   ) {
     super();
   }
 
-  ngOnInit() {
-    // this.user = this.jsonParse(localStorage.getItem('user')) as User;
-    // this.apiService.getPaymentMethods().subscribe((res) => {
-    //   if (res.status === 200) this.paymentMethods = res.data;
-    // });
-  }
+  ngOnInit() {}
 
   getOrders(e?: LazyLoadEvent) {
     this.isLoading = true;

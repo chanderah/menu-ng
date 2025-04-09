@@ -112,7 +112,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         });
       } else if (res.status === HttpStatusCode.Gone) {
         this.sharedService.showNotification('This transaction is expired, please place your order again.', '🙈');
-        this.customerService.loadOrders()?.subscribe();
+        this.customerService.loadOrders().subscribe();
       } else {
         this.sharedService.showErrorNotification();
       }
