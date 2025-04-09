@@ -8,11 +8,15 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { Category } from '../interface/category';
 import { ApiService } from './api.service';
 import { StorageService } from '../storage.service';
+import { MappedBusinessConfig } from '../interface/business_config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedService {
+  private _businessConfig = new BehaviorSubject<MappedBusinessConfig>(null);
+  businessConfig$ = this._businessConfig.asObservable();
+
   private _user = new BehaviorSubject<User>(this.storageService.getWithExpiry('user', {}));
   user$ = this._user.asObservable();
 
@@ -30,6 +34,11 @@ export class SharedService {
 
   load() {
     this.loadCategories();
+    this.apiService.getBusinessConfig().subscribe((res) => {
+      const data = {};
+      res.data.forEach((v) => (data[v.param] = v.value));
+      this.businessConfig = data;
+    });
   }
 
   loadCategories() {
@@ -42,31 +51,6 @@ export class SharedService {
   logoutUser() {
     clearLocalStorage();
     this.user = null;
-  }
-
-  get isLoggedIn() {
-    return !!this.user?.id;
-  }
-
-  get user() {
-    return this._user.getValue();
-  }
-
-  set user(data: User) {
-    if (data?.token) {
-      this.storageService.setWithExpiry('user', data);
-      this._user.next(data);
-    } else {
-      this._user.next(null);
-    }
-  }
-
-  get categories() {
-    return this._categories.getValue();
-  }
-
-  set categories(data: Category[]) {
-    this._categories.next(data);
   }
 
   showNotification(message: string, icon: string, timeout?: number): Promise<any> {
@@ -108,26 +92,51 @@ export class SharedService {
     });
   }
 
-  // showConfirm(message: string = 'Are you sure to proceed?') {
-  //   return new Promise((resolve) => {
-  //     this.confirmationService.confirm({
-  //       message,
-  //       header: 'Confirmation',
-  //       icon: 'pi pi-exclamation-triangle',
-  //       dismissableMask: true,
-  //       closeOnEscape: true,
-  //       acceptLabel: 'Yes',
-  //       acceptButtonStyleClass: 'p-button-danger p-button-outlined',
-  //       rejectLabel: 'Cancel',
-  //       rejectButtonStyleClass: 'p-button-outlined',
-  //       accept: () => resolve(true),
-  //       reject: () => resolve(false),
-  //     });
-  //   });
-  // }
-
   hasAccess(requiredRoleLevel: number) {
     return this.user?.role?.level >= requiredRoleLevel;
+  }
+
+  get isLoggedIn() {
+    return !!this.user?.id;
+  }
+
+  get user() {
+    return this._user.getValue();
+  }
+
+  set user(data: User) {
+    if (data?.token) {
+      this.storageService.setWithExpiry('user', data);
+      this._user.next(data);
+    } else {
+      this._user.next(null);
+    }
+  }
+
+  get businessConfig() {
+    return this._businessConfig.getValue();
+  }
+
+  set businessConfig(data: MappedBusinessConfig) {
+    this._businessConfig.next(data);
+  }
+
+  get phone() {
+    const { countryCode, areaCode, phoneNo } = this.businessConfig;
+    return [countryCode, areaCode, phoneNo].join('');
+  }
+
+  get whatsapp() {
+    const { countryCode, whatsappNo } = this.businessConfig;
+    return [countryCode, whatsappNo].join('');
+  }
+
+  get categories() {
+    return this._categories.getValue();
+  }
+
+  set categories(data: Category[]) {
+    this._categories.next(data);
   }
 
   get roleLevel() {

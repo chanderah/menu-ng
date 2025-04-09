@@ -8,12 +8,25 @@ import { User } from './../interface/user';
 import { getImageSrc, jsonStringify } from '../lib/utils';
 import { ApiResponse } from '../interface/api';
 import { Table } from '../interface/customer';
+import { BusinessConfig } from '../interface/business_config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   constructor(private httpClient: HttpClient) {}
+
+  getBusinessConfig() {
+    return this.httpClient.post<ApiResponse<BusinessConfig[]>>('/business/findAll', null);
+  }
+
+  getBusinessConfigByParam(param: string) {
+    return this.httpClient.post<ApiResponse<BusinessConfig>>('/business/findByParam', { param });
+  }
+
+  saveBusinessConfig(req: BusinessConfig) {
+    return this.httpClient.post<ApiResponse<void>>('/business/save', req);
+  }
 
   register(user: User) {
     return this.httpClient.post<any>('/user/register', user);

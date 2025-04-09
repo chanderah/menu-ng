@@ -4,9 +4,9 @@ import SharedUtil from 'src/app/lib/shared.util';
 import { capitalize, disableBodyScroll, enableBodyScroll } from 'src/app/lib/utils';
 import { Product, ProductOption } from '../../../../interface/product';
 import { CustomerService } from 'src/app/service/customer.service';
-import { environment } from 'src/environments/environment';
 import { ProductOrder } from 'src/app/interface/order';
 import { ToastService } from 'src/app/service/toast.service';
+import { SharedService } from 'src/app/service/shared.service';
 
 @Component({
   selector: 'app-add-to-cart-dialog',
@@ -23,7 +23,8 @@ export class AddToCartDialogComponent extends SharedUtil implements OnInit {
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private sharedService: SharedService
   ) {
     super();
   }
@@ -62,7 +63,7 @@ export class AddToCartDialogComponent extends SharedUtil implements OnInit {
 
   onClickWhatsapp() {
     const message = `Halo, saya ingin menanyakan tentang produk ${capitalize(this.data.name)}.`.replace(' ', '%20');
-    const url = `https://api.whatsapp.com/send?phone=${environment.shop.whatsapp}&text=${message}`;
+    const url = `https://api.whatsapp.com/send?phone=${this.sharedService.whatsapp}&text=${message}`;
     window.open(url, '_blank');
   }
 
