@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { User } from 'src/app/interface/user';
 import { NotificationDialogComponent } from '../component/_common/dialog/notification-dialog/notification-dialog.component';
 import { clearLocalStorage, sortArrayByLabelProperty } from '../lib/utils';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { Category } from '../interface/category';
 import { ApiService } from './api.service';
 import { StorageService } from '../storage.service';
@@ -13,7 +13,7 @@ import { StorageService } from '../storage.service';
   providedIn: 'root',
 })
 export class SharedService {
-  private _user = new BehaviorSubject<User>({} as User);
+  private _user = new BehaviorSubject<User>(this.storageService.getWithExpiry('user', {}));
   user$ = this._user.asObservable();
 
   private _categories = new BehaviorSubject<Category[]>([]);
@@ -29,19 +29,13 @@ export class SharedService {
   }
 
   load() {
-    this.user = this.storageService.getWithExpiry('user', {});
     this.loadCategories();
   }
 
   loadCategories() {
     return this.apiService
       .getCategories()
-      .pipe(
-        map((res) => {
-          this.categories = res.data?.sort(sortArrayByLabelProperty);
-          return res;
-        })
-      )
+      .pipe(tap((res) => (this.categories = res.data?.sort(sortArrayByLabelProperty))))
       .subscribe();
   }
 

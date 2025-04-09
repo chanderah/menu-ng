@@ -58,13 +58,14 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         this.router.navigateByUrl('/');
       } else {
         this.initSwiper();
-        this.getProducts();
       }
     });
   }
 
   ngOnInit() {
-    this.filterCtrl.valueChanges.pipe(debounceTime(400)).subscribe(() => this.getProducts());
+    this.filterCtrl.valueChanges.pipe(debounceTime(400)).subscribe(() => {
+      this.getProducts();
+    });
   }
 
   async getProducts(e?: LazyLoadEvent) {
@@ -92,6 +93,11 @@ export class DashboardComponent extends SharedUtil implements OnInit {
       if (res.status === 200) {
         this.products = res.data;
         this.pagingInfo.rowCount = res.rowCount;
+
+        window.scroll({
+          top: 0,
+          behavior: 'smooth',
+        });
       } else this.toastService.errorToast(res.message);
     });
   }

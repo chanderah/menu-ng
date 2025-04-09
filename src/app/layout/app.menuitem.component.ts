@@ -66,7 +66,7 @@ export class AppMenuitemComponent extends SharedUtil implements OnInit, OnDestro
       }
     });
 
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+    this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
       if (this.item.routerLink) {
         this.updateActiveStateFromRoute();
       } else {
