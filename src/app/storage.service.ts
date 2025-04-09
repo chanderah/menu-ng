@@ -28,7 +28,7 @@ export class StorageService {
   }
 
   getWithExpiry<T = any>(key: string): Nullable<T> {
-    const localData = localStorage.getItem(key);
+    const localData = this.get(key);
     if (!localData) return null;
 
     const { data, expiry } = jsonParse<DataWithExpiry<T>>(localData);
@@ -39,7 +39,11 @@ export class StorageService {
     return data;
   }
 
-  setWithExpiry(key: string, data: any, expiryInMinutes: number = 720) {
+  setWithExpiry(
+    key: string,
+    data: any,
+    expiryInMinutes: number = 720 // 12 hour
+  ) {
     this.set(key, {
       data,
       expiry: Date.now() + expiryInMinutes * 60 * 1000,
