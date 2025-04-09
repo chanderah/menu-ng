@@ -3,11 +3,11 @@
         "**/.git": true,
         "**/.svn": true,
         "**/.hg": true,
-        "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
+        "**/CVS": true,
         "exclude/": true,
-        "**/node_modules": false
+        "**/node_modules": true
     },
     "git.ignoreLimitWarning": true,
     "angular.enable-strict-mode-prompt": false
