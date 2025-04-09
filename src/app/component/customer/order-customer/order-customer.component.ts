@@ -30,14 +30,17 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
   subscription!: Subscription;
 
   constructor(
+    public customerService: CustomerService,
     private router: Router,
     private apiService: ApiService,
-    private sharedService: SharedService,
-    public customerService: CustomerService
+    private sharedService: SharedService
   ) {
     super();
-    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.state = this.router.getCurrentNavigation()?.extras?.state as OrderState;
+    // this.router.routeReuseStrategy.shouldReuseRoute = (future) => {
+    //   const targetUrl = future['_routerState'].url;
+    //   const result = targetUrl !== '/order';
+    //   return result;
+    // };
   }
 
   ngOnInit(): void {

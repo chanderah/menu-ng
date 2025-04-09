@@ -174,7 +174,7 @@ export class ApiService {
     return this.httpClient.get(url, { responseType: 'blob' });
   }
 
-  getImageThumbnail(filePath: string, size: number = 40) {
+  getImageThumbnail(filePath: string, size: number = 80) {
     const url = getImageSrc(filePath, size);
     return this.httpClient.get(url, { responseType: 'blob' });
   }

@@ -48,13 +48,14 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     this.setForm();
     this.isOrdered = !!this.data;
     if (this.isOrdered) {
+      // re-payment from order page
       this.data.products.forEach(() => this.addProduct());
       this.form.patchValue(this.data);
     } else {
-      // add
+      // checkout from cart
       this.getTableName();
-      this.customerService.cart.forEach(() => this.addProduct());
 
+      this.customerService.cart.forEach(() => this.addProduct());
       this.products().valueChanges.subscribe((v: ProductOrder[]) => {
         let orderTotalPrice = 0; // calculate order total price -> sum product.totalPrice
         v.forEach((v, i) => {
@@ -98,25 +99,32 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
       }
     }
 
-    this.apiService.createOrder(req).subscribe(async (res) => {
-      this.isLoading = false;
-      if (res.status === 200) {
-        this.customerService.clearCart();
+    this.apiService.createOrder(req).subscribe({
+      next: async (res) => {
+        this.isLoading = false;
+        if (res.status === 200) {
+          this.customerService.clearCart();
+          this.hideDialog();
 
-        const { isSuccess, response } = await this.midtransService.showSnapTransaction(res.data.token);
-        this.router.navigateByUrl('/order', {
-          state: {
-            isSuccess,
-            response,
-            order: res.data,
-          },
-        });
-      } else if (res.status === HttpStatusCode.Gone) {
-        this.sharedService.showNotification('This transaction is expired, please place your order again.', '🙈');
-        this.customerService.loadOrders().subscribe();
-      } else {
+          const { isSuccess, response } = await this.midtransService.showSnapTransaction(res.data.token);
+          this.router.navigateByUrl('/order', {
+            state: {
+              isSuccess,
+              response,
+              order: res.data,
+            },
+          });
+        } else if (res.status === HttpStatusCode.Gone) {
+          this.sharedService.showNotification('This transaction is expired, please place your order again.', '🙈');
+          this.customerService.loadOrders().subscribe();
+        } else {
+          this.sharedService.showErrorNotification();
+        }
+      },
+      error: () => {
+        this.isLoading = false;
         this.sharedService.showErrorNotification();
-      }
+      },
     });
   }
 
@@ -187,9 +195,9 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     return data.map((v) => v.value).join(', ');
   }
 
-  hideDialog() {
+  hideDialog(saveCart: boolean = !this.isOrdered) {
     enableBodyScroll();
-    if (!this.isOrdered) this.customerService.cart = this.products().value;
+    if (saveCart) this.customerService.cart = this.products().value;
     this.onShowCartDialogChange.emit(false);
   }
 }
