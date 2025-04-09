@@ -12,6 +12,7 @@ import { ProductOptionValue } from 'src/app/interface/product';
 import { Order, ProductOrder } from 'src/app/interface/order';
 import { lastValueFrom } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-dialog',
@@ -117,6 +118,12 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         this.sharedService.showErrorNotification();
       }
     });
+  }
+
+  onClickWhatsapp() {
+    const message = `Halo, saya ingin menanyakan tentang Order ID: ${this.form.value['orderCode']}.`.replace(' ', '%20');
+    const url = `https://api.whatsapp.com/send?phone=${environment.shop.whatsapp}&text=${message}`;
+    window.open(url, '_blank');
   }
 
   // FORMS

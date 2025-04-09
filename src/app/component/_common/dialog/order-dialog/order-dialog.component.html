@@ -1,15 +1,6 @@
 <div class="text-center">
-  <p-sidebar
-    id="formDialog"
-    [(visible)]="showDialog"
-    (onHide)="hideDialog()"
-    position="bottom"
-    [blockScroll]="true"
-    [dismissible]="true"
-    [showCloseIcon]="true"
-    [closeOnEscape]="true"
-    [style]="bottomSheetStyle"
-    [autoZIndex]="true"
+  <p-sidebar id="formDialog" [(visible)]="showDialog" (onHide)="hideDialog()" position="bottom" [blockScroll]="true"
+    [dismissible]="true" [showCloseIcon]="true" [closeOnEscape]="true" [style]="bottomSheetStyle" [autoZIndex]="true"
     [modal]="true">
     <!-- [baseZIndex]="1000" -->
     <ng-template pTemplate="header">
@@ -25,7 +16,8 @@
           <div class="flex flex-column w-full" *ngIf="isOrdered">
             <div class="w-full flex align-items-center justify-content-between">
               <span class="font-semibold text-lg">Order ID #{{ data.orderCode }}</span>
-              <div class="p-chip text-uppercase font-semibold" [style]="{ 'background-color': data.isServed ? '#9bdcac' : '#dee2e6' }">
+              <div class="p-chip text-uppercase font-semibold"
+                [style]="{ 'background-color': data.isServed ? '#9bdcac' : '#dee2e6' }">
                 <p class="text-xs p-1 py-2">{{ getOrderStatus(data.isServed, data.status) }}</p>
               </div>
             </div>
@@ -33,17 +25,17 @@
         </div>
 
         <div class="col-12">
-          <p-scrollPanel
-            class="no-scrollbar"
-            [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }"
-            formArrayName="products">
-            <div *ngIf="products().length === 0" class="flex justify-content-center align-items-center w-full" style="height: 200px">
+          <p-scrollPanel class="no-scrollbar"
+            [style]="{ width: '100%', height: 'auto', maxHeight: '50vh', overflow: 'auto' }" formArrayName="products">
+            <div *ngIf="products().length === 0" class="flex justify-content-center align-items-center w-full"
+              style="height: 200px">
               <p class="font-semibold">Empty</p>
             </div>
 
             <div class="my-2" *ngFor="let product of products().controls; index as i" [formGroupName]="i">
               <div class="flex gap-3 w-full">
-                <div class="flex flex-column w-full align-items-start justify-space-between gap-2 py-2" formArrayName="options">
+                <div class="flex flex-column w-full align-items-start justify-space-between gap-2 py-2"
+                  formArrayName="options">
                   <span class="font-semibold text-capitalize">{{ product.value['name'] }} </span>
 
                   <ng-container *ngFor="let option of product.get('options').value; index as j">
@@ -61,14 +53,9 @@
                 </div>
 
                 <div class="w-fit">
-                  <img
-                    [alt]="product.value['name']"
-                    [src]="getImageSrc(product.value['image'])"
-                    (load)="isLoading = false"
-                    class="shadow-4 object-fit-cover"
-                    style="border-radius: 1rem"
-                    width="80px"
-                    height="80px" />
+                  <img [alt]="product.value['name']" [src]="getImageSrc(product.value['image'])"
+                    (load)="isLoading = false" class="shadow-4 object-fit-cover" style="border-radius: 1rem"
+                    width="80px" height="80px" />
                 </div>
               </div>
 
@@ -82,19 +69,10 @@
 
                 <div class="flex align-items-center justify-content-end gap-3 mt-3">
                   <button pButton pRipple icon="pi pi-trash" class="p-button-text" (click)="removeProduct(i)"></button>
-                  <button
-                    pButton
-                    pRipple
-                    icon="pi pi-minus"
-                    class="p-button-outlined p-button-rounded"
-                    [disabled]="product.value['quantity'] === 1"
-                    (click)="decrement(i)"></button>
+                  <button pButton pRipple icon="pi pi-minus" class="p-button-outlined p-button-rounded"
+                    [disabled]="product.value['quantity'] === 1" (click)="decrement(i)"></button>
                   <label class="font-bold">{{ product.value['quantity'] }}</label>
-                  <button
-                    pButton
-                    pRipple
-                    icon="pi pi-plus"
-                    class="p-button-outlined p-button-rounded p-button-quantity"
+                  <button pButton pRipple icon="pi pi-plus" class="p-button-outlined p-button-rounded p-button-quantity"
                     (click)="increment(i)"></button>
                 </div>
               </ng-container>
@@ -106,12 +84,10 @@
 
         <div class="col-12 flex flex-col gap-3 py-3 h-auto" *ngIf="products().length > 0">
           <loading-container class="w-full cursor-pointer" [isLoading]="isLoading">
-            <div
-              pRipple
-              class="col flex align-items-center justify-content-between bg-primary hover-effect px-4"
-              style="height: 3rem; border-radius: 50px"
-              (click)="onSubmit()">
-              <label class="w-full font-bold text-center cursor-pointer" *ngIf="isOrdered && data.status !== 'pending'; else payment">
+            <div pRipple class="col flex align-items-center justify-content-between bg-primary hover-effect px-4"
+              style="height: 3rem; border-radius: 50px" (click)="onSubmit()">
+              <label class="w-full font-bold text-center cursor-pointer"
+                *ngIf="isOrdered && data.status !== 'pending'; else payment">
                 Close
               </label>
 
@@ -131,3 +107,23 @@
     </ng-template>
   </p-sidebar>
 </div>
+
+<!--
+<div class="flex flex-col col-12 gap-3 py-3" style="height: auto; z-index: 10000">
+  <button
+    pButton
+    pRipple
+    icon="pi pi-whatsapp"
+    class="p-button-outlined p-button-rounded cursor-pointer"
+    (click)="onClickWhatsapp()"></button>
+  <div
+    pRipple
+    class="col flex align-items-center justify-content-between bg-primary cursor-pointer px-4"
+    style="border-radius: 50px"
+    (click)="onSubmit()">
+    <label class="font-semibold cursor-pointer">+ Add to Cart</label>
+    <label class="font-bold cursor-pointer">
+      {{ form.value['totalPrice'] | custom }}
+    </label>
+  </div>
+</div> -->
