@@ -49,4 +49,12 @@ export class StorageService {
       expiry: Date.now() + expiryInMinutes * 60 * 1000,
     });
   }
+
+  remove(key: string) {
+    localStorage.removeItem(key);
+  }
+
+  clear() {
+    localStorage.clear();
+  }
 }
