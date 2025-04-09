@@ -54,5 +54,3 @@ const routes: Route[] = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
-// router.routeReuseStrategy.shouldReuseRoute = () => false;
-// router.onSameUrlNavigation = 'reload';

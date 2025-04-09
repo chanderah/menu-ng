@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private primengConfig: PrimeNGConfig
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   async ngOnInit() {
@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
   //     if (document.getElementById('midtrans-script')) {
   //       return resolve(true);
   //     }
-
   //     const script = document.createElement('script');
   //     script.id = 'midtrans-script';
   //     script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';

@@ -114,3 +114,4 @@ export const moveUp = trigger('moveUp', [
 ]);
 
 export const isMobile = window.innerWidth < 768;
+export const isDesktop = !isMobile;
