@@ -27,7 +27,6 @@ export class CustomerService {
   }
 
   loadOrders() {
-    console.log('this.customer', this.customer);
     if (!this.isCustomer || !this.customer?.listOrderId?.length) {
       this.orders = [];
       return of({ data: [] } as ApiResponse<Order[]>);
@@ -84,8 +83,6 @@ export class CustomerService {
       ...value,
       listOrderId: value?.listOrderId ?? [],
     };
-    console.log('value', value);
-    console.log('data', data);
     this.storageService.setWithExpiry('customer', data);
     this._customer.next(data);
   }

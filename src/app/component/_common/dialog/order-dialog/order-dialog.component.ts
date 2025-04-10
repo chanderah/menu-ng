@@ -103,17 +103,19 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
         this.isLoading = false;
         if (res.status === 200) {
           this.customerService.clearCart();
-          this.hideDialog();
 
           const { isSuccess, response } = await this.midtransService.showSnapTransaction(res.data.token);
-          console.log('isSuccess, response', isSuccess, response);
-          this.router.navigateByUrl('/order', {
-            state: {
-              isSuccess,
-              response,
-              order: res.data,
-            },
-          });
+          this.router
+            .navigateByUrl('/order', {
+              state: {
+                isSuccess,
+                response,
+                order: res.data,
+              },
+            })
+            .then(() => {
+              this.hideDialog(false);
+            });
         } else if (res.status === HttpStatusCode.Gone) {
           this.sharedService.showNotification('This transaction is expired, please place your order again.', '🙈');
           this.customerService.loadOrders().subscribe();
@@ -147,6 +149,8 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
       status: [null],
       createdAt: [null, []],
     });
+
+    // this.jsonParse("obj")
   }
 
   products() {

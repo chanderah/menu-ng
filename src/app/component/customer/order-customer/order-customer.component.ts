@@ -48,7 +48,6 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
 
   ngOnInit(): void {
     enableBodyScroll();
-    console.log('this.state', this.state);
 
     if (!this.state?.order) return this.getOrders();
 
