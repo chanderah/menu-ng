@@ -41,6 +41,8 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
     //   const result = targetUrl !== '/order';
     //   return result;
     // };
+
+    router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {
