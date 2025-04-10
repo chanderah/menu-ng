@@ -41,10 +41,14 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
     //   const result = targetUrl !== '/order';
     //   return result;
     // };
+
+    router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.state = this.router.getCurrentNavigation()?.extras?.state as OrderState;
   }
 
   ngOnInit(): void {
     enableBodyScroll();
+    console.log('this.state', this.state);
 
     if (!this.state?.order) return this.getOrders();
 

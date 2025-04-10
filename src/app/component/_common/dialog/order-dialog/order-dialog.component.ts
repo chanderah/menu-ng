@@ -106,6 +106,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
           this.hideDialog();
 
           const { isSuccess, response } = await this.midtransService.showSnapTransaction(res.data.token);
+          console.log('isSuccess, response', isSuccess, response);
           this.router.navigateByUrl('/order', {
             state: {
               isSuccess,

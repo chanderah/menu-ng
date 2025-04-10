@@ -20,6 +20,12 @@ export class AppComponent implements OnInit {
     this.primengConfig.ripple = true;
     document.documentElement.style.fontSize = '14px';
 
+    // interval(3000).subscribe((res) => {
+    //   document.body.classList.forEach((v) => {
+    //     console.log('v', v);
+    //   });
+    // });
+
     // this.initMidtrans();
   }
 
