@@ -67,6 +67,11 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
+  onScroll(e) {
+    console.log('e', e)
+    console.log('"CALLED"', "CALLED")
+  }
+
   toggleMenu(event: Event) {
     this.menuClick = true;
     if (this.isDesktop()) {
