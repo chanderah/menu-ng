@@ -1,12 +1,31 @@
 :host ::ng-deep {
   .p-dataview .p-dataview-header {
     border-top: none;
-    padding: 0px 12px 8px;
+    padding: 16px 12px 0px;
     margin-bottom: 4px;
     background: var(--surface-card);
     position: -webkit-sticky;
     position: sticky;
     top: 65px;
     z-index: 997;
+
   }
+
+  @media (max-width: 991px) {
+    // padding: 12px 12px 0px;
+  }
+
+  @media (min-width: 992px) {
+    // padding: 16px 12px 0px;
+  }
+}
+
+.filter-search {
+  z-index: 997;
+  top: 70px;
+  margin-top: -14px;
+  position: -webkit-sticky;
+  position: sticky;
+  background: var(--surface-card);
+  border-bottom: 1px solid #dee2e6
 }

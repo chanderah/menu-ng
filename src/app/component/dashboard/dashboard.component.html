@@ -29,6 +29,23 @@
     </div>
   </div>
 
+  <div class="filter-search w-full grid gap-2 p-2 pt-3">
+    <div class="col-3 p-fluid p-0" style="width: fit-content">
+      <button
+        pButton
+        [label]="selectedCategory?.label ?? 'Filter'"
+        icon="pi pi-sliders-v"
+        (click)="appMain.toggleMenu($event)"
+        class="p-button-plain p-button-rounded p-button-outlined"></button>
+    </div>
+    <div class="col p-fluid p-0">
+      <span class="p-input-icon-left input-rounded" style="height: 100%">
+        <i class="pi pi-search"></i>
+        <input pInputText id="filter" type="search" placeholder="Search..." class="font-semiboldz" [formControl]="filterCtrl" />
+      </span>
+    </div>
+  </div>
+
   <p-dataView
     id="listProducts"
     layout="grid"
@@ -42,7 +59,7 @@
     [emptyMessage]="getEmptyMessage(isLoading)"
     [alwaysShowPaginator]="true"
     [ngClass]="true && 'v'">
-    <ng-template pTemplate="header">
+    <!-- <ng-template pTemplate="header">
       <div class="dashboard-header grid">
         <div class="col-3 p-fluid pl-0 pr-1" style="width: fit-content">
           <button
@@ -56,11 +73,11 @@
         <div class="col p-fluid">
           <span class="p-input-icon-left input-rounded" style="height: 100%">
             <i class="pi pi-search"></i>
-            <input id="filter" pInputText type="search" placeholder="Search..." class="font-semibold" [formControl]="filterCtrl" />
+            <input pInputText id="filter" type="search" placeholder="Search..." class="font-semiboldz" [formControl]="filterCtrl" />
           </span>
         </div>
       </div>
-    </ng-template>
+    </ng-template> -->
 
     <ng-template let-product pTemplate="gridItem">
       <div class="col-6 md:col-4">
