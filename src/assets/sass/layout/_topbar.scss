@@ -1,7 +1,7 @@
 .layout-topbar {
     position: fixed;
     height: 5rem;
-    z-index: 997;
+    z-index: 998;
     left: 0;
     top: 0;
     width: 100%;
@@ -75,6 +75,7 @@
         width: 100%;
         flex-wrap: wrap;
         justify-content: flex-end;
+
         i {
             font-size: 1.25rem;
         }
