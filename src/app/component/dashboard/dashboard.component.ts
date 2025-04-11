@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { debounceTime, Subscription } from 'rxjs';
+import { debounceTime, filter, map, of, Subscription, switchMap } from 'rxjs';
 import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
@@ -21,7 +21,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
 
 @Component({
   templateUrl: './dashboard.component.html',
-  styleUrls: ['../../../assets/user.styles.scss'],
+  styleUrls: ['./dashboard.component.scss', '../../../assets/user.styles.scss'],
   animations: [fadeInOut, moveUp],
 })
 export class DashboardComponent extends SharedUtil implements OnInit {
@@ -43,7 +43,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   constructor(
     public appMain: AppMainComponent,
     public customerService: CustomerService,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private toastService: ToastService,
     private route: ActivatedRoute,
     private router: Router,
@@ -52,14 +52,24 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   ) {
     super();
 
-    this.route.queryParams.subscribe(({ category }) => {
-      this.selectedCategory = this.sharedService.categories.find((v) => v.param === category);
-      if (!this.selectedCategory && router.url !== '/') {
-        this.router.navigateByUrl('/');
-      } else {
-        this.initSwiper();
-      }
-    });
+    this.route.queryParams
+      .pipe(
+        map(({ category }) => {
+          this.selectedCategory = this.sharedService.categories.find((v) => v.param === category);
+          if (!this.selectedCategory && router.url !== '/') {
+            this.router.navigateByUrl('/');
+            return false;
+          }
+          return true;
+        }),
+        filter((shouldCallApi) => shouldCallApi),
+        switchMap(() => {
+          this.getFeaturedProducts();
+          this.getProducts();
+          return of(true);
+        })
+      )
+      .subscribe();
   }
 
   ngOnInit() {
@@ -91,7 +101,17 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     this.apiService.getProducts(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
-        this.products = res.data;
+        this.products = [
+          ...res.data,
+          ...res.data,
+          ...res.data,
+          ...res.data,
+          ...res.data,
+          ...res.data,
+          ...res.data,
+          ...res.data,
+          ...res.data,
+        ];
         this.pagingInfo.rowCount = res.rowCount;
 
         window.scroll({
@@ -100,6 +120,10 @@ export class DashboardComponent extends SharedUtil implements OnInit {
         });
       } else this.toastService.errorToast(res.message);
     });
+  }
+
+  onScrollProducts(e: Event) {
+    console.log('called');
   }
 
   onShowOrderDialogChange(value: boolean) {
@@ -112,7 +136,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     this.showOrderDialog = true;
   }
 
-  initSwiper() {
+  getFeaturedProducts() {
     if (!this.swiperOptions && !this.selectedCategory) {
       this.apiService.getProducts({ limit: 10, condition: [{ column: 'featured', value: true }] }).subscribe((res) => {
         if (res.status === 200) {

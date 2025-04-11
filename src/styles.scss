@@ -115,9 +115,21 @@
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    z-index: 1000;
+    z-index: 998;
 }
 
 .p-dataview .loading {
     display: none !important;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+
+.disabled,
+button:disabled,
+button.p-button:disabled {
+    // pointer-events: none !important;
+    cursor: not-allowed !important;
 }

@@ -1,0 +1,12 @@
+:host ::ng-deep {
+  .p-dataview .p-dataview-header {
+    border-top: none;
+    padding: 12px 12px 8px;
+    margin-bottom: 4px;
+    background: var(--surface-card);
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    z-index: 998;
+  }
+}

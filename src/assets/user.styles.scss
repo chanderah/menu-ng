@@ -1,19 +1,4 @@
 :host ::ng-deep {
-    // // .layout-topbar {
-    // box-shadow: none;
-    // }
-    // .p-dialog .p-dialog-header {
-    //     padding: 1rem 1.5rem !important;
-    // }
-
-    // .p-dialog .p-dialog-header .p-dialog-title {
-    //     text-transform: capitalize !important;
-    // }
-
-    // body.disable-scroll {
-    //     overflow: hidden;
-    // }
-
     .p-inputgroup p-dropdown {
         display: flex;
         align-items: center;
@@ -35,36 +20,8 @@
     .p-datatable .p-datatable-thead>tr>th {
         font-weight: 600;
     }
-
-    // .p-sidebar-header {
-    // display: flex;
-    // align-items: flex-end;
-    // padding: 0.75rem 1.25rem;
-
-    // padding-top: 0rem;
-    // height: 80px;
-    // }
-
-    .p-dataview .p-dataview-header {
-        padding-top: 2rem;
-        margin-top: -2rem;
-        background: var(--surface-card);
-        border: none;
-        position: -webkit-sticky;
-        position: sticky;
-        top: 65px;
-        z-index: 998;
-    }
 }
 
-// .dialog-header-padding {
-//     .p-dialog.content {
-//         // display: flex;
-//         // align-items: center;
-//         margin-top: 100px !important;
-//         padding-top: 100px !important;
-//     }
-// }
 
 .font-normal {
     font-weight: 100 !important;

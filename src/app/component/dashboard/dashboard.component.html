@@ -1,7 +1,7 @@
 <div class="w-full h-full">
   <div id="featuredProducts" class="grid" *ngIf="!isLoading && !filterCtrl.dirty && !selectedCategory && featuredProducts.length > 1">
     <div class="col-12">
-      <div @moveUp class="card">
+      <div @moveUp class="card mb-4">
         <h5 class="card-title">Featured</h5>
         <swiper [config]="swiperOptions" #swiper>
           <ng-template *ngFor="let product of featuredProducts" swiperSlide>
@@ -36,15 +36,14 @@
     [paginator]="true"
     [loading]="isLoading"
     [lazy]="true"
-    (onLazyLoad)="getProducts($event)"
     [rows]="20"
     [totalRecords]="pagingInfo.rowCount"
     [pageLinks]="5"
     [emptyMessage]="getEmptyMessage(isLoading)"
     [alwaysShowPaginator]="true"
-    [ngClass]="true && 'loading'">
+    [ngClass]="true && 'v'">
     <ng-template pTemplate="header">
-      <div class="grid">
+      <div class="dashboard-header grid">
         <div class="col-3 p-fluid pl-0 pr-1" style="width: fit-content">
           <button
             pButton
@@ -58,11 +57,11 @@
           <span class="p-input-icon-left input-rounded" style="height: 100%">
             <i class="pi pi-search"></i>
             <input id="filter" pInputText type="search" placeholder="Search..." class="font-semibold" [formControl]="filterCtrl" />
-            <!-- (input)="filterProduct($event.target.value)"  -->
           </span>
         </div>
       </div>
     </ng-template>
+
     <ng-template let-product pTemplate="gridItem">
       <div class="col-6 md:col-4">
         <div class="card mat m-2 surface-border">
@@ -88,6 +87,7 @@
                 pRipple
                 label="Add to Cart"
                 class="p-button-rounded p-button-outlined"
+                [disabled]="sharedService.isLoggedIn"
                 (click)="onAddToCart(product)"
                 type="button"></button>
             </div>
@@ -100,19 +100,6 @@
 
 <app-add-to-cart-dialog *ngIf="showOrderDialog" [showDialog]="true" [data]="selectedProduct" (onHide)="showOrderDialog = false">
 </app-add-to-cart-dialog>
-
-<!-- <button pButton class="p-button-rounded p-button-primary fab-button" (click)="onClickOrders()" *ngIf="customerService.orders.length">
-  <i class="pi pi-shopping-bag text-xl" pBadge [value]="customerService.orders.length"></i>
-</button> -->
-
-<!-- <button
-  *ngIf="customerService.orders.length"
-  pButton
-  icon="pi pi-shopping-bag"
-  class="p-button-rounded p-button-primary fab-button"
-  (click)="onClickOrders()">
-  My Orders
-</button> -->
 
 <button
   *ngIf="customerService.orders.length"

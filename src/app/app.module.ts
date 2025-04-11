@@ -66,6 +66,8 @@ import { CustomCurrencyPipe } from './pipe/currency.pipe';
 import { ApiInterceptor } from './interceptor/api.interceptor';
 import { OrderCustomerComponent } from './component/customer/order-customer/order-customer.component';
 import { LoadingContainerComponent } from './component/_common/loading-container/loading-container.component';
+import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive';
+import { MenuModule } from 'primeng/menu';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -142,6 +144,8 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     FileUploadModule,
     ProgressSpinnerModule,
     ChipModule,
+    ScrollToBottomDirective,
+    MenuModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
