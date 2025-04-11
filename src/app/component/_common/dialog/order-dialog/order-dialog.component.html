@@ -25,9 +25,7 @@
           <div class="flex flex-column w-full" *ngIf="isOrdered">
             <div class="w-full flex align-items-center justify-content-between">
               <span class="font-semibold text-lg">Order ID #{{ data.orderCode }}</span>
-              <div class="p-chip text-uppercase font-semibold" [style]="{ 'background-color': data.isServed ? '#9bdcac' : '#dee2e6' }">
-                <p class="text-xs p-1 py-2">{{ getOrderStatus(data.isServed, data.status) }}</p>
-              </div>
+              <app-badge [data]="data"></app-badge>
             </div>
           </div>
         </div>

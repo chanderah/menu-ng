@@ -21,7 +21,7 @@
             [attr.aria-label]="item.label" role="menuitem" pRipple>
             <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
             <span>{{ item.label }}</span>
-            <span class="p-tag p-badge ml-auto" *ngIf="item.badge">{{ item.badge }}</span>
+            <span class="p-tag p-tag-primary p-badge ml-auto" *ngIf="item.badge">{{ item.badge }}</span>
             <i class="pi pi-fw {{ active ? 'pi-angle-up' : 'pi-angle-down' }} ml-auto" *ngIf="item.items"></i>
         </a>
     </ng-container>

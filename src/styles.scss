@@ -14,6 +14,14 @@
 @import '../node_modules/swiper/swiper-bundle.min.css';
 // @import '~swiper/css/bundle';
 
+.w-fit {
+    width: fit-content !important;
+}
+
+.h-fit {
+    height: fit-content !important
+}
+
 .w-full {
     width: 100% !important;
 }

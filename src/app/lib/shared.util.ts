@@ -78,11 +78,6 @@ export default class SharedUtil {
     return values.map((v) => v.value).join(', ');
   }
 
-  getOrderStatus(isServed: boolean, status: string) {
-    if (isServed) return CONSTANTS.ORDER_STATUS['complete'];
-    return CONSTANTS.ORDER_STATUS[status];
-  }
-
   getEmptyMessage(isLoading: boolean) {
     return isLoading ? 'Loading...' : 'No data found.';
   }

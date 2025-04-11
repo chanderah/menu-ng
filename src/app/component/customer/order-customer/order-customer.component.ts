@@ -94,7 +94,7 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
       } else {
         this.stopPolling();
         this.getOrders();
-        
+
         const isSuccess = ['settlement', 'capture'].includes(res.data.status);
         if (isSuccess) {
           this.sharedService.showNotification(`Your order is placed!`, '😘');
@@ -107,15 +107,15 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
       }
     });
   }
-  
+
   stopPolling() {
     this.subscription?.unsubscribe();
   }
-  
+
   get isPolling() {
     return !!this.subscription && !this.subscription.closed;
   }
-  
+
   ngOnDestroy(): void {
     this.stopPolling();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

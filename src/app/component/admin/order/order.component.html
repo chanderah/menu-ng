@@ -47,13 +47,14 @@
         </ng-template>
         <ng-template pTemplate="header">
           <tr (click)="viewOrder(data)">
-            <!-- <th style="width: 4rem"></th> -->
-            <th pSortableColumn="id">No. <p-sortIcon field="id"></p-sortIcon></th>
+            <th>No.</th>
             <th>Order ID</th>
             <th>Table</th>
             <th>Products</th>
+            <th>Served</th>
             <th pSortableColumn="total_price">Amount <p-sortIcon field="totalPrice"></p-sortIcon></th>
-            <th pSortableColumn="created_at">Date Issued <p-sortIcon field="createdAt"></p-sortIcon></th>
+            <th>Status</th>
+            <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
           </tr>
         </ng-template>
 
@@ -61,16 +62,14 @@
           <tr (click)="viewOrder(data)" style="cursor: pointer">
             <td>{{ data.id }}</td>
             <td>{{ data.orderCode }}</td>
-            <td style="min-width: 100px" class="text-capitalize">{{ data.tableName }}</td>
-            <td style="min-width: 100px" class="text-capitalize">
-              {{ getProductsName(data.products) }}
-            </td>
-            <td style="min-width: 8rem">
-              {{ data.totalPrice | custom }}
-            </td>
+            <td style="min-width: 100px">{{ data.tableName }}</td>
+            <td style="min-width: 100px" class="truncate">{{ getProductsName(data.products) }}</td>
+            <td>{{ data.isServed ? 'Yes' : 'No' }}</td>
+            <td style="min-width: 8rem">{{ data.totalPrice | custom }}</td>
             <td>
-              <p>{{ data.createdAt | date: 'MMM d, hh:mm' }}</p>
+              <app-badge [data]="data"></app-badge>
             </td>
+            <td>{{ data.createdAt | date: 'MMM d, hh:mm' }}</td>
           </tr>
         </ng-template>
 
@@ -169,6 +168,7 @@
 
 <!-- (onHide)="onHideOrderDetailsDialog()" -->
 <p-dialog
+  *ngIf="selectedOrder"
   [maximizable]="true"
   header="Order #{{ selectedOrder.orderCode }}"
   [(visible)]="showOrderDetailsDialog"

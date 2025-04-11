@@ -68,6 +68,8 @@ import { OrderCustomerComponent } from './component/customer/order-customer/orde
 import { LoadingContainerComponent } from './component/_common/loading-container/loading-container.component';
 import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 import { MenuModule } from 'primeng/menu';
+import { BadgeComponent } from './component/_common/badge/badge.component';
+import { TagModule } from 'primeng/tag';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -108,6 +110,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     DashboardComponent,
     OrderCustomerComponent,
     LoadingContainerComponent,
+    BadgeComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -146,6 +149,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     ChipModule,
     ScrollToBottomDirective,
     MenuModule,
+    TagModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
