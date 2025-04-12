@@ -64,7 +64,7 @@
             <td>{{ data.orderCode }}</td>
             <td style="min-width: 100px">{{ data.tableName }}</td>
             <td style="min-width: 100px" class="truncate">{{ getProductsName(data.products) }}</td>
-            <td>{{ data.isServed ? 'Yes' : 'No' }}</td>
+            <td>{{ data.isServed ? '✅' : '❌' }}</td>
             <td style="min-width: 8rem">{{ data.totalPrice | custom }}</td>
             <td>
               <app-badge [data]="data"></app-badge>
