@@ -1,19 +1,21 @@
 <div class="layout-wrapper" [ngClass]="styleClass">
-  <app-topbar></app-topbar>
-  <div class="layout-sidebar">
-    <app-menu>
-      <app-footer></app-footer>
-    </app-menu>
-  </div>
-  <div class="layout-main-container">
-    <div class="layout-main">
-      <router-outlet></router-outlet>
+  <ng-container #overlay>
+    <div *ngIf="menuActiveMobile" class="layout-mask p-component-overlay"></div>
+    <app-order-dialog *ngIf="showCartDialog" [showDialog]="showCartDialog" (onShowCartDialogChange)="showCartDialog = $event">
+    </app-order-dialog>
+  </ng-container>
+
+  <ng-container #layout>
+    <app-topbar></app-topbar>
+    <div class="layout-sidebar">
+      <app-menu>
+        <app-footer></app-footer>
+      </app-menu>
     </div>
-  </div>
-  <!-- --maskbg: rgba(0, 0, 0, 0.4); -->
-
-  <div *ngIf="menuActiveMobile" class="layout-mask p-component-overlay"></div>
+    <div class="layout-main-container">
+      <div class="layout-main">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </ng-container>
 </div>
-
-<app-order-dialog *ngIf="showCartDialog" [showDialog]="showCartDialog" (onShowCartDialogChange)="showCartDialog = $event">
-</app-order-dialog>
