@@ -21,7 +21,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay
 
 @Component({
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss', '../../../assets/user.styles.scss'],
+  styleUrls: ['./dashboard.component.scss', '../../../assets/styles/user.styles.scss'],
   animations: [fadeInOut, moveUp],
 })
 export class DashboardComponent extends SharedUtil implements OnInit {

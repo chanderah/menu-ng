@@ -6,7 +6,7 @@ import { SharedService } from 'src/app/service/shared.service';
 
 @Component({
   templateUrl: './product-dialog.component.html',
-  styleUrls: ['../../../../assets/user.styles.scss'],
+  styleUrls: ['../../../../assets/styles/user.styles.scss'],
   styles: [
     `
       .p-dialog-content {

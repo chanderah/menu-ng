@@ -16,7 +16,7 @@ import { HttpStatusCode } from '@angular/common/http';
 @Component({
   selector: 'app-order-dialog',
   templateUrl: './order-dialog.component.html',
-  styleUrls: ['../../../../../assets/user.styles.scss'],
+  styleUrls: ['../../../../../assets/styles/user.styles.scss'],
 })
 export class OrderDialogComponent extends SharedUtil implements OnInit {
   @Output() onShowCartDialogChange = new EventEmitter<boolean>();

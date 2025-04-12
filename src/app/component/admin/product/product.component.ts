@@ -15,7 +15,7 @@ import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   templateUrl: './product.component.html',
-  styleUrls: ['../../../../assets/user.styles.scss'],
+  styleUrls: ['../../../../assets/styles/user.styles.scss'],
   styles: [
     `
       :host ::ng-deep {

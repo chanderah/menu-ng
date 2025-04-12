@@ -6,7 +6,7 @@ import { disableBodyScroll, enableBodyScroll } from 'src/app/lib/utils';
 @Component({
   selector: 'app-notification',
   templateUrl: './notification-dialog.component.html',
-  styleUrls: ['./notification-dialog.component.scss', '../../../../../assets/user.styles.scss'],
+  styleUrls: ['./notification-dialog.component.scss', '../../../../../assets/styles/user.styles.scss'],
 })
 export class NotificationDialogComponent implements OnInit {
   icons: string[] = ['😎', '👏 ', '😍', '🥰'];

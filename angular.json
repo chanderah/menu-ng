@@ -42,13 +42,14 @@
             "assets": ["src/favicon.ico", "src/assets", "src/firebase-messaging-sw.js", "src/manifest.json", "src/.htaccess"],
             "styles": [
               "src/styles.scss",
-              "src/assets/user.styles.scss",
+              "src/assets/styles/user.styles.scss",
               "src/assets/styles/tailwind.css",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/swiper/swiper-bundle.min.css"
             ],
             "scripts": ["node_modules/prismjs/prism.js", "node_modules/prismjs/components/prism-typescript.js"],
             "allowedCommonJsDependencies": [
+              "src/app/lib/utils"
               "react-image-file-resizer",
               "chart.js",
               "qrcode",

@@ -14,7 +14,7 @@ import { ToastService } from 'src/app/service/toast.service';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['../../../../assets/user.styles.scss'],
+  styleUrls: ['../../../../assets/styles/user.styles.scss'],
 })
 export class TableComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;

@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-order-complete',
   templateUrl: './order-complete.component.html',
-  styleUrls: ['../../../../assets/user.styles.scss'],
+  styleUrls: ['../../../../assets/styles/user.styles.scss'],
 })
 export class OrderCompleteComponent implements OnInit, AfterViewInit {
   timeout: number = 10;

@@ -11,7 +11,7 @@ import { SharedService } from 'src/app/service/shared.service';
 @Component({
   selector: 'app-add-to-cart-dialog',
   templateUrl: './add-to-cart-dialog.component.html',
-  styleUrls: ['../../../../../assets/user.styles.scss'],
+  styleUrls: ['../../../../../assets/styles/user.styles.scss'],
 })
 export class AddToCartDialogComponent extends SharedUtil implements OnInit {
   @Output() onHide = new EventEmitter<boolean>();

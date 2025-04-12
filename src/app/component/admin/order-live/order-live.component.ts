@@ -15,7 +15,7 @@ import { StorageService } from 'src/app/storage.service';
 @Component({
   selector: 'app-order-live',
   templateUrl: './order-live.component.html',
-  styleUrls: ['./order-live.component.scss', '../../../../assets/user.styles.scss'],
+  styleUrls: ['./order-live.component.scss', '../../../../assets/styles/user.styles.scss'],
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
   rowsPerPageOptions: number[] = [20, 50, 100];
