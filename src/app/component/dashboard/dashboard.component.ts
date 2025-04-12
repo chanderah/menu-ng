@@ -2,7 +2,6 @@ import SharedUtil from 'src/app/lib/shared.util';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LazyLoadEvent } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { debounceTime, filter, map, of, Subscription, switchMap } from 'rxjs';
 import { Category } from 'src/app/interface/category';
@@ -29,7 +28,12 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   subscription!: Subscription;
 
   swiperOptions!: SwiperOptions;
-  pagingInfo = {} as PagingInfo;
+  pagingInfo: PagingInfo = {
+    page: 1,
+    limit: 20,
+    sortField: 'NAME',
+    sortOrder: 'ASC',
+  };
 
   products = [] as Product[];
   featuredProducts = [] as Product[];
@@ -78,22 +82,12 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     });
   }
 
-  async getProducts(e?: LazyLoadEvent) {
+  async getProducts(page: number = 1) {
     this.isLoading = true;
-    this.pagingInfo = {
-      filter: this.filterCtrl.value,
-      condition: [
-        {
-          column: 'status',
-          value: true,
-        },
-      ],
-      limit: e?.rows || 20,
-      offset: e?.first || 0,
-      sortField: e?.sortField || 'NAME',
-      sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
-    };
 
+    this.pagingInfo.filter = this.filterCtrl.value;
+    this.pagingInfo.page = page;
+    this.pagingInfo.condition = [{ column: 'status', value: true }];
     if (this.selectedCategory) {
       this.pagingInfo.condition.push({ column: 'category_id', value: this.selectedCategory.id });
     }
@@ -101,7 +95,10 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     this.apiService.getProducts(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
-        this.products = [
+        const data = [
+          ...res.data,
+          ...res.data,
+          ...res.data,
           ...res.data,
           ...res.data,
           ...res.data,
@@ -112,7 +109,9 @@ export class DashboardComponent extends SharedUtil implements OnInit {
           ...res.data,
           ...res.data,
         ];
+
         this.pagingInfo.rowCount = res.rowCount;
+        this.products = page === 1 ? data : [...this.products, ...data];
 
         window.scroll({
           top: 0,
@@ -122,8 +121,12 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     });
   }
 
-  onScrollProducts(e: Event) {
-    console.log('called');
+  onScrollProducts() {
+    if (this.isLoading) return;
+
+    if (this.products.length < this.pagingInfo.rowCount) {
+      this.getProducts(this.pagingInfo.page + 1);
+    }
   }
 
   onShowOrderDialogChange(value: boolean) {

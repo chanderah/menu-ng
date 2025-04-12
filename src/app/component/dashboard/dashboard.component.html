@@ -56,15 +56,13 @@
   <p-dataView
     id="listProducts"
     layout="grid"
+    scrollToBottom
+    (onScrollToBottom)="onScrollProducts()"
     [value]="products"
-    [paginator]="true"
     [loading]="isLoading"
-    [lazy]="true"
-    [rows]="20"
+    [rows]="pagingInfo.limit"
     [totalRecords]="pagingInfo.rowCount"
-    [pageLinks]="5"
     [emptyMessage]="getEmptyMessage(isLoading)"
-    [alwaysShowPaginator]="true"
     [ngClass]="true && 'v'">
     <ng-template let-product pTemplate="gridItem">
       <div class="col-6 md:col-4">
