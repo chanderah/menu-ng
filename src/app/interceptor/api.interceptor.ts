@@ -28,7 +28,6 @@ export class ApiInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (['cloudinary', '.json'].some((v) => req.url.includes(v))) return next.handle(req);
-    if (isDevelopment) console.log('REQUEST:', req.method, req.url, req.body);
 
     const user = this.storageService.getWithExpiry<User>('user');
     const headers = { ...(user?.token && { Authorization: `Bearer ${user.token}` }) };
@@ -53,28 +52,20 @@ export class ApiInterceptor implements HttpInterceptor {
               body: jsonParse(this.aes256Service.decrypt(res.body.encryptedData)),
             });
           }
-          if (isDevelopment) console.log('RESPONSE:', res.body.status, req.method, req.url, res.body);
+          this.logResponse(req, res);
         }
         return res;
       }),
       catchError((err: HttpErrorResponse) => {
-        err = err.error?.message
-          ? err.error
-          : {
-              status: err.status || HttpStatusCode.InternalServerError,
-              message: err.message ?? 'Something went wrong.',
-            };
+        this.logResponse(req, err);
 
         const isLoggingIn = req.url.includes('/user/login');
         if (!isLoggingIn && err.status === HttpStatusCode.Unauthorized) {
           this.handleUnathorizedRequest();
         }
 
-        if (isDevelopment) console.error('ERROR:', req.method, req.url, err, req.body);
-
         this.toastService.errorToast('Something went wrong.');
         throw new Error('Something went wrong.');
-
         // return of(new HttpResponse({ body: err }));
       })
     );
@@ -88,5 +79,21 @@ export class ApiInterceptor implements HttpInterceptor {
 
     this.toastService.errorToast('Your session is expired. Please login again');
     throw new Error('Unauthorized');
+  }
+
+  logResponse(req: HttpRequest<unknown>, res: HttpResponse<any> | HttpErrorResponse) {
+    if (!isDevelopment) return;
+
+    console.log('REQUEST:', req.method, req.url, req.body);
+    const isError = res instanceof HttpErrorResponse;
+    if (isError) {
+      const err = res.error?.message ? res.error : res;
+      err.status = res.status || HttpStatusCode.InternalServerError;
+      err.message = res.message ?? 'Something went wrong.';
+
+      console.log('ERROR:', res.status, req.method, req.url, err);
+    } else {
+      console.log('RESPONSE:', res.body?.status ?? res.status, req.method, req.url, res.body);
+    }
   }
 }
