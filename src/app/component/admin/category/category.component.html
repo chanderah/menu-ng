@@ -2,17 +2,30 @@
   <div class="col-12">
     <div class="card">
       <div class="flex align-items-center justify-content-between mb-4">
-        <h5 class="card-title">Categories</h5>
+        <h5 class="card-title">Manage Categories</h5>
         <div class="flex gap-2">
-          <button pButton pRipple class="p-button" (click)="onAddCategory()">Add</button>
+          <button pButton pRipple class="p-button" (click)="onAdd()" *ngIf="true">Add</button>
+          <button pButton pRipple class="p-button" (click)="onAdd()" *ngIf="false">Save</button>
         </div>
       </div>
-      <p-tree
-        [value]="sharedService.categories"
+
+      <div cdkDropList [cdkDropListData]="nodes" (cdkDropListDropped)="onNodeDrop($event)" class="p-tree">
+        <div cdkDrag class="p-treeselect highlight cursor-pointer border-none" (click)="onNodeSelect(item)" *ngFor="let item of nodes">
+          <p class="p-treeselect-label ml-2">{{ item.label }}</p>
+        </div>
+      </div>
+
+      <!-- <p-tree
+        class="mt-4"
+        [value]="nodes"
         selectionMode="single"
         [loading]="isLoading"
-        [(selection)]="selectedCategory"
-        (onNodeSelect)="onEditCategory()"></p-tree>
+        [emptyMessage]="getEmptyMessage(isLoading)"
+        [(selection)]="selectedNode"
+        [draggableNodes]="true"
+        [droppableNodes]="false"
+        (onNodeDrop)="onNodeDrop($event)"
+        (onNodeSelect)="onNodeSelect($event)"></p-tree> -->
     </div>
   </div>
 </div>
@@ -20,7 +33,7 @@
 <!-- CATEGORY DIALOG -->
 <p-dialog
   [maximizable]="true"
-  [header]="selectedCategory ? 'Edit Category' : 'Add Category'"
+  [header]="selectedNode ? 'Edit Category' : 'Add Category'"
   [(visible)]="showCategoryDialog"
   (onHide)="this.form.reset()"
   [contentStyle]="{ overflow: 'visible' }"
@@ -39,9 +52,9 @@
       </div>
     </div>
 
-    <div class="flex mt-4" [ngClass]="selectedCategory ? 'justify-content-between' : 'justify-content-end'">
+    <div class="flex mt-4" [ngClass]="selectedNode ? 'justify-content-between' : 'justify-content-end'">
       <button
-        *ngIf="selectedCategory"
+        *ngIf="selectedNode"
         pButton
         pRipple
         (click)="onDeleteCategory()"

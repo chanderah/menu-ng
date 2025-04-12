@@ -89,9 +89,7 @@
   <div class="w-auto" *ngIf="showPrintReceiptDialog">
     <div class="order-receipt">
       <div id="pdfContent">
-        <!-- <div class="orderNo">{ selectedOrderReceipt.tableId + '#' + selectedOrderReceipt.orderCode }}</div> -->
-        <!-- <div class="orderNo">{{ '#' + selectedOrderReceipt.orderCode }}</div> -->
-        <div class="orderNo">{{ selectedOrderReceipt.table }} #{{ selectedOrderReceipt.orderCode }}</div>
+        <div class="orderNo">{{ selectedOrderReceipt.tableName }} #{{ selectedOrderReceipt.orderCode }}</div>
         <div class="headerSubTitle font-bold py-1">Order Receipt</div>
         <div id="date">{{ env.shop.name }}, +{{ env.shop.phone }}</div>
         <div id="date">{{ env.shop.address.line1 }}</div>

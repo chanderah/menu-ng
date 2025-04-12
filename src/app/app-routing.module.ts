@@ -14,6 +14,7 @@ import { AdminGuard } from './guard/admin.guard';
 import { CustomerGuard } from './guard/customer.guard';
 import { AppMainComponent } from './layout/app.main.component';
 import { OrderCustomerComponent } from './component/customer/order-customer/order-customer.component';
+import { PaymentComponent } from './component/admin/payment/payment.component';
 
 const routes: Route[] = [
   {
@@ -35,6 +36,7 @@ const routes: Route[] = [
           { path: 'product', component: ProductComponent },
           { path: 'category', component: CategoryComponent },
           { path: 'table', component: TableComponent },
+          { path: 'payment', component: PaymentComponent },
         ],
       },
     ],

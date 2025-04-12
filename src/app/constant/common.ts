@@ -13,27 +13,32 @@ export const CONSTANTS = {
       role: 1,
     },
     {
-      label: 'Manage Orders',
+      label: 'Orders',
       routerLink: '/admin/order',
       role: 1,
     },
     {
-      label: 'Manage Categories',
+      label: 'Categories',
       routerLink: '/admin/category',
       role: 1,
     },
     {
-      label: 'Manage Products',
+      label: 'Products',
       routerLink: '/admin/product',
       role: 1,
     },
     {
-      label: 'Manage Tables',
+      label: 'Tables',
       routerLink: '/admin/table',
       role: 1,
     },
     {
-      label: 'Manage Users',
+      label: 'Payments',
+      routerLink: '/admin/payment',
+      role: 2,
+    },
+    {
+      label: 'Users',
       routerLink: '/admin/user',
       role: 2,
     },

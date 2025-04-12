@@ -14,14 +14,14 @@ import { ToastService } from 'src/app/service/toast.service';
   styleUrls: ['../../../../assets/styles/user.styles.scss'],
 })
 export class CategoryComponent extends SharedUtil implements OnInit {
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   showCategoryDialog: boolean = false;
   dialogBreakpoints = { '768px': '90vw' };
 
   pagingInfo = {} as PagingInfo;
 
-  categories = [] as Category[];
-  selectedCategory!: TreeNode;
+  nodes = [] as TreeNode<Category>[];
+  selectedNode!: TreeNode<Category>;
 
   form: FormGroup = this.formBuilder.group({
     id: [0],
@@ -39,12 +39,22 @@ export class CategoryComponent extends SharedUtil implements OnInit {
 
   ngOnInit() {
     this.resetCategoryDialog();
+    this.sharedService.categories$.subscribe((res) => {
+      this.isLoading = false;
+      this.nodes = res.map((v) => {
+        return {
+          data: v,
+          label: v.label,
+          draggable: true,
+        };
+      });
+    });
   }
 
   async onSubmit() {
     this.isLoading = true;
     try {
-      const observable = this.isEmpty(this.selectedCategory)
+      const observable = this.isEmpty(this.selectedNode)
         ? this.apiService.createCategory(this.form.value)
         : this.apiService.updateCategory(this.form.value);
 
@@ -60,13 +70,13 @@ export class CategoryComponent extends SharedUtil implements OnInit {
 
   resetCategoryDialog() {
     this.showCategoryDialog = false;
-    this.selectedCategory = null;
+    this.selectedNode = null;
     this.form.reset();
-    this.sharedService.loadCategories();
+    this.sharedService.loadCategories().subscribe();
   }
 
   onDeleteCategory() {
-    if (this.isEmpty(this.selectedCategory)) return;
+    if (this.isEmpty(this.selectedNode)) return;
     this.isLoading = true;
     this.apiService.deleteCategory(this.form.value).subscribe((res) => {
       this.isLoading = false;
@@ -76,28 +86,48 @@ export class CategoryComponent extends SharedUtil implements OnInit {
     });
   }
 
-  onAddCategory() {
+  onAdd() {
     this.resetNode();
     this.resetCategoryDialog();
     this.showCategoryDialog = true;
   }
 
-  onEditCategory() {
-    if (this.isEmpty(this.selectedCategory)) return;
-    this.apiService.findCategoryById(this.selectedCategory as Category).subscribe((res) => {
+  onNodeSelect(node: TreeNode) {
+    this.selectedNode = node;
+    this.apiService.findCategoryById(this.selectedNode.data).subscribe((res) => {
+      this.showCategoryDialog = true;
       if (res.status === 200) {
         this.form.patchValue(res.data);
-        this.showCategoryDialog = true;
       } else {
         this.toastService.errorToast('Invalid session!');
-        return this.refreshPage();
+        this.refreshPage();
       }
     });
   }
 
+  onNodeDrop(e: any) {
+    // const dragNode = e.dragNode;
+    // const dropNode = e.dropNode;
+    // const dragIndex = this.nodes.findIndex((v) => v.data.id === dragNode.data.id);
+    // const dropIndex = this.nodes.findIndex((v) => v.data.id === dropNode.data.id);
+    // console.log('nodes', this.nodes);
+    // console.log('e', e);
+    // console.log('dragIndex', dragIndex);
+    // console.log('dropIndex', dropIndex);
+    // this.nodes.splice(dragIndex, 1);
+    // let insertIndex = dropIndex;
+    // if (insertIndex === -1 || insertIndex === undefined) {
+    //   // Drop to empty space = push to end
+    //   this.nodes.push(dragNode);
+    // } else {
+    //   // Adjust index if dragging downward
+    //   insertIndex = dragIndex < insertIndex ? insertIndex - 1 : insertIndex;
+    //   this.nodes.splice(insertIndex, 0, dragNode);
+    // }
+  }
+
   resetNode() {
-    const nodes = this.categories as TreeNode[];
-    nodes.forEach((node) => {
+    this.nodes.forEach((node) => {
       if (node.partialSelected) node.partialSelected = false;
       if (node.children) {
         node.expanded = true;
@@ -107,6 +137,6 @@ export class CategoryComponent extends SharedUtil implements OnInit {
         }
       }
     });
-    this.selectedCategory = null;
+    this.selectedNode = null;
   }
 }

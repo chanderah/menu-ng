@@ -27,11 +27,8 @@ export class OrderComponent extends SharedUtil implements OnInit {
   showPrintReceiptDialog: boolean = false;
 
   orders = [] as Order[];
-  selectedOrder = {} as Order;
-  selectedOrderReceipt = {} as OrderReceipt;
-
-  taxesRatio: number = 0.1; //sharedService
-  selectedOrderGrandTotal: number = 0;
+  selectedOrder!: Order;
+  selectedOrderReceipt!: OrderReceipt;
 
   lastUpdated: Date = new Date();
 
@@ -78,16 +75,15 @@ export class OrderComponent extends SharedUtil implements OnInit {
   }
 
   onClickReceipt() {
-    this.selectedOrderGrandTotal = this.selectedOrder.totalPrice + this.selectedOrder.totalPrice * this.taxesRatio;
-
-    // this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
-    this.form.get('paymentMethod').setValue(this.paymentMethods[0]);
-    this.form.get('paymentMethod').valueChanges.subscribe((v: PaymentMethod) => {
-      if (v?.id !== 1) {
-        this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
-        this.form.get('receivedAmount').disable();
-      } else this.form.get('receivedAmount').enable();
-    });
+    // this.selectedOrderGrandTotal = this.selectedOrder.totalPrice + this.selectedOrder.totalPrice * this.taxesRatio;
+    // // this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
+    // this.form.get('paymentMethod').setValue(this.paymentMethods[0]);
+    // this.form.get('paymentMethod').valueChanges.subscribe((v: PaymentMethod) => {
+    //   if (v?.id !== 1) {
+    //     this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);
+    //     this.form.get('receivedAmount').disable();
+    //   } else this.form.get('receivedAmount').enable();
+    // });
     this.showPrintReceiptDialog = true;
   }
 

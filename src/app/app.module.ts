@@ -31,13 +31,14 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ChipModule } from 'primeng/chip';
 
 import { AutoFocusModule } from 'primeng/autofocus';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 
 import * as Hammer from 'hammerjs';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeDragDropService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -70,6 +71,7 @@ import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive'
 import { MenuModule } from 'primeng/menu';
 import { BadgeComponent } from './component/_common/badge/badge.component';
 import { TagModule } from 'primeng/tag';
+import { PaymentComponent } from './component/admin/payment/payment.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -111,6 +113,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     OrderCustomerComponent,
     LoadingContainerComponent,
     BadgeComponent,
+    PaymentComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -149,6 +152,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     ChipModule,
     ScrollToBottomDirective,
     MenuModule,
+    DragDropModule,
     TagModule,
   ],
   providers: [
@@ -173,6 +177,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     /* SHARED */
     SharedService,
     CustomCurrencyPipe,
+    TreeDragDropService,
   ],
   bootstrap: [AppComponent],
 })

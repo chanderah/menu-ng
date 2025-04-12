@@ -33,7 +33,7 @@ export class SharedService {
   }
 
   load() {
-    this.loadCategories();
+    this.loadCategories().subscribe();
     this.apiService.getBusinessConfig().subscribe((res) => {
       const data = {};
       res.data.forEach((v) => (data[v.param] = v.value));
@@ -42,10 +42,7 @@ export class SharedService {
   }
 
   loadCategories() {
-    return this.apiService
-      .getCategories()
-      .pipe(tap((res) => (this.categories = res.data?.sort(sortArrayByLabelProperty))))
-      .subscribe();
+    return this.apiService.getCategories().pipe(tap((res) => (this.categories = res.data?.sort(sortArrayByLabelProperty))));
   }
 
   logoutUser() {
