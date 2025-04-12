@@ -9,11 +9,6 @@
 @import 'assets/sass/layout/_layout';
 @import 'assets/sass/overrides/_overrides';
 
-/* USER DEFINED */
-@import 'assets/user.styles.scss';
-@import '../node_modules/swiper/swiper-bundle.min.css';
-// @import '~swiper/css/bundle';
-
 .w-fit {
     width: fit-content !important;
 }
