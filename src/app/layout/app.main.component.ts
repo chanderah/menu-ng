@@ -51,7 +51,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngAfterViewInit() {
     // hides the overlay menu and top menu if outside is clicked
-    this.documentClickListener = this.renderer.listen('body', 'click', (event) => {
+    this.documentClickListener = this.renderer.listen('body', 'click', (e) => {
       if (!this.isDesktop()) {
         if (!this.menuClick) this.menuActiveMobile = false;
         if (!this.topMenuButtonClick) this.hideTopMenu();
@@ -68,8 +68,8 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   onScroll(e) {
-    console.log('e', e)
-    console.log('"CALLED"', "CALLED")
+    console.log('e', e);
+    console.log('"CALLED"', 'CALLED');
   }
 
   toggleMenu(event: Event) {
@@ -136,6 +136,20 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
 
   onSearchClick() {
     this.topMenuButtonClick = true;
+  }
+
+  get styleClass() {
+    return {
+      'layout-overlay': this.isOverlay(),
+      'layout-static': this.isStatic(),
+      'layout-theme-light': !this.config.dark,
+      'layout-theme-dark': this.config.dark,
+      'layout-overlay-sidebar-active': this.overlayMenuActive,
+      'layout-static-sidebar-inactive': this.staticMenuInactive,
+      'layout-mobile-sidebar-active': this.menuActiveMobile,
+      'p-ripple-disabled': !this.config.ripple,
+      'p-input-filled': this.config.inputStyle === 'filled',
+    };
   }
 
   ngOnDestroy() {

@@ -1,17 +1,4 @@
-<!-- prettier-ignore -->
-<div
-  class="layout-wrapper"
-  [ngClass]="{
-    'layout-overlay': isOverlay(),
-    'layout-static': isStatic(),
-    'layout-theme-light': !config.dark,
-    'layout-theme-dark': config.dark,
-    'layout-overlay-sidebar-active': overlayMenuActive,
-    'layout-static-sidebar-inactive': staticMenuInactive,
-    'layout-mobile-sidebar-active': menuActiveMobile,
-    'p-ripple-disabled': !config.ripple,
-    'p-input-filled': config.inputStyle === 'filled'
-  }">
+<div class="layout-wrapper" [ngClass]="styleClass">
   <app-topbar></app-topbar>
   <div class="layout-sidebar">
     <app-menu>
@@ -19,12 +6,14 @@
     </app-menu>
   </div>
   <div class="layout-main-container">
-    <div class="layout-main" scrollToBottom (onScrollToBottom)="onScroll($event)">
+    <div class="layout-main">
       <router-outlet></router-outlet>
     </div>
   </div>
+  <!-- --maskbg: rgba(0, 0, 0, 0.4); -->
+
   <div *ngIf="menuActiveMobile" class="layout-mask p-component-overlay"></div>
 </div>
 
-<app-order-dialog *ngIf="showCartDialog" (onShowCartDialogChange)="showCartDialog = $event" [showDialog]="showCartDialog">
+<app-order-dialog *ngIf="showCartDialog" [showDialog]="showCartDialog" (onShowCartDialogChange)="showCartDialog = $event">
 </app-order-dialog>

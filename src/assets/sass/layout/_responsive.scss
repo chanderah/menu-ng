@@ -64,7 +64,7 @@
 
         .layout-mask {
             z-index: 998;
-            background-color: var(--mask-bg);
+            background-color: rgba(0, 0, 0, 0.4);
 
             &.layout-mask-enter-from,
             &.layout-mask-leave-to {
