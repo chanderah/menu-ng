@@ -15,7 +15,6 @@ import { SharedService } from 'src/app/service/shared.service';
 })
 export class UserComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;
-  dialogBreakpoints = { '768px': '90vw' };
   pagingInfo = {} as PagingInfo;
   showUserDialog: boolean = false;
 

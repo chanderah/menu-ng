@@ -45,17 +45,17 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
     router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.state = this.router.getCurrentNavigation()?.extras?.state as OrderState;
   }
-  
+
   ngOnInit(): void {
     enableBodyScroll();
-    
+
     if (!this.state?.order) return this.getOrders();
-    
+
     this.customerService.customer = {
       ...this.customerService.customer,
       listOrderId: filterUniqueArr([...this.customerService.customer.listOrderId, this.state.order.id]),
     };
-    
+
     if (this.state.isSuccess) {
       this.startPolling();
     } else {
@@ -65,47 +65,46 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
       }
     }
   }
-  
+
   getOrders() {
     this.isLoading = true;
     this.customerService.loadOrders().subscribe(() => {
       this.isLoading = false;
     });
   }
-  
+
   onClickOrder(order: Order) {
     this.selectedOrder = order;
     this.showOrderDialog = true;
   }
-  
+
   startPolling() {
     this.isLoading = true;
-    
+
     this.stopPolling();
     this.subscription = interval(3000)
-    .pipe(
-      startWith(0),
-      switchMap(() => this.apiService.getOrderById(this.state.order.id))
-    )
-    .subscribe((res) => {
-      const isPending = res.data.status === 'pending';
-      if (isPending) {
-        // keep pooling
-      } else {
-        this.stopPolling();
-        this.getOrders();
-
-        const isSuccess = ['settlement', 'capture'].includes(res.data.status);
-        if (isSuccess) {
-          this.sharedService.showNotification(`Your order is placed!`, '😘');
+      .pipe(
+        startWith(0),
+        switchMap(() => this.apiService.getOrderById(this.state.order.id))
+      )
+      .subscribe((res) => {
+        const isPending = res.data.status === 'pending';
+        if (isPending) {
+          // keep pooling
         } else {
-          this.sharedService.showNotification(
-            `We are sorry, your transaction is ${this.CONSTANTS.ORDER_STATUS[res.data.status] ?? 'failed'}`,
-            '😢'
-          );
+          this.stopPolling();
+          this.getOrders();
+
+          if (this.isOrderPaid(res.data.status)) {
+            this.sharedService.showNotification(`Your order is placed!`, '😘');
+          } else {
+            this.sharedService.showNotification(
+              `We are sorry, your transaction is ${this.CONSTANTS.ORDER_STATUS[res.data.status] ?? 'failed'}`,
+              '😢'
+            );
+          }
         }
-      }
-    });
+      });
   }
 
   stopPolling() {

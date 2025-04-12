@@ -72,6 +72,7 @@ import { MenuModule } from 'primeng/menu';
 import { BadgeComponent } from './component/_common/badge/badge.component';
 import { TagModule } from 'primeng/tag';
 import { PaymentComponent } from './component/admin/payment/payment.component';
+import { OrderDetailsDialogComponent } from './component/_common/dialog/order-details-dialog/order-details-dialog.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -114,6 +115,7 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     LoadingContainerComponent,
     BadgeComponent,
     PaymentComponent,
+    OrderDetailsDialogComponent,
   ],
   imports: [
     AppRoutingModule,

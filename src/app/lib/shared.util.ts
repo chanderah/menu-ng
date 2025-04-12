@@ -14,6 +14,7 @@ import {
   toLetter,
 } from './utils';
 import { Product, ProductOption, ProductOptionValue } from '../interface/product';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 export default class SharedUtil {
   public env = environment;
@@ -88,6 +89,33 @@ export default class SharedUtil {
       reader.onloadend = () => resolve(reader.result as string);
       reader.readAsDataURL(blob);
     });
+  }
+
+  isOrderPaid(status: string) {
+    return ['settlement', 'capture'].includes(status);
+  }
+
+  get dialogBreakpoints() {
+    return { '768px': '90vw' };
+  }
+
+  get defaultDialogConfig(): DynamicDialogConfig {
+    return {
+      modal: true,
+      maximizable: true,
+      dismissableMask: true,
+      closeOnEscape: true,
+      showHeader: true,
+      transitionOptions: '100ms ease-out',
+      contentStyle: {
+        overflow: 'auto',
+        maxHeight: '80vh',
+      },
+      style: {
+        width: isMobile ? '90vw' : '40vw',
+        height: 'auto',
+      },
+    };
   }
 
   get bottomSheetStyle() {

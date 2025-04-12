@@ -18,7 +18,6 @@ import { ToastService } from 'src/app/service/toast.service';
 })
 export class TableComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;
-  dialogBreakpoints = { '768px': '90vw' };
 
   pagingInfo = {} as PagingInfo;
 

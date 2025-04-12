@@ -11,6 +11,8 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import SharedUtil from 'src/app/lib/shared.util';
 import { ToastService } from 'src/app/service/toast.service';
+import { DialogService } from 'primeng/dynamicdialog';
+import { OrderDetailsDialogComponent } from '../../_common/dialog/order-details-dialog/order-details-dialog.component';
 
 @Component({
   selector: 'app-order',
@@ -19,7 +21,6 @@ import { ToastService } from 'src/app/service/toast.service';
 })
 export class OrderComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;
-  dialogBreakpoints = { '768px': '90vw' };
 
   pagingInfo = {} as PagingInfo;
 
@@ -42,7 +43,8 @@ export class OrderComponent extends SharedUtil implements OnInit {
     private apiService: ApiService,
     private sharedService: SharedService,
     private toastService: ToastService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dialogService: DialogService
   ) {
     super();
   }
@@ -69,9 +71,17 @@ export class OrderComponent extends SharedUtil implements OnInit {
     });
   }
 
-  viewOrder(data: Order) {
-    this.selectedOrder = data;
-    this.showOrderDetailsDialog = true;
+  onClickOrder(data: Order) {
+    this.dialogService
+      .open(OrderDetailsDialogComponent, {
+        data,
+        header: `Order #${data.orderCode}`,
+        ...this.defaultDialogConfig,
+      })
+      .onClose.subscribe((res: Order) => {
+        // console.log('res', res);
+        // if (res) data = res;
+      });
   }
 
   onClickReceipt() {

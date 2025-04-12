@@ -16,7 +16,6 @@ import { ToastService } from 'src/app/service/toast.service';
 export class CategoryComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;
   showCategoryDialog: boolean = false;
-  dialogBreakpoints = { '768px': '90vw' };
 
   pagingInfo = {} as PagingInfo;
 

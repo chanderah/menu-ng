@@ -19,7 +19,6 @@ import { StorageService } from 'src/app/storage.service';
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
   rowsPerPageOptions: number[] = [20, 50, 100];
-  dialogBreakpoints = { '768px': '90vw' };
 
   pagingInfo = {} as PagingInfo;
   audio = new Audio('/assets/sound/bell.mp3');
