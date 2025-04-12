@@ -85,5 +85,8 @@ export class ApiInterceptor implements HttpInterceptor {
       replaceUrl: true,
       state: { expired: true },
     });
+
+    this.toastService.errorToast('Your session is expired. Please login again');
+    throw new Error('Unauthorized');
   }
 }
