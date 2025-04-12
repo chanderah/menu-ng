@@ -112,11 +112,12 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
         this.pagingInfo.rowCount = res.rowCount;
         this.products = page === 1 ? data : [...this.products, ...data];
-
-        window.scroll({
-          top: 0,
-          behavior: 'smooth',
-        });
+        if (page === 1) {
+          window.scroll({
+            top: 0,
+            behavior: 'smooth',
+          });
+        }
       } else this.toastService.errorToast(res.message);
     });
   }

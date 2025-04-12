@@ -1,3 +1,4 @@
+import { PaymentType } from './../../../../interface/order';
 import { MidtransService } from '../../../../service/midtrans.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -146,6 +147,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
       products: this.fb.array([]),
       notes: [''],
       token: [''],
+      paymentType: [PaymentType.GATEWAY],
       status: [null],
       createdAt: [null, []],
     });

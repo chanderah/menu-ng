@@ -8,7 +8,8 @@ export interface Order {
   isServed: boolean;
   products: Product[];
   token?: string;
-  paymentType?: string;
+  paymentType: PaymentType;
+  paymentMethod?: string;
   status: string;
   createdAt: Date;
 }
@@ -34,9 +35,12 @@ export interface OrderReceipt {
 export interface PaymentMethod {
   id: number;
   name: string;
-  accountName: string;
-  accountNumber: number;
-
+  account: {
+    name: string;
+    number: string;
+  };
+  description: string;
+  isActive: boolean;
   updatedAt: Date;
   createdAt: Date;
 }
@@ -63,4 +67,9 @@ export interface ProductOrderValue {
   value: string;
   price: number;
   selected: boolean;
+}
+
+export enum PaymentType {
+  COUNTER = 'counter',
+  GATEWAY = 'gateway',
 }

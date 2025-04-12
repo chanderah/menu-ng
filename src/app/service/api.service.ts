@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from 'src/app/interface/product';
 import { Category } from './../interface/category';
-import { Order } from './../interface/order';
+import { Order, PaymentMethod } from './../interface/order';
 import { PagingInfo } from './../interface/paging_info';
 import { User } from './../interface/user';
 import { getImageSrc, jsonStringify } from '../lib/utils';
@@ -179,7 +179,11 @@ export class ApiService {
   }
 
   getPaymentMethods() {
-    return this.httpClient.post<any>('/payment/findAllMethod', null);
+    return this.httpClient.post<ApiResponse<PaymentMethod[]>>('/paymentMethod/findAll', null);
+  }
+
+  savePaymentMethod(req: PaymentMethod) {
+    return this.httpClient.post<ApiResponse<void>>('/paymentMethod/save', req);
   }
 
   getImage(filePath: string) {
