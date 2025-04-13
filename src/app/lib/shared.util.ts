@@ -123,6 +123,18 @@ export default class SharedUtil {
     };
   }
 
+  get defaultStackedDialogConfig(): DynamicDialogConfig {
+    return {
+      ...this.defaultDialogConfig,
+      dismissableMask: false,
+      closeOnEscape: false,
+      style: {
+        width: isMobile ? '92vw' : '42vw',
+        height: 'auto',
+      },
+    };
+  }
+
   get bottomSheetStyle() {
     return {
       width: isMobile ? '100vw' : '50vw',

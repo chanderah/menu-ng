@@ -34,13 +34,20 @@ export interface OrderReceipt {
 
 export interface PaymentMethod {
   id: number;
-  name: string;
+  label: string;
+  description: string;
+  isActive: boolean;
+  updatedAt: Date;
+  createdAt: Date;
+}
+export interface WithdrawalMethod {
+  id: number;
+  label: string;
   account: {
     name: string;
     number: string;
   };
   description: string;
-  isActive: boolean;
   updatedAt: Date;
   createdAt: Date;
 }

@@ -1,17 +1,3 @@
-<!-- <p-dialog
-  *ngIf="dialogConfig.data as data"
-  [maximizable]="true"
-  header="Order #{{ data.orderCode }}"
-  [visible]="true"
-  [style]="{ width: '40vw', height: 'auto' }"
-  [breakpoints]="dialogBreakpoints"
-  [dismissableMask]="true"
-  [closeOnEscape]="true"
-  modal="true"
-  [blockScroll]="true"
-  showEffect="fade">
-</p-dialog> -->
-
 <loading-container [isLoading]="isLoading">
   <div class="w-full p-fluid px-2">
     <div class="card p-1 mb-3">
@@ -59,8 +45,83 @@
           class="w-auto p-button-outlined"
           label="Payment"
           (click)="onClickPayment()"
-          [disabled]="isLoading"></button>
+          [disabled]="!paymentMethods.length || isLoading"></button>
       </ng-template>
     </div>
   </div>
 </loading-container>
+
+<app-print-dialog [showDialog]="showPrintDialog" (onShowDialogChange)="showPrintDialog = $event" class="w-full h-full">
+  <div class="order-receipt">
+    <div id="pdfContent">
+      <div class="orderNo">{{ data.tableName }} #{{ data.orderCode }}</div>
+      <div class="headerSubTitle font-bold py-1">Order Receipt</div>
+      <div id="date">{{ env.shop.name }}, +{{ env.shop.phone }}</div>
+      <div id="date">{{ env.shop.address.line1 }}</div>
+      <div id="date">{{ env.shop.address.line2 }}</div>
+      <div id="date">{{ env.shop.address.line3 }}</div>
+      <div class="my-2"></div>
+      <div id="date">{{ data.createdAt | date: 'EEEE, MMM d yyyy @ HH:mm:ss (a)' }}</div>
+
+      <hr />
+
+      <div class="products">
+        <table class="w-full">
+          <tbody>
+            <th class="text-lg pb-2">DINE IN</th>
+            <tr *ngFor="let data of data.products">
+              <td class="flex flex-column">
+                <span>{{ data.name }}</span>
+                <div class="flex align-items-center justify-content-center w-full">
+                  <span class="w-full text-right">{{ data.price | currency }}</span>
+                  <span class="w-full text-right">x{{ data.quantity }}</span>
+                  <span class="w-full text-right">{{ data.price | currency }}</span>
+                </div>
+              </td>
+            </tr>
+            <hr />
+            <tr>
+              <td class="flex justify-content-between">
+                <span>SUBTOTAL</span>
+                <!-- <span>{{ data.subTotal | currency }}</span> -->
+              </td>
+            </tr>
+            <tr>
+              <td class="flex justify-content-between">
+                <span>TAXES</span>
+                <!-- <span>{{ data.taxes | currency }}</span> -->
+              </td>
+            </tr>
+            <tr>
+              <td class="flex justify-content-between font-bold">
+                <span>TOTAL</span>
+                <!-- <span>{{ data.total | currency }}</span> -->
+              </td>
+            </tr>
+            <hr />
+            <tr>
+              <td class="flex justify-content-end">
+                <span>{{ data?.paymentMethod?.name }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="flex justify-content-between">
+                <span>RECEIVED AMOUNT</span>
+                <!-- <span>{{ data.receivedAmount | currency }}</span> -->
+              </td>
+            </tr>
+            <tr>
+              <td class="flex justify-content-between">
+                <span>CHANGES</span>
+                <!-- <span>{{ data.changes | currency }}</span> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr />
+        <div class="font-bold text-center">THIS IS A LEGITIMATE PROOF OF TRANSACTION</div>
+      </div>
+    </div>
+  </div>
+</app-print-dialog>

@@ -76,7 +76,7 @@ export class SharedService {
     this.confirmationService.confirm({
       icon: 'pi pi-exclamation-triangle md:mx-2',
       header: 'Confirmation',
-      message: message ?? 'Are you sure to proceed?',
+      message: message || 'Are you sure to proceed?',
       dismissableMask: true,
       closeOnEscape: true,
       acceptLabel: 'Yes',

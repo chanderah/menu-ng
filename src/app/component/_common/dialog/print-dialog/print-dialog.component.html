@@ -1,0 +1,40 @@
+<p-dialog
+  [maximizable]="true"
+  header="Print Preview"
+  [(visible)]="showDialog"
+  appendTo="body"
+  (onHide)="hideDialog()"
+  [contentStyle]="{ overflow: 'visible' }"
+  [style]="{ width: isMobile ? '90vw' : 'auto', height: 'auto' }"
+  [modal]="true"
+  [dismissableMask]="false"
+  [closeOnEscape]="false"
+  [blockScroll]="true"
+  showEffect="fade">
+  <div class="w-full h-full px-2">
+    <div class="card">
+      <ng-content></ng-content>
+    </div>
+
+    <div class="flex mt-4 justify-content-end">
+      <div class="flex gap-2">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-times"
+          (click)="hideDialog()"
+          label="Cancel"
+          [disabled]="isLoading"
+          class="w-auto p-button-danger p-button-outlined"></button>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-check"
+          label="Print"
+          (click)="onPrint()"
+          [disabled]="isLoading"
+          class="w-auto p-button-outlined"></button>
+      </div>
+    </div>
+  </div>
+</p-dialog>

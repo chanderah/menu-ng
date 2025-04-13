@@ -75,6 +75,8 @@ import { PaymentComponent } from './component/admin/payment/payment.component';
 import { OrderDetailsDialogComponent } from './component/_common/dialog/order-details-dialog/order-details-dialog.component';
 import { StripePipe } from './pipe/stripe.pipe';
 import { TruncatePipe } from './pipe/truncate.pipe';
+import { ChoosePaymentDialogComponent } from './component/_common/dialog/choose-payment-dialog/choose-payment-dialog.component';
+import { PrintDialogComponent } from './component/_common/dialog/print-dialog/print-dialog.component';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -120,6 +122,8 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     BadgeComponent,
     PaymentComponent,
     OrderDetailsDialogComponent,
+    ChoosePaymentDialogComponent,
+    PrintDialogComponent,
   ],
   imports: [
     AppRoutingModule,
