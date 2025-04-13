@@ -120,7 +120,7 @@ export class SharedService {
 
   get phone() {
     const { countryCode, areaCode, phoneNo } = this.businessConfig;
-    return [countryCode, areaCode, phoneNo].join('');
+    return [countryCode, areaCode, phoneNo].join(' ');
   }
 
   get whatsapp() {

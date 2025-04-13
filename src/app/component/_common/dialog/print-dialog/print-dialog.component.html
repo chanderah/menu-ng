@@ -12,7 +12,7 @@
   [blockScroll]="true"
   showEffect="fade">
   <div class="w-full h-full px-2">
-    <div class="card">
+    <div class="w-full h-full">
       <ng-content></ng-content>
     </div>
 
@@ -24,15 +24,14 @@
           icon="pi pi-times"
           (click)="hideDialog()"
           label="Cancel"
-          [disabled]="isLoading"
           class="w-auto p-button-danger p-button-outlined"></button>
         <button
           pButton
           pRipple
           icon="pi pi-check"
           label="Print"
-          (click)="onPrint()"
-          [disabled]="isLoading"
+          (click)="onClickPrint()"
+          [disabled]="isDisabledPrint"
           class="w-auto p-button-outlined"></button>
       </div>
     </div>

@@ -1,0 +1,79 @@
+@import url('https://fonts.cdnfonts.com/css/fake-receipt');
+
+.order-receipt {
+    ::ng-deep p-inputnumber input {
+        text-align: end;
+    }
+
+    table {
+        border-collapse: separate;
+        border-spacing: 6px;
+    }
+
+    #pdfContent {
+        padding: 12px;
+        width: 302px;
+        border: 1px solid black;
+    }
+
+    .orderNo {
+        width: 100%;
+        text-align: center;
+        padding-bottom: 4px;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .headerSubTitle {
+        font-family: 'Equestria', 'Permanent Marker', cursive;
+        text-align: center;
+        font-size: 22px;
+    }
+
+    .headerTitle {
+        font-family: 'Equestria', 'Permanent Marker', cursive;
+        text-align: center;
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    /* .order {
+        font-family: 'Fake Receipt', sans-serif;
+        font-size: 10px;
+    } */
+
+    .products {
+        font-family: 'Fake Receipt', sans-serif;
+        font-size: 10px;
+    }
+
+    .products-list {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+    }
+
+    #location {
+        margin-top: 6px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    #date {
+        margin: 6px 0px;
+        text-align: center;
+        font-size: 10px;
+    }
+
+    #barcode {
+        display: block;
+        margin: 0px auto;
+    }
+
+    #barcode:empty {
+        display: none;
+    }
+}

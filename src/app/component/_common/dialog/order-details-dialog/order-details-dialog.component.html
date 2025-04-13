@@ -51,31 +51,44 @@
   </div>
 </loading-container>
 
-<app-print-dialog [showDialog]="showPrintDialog" (onShowDialogChange)="showPrintDialog = $event" class="w-full h-full">
+<app-print-dialog
+  class="w-full h-full"
+  targetId="pdfContent"
+  [showDialog]="showPrintDialog"
+  [isDisabledPrint]="isLoading || receivedAmountCtrl.invalid"
+  (onShowDialogChange)="showPrintDialog = $event"
+  (onPrinting)="isPrinting = $event">
   <div class="order-receipt">
     <div id="pdfContent">
-      <div class="orderNo">{{ data.tableName }} #{{ data.orderCode }}</div>
-      <div class="headerSubTitle font-bold py-1">Order Receipt</div>
-      <div id="date">{{ env.shop.name }}, +{{ env.shop.phone }}</div>
-      <div id="date">{{ env.shop.address.line1 }}</div>
-      <div id="date">{{ env.shop.address.line2 }}</div>
-      <div id="date">{{ env.shop.address.line3 }}</div>
-      <div class="my-2"></div>
-      <div id="date">{{ data.createdAt | date: 'EEEE, MMM d yyyy @ HH:mm:ss (a)' }}</div>
+      <div class="headerSubTitle font-bold pb-2">Order Receipt</div>
+      <!-- <hr /> -->
+      <div class="flex flex-column gap-1 align-items-center text-xs">
+        <div>{{ businessConfig['name'] }}, +{{ sharedService.phone }}</div>
+        <div *ngIf="businessConfig['address1']">{{ businessConfig['address1'] }}</div>
+        <div *ngIf="businessConfig['address2']">{{ businessConfig['address2'] }}</div>
+        <div *ngIf="businessConfig['address3']">{{ businessConfig['address3'] }}</div>
+      </div>
 
+      <!-- <div id="date" class="mt-2">{{ data.createdAt | date: 'EEEE, MMM dd yyyy @ HH:mm:ss' }}</div> -->
+
+      <hr />
+
+      <div class="flex align-items-center justify-content-between text-sm mx-2">
+        <div># {{ data.orderCode }}</div>
+        <div>{{ data.createdAt | date: 'dd/MM/yy HH:mm a' }}</div>
+      </div>
       <hr />
 
       <div class="products">
         <table class="w-full">
           <tbody>
-            <th class="text-lg pb-2">DINE IN</th>
+            <th class="text-lg pb-4">DINE IN</th>
             <tr *ngFor="let data of data.products">
-              <td class="flex flex-column">
+              <td class="products-list">
                 <span>{{ data.name }}</span>
-                <div class="flex align-items-center justify-content-center w-full">
-                  <span class="w-full text-right">{{ data.price | currency }}</span>
-                  <span class="w-full text-right">x{{ data.quantity }}</span>
-                  <span class="w-full text-right">{{ data.price | currency }}</span>
+                <div class="flex w-full align-items-center justify-content-between gap-2">
+                  <span class="text-start">X{{ data.quantity }}</span>
+                  <span class="text-end">{{ data.price | currency }}</span>
                 </div>
               </td>
             </tr>
@@ -83,19 +96,19 @@
             <tr>
               <td class="flex justify-content-between">
                 <span>SUBTOTAL</span>
-                <!-- <span>{{ data.subTotal | currency }}</span> -->
+                <span>{{ data.totalPrice | currency }}</span>
               </td>
             </tr>
             <tr>
               <td class="flex justify-content-between">
                 <span>TAXES</span>
-                <!-- <span>{{ data.taxes | currency }}</span> -->
+                <span>{{ data.totalPrice - data.totalPrice | currency }}</span>
               </td>
             </tr>
             <tr>
               <td class="flex justify-content-between font-bold">
                 <span>TOTAL</span>
-                <!-- <span>{{ data.total | currency }}</span> -->
+                <span>{{ data.totalPrice | currency }}</span>
               </td>
             </tr>
             <hr />
@@ -105,15 +118,24 @@
               </td>
             </tr>
             <tr>
-              <td class="flex justify-content-between">
-                <span>RECEIVED AMOUNT</span>
-                <!-- <span>{{ data.receivedAmount | currency }}</span> -->
+              <td class="flex align-items-center justify-content-between">
+                <span class="w-full">RECEIVED AMOUNT</span>
+                <ng-template #receivedAmount>
+                  <span>{{ receivedAmountCtrl.value | currency }}</span>
+                </ng-template>
+                <p-inputNumber
+                  *ngIf="!isOrderPaid(data.status) && !isPrinting; else receivedAmount"
+                  autofocus
+                  (keyup.enter)="printDialogComponent.onClickPrint()"
+                  [placeholder]="receivedAmountCtrl.value | currency"
+                  [formControl]="receivedAmountCtrl">
+                </p-inputNumber>
               </td>
             </tr>
             <tr>
               <td class="flex justify-content-between">
                 <span>CHANGES</span>
-                <!-- <span>{{ data.changes | currency }}</span> -->
+                <span>{{ orderChanges | currency }}</span>
               </td>
             </tr>
           </tbody>

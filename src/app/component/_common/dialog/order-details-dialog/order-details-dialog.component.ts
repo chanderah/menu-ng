@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Order, PaymentMethod, PaymentType } from 'src/app/interface/order';
 import SharedUtil from 'src/app/lib/shared.util';
 import { ApiService } from 'src/app/service/api.service';
 import { ChoosePaymentDialogComponent } from '../choose-payment-dialog/choose-payment-dialog.component';
+import { SharedService } from 'src/app/service/shared.service';
+import { FormControl, Validators } from '@angular/forms';
+import { PrintDialogComponent } from '../print-dialog/print-dialog.component';
 
 @Component({
   selector: 'app-order-details-dialog',
@@ -11,22 +14,28 @@ import { ChoosePaymentDialogComponent } from '../choose-payment-dialog/choose-pa
   styleUrls: ['./order-details-dialog.component.scss'],
 })
 export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
+  @ViewChild(PrintDialogComponent) printDialogComponent!: PrintDialogComponent;
+
   isLoading: boolean = true;
-  showPaymentDialog: boolean = false;
+  isPrinting: boolean = false;
   showPrintDialog: boolean = false;
+  showPaymentDialog: boolean = false;
 
   data!: Order;
   paymentMethods: PaymentMethod[] = [];
   isDataUpdated: boolean = false;
 
+  receivedAmountCtrl = new FormControl(0, Validators.required);
+
   constructor(
     private dialogService: DialogService,
+    private apiService: ApiService,
+    public sharedService: SharedService,
     public dialogRef: DynamicDialogRef,
     public dialogConfig: DynamicDialogConfig<{
       order: Order;
       paymentMethods: PaymentMethod[];
-    }>,
-    private apiService: ApiService
+    }>
   ) {
     super();
   }
@@ -38,6 +47,9 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
     this.apiService.getOrderById(this.data.id).subscribe((res) => {
       this.isLoading = false;
       this.data = res.data;
+
+      this.receivedAmountCtrl.setValidators([Validators.required, Validators.min(this.data.totalPrice)]);
+      this.receivedAmountCtrl.setValue(res.data.totalPrice);
     });
   }
 
@@ -62,7 +74,6 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
     this.dialogConfig.closeOnEscape = false;
     this.dialogConfig.dismissableMask = false;
     this.showPrintDialog = true;
-    console.log('creating receipt...');
   }
 
   // onClickReceipt() {
@@ -105,54 +116,13 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
   //   //   });
   // }
 
-  // printAsPdf() {
-  //   try {
-  //     const content = document.getElementById('pdfContent');
-  //     html2canvas(content).then((canvas) => {
-  //       const imgWidth = 88;
-  //       const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  get orderChanges() {
+    return this.receivedAmountCtrl.invalid ? 0 : <number>this.receivedAmountCtrl.value - this.data.totalPrice;
+  }
 
-  //       let pdf = new jsPDF({
-  //         orientation: 'portrait',
-  //         compress: false,
-  //         format: [imgWidth + 2, imgHeight + 2],
-  //       });
-  //       pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 1, 1, imgWidth, imgHeight);
-  //       // pdf.save(`invoices-${new Date().getTime()}.pdf`);
-  //       // pdf.autoPrint();
-  //       // window.open(pdf.output('bloburl'));
-  //       // pdf.output('dataurlnewwindow');
-  //       // this.showOrderDetailsDialog = false;
-  //       // this.showPrintReceiptDialog = false;
-  //       // this.sharedService.showNotification('Receipt is successfully downloaded!');
-
-  //       pdf.autoPrint();
-
-  //       const frame = document.createElement('iframe');
-  //       frame.style.position = 'fixed';
-  //       frame.style.width = '1px';
-  //       frame.style.height = '1px';
-  //       frame.style.opacity = '0.01';
-  //       const isSafari = /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent);
-  //       if (isSafari) {
-  //         // fallback in safari
-  //         frame.onload = () => {
-  //           try {
-  //             frame.contentWindow.document.execCommand('print', false, null);
-  //           } catch (e) {
-  //             frame.contentWindow.print();
-  //           }
-  //         };
-  //       }
-  //       frame.src = pdf.output('bloburl').toString();
-  //       document.body.appendChild(frame);
-  //     });
-  //   } catch (err) {
-  //     this.sharedService.showErrorNotification();
-  //   } finally {
-  //     this.isLoading = false;
-  //   }
-  // }
+  get businessConfig() {
+    return this.sharedService.businessConfig;
+  }
 
   close() {
     this.dialogRef.close(this.data);
