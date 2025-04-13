@@ -57,7 +57,7 @@ export class OrderComponent extends SharedUtil implements OnInit {
       filter: e?.filters?.global?.value || '',
       limit: e?.rows || 10,
       offset: e?.first || 0,
-      sortField: e?.sortField || 'id',
+      sortField: e?.sortField || 'created_at',
       sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'DESC',
     };
 

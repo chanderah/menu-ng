@@ -113,5 +113,15 @@ export const moveUp = trigger('moveUp', [
   transition(':leave', [animate('300ms ease-in', style({ transform: 'translateY(-50px)', opacity: 0 }))]),
 ]);
 
+export const snakeToTitleCase = (str: string) => {
+  return str
+    .split('_')
+    .map((word) => {
+      if (word === word.toUpperCase()) return word; // preserve acronyms
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
+};
+
 export const isMobile = window.innerWidth < 768;
 export const isDesktop = !isMobile;

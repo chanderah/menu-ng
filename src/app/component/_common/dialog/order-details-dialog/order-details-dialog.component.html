@@ -20,7 +20,7 @@
           <p class="font-semibold ml-2 mt-2">{{ data.tableName }}</p>
         </div>
         <div class="col-6 text-right">
-          <p class="text-sm font-semibold mr-2 mt-2">{{ data.totalPrice | custom }}</p>
+          <p class="text-sm font-semibold mr-2 mt-2">{{ data.totalPrice | currency }}</p>
         </div>
       </div>
       <div class="col-12" *ngFor="let product of data.products; index as i">

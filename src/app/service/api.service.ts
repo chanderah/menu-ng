@@ -4,7 +4,7 @@ import { Product } from 'src/app/interface/product';
 import { Category } from './../interface/category';
 import { Order, PaymentMethod } from './../interface/order';
 import { PagingInfo } from './../interface/paging_info';
-import { User } from './../interface/user';
+import { User, UserLogin } from './../interface/user';
 import { getImageSrc, jsonStringify } from '../lib/utils';
 import { ApiResponse } from '../interface/api';
 import { Table } from '../interface/customer';
@@ -32,7 +32,7 @@ export class ApiService {
     return this.httpClient.post<any>('/user/register', user);
   }
 
-  login(user: User) {
+  login(user: UserLogin) {
     return this.httpClient.post<any>('/user/login', user);
   }
 

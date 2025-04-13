@@ -19,7 +19,7 @@
               <div>
                 <h6 class="text-capitalize my-2">{{ product.name }}</h6>
                 <p class="text-primary text-sm font-semibold mt-0 mb-3">
-                  {{ product.price | custom }}
+                  {{ product.price | currency }}
                 </p>
               </div>
             </div>
@@ -81,7 +81,7 @@
               </span>
             </div>
             <div class="col-12 mx-4 no-pt">
-              <span class="text-left text-md">{{ product.price | custom }}</span>
+              <span class="text-left text-md">{{ product.price | currency }}</span>
             </div>
             <div class="col-12 text-center mt-2">
               <button

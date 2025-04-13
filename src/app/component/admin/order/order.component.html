@@ -13,7 +13,7 @@
         [loading]="isLoading"
         [rowsPerPageOptions]="[10, 20, 50, 100]"
         [rows]="10"
-        sortField="id"
+        [sortField]="pagingInfo.sortField"
         [sortOrder]="-1"
         [totalRecords]="pagingInfo.rowCount"
         [lazy]="true"
@@ -53,19 +53,23 @@
             <th>Products</th>
             <th>Served</th>
             <th pSortableColumn="total_price">Amount <p-sortIcon field="totalPrice"></p-sortIcon></th>
+            <th>Payment Type</th>
+            <th>Payment Method</th>
             <th>Status</th>
             <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-data let-i="rowIndex">
-          <tr (click)="onClickOrder(data)" style="cursor: pointer">
+          <tr class="cursor-pointer" (click)="onClickOrder(data)">
             <td>{{ data.id }}</td>
             <td>{{ data.orderCode }}</td>
             <td style="min-width: 100px">{{ data.tableName }}</td>
-            <td style="min-width: 100px" class="truncate">{{ getProductsName(data.products) }}</td>
+            <td style="min-width: 100px" class="truncate">{{ getProductsName(data.products) | truncate: 20 }}</td>
             <td>{{ data.isServed ? '✅' : '❌' }}</td>
-            <td style="min-width: 8rem">{{ data.totalPrice | custom }}</td>
+            <td style="min-width: 8rem">{{ data.totalPrice | currency }}</td>
+            <td>{{ snakeToTitleCase(data.paymentType) | stripe }}</td>
+            <td>{{ snakeToTitleCase(data.paymentMethod) | stripe }}</td>
             <td>
               <app-badge [data]="data"></app-badge>
             </td>
@@ -109,9 +113,9 @@
                 <td class="flex flex-column">
                   <span>{{ data.name }}</span>
                   <div class="flex align-items-center justify-content-center w-full">
-                    <span class="w-full text-right">{{ data.price | custom }}</span>
+                    <span class="w-full text-right">{{ data.price | currency }}</span>
                     <span class="w-full text-right">x{{ data.quantity }}</span>
-                    <span class="w-full text-right">{{ data.price | custom }}</span>
+                    <span class="w-full text-right">{{ data.price | currency }}</span>
                   </div>
                 </td>
               </tr>
@@ -119,19 +123,19 @@
               <tr>
                 <td class="flex justify-content-between">
                   <span>SUBTOTAL</span>
-                  <span>{{ selectedOrderReceipt.subTotal | custom }}</span>
+                  <span>{{ selectedOrderReceipt.subTotal | currency }}</span>
                 </td>
               </tr>
               <tr>
                 <td class="flex justify-content-between">
                   <span>TAXES</span>
-                  <span>{{ selectedOrderReceipt.taxes | custom }}</span>
+                  <span>{{ selectedOrderReceipt.taxes | currency }}</span>
                 </td>
               </tr>
               <tr>
                 <td class="flex justify-content-between font-bold">
                   <span>TOTAL</span>
-                  <span>{{ selectedOrderReceipt.total | custom }}</span>
+                  <span>{{ selectedOrderReceipt.total | currency }}</span>
                 </td>
               </tr>
               <hr />
@@ -144,13 +148,13 @@
               <tr>
                 <td class="flex justify-content-between">
                   <span>RECEIVED AMOUNT</span>
-                  <span>{{ selectedOrderReceipt.receivedAmount | custom }}</span>
+                  <span>{{ selectedOrderReceipt.receivedAmount | currency }}</span>
                 </td>
               </tr>
               <tr>
                 <td class="flex justify-content-between">
                   <span>CHANGES</span>
-                  <span>{{ selectedOrderReceipt.changes | custom }}</span>
+                  <span>{{ selectedOrderReceipt.changes | currency }}</span>
                 </td>
               </tr>
             </tbody>

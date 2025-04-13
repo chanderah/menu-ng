@@ -8,7 +8,7 @@ import {
   HttpErrorResponse,
   HttpStatusCode,
 } from '@angular/common/http';
-import { catchError, filter, map, Observable } from 'rxjs';
+import { catchError, filter, map, Observable, of } from 'rxjs';
 import { isDevelopment, jsonParse } from '../lib/utils';
 import { Aes256Service } from '../service/aes256.service';
 import { environment } from 'src/environments/environment';
@@ -60,13 +60,14 @@ export class ApiInterceptor implements HttpInterceptor {
         this.logResponse(req, err);
 
         const isLoggingIn = req.url.includes('/user/login');
-        if (!isLoggingIn && err.status === HttpStatusCode.Unauthorized) {
+        if (isLoggingIn) {
+          return of(new HttpResponse({ body: err }));
+        } else if (!isLoggingIn && err.status === HttpStatusCode.Unauthorized) {
           this.handleUnathorizedRequest();
         }
 
         this.toastService.errorToast('Something went wrong.');
         throw new Error('Something went wrong.');
-        // return of(new HttpResponse({ body: err }));
       })
     );
   }

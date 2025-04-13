@@ -11,6 +11,7 @@ import {
   jsonParse,
   jsonStringify,
   refreshPage,
+  snakeToTitleCase,
   toLetter,
 } from './utils';
 import { Product, ProductOption, ProductOptionValue } from '../interface/product';
@@ -93,6 +94,10 @@ export default class SharedUtil {
 
   isOrderPaid(status: string) {
     return ['settlement', 'capture'].includes(status);
+  }
+
+  snakeToTitleCase(str: string) {
+    return snakeToTitleCase(str);
   }
 
   get dialogBreakpoints() {

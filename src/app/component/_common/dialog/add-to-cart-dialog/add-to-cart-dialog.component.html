@@ -47,7 +47,7 @@
                   </label>
                   <div class="flex align-items-center gap-2">
                     <label [for]="'selected' + i + j" class="text-xs font-semibold" *ngIf="optionValue.value.price">
-                      +{{ optionValue.value.price | custom }}
+                      +{{ optionValue.value.price | currency }}
                     </label>
                     <p-checkbox
                       [inputId]="'selected' + i + j"
@@ -101,7 +101,7 @@
           (click)="onSubmit()">
           <label class="font-semibold cursor-pointer">+ Add to Cart</label>
           <label class="font-bold cursor-pointer">
-            {{ form.value['totalPrice'] | custom }}
+            {{ form.value['totalPrice'] | currency }}
           </label>
         </div>
       </div>

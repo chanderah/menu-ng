@@ -73,6 +73,8 @@ import { BadgeComponent } from './component/_common/badge/badge.component';
 import { TagModule } from 'primeng/tag';
 import { PaymentComponent } from './component/admin/payment/payment.component';
 import { OrderDetailsDialogComponent } from './component/_common/dialog/order-details-dialog/order-details-dialog.component';
+import { StripePipe } from './pipe/stripe.pipe';
+import { TruncatePipe } from './pipe/truncate.pipe';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -100,6 +102,8 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
 
     /* PIPE */
     CustomCurrencyPipe,
+    StripePipe,
+    TruncatePipe,
 
     /* DIALOG */
     NotificationDialogComponent,
@@ -179,6 +183,9 @@ const adminComponents: any[] = [UserComponent, OrderComponent, OrderLiveComponen
     /* SHARED */
     SharedService,
     CustomCurrencyPipe,
+    StripePipe,
+    TruncatePipe,
+
     TreeDragDropService,
   ],
   bootstrap: [AppComponent],

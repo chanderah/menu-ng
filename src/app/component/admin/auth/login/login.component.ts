@@ -41,6 +41,7 @@ export class LoginComponent extends SharedUtil implements OnInit {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', [Validators.minLength(5), Validators.required]],
+      rememberMe: [false],
     });
 
     this.sharedService.user$.subscribe(() => {

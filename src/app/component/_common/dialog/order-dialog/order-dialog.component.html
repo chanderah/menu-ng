@@ -53,7 +53,7 @@
 
                   <div class="flex w-full justify-content-start mt-auto">
                     <label class="text-sm font-semibold">
-                      {{ product.value['totalPrice'] | custom }}
+                      {{ product.value['totalPrice'] | currency }}
                     </label>
                   </div>
                 </div>
@@ -120,7 +120,7 @@
                     {{ isOrdered ? 'Payment' : 'Checkout' }}
                   </label>
                 </div>
-                <label class="font-bold cursor-pointer"> {{ form.value['totalPrice'] | custom }} </label>
+                <label class="font-bold cursor-pointer"> {{ form.value['totalPrice'] | currency }} </label>
               </ng-template>
             </div>
           </loading-container>

@@ -64,7 +64,7 @@
             <td style="min-width: 100px" class="text-left text-capitalize">
               <div class="flex flex-column">
                 <p class="font-semibold">#{{ data.orderCode }}</p>
-                <p>{{ data.totalPrice | custom }}</p>
+                <p>{{ data.totalPrice | currency }}</p>
               </div>
             </td>
             <td style="min-width: 8rem; text-align: right">
@@ -109,7 +109,7 @@
           <p class="font-semibold ml-2 mt-2">{{ selectedOrder.tableName }}</p>
         </div>
         <div class="col-6 text-right">
-          <p class="text-sm font-semibold mr-2 mt-2">{{ selectedOrder.totalPrice | custom }}</p>
+          <p class="text-sm font-semibold mr-2 mt-2">{{ selectedOrder.totalPrice | currency }}</p>
         </div>
       </div>
       <div class="col-12" *ngFor="let product of selectedOrder.products; index as i">
