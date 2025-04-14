@@ -64,7 +64,8 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
       if (res) {
         this.data.paymentType = PaymentType.COUNTER;
         this.data.paymentMethod = res.label;
-        // this.isDataUpdated = true;
+        this.isDataUpdated = true;
+        // TODO: update order
         this.onClickReceipt();
       }
     });

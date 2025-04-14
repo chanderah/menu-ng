@@ -9,7 +9,7 @@ import { SharedService } from 'src/app/service/shared.service';
   styleUrls: ['./print-dialog.component.scss'],
 })
 export class PrintDialogComponent extends SharedUtil {
-  @Input() targetId!: string;
+  @Input() targetId!: string; // div id
   @Input() showDialog: boolean = false;
   @Input() isDisabledPrint: boolean = false;
   @Output() onPrinting = new EventEmitter<boolean>();
@@ -70,6 +70,6 @@ export class PrintDialogComponent extends SharedUtil {
   }
 
   hideDialog() {
-    this.onShowDialogChange.emit(true);
+    this.onShowDialogChange.emit(false);
   }
 }
