@@ -17,7 +17,7 @@
         [pageLinks]="3"
         [loading]="isLoading"
         [rowsPerPageOptions]="[10, 20, 50, 100]"
-        [rows]="10"
+        [rows]="pagingInfo.limit"
         [totalRecords]="pagingInfo.rowCount"
         [lazy]="true"
         [filterDelay]="500"
@@ -49,9 +49,9 @@
             <th>Image</th>
             <th pSortableColumn="category_id">Category <p-sortIcon field="category_id"></p-sortIcon></th>
             <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-            <th pSortableColumn="featured">Featured <p-sortIcon field="status"></p-sortIcon></th>
+            <th pSortableColumn="featured">Featured <p-sortIcon field="featured"></p-sortIcon></th>
             <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-            <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
+            <th pSortableColumn="created_at">Date Created <p-sortIcon field="created_at"></p-sortIcon></th>
           </tr>
         </ng-template>
 

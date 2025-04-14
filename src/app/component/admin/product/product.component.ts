@@ -85,7 +85,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
       this.isLoading = false;
       if (res.status === 200) {
         this.products = res.data;
-        if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
+        this.pagingInfo.rowCount = res.rowCount;
       } else {
         this.toastService.errorToast(res.message);
       }

@@ -12,9 +12,7 @@
         [pageLinks]="3"
         [loading]="isLoading"
         [rowsPerPageOptions]="[10, 20, 50, 100]"
-        [rows]="10"
-        [sortField]="pagingInfo.sortField"
-        [sortOrder]="-1"
+        [rows]="pagingInfo.limit"
         [totalRecords]="pagingInfo.rowCount"
         [lazy]="true"
         [filterDelay]="500"
@@ -22,9 +20,9 @@
         [value]="orders"
         [rowHover]="true"
         [scrollable]="true"
-        scrollDirection="both"
-        selectionMode="single"
         [(selection)]="selectedOrder"
+        selectionMode="single"
+        scrollDirection="both"
         responsiveLayout="scroll">
         <ng-template pTemplate="caption">
           <div class="flex flex-column">
@@ -50,16 +48,16 @@
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th>No.</th>
+            <th pSortableColumn="id">No. <p-sortIcon field="id"></p-sortIcon></th>
             <th>Order ID</th>
             <th>Table</th>
             <th>Products</th>
             <th>Served</th>
-            <th pSortableColumn="total_price">Amount <p-sortIcon field="totalPrice"></p-sortIcon></th>
+            <th pSortableColumn="total_price">Amount <p-sortIcon field="total_price"></p-sortIcon></th>
             <th>Payment Type</th>
             <th>Payment Method</th>
             <th>Status</th>
-            <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
+            <th pSortableColumn="created_at">Date Created <p-sortIcon field="created_at"></p-sortIcon></th>
           </tr>
         </ng-template>
 

@@ -11,7 +11,6 @@ import { SharedService } from '../../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { ProductOptionValue } from 'src/app/interface/product';
 import { Order, ProductOrder } from 'src/app/interface/order';
-import { lastValueFrom } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
@@ -91,15 +90,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
     else if (this.isOrdered && this.data.status !== 'pending') return this.hideDialog();
 
     this.isLoading = true;
-    const req = this.form.value as Order;
-    for (const v of req.products) {
-      if (!v.image.includes('base64')) {
-        const res = await lastValueFrom(this.apiService.getImageThumbnail(v.image));
-        v.image = await this.blobToBase64(res);
-      }
-    }
-
-    this.apiService.createOrder(req).subscribe({
+    this.apiService.createOrder(this.form.value).subscribe({
       next: async (res) => {
         this.isLoading = false;
         if (res.status === 200) {

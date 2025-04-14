@@ -15,7 +15,7 @@
         [pageLinks]="3"
         [loading]="isLoading"
         [rowsPerPageOptions]="[10, 20, 50, 100]"
-        [rows]="10"
+        [rows]="pagingInfo.limit"
         [totalRecords]="pagingInfo.rowCount"
         [lazy]="true"
         [filterDelay]="500"
@@ -45,9 +45,9 @@
             <th pSortableColumn="id">No<p-sortIcon field="id"></p-sortIcon></th>
             <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
             <th pSortableColumn="username">Username<p-sortIcon field="username"></p-sortIcon></th>
-            <th pSortableColumn="username">Role<p-sortIcon field="role"></p-sortIcon></th>
+            <th pSortableColumn="role_id">Role<p-sortIcon field="role_id"></p-sortIcon></th>
             <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-            <th pSortableColumn="created_at">Date Created <p-sortIcon field="createdAt"></p-sortIcon></th>
+            <th pSortableColumn="created_at">Date Created <p-sortIcon field="created_at"></p-sortIcon></th>
           </tr>
         </ng-template>
 

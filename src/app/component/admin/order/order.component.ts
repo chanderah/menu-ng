@@ -23,7 +23,7 @@ export class OrderComponent extends SharedUtil implements OnInit, OnDestroy {
     filter: '',
     limit: 10,
     offset: 0,
-    sortField: 'created_at',
+    sortField: 'id',
     sortOrder: 'DESC',
   };
 

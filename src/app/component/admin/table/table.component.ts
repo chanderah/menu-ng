@@ -56,7 +56,7 @@ export class TableComponent extends SharedUtil implements OnInit {
       this.isLoading = false;
       if (res.status === 200) {
         this.tables = res.data;
-        if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
+        this.pagingInfo.rowCount = res.rowCount;
       } else {
         this.toastService.errorToast('Failed to get Tables data.');
       }

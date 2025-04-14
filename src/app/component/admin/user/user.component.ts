@@ -64,7 +64,7 @@ export class UserComponent extends SharedUtil implements OnInit {
       this.isLoading = false;
       if (res.status === 200) {
         this.users = res.data;
-        if (res.rowCount !== this.pagingInfo.rowCount) this.pagingInfo.rowCount = res.rowCount;
+        this.pagingInfo.rowCount = res.rowCount;
       } else this.toastService.errorToast('Failed to get Users.');
     });
   }
