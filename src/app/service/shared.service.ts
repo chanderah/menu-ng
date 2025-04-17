@@ -3,12 +3,13 @@ import { ConfirmationService } from 'primeng/api';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/interface/user';
 import { NotificationDialogComponent } from '../component/_common/dialog/notification-dialog/notification-dialog.component';
-import { clearLocalStorage, sortArrayByLabelProperty } from '../lib/utils';
-import { BehaviorSubject, tap } from 'rxjs';
+import { sortArrayByLabelProperty } from '../lib/utils';
+import { BehaviorSubject, filter, merge, take, tap } from 'rxjs';
 import { Category } from '../interface/category';
 import { ApiService } from './api.service';
 import { StorageService } from '../storage.service';
 import { MappedBusinessConfig } from '../interface/business_config';
+import { CustomerService } from './customer.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,9 +28,23 @@ export class SharedService {
     public dialogService: DialogService,
     public confirmationService: ConfirmationService,
     private apiService: ApiService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private customerService: CustomerService
   ) {
-    this.load();
+    merge(this.user$, customerService.customer$)
+      .pipe(
+        filter(() => this.isLoggedIn || customerService.isCustomer),
+        take(1)
+      )
+      .subscribe(() => {
+        this.loadCategories().subscribe();
+        this.apiService.getBusinessConfig().subscribe((res) => {
+          this.businessConfig = res.data.reduce((acc, v) => {
+            acc[v.param] = v.value;
+            return acc;
+          }, {});
+        });
+      });
   }
 
   load() {
@@ -46,7 +61,6 @@ export class SharedService {
   }
 
   logoutUser() {
-    clearLocalStorage();
     this.user = null;
   }
 
@@ -106,6 +120,7 @@ export class SharedService {
       this.storageService.setWithExpiry('user', data);
       this._user.next(data);
     } else {
+      this.storageService.remove('user');
       this._user.next(null);
     }
   }

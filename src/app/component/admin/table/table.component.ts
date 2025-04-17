@@ -45,7 +45,7 @@ export class TableComponent extends SharedUtil implements OnInit {
   getTables(e?: LazyLoadEvent) {
     this.isLoading = true;
     this.pagingInfo = {
-      filter: e?.filters?.global?.value || '',
+      filter: e.globalFilter || '',
       limit: e?.rows || 20,
       offset: e?.first || 0,
       sortField: e?.sortField || 'name',
@@ -126,7 +126,7 @@ export class TableComponent extends SharedUtil implements OnInit {
       name: ['', [Validators.maxLength(255), Validators.required]],
       barcode: ['', [Validators.maxLength(255), Validators.required]],
       status: [true, [Validators.maxLength(255), Validators.required]],
-      userCreated: [this.sharedService.user.id],
+      createdBy: [this.sharedService.user.id],
     });
   }
 }

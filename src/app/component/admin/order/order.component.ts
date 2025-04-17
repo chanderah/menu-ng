@@ -93,17 +93,22 @@ export class OrderComponent extends SharedUtil implements OnInit, OnDestroy {
     this.dialogService
       .open(OrderDetailsDialogComponent, {
         ...this.defaultDialogConfig,
+        closable: false,
         closeOnEscape: false,
         dismissableMask: false,
-        header: `Order #${data.orderCode}`,
+        maximizable: false,
+        showHeader: false,
+        // draggable: true,
         data: {
           order: data,
           paymentMethods: this.paymentMethods,
         },
       })
       .onClose.subscribe((res: Order) => {
-        console.log('res', res);
-        // if (res) data = res;
+        const order = this.orders.find((v) => v.id === res.id);
+        if (order?.status !== res.status) {
+          this.getOrders();
+        }
       });
   }
 

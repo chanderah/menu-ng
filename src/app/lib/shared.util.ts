@@ -96,6 +96,14 @@ export default class SharedUtil {
     return ['settlement', 'capture'].includes(status);
   }
 
+  isOrderCompleted(status: string) {
+    return status === 'complete';
+  }
+
+  isOrderPending(status: string) {
+    return status === 'pending';
+  }
+
   snakeToTitleCase(str: string) {
     return snakeToTitleCase(str);
   }
@@ -111,6 +119,7 @@ export default class SharedUtil {
       dismissableMask: true,
       closeOnEscape: true,
       showHeader: true,
+      keepInViewport: true,
       transitionOptions: '100ms ease-out',
       contentStyle: {
         overflow: 'auto',

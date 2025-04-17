@@ -65,7 +65,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
       price: [0, [Validators.required]],
       featured: [false],
       status: [true],
-      userCreated: [0, [Validators.required]],
+      createdBy: [0, [Validators.required]],
       options: this.formBuilder.array([]),
     });
   }
@@ -73,7 +73,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
   getProducts(e?: LazyLoadEvent) {
     this.resetProductDialog();
     this.pagingInfo = {
-      filter: e?.filters?.global?.value || '',
+      filter: e.globalFilter || '',
       limit: e?.rows || 10,
       offset: e?.first || 0,
       sortField: e?.sortField || 'ID',

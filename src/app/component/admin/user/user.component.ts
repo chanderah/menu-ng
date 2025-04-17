@@ -15,7 +15,13 @@ import { SharedService } from 'src/app/service/shared.service';
 })
 export class UserComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;
-  pagingInfo = {} as PagingInfo;
+  pagingInfo: PagingInfo = {
+    filter: '',
+    limit: 10,
+    offset: 0,
+    sortField: 'id',
+    sortOrder: 'DESC',
+  };
   showUserDialog: boolean = false;
 
   users = [] as User[];
@@ -31,7 +37,9 @@ export class UserComponent extends SharedUtil implements OnInit {
     private apiService: ApiService
   ) {
     super();
+  }
 
+  ngOnInit() {
     this.form = this.formBuilder.group({
       id: [null],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
@@ -41,9 +49,7 @@ export class UserComponent extends SharedUtil implements OnInit {
       status: [true, [Validators.required]],
       createdAt: [null],
     });
-  }
 
-  ngOnInit() {
     this.apiService.getUserRoles().subscribe((res) => {
       if (res.status === 200) this.userRoles = res.data;
     });
@@ -52,13 +58,15 @@ export class UserComponent extends SharedUtil implements OnInit {
   getUsers(e?: LazyLoadEvent) {
     this.showUserDialog = false;
     this.isLoading = true;
-    this.pagingInfo = {
-      filter: e?.filters?.global?.value ?? '',
-      limit: e?.rows ?? 20,
-      offset: e?.first ?? 0,
-      sortField: e?.sortField ?? 'name',
-      sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
-    };
+    if (e) {
+      this.pagingInfo = {
+        filter: e.globalFilter,
+        limit: e.rows,
+        offset: e.first,
+        sortField: e.sortField,
+        sortOrder: e.sortOrder === 1 ? 'ASC' : 'DESC',
+      };
+    }
 
     this.apiService.getUsers(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;

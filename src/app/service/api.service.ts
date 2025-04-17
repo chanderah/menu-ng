@@ -9,12 +9,16 @@ import { getImageSrc, jsonStringify } from '../lib/utils';
 import { ApiResponse } from '../interface/api';
 import { Table } from '../interface/customer';
 import { BusinessConfig } from '../interface/business_config';
+import { Aes256Service } from './aes256.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private aes256Service: Aes256Service
+  ) {}
 
   getBusinessConfig() {
     return this.httpClient.post<ApiResponse<BusinessConfig[]>>('/business/findAll', null);
@@ -76,12 +80,8 @@ export class ApiService {
     return this.httpClient.post<any>('/category/findById', category);
   }
 
-  createCategory(category: Category) {
-    return this.httpClient.post<any>('/category/create', category);
-  }
-
-  updateCategory(category: Category) {
-    return this.httpClient.post<any>('/category/update', category);
+  saveCategory(category: Category) {
+    return this.httpClient.post<ApiResponse<void>>('/category/save', category);
   }
 
   deleteCategory(category: Category) {
@@ -124,22 +124,16 @@ export class ApiService {
     return this.httpClient.post<any>('/product/findById', product);
   }
 
-  createProduct(product: Product) {
-    return this.httpClient.post<any>('/product/create', product);
-  }
-
   saveProduct(product: Product, productImages: File[]) {
-    const isEdit = !!product.id;
+    // const isEdit = !!product.id;
     const formData = new FormData();
 
     for (const v of productImages.filter(Boolean)) formData.append('productImages', v);
-    formData.append('product', jsonStringify(product));
+    // const data = this.aes256Service.encrypt(jsonStringify(product));
+    const data = jsonStringify(product);
+    formData.append('product', data);
 
-    return this.httpClient.post<any>(`/product/${isEdit ? 'update' : 'create'}`, formData);
-  }
-
-  updateProduct(product: Product) {
-    return this.httpClient.post<any>('/product/update', product);
+    return this.httpClient.post<ApiResponse<void>>('/product/save', formData);
   }
 
   deleteProduct(product: Product) {
@@ -166,16 +160,16 @@ export class ApiService {
     return this.httpClient.post<ApiResponse<Order>>('/order/findByCode', { orderCode });
   }
 
-  createOrder(order: Order) {
-    return this.httpClient.post<ApiResponse<Order>>('/order/create', order);
+  createOrder(req: Order) {
+    return this.httpClient.post<ApiResponse<Order>>('/order/create', req);
   }
 
-  updateOrder(orderId: number) {
-    return this.httpClient.post<any>('/order/update', { orderId });
+  completeOrder(req: Order) {
+    return this.httpClient.post<ApiResponse<Order>>('/order/complete', req);
   }
 
   deleteOrder(orderId: number) {
-    return this.httpClient.post<any>('/order/delete', { orderId });
+    return this.httpClient.post<ApiResponse<void>>('/order/delete', { orderId });
   }
 
   getPaymentMethods() {

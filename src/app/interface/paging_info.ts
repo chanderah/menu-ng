@@ -4,7 +4,7 @@ export interface PagingInfo {
   limit: number | 10 | 25 | 50 | 100;
   page?: number;
   offset?: number;
-  sortField?: string; //dateCreated
+  sortField?: string; //id
   sortOrder?: 'ASC' | 'DESC'; //ASC : DESC
   rowCount?: number;
 }

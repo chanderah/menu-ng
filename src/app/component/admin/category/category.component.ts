@@ -52,19 +52,14 @@ export class CategoryComponent extends SharedUtil implements OnInit {
 
   async onSubmit() {
     this.isLoading = true;
-    try {
-      const observable = this.isEmpty(this.selectedNode)
-        ? this.apiService.createCategory(this.form.value)
-        : this.apiService.updateCategory(this.form.value);
-
-      observable.subscribe((res) => {
-        if (res.status === 200) {
-          this.resetCategoryDialog();
-        } else this.toastService.errorToast(res.message);
-      });
-    } finally {
+    this.apiService.saveCategory(this.form.value).subscribe((res) => {
       this.isLoading = false;
-    }
+      if (res.status === 200) {
+        this.resetCategoryDialog();
+      } else {
+        this.toastService.errorToast(res.message);
+      }
+    });
   }
 
   resetCategoryDialog() {

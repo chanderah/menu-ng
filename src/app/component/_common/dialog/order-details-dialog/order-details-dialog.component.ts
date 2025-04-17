@@ -23,7 +23,6 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
 
   data!: Order;
   paymentMethods: PaymentMethod[] = [];
-  isDataUpdated: boolean = false;
 
   receivedAmountCtrl = new FormControl(0, Validators.required);
 
@@ -54,26 +53,35 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
   }
 
   async onClickPayment() {
-    const dialogRef = this.dialogService.open(ChoosePaymentDialogComponent, {
+    const ref = this.dialogService.open(ChoosePaymentDialogComponent, {
       ...this.defaultStackedDialogConfig,
       header: 'Choose Payment Method',
       data: this.paymentMethods,
     });
 
-    dialogRef.onClose.subscribe((res: PaymentMethod) => {
-      if (res) {
-        this.data.paymentType = PaymentType.COUNTER;
-        this.data.paymentMethod = res.label;
-        this.isDataUpdated = true;
-        // TODO: update order
-        this.onClickReceipt();
-      }
+    ref.onClose.subscribe((res: PaymentMethod) => {
+      if (!res) return;
+
+      this.isLoading = true;
+      this.apiService
+        .completeOrder({
+          ...this.data,
+          paymentType: PaymentType.COUNTER,
+          paymentMethod: res.label,
+        })
+        .subscribe((res) => {
+          this.isLoading = false;
+          if (res.status === 200) {
+            this.data = res.data;
+            this.openPrintDialog();
+          } else {
+            this.sharedService.showErrorNotification();
+          }
+        });
     });
   }
 
-  onClickReceipt() {
-    this.dialogConfig.closeOnEscape = false;
-    this.dialogConfig.dismissableMask = false;
+  openPrintDialog() {
     this.showPrintDialog = true;
   }
 
@@ -123,6 +131,9 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
 
   get businessConfig() {
     return this.sharedService.businessConfig;
+  }
+  get addresses() {
+    return [1, 2, 3, 4, 5, 6].map((v) => this.businessConfig[`address${v}`]).filter(Boolean);
   }
 
   close() {

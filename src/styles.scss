@@ -9,6 +9,16 @@
 @import 'assets/sass/layout/_layout';
 @import 'assets/sass/overrides/_overrides';
 
+// :host ::ng-deep {}
+
+.p-dialog:not(:has(.p-dialog-header)) .p-dialog-content {
+    border-radius: 6px;
+}
+
+.p-dialog-content:has(.notification) {
+    border-radius: 20px !important;
+}
+
 .w-fit {
     width: fit-content !important;
 }

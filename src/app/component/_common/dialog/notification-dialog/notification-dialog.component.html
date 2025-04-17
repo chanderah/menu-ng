@@ -1,12 +1,9 @@
-<div
-    pRipple
-    class="flex flex-column align-items-center justify-content-between font-apple cursor-pointer"
-    (click)="dismiss()">
-    <div class="col-12 text-center" style="font-size: 60px">{{ notification.icon }}</div>
-    <div class="col-12 text-center text-md font-semibold">
-        {{ notification.message }}
-    </div>
-    <div class="col-12 text-center text-sm mt-2">
-        <a>click to dismiss</a>
-    </div>
+<div pRipple class="notification flex flex-column align-items-center justify-content-between font-apple cursor-pointer" (click)="dismiss()">
+  <div class="col-12 text-center" style="font-size: 60px">{{ notification.icon }}</div>
+  <div class="col-12 text-center text-md font-semibold">
+    {{ notification.message }}
+  </div>
+  <div class="col-12 text-center text-sm mt-2">
+    <a>click to dismiss</a>
+  </div>
 </div>

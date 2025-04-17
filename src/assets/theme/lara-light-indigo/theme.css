@@ -4322,6 +4322,8 @@ p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   border: 0 none;
 }
+
+.p-dialog .custom-dialog-header,
 .p-dialog .p-dialog-header {
   border-bottom: 0 none;
   background: #ffffff;
@@ -4330,11 +4332,15 @@ p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
 }
+
+.p-dialog .custom-dialog-header .p-dialog-title,
 .p-dialog .p-dialog-header .p-dialog-title {
   font-weight: 700;
   font-size: 1.25rem;
   text-transform: capitalize;
 }
+
+.p-dialog .custom-dialog-header .p-dialog-header-icon,
 .p-dialog .p-dialog-header .p-dialog-header-icon {
   width: 2rem;
   height: 2rem;
@@ -4348,16 +4354,22 @@ p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
     box-shadow 0.2s;
   margin-right: 0.5rem;
 }
+
+.p-dialog .custom-dialog-header .p-dialog-header-icon:enabled:hover,
 .p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
   color: #343a40;
   border-color: transparent;
   background: #e9ecef;
 }
+
+.p-dialog .custom-dialog-header .p-dialog-header-icon:focus,
 .p-dialog .p-dialog-header .p-dialog-header-icon:focus {
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 0.2rem #c7d2fe;
 }
+
+.p-dialog .custom-dialog-header .p-dialog-header-icon:last-child,
 .p-dialog .p-dialog-header .p-dialog-header-icon:last-child {
   margin-right: 0;
 }

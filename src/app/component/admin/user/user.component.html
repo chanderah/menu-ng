@@ -16,6 +16,8 @@
         [loading]="isLoading"
         [rowsPerPageOptions]="[10, 20, 50, 100]"
         [rows]="pagingInfo.limit"
+        [sortField]="pagingInfo.sortField"
+        [sortOrder]="pagingInfo.sortOrder === 'ASC' ? 1 : -1"
         [totalRecords]="pagingInfo.rowCount"
         [lazy]="true"
         [filterDelay]="500"

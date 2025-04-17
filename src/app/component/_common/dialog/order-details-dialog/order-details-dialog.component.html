@@ -1,13 +1,21 @@
 <loading-container [isLoading]="isLoading">
   <div class="w-full p-fluid px-2">
+    <div class="custom-dialog-header flex align-items-start justify-content-between px-0 pt-2">
+      <div class="w-full flex flex-column gap-3">
+        <!-- <app-badge [data]="data"> </app-badge> -->
+        <span class="p-dialog-title"> Order #{{ data.orderCode }} </span>
+      </div>
+
+      <div class="p-dialog-header-icons">
+        <button pButton pRipple type="button" class="p-dialog-header-icon p-dialog-header-maximize p-link" (click)="close()">
+          <span class="p-dialog-header-close-icon pi pi-times"></span>
+        </button>
+      </div>
+    </div>
     <div class="card p-1 mb-3">
-      <div class="flex col-12">
-        <div class="col-6">
-          <p class="font-semibold ml-2 mt-2">{{ data.tableName }}</p>
-        </div>
-        <div class="col-6 text-right">
-          <p class="text-sm font-semibold mr-2 mt-2">{{ data.totalPrice | currency }}</p>
-        </div>
+      <div class="flex gap-2 align-items-center justify-content-between p-2">
+        <p class="font-semibold ml-2 mt-2">{{ data.tableName }}</p>
+        <span class="text-sm font-semibold">{{ data.totalPrice | currency }}</span>
       </div>
       <div class="col-12" *ngFor="let product of data.products; index as i">
         <div class="p-inputgroup">
@@ -28,25 +36,24 @@
       <button pButton pRipple icon="pi pi-times" (click)="close()" label="Close" class="w-auto p-button-danger p-button-outlined"></button>
 
       <button
-        *ngIf="isOrderPaid(data.status); else paymentBtn"
+        *ngIf="isOrderPaid(data.status) || isOrderCompleted(data.status)"
         pButton
         pRipple
         icon="pi pi-print"
         class="w-auto p-button-outlined"
         label="Receipt"
-        (click)="onClickReceipt()"
+        (click)="openPrintDialog()"
         [disabled]="isLoading"></button>
 
-      <ng-template #paymentBtn>
-        <button
-          pButton
-          pRipple
-          icon="pi pi-money-bill"
-          class="w-auto p-button-outlined"
-          label="Payment"
-          (click)="onClickPayment()"
-          [disabled]="!paymentMethods.length || isLoading"></button>
-      </ng-template>
+      <button
+        *ngIf="isOrderPending(data.status)"
+        pButton
+        pRipple
+        icon="pi pi-money-bill"
+        class="w-auto p-button-outlined"
+        label="Payment"
+        (click)="onClickPayment()"
+        [disabled]="isLoading"></button>
     </div>
   </div>
 </loading-container>
@@ -64,9 +71,7 @@
       <!-- <hr /> -->
       <div class="flex flex-column gap-1 align-items-center text-xs">
         <div>{{ businessConfig['name'] }}, +{{ sharedService.phone }}</div>
-        <div *ngIf="businessConfig['address1']">{{ businessConfig['address1'] }}</div>
-        <div *ngIf="businessConfig['address2']">{{ businessConfig['address2'] }}</div>
-        <div *ngIf="businessConfig['address3']">{{ businessConfig['address3'] }}</div>
+        <div *ngFor="let address of addresses">{{ address }}</div>
       </div>
 
       <!-- <div id="date" class="mt-2">{{ data.createdAt | date: 'EEEE, MMM dd yyyy @ HH:mm:ss' }}</div> -->
@@ -85,7 +90,7 @@
             <th class="text-lg pb-4">DINE IN</th>
             <tr *ngFor="let data of data.products">
               <td class="products-list">
-                <span>{{ data.name }}</span>
+                <span class="w-full">{{ data.name }}</span>
                 <div class="flex w-full align-items-center justify-content-between gap-2">
                   <span class="text-start">X{{ data.quantity }}</span>
                   <span class="text-end">{{ data.price | currency }}</span>
@@ -120,11 +125,11 @@
             <tr>
               <td class="flex align-items-center justify-content-between">
                 <span class="w-full">RECEIVED AMOUNT</span>
-                <ng-template #receivedAmount>
+                <ng-template #label>
                   <span>{{ receivedAmountCtrl.value | currency }}</span>
                 </ng-template>
                 <p-inputNumber
-                  *ngIf="!isOrderPaid(data.status) && !isPrinting; else receivedAmount"
+                  *ngIf="!isOrderPaid(data.status) && !isPrinting as showInput; else label"
                   autofocus
                   (keyup.enter)="printDialogComponent.onClickPrint()"
                   [placeholder]="receivedAmountCtrl.value | currency"

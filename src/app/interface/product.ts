@@ -10,7 +10,7 @@ export interface Product {
 
   featured: boolean;
   status: boolean;
-  userCreated?: number;
+  createdBy?: number;
   createdAt?: Date;
 
   totalPrice?: number;

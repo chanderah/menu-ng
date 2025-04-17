@@ -26,16 +26,11 @@ export class NotificationDialogComponent implements OnInit {
       timeout: this.config.data?.timeout ?? 3000,
     };
 
-    document.getElementsByClassName('p-dialog-content')[0].className += ' rounded-radius';
     this.ref.onClose.subscribe(() => enableBodyScroll());
     setTimeout(() => this.dismiss(), this.notification.timeout);
   }
 
   dismiss() {
-    document.getElementsByClassName('p-dialog-content')[0].className = document
-      .getElementsByClassName('p-dialog-content')[0]
-      .className.replace('rounded-radius', '');
-
     enableBodyScroll();
     this.ref.close();
   }
