@@ -58,32 +58,30 @@
   class="w-full h-full"
   targetId="pdfContent"
   [showDialog]="showPrintDialog"
-  [isDisabledPrint]="isLoading || receivedAmountCtrl.invalid"
+  [isDisabledPrint]="isLoading"
   (onShowDialogChange)="showPrintDialog = $event"
   (onPrinting)="onPrinting($event)">
   <div class="order-receipt">
     <div id="pdfContent">
       <div class="headerSubTitle font-bold pb-2">Order Receipt</div>
-      <!-- <hr /> -->
-      <div class="flex flex-column gap-1 align-items-center text-xs">
-        <div>{{ businessConfig['name'] }}, +{{ sharedService.phone }}</div>
-        <div *ngFor="let address of addresses">{{ address }}</div>
-      </div>
-
-      <!-- <div id="date" class="mt-2">{{ data.createdAt | date: 'EEEE, MMM dd yyyy @ HH:mm:ss' }}</div> -->
-
-      <hr />
+      <ng-container *ngIf="!isEmpty(businessConfig)">
+        <div class="flex flex-column gap-1 align-items-center text-xs">
+          <div>{{ businessConfig['name'] }}, +{{ sharedService.phone }}</div>
+          <div *ngFor="let address of addresses">{{ address }}</div>
+        </div>
+        <hr />
+      </ng-container>
 
       <div class="flex align-items-center justify-content-between text-sm mx-2">
-        <div># {{ data.orderCode }}</div>
-        <div>{{ data.createdAt | date: 'dd/MM/yy HH:mm a' }}</div>
+        <div class="font-semibold text-xs" style="font-family: 'Fake Receipt', sans-serif">#{{ data.orderCode }}</div>
+        <div class="text-xs">{{ data.updatedAt | date: 'dd/MM/yy HH:mm a' }}</div>
       </div>
       <hr />
 
       <div class="products">
         <table class="w-full">
           <tbody>
-            <th class="text-lg pb-4">DINE IN</th>
+            <!-- <th class="text-lg pb-4">DINE IN</th> -->
             <tr *ngFor="let data of data.products">
               <td class="products-list">
                 <span class="w-full">{{ data.name }}</span>
@@ -112,21 +110,16 @@
                 <span>{{ data.totalPrice | currency }}</span>
               </td>
             </tr>
-            <hr />
             <tr>
-              <td class="flex justify-content-end">
-                <span>{{ data?.paymentMethod?.name }}</span>
+              <td class="flex justify-content-between">
+                <span>METHOD</span>
+                <span>{{ snakeToTitleCase(data.paymentMethod) }}</span>
               </td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td class="flex align-items-center justify-content-between">
                 <span class="w-full">RECEIVED AMOUNT</span>
-                <ng-template #label>
-                  <span>{{ receivedAmountCtrl.value | currency }}</span>
-                </ng-template>
                 <p-inputNumber
-                  *ngIf="!isOrderPaid(data.status) && !isPrinting as showInput; else label"
-                  autofocus
                   (keyup.enter)="printDialogComponent.onClickPrint()"
                   [placeholder]="receivedAmountCtrl.value | currency"
                   [formControl]="receivedAmountCtrl">
@@ -138,7 +131,7 @@
                 <span>CHANGES</span>
                 <span>{{ orderChanges | currency }}</span>
               </td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
 

@@ -29,6 +29,7 @@ export class ApiInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (['cloudinary', '.json'].some((v) => req.url.includes(v))) return next.handle(req);
 
+    const reqTime = new Date().getTime();
     const user = this.storageService.getWithExpiry<User>('user');
     const headers = { ...(user?.token && { Authorization: `Bearer ${user.token}` }) };
     const isFormData = req.body instanceof FormData;
@@ -52,12 +53,12 @@ export class ApiInterceptor implements HttpInterceptor {
               body: jsonParse(this.aes256Service.decrypt(res.body.encryptedData)),
             });
           }
-          this.logResponse(req, res);
+          this.logResponse(req, res, reqTime);
         }
         return res;
       }),
       catchError((err: HttpErrorResponse) => {
-        this.logResponse(req, err);
+        this.logResponse(req, err, reqTime);
 
         const isLoggingIn = req.url.includes('/user/login');
         if (isLoggingIn) {
@@ -82,7 +83,7 @@ export class ApiInterceptor implements HttpInterceptor {
     throw new Error('Unauthorized');
   }
 
-  logResponse(req: HttpRequest<unknown>, res: HttpResponse<any> | HttpErrorResponse) {
+  logResponse(req: HttpRequest<unknown>, res: HttpResponse<any> | HttpErrorResponse, reqTime: number) {
     if (!isDevelopment) return;
 
     console.log('REQUEST:', req.method, req.url, req.body);
@@ -94,7 +95,8 @@ export class ApiInterceptor implements HttpInterceptor {
 
       console.log('ERROR:', res.status, req.method, req.url, err);
     } else {
-      console.log('RESPONSE:', res.body?.status ?? res.status, req.method, req.url, res.body);
+      const responseTime = `(${new Date().getTime() - reqTime}ms)`;
+      console.log('RESPONSE:', res.body?.status ?? res.status, req.method, responseTime, req.url, res.body);
     }
   }
 }

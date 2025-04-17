@@ -5,7 +5,6 @@ import SharedUtil from 'src/app/lib/shared.util';
 import { ApiService } from 'src/app/service/api.service';
 import { ChoosePaymentDialogComponent } from '../choose-payment-dialog/choose-payment-dialog.component';
 import { SharedService } from 'src/app/service/shared.service';
-import { FormControl, Validators } from '@angular/forms';
 import { PrintDialogComponent } from '../print-dialog/print-dialog.component';
 
 @Component({
@@ -24,8 +23,6 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
   data!: Order;
   paymentMethods: PaymentMethod[] = [];
 
-  receivedAmountCtrl = new FormControl(0, Validators.required);
-
   constructor(
     private dialogService: DialogService,
     private apiService: ApiService,
@@ -43,12 +40,10 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
     this.data = this.dialogConfig.data.order;
     this.paymentMethods = this.dialogConfig.data.paymentMethods;
 
+    this.isLoading = true;
     this.apiService.getOrderById(this.data.id).subscribe((res) => {
       this.isLoading = false;
       this.data = res.data;
-
-      this.receivedAmountCtrl.setValidators([Validators.required, Validators.min(this.data.totalPrice)]);
-      this.receivedAmountCtrl.setValue(res.data.totalPrice);
     });
   }
 
@@ -60,29 +55,27 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
     });
 
     ref.onClose.subscribe((res: PaymentMethod) => {
-      if (!res) return;
-
-      this.isLoading = true;
-      this.apiService
-        .completeOrder({
+      if (res) {
+        this.openPrintDialog({
           ...this.data,
           paymentType: PaymentType.COUNTER,
           paymentMethod: res.label,
-        })
-        .subscribe((res) => {
-          this.isLoading = false;
-          if (res.status === 200) {
-            this.data = res.data;
-            this.openPrintDialog();
-          } else {
-            this.sharedService.showErrorNotification();
-          }
         });
+      }
     });
   }
 
-  openPrintDialog() {
-    this.showPrintDialog = true;
+  openPrintDialog(data: Order = this.data) {
+    this.isLoading = true;
+    this.apiService.completeOrder(data).subscribe((res) => {
+      this.isLoading = false;
+      if (res.status === 200) {
+        this.data = res.data;
+        this.showPrintDialog = true;
+      } else {
+        this.sharedService.showErrorNotification();
+      }
+    });
   }
 
   onPrinting(value: boolean) {
@@ -132,9 +125,9 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
   //   //   });
   // }
 
-  get orderChanges() {
-    return this.receivedAmountCtrl.invalid ? 0 : <number>this.receivedAmountCtrl.value - this.data.totalPrice;
-  }
+  // get orderChanges() {
+  //   return this.receivedAmountCtrl.invalid ? 0 : <number>this.receivedAmountCtrl.value - this.data.totalPrice;
+  // }
 
   get businessConfig() {
     return this.sharedService.businessConfig;
