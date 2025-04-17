@@ -1,13 +1,7 @@
 <loading-container [isLoading]="isLoading">
   <div class="w-full p-fluid px-2">
     <div class="custom-dialog-header flex align-items-start justify-content-between px-0 pt-2">
-      <div class="w-full flex flex-column gap-3">
-        <!-- <app-badge [data]="data"> </app-badge> -->
-        <!-- <span class="p-dialog-title"> {{ CONSTANTS.ORDER_STATUS[data.status] }} - Order #{{ data.orderCode }} </span> -->
-        <span class="p-dialog-title"> <app-badge [data]="data"></app-badge> Order #{{ data.orderCode }} </span>
-        <!-- <span class="p-dialog-title"> Order #{{ data.orderCode }} <app-badge [data]="data"></app-badge> </span> -->
-      </div>
-
+      <span class="p-dialog-title"> <app-badge [data]="data"></app-badge> Order #{{ data.orderCode }} </span>
       <div class="p-dialog-header-icons">
         <button pButton pRipple type="button" class="p-dialog-header-icon p-dialog-header-maximize p-link" (click)="close()">
           <span class="p-dialog-header-close-icon pi pi-times"></span>
