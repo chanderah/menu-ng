@@ -20,10 +20,16 @@ export class AppTopBarComponent {
   constructor(
     public appMain: AppMainComponent,
     public sharedService: SharedService,
-    private customerService: CustomerService
+    public customerService: CustomerService
   ) {}
 
   get cartLength() {
     return this.customerService.cart.length.toString();
+  }
+
+  onClickCart() {
+    if (this.customerService.isCustomer) {
+      this.appMain.showCartDialog = true;
+    }
   }
 }

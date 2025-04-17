@@ -131,8 +131,10 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
   }
 
   markAllAsDone() {
-    const listId = this.orders.filter((v) => !v.isServed).map((v) => v.id);
-    this.markAsDone(listId);
+    this.sharedService.showConfirm('Are you sure to mark all orders as done?', () => {
+      const listId = this.orders.filter((v) => !v.isServed).map((v) => v.id);
+      this.markAsDone(listId);
+    });
   }
 
   playSound() {
