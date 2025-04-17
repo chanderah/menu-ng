@@ -18,8 +18,6 @@ import { StorageService } from 'src/app/storage.service';
   styleUrls: ['./order-live.component.scss', '../../../../assets/styles/user.styles.scss'],
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
-  rowsPerPageOptions: number[] = [20, 50, 100];
-
   pagingInfo = {} as PagingInfo;
   audio = new Audio('/assets/sound/bell.mp3');
 
@@ -54,7 +52,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
   ngOnInit() {
     const pageSize = this.storageService.get('liveOrderPageSize');
-    this.pagingInfo.limit = Number(pageSize) || this.rowsPerPageOptions[0];
+    this.pagingInfo.limit = Number(pageSize) || this.defaultPageOptions[0];
     this.getOrders();
   }
 

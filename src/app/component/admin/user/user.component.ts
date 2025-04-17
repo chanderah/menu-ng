@@ -56,6 +56,7 @@ export class UserComponent extends SharedUtil implements OnInit {
   }
 
   getUsers(e?: LazyLoadEvent) {
+    console.log('e', e);
     this.showUserDialog = false;
     this.isLoading = true;
     if (e) {
