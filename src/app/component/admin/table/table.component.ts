@@ -19,10 +19,15 @@ import { ToastService } from 'src/app/service/toast.service';
 export class TableComponent extends SharedUtil implements OnInit {
   isLoading: boolean = true;
 
-  pagingInfo = {} as PagingInfo;
+  pagingInfo: PagingInfo = {
+    filter: '',
+    limit: 10,
+    offset: 0,
+    sortField: 'id',
+    sortOrder: 'DESC',
+  };
 
   showTableDialog: boolean = false;
-
   tables = [] as Table[];
   selectedTable!: Table;
   form!: FormGroup;
@@ -44,13 +49,15 @@ export class TableComponent extends SharedUtil implements OnInit {
 
   getTables(e?: LazyLoadEvent) {
     this.isLoading = true;
-    this.pagingInfo = {
-      filter: e.globalFilter || '',
-      limit: e?.rows || 20,
-      offset: e?.first || 0,
-      sortField: e?.sortField || 'name',
-      sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
-    };
+    if (e) {
+      this.pagingInfo = {
+        filter: e.globalFilter,
+        limit: e.rows,
+        offset: e.first,
+        sortField: e.sortField,
+        sortOrder: e.sortOrder === 1 ? 'ASC' : 'DESC',
+      };
+    }
 
     this.apiService.getTables(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;

@@ -85,6 +85,13 @@ export class OrderDetailsDialogComponent extends SharedUtil implements OnInit {
     this.showPrintDialog = true;
   }
 
+  onPrinting(value: boolean) {
+    this.isPrinting = value;
+    if (!this.isPrinting) {
+      this.showPrintDialog = false;
+    }
+  }
+
   // onClickReceipt() {
   //   // this.selectedOrderGrandTotal = this.selectedOrder.totalPrice + this.selectedOrder.totalPrice * this.taxesRatio;
   //   // // this.form.get('receivedAmount').setValue(this.selectedOrderGrandTotal);

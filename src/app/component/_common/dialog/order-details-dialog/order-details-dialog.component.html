@@ -3,7 +3,9 @@
     <div class="custom-dialog-header flex align-items-start justify-content-between px-0 pt-2">
       <div class="w-full flex flex-column gap-3">
         <!-- <app-badge [data]="data"> </app-badge> -->
-        <span class="p-dialog-title"> Order #{{ data.orderCode }} </span>
+        <!-- <span class="p-dialog-title"> {{ CONSTANTS.ORDER_STATUS[data.status] }} - Order #{{ data.orderCode }} </span> -->
+        <span class="p-dialog-title"> <app-badge [data]="data"></app-badge> Order #{{ data.orderCode }} </span>
+        <!-- <span class="p-dialog-title"> Order #{{ data.orderCode }} <app-badge [data]="data"></app-badge> </span> -->
       </div>
 
       <div class="p-dialog-header-icons">
@@ -13,8 +15,8 @@
       </div>
     </div>
     <div class="card p-1 mb-3">
-      <div class="flex gap-2 align-items-center justify-content-between p-2">
-        <p class="font-semibold ml-2 mt-2">{{ data.tableName }}</p>
+      <div class="flex gap-2 align-items-center justify-content-between p-3">
+        <span class="font-semibold ml-2 mt-2">{{ data.tableName }}</span>
         <span class="text-sm font-semibold">{{ data.totalPrice | currency }}</span>
       </div>
       <div class="col-12" *ngFor="let product of data.products; index as i">
@@ -64,7 +66,7 @@
   [showDialog]="showPrintDialog"
   [isDisabledPrint]="isLoading || receivedAmountCtrl.invalid"
   (onShowDialogChange)="showPrintDialog = $event"
-  (onPrinting)="isPrinting = $event">
+  (onPrinting)="onPrinting($event)">
   <div class="order-receipt">
     <div id="pdfContent">
       <div class="headerSubTitle font-bold pb-2">Order Receipt</div>

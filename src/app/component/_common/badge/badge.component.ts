@@ -5,8 +5,8 @@ import { Order } from 'src/app/interface/order';
 @Component({
   selector: 'app-badge',
   template: `
-    <div class="w-fit">
-      <!-- prettier-ignore -->
+    <!-- prettier-ignore -->
+    <div class="w-fit" style="display: inline-block; vertical-align: middle;">
       <p-tag
         [value]="constants.ORDER_STATUS[data.status]"
         [severity]="severity[data.status] ?? 'primary'"

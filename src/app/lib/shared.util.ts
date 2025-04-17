@@ -16,6 +16,7 @@ import {
 } from './utils';
 import { Product, ProductOption, ProductOptionValue } from '../interface/product';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { PagingInfo } from '../interface/paging_info';
 
 export default class SharedUtil {
   public env = environment;
@@ -108,6 +109,10 @@ export default class SharedUtil {
     return snakeToTitleCase(str);
   }
 
+  getSortOrder(pagingInfo: PagingInfo) {
+    return pagingInfo.sortOrder === 'ASC' ? 1 : -1;
+  }
+
   get dialogBreakpoints() {
     return { '768px': '90vw' };
   }
@@ -142,6 +147,10 @@ export default class SharedUtil {
         height: 'auto',
       },
     };
+  }
+
+  get defaultPageOptions() {
+    return [10, 20, 50, 100];
   }
 
   get bottomSheetStyle() {
