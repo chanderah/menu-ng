@@ -48,7 +48,7 @@
             <div class="flex align-items-end">
               <p class="text-sm font-normal">Last updated at: {{ lastUpdated | date: 'MMM d, HH:mm:ss' }}</p>
             </div>
-            <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="pagingInfo.limit" (onChange)="getOrders(0)" placeholder="Data per Page">
+            <p-dropdown [options]="[20, 50, 100]" [(ngModel)]="pagingInfo.limit" (onChange)="getOrders(0)" placeholder="Data per Page">
             </p-dropdown>
           </div>
         </ng-template>

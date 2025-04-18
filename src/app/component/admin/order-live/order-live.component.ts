@@ -91,7 +91,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         const res = this.jsonParse<WsMessage>(e.data);
         if (res.type === 'new_order') {
           this.getOrders();
-          this.ws.readyState;
 
           if (!this.isVisibleWindow) {
             const notification = new Notification('Menu Kita - New Order', {

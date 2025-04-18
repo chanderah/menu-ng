@@ -141,8 +141,17 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   }
 
   getFeaturedProducts() {
-    if (!this.swiperOptions && !this.selectedCategory) {
-      this.apiService.getProducts({ limit: 10, condition: [{ column: 'featured', value: true }] }).subscribe((res) => {
+    if (this.swiperOptions) return;
+    // if (this.swiperOptions && this.selectedCategory) return;
+    this.apiService
+      .getProducts({
+        limit: 10,
+        condition: [
+          { column: 'featured', value: true },
+          { column: 'status', value: true },
+        ],
+      })
+      .subscribe((res) => {
         if (res.status === 200) {
           this.featuredProducts = res.data;
           this.swiperOptions = {
@@ -165,7 +174,6 @@ export class DashboardComponent extends SharedUtil implements OnInit {
           };
         }
       });
-    }
   }
 
   onClickProduct(data: any) {
