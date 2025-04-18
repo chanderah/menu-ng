@@ -9,8 +9,8 @@ import { filterUniqueArr } from 'src/app/lib/utils';
 import SharedUtil from 'src/app/lib/shared.util';
 import { ToastService } from 'src/app/service/toast.service';
 import { StorageService } from 'src/app/storage.service';
-import { environment } from 'src/environments/environment';
 import { WsMessage } from 'src/app/interface/ws';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-live',
@@ -108,7 +108,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
         }
       };
 
-      this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
+      this.ws.onopen = () => {
+        this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
+      };
     }
   }
 
