@@ -45,7 +45,7 @@ export class LoginComponent extends SharedUtil implements OnInit {
     });
 
     this.sharedService.user$.subscribe(() => {
-      if (this.sharedService.isLoggedIn) this.router.navigateByUrl('/');
+      if (this.sharedService.isLoggedIn) this.router.navigateByUrl('/admin/order');
     });
   }
 

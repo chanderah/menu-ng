@@ -5,10 +5,11 @@
     "3000": "ng serve --port 4200",
     "ng": "ng",
     "prod": "ng serve --configuration=production",
-    "predev": "npm install",
-    "dev": "ng serve",
     "start": "ng serve",
     "release": "npm install -g @angular/cli && npm run build",
+    "predev": "npm install",
+    "dev": "npm run start",
+    "electron": "concurrently \"npm run start\" \"wait-on http://localhost:4200 && electron electron/main.js\"",
     "prebuild": "npm install",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
@@ -65,9 +66,13 @@
     "@angular/compiler-cli": "^14.3.0",
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^12.20.55",
+    "concurrently": "^9.1.2",
+    "electron": "^35.1.5",
+    "electron-reload": "^2.0.0-alpha.1",
     "prettier": "^3.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.8.4"
+    "typescript": "~4.8.4",
+    "wait-on": "^8.0.3"
   }
 }

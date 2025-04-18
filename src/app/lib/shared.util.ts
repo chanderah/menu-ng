@@ -38,8 +38,8 @@ export default class SharedUtil {
     return capitalizeFirstLetter(str);
   };
 
-  jsonParse(obj: string) {
-    return jsonParse(obj);
+  jsonParse<T = any>(obj: string) {
+    return jsonParse<T>(obj);
   }
 
   jsonStringify(obj: any) {

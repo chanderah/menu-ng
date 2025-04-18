@@ -12,6 +12,7 @@ export const environment = {
   },
   appUrl: 'https://menu-ng.vercel.app',
   apiUrl: 'https://menu-go-production.up.railway.app/api',
+  wsUrl: 'ws://menu-go-production.up.railway.app/ws',
   publicPath: 'https://public.chandrasa.fun',
   imagePath: '/assets/images',
   secretKey: 'chandrachansa@18',

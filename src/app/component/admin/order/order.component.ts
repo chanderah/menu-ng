@@ -42,7 +42,11 @@ export class OrderComponent extends SharedUtil implements OnInit, OnDestroy {
     receivedAmount: [null, Validators.required],
   });
 
-  visibilityChangeHandler = this.onVisibilityChange.bind(this);
+  visibilityChangeHandler = () => {
+    if (document.visibilityState === 'visible' && this.pagingInfo.offset === 0) {
+      this.getOrders();
+    }
+  };
 
   constructor(
     private apiService: ApiService,
@@ -59,12 +63,6 @@ export class OrderComponent extends SharedUtil implements OnInit, OnDestroy {
     this.apiService.getPaymentMethods().subscribe((res) => {
       this.paymentMethods = res.data;
     });
-  }
-
-  onVisibilityChange() {
-    if (document.visibilityState === 'visible' && this.pagingInfo.offset === 0) {
-      this.getOrders();
-    }
   }
 
   getOrders(e?: LazyLoadEvent) {

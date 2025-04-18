@@ -7,10 +7,10 @@ import { ApiService } from '../../../service/api.service';
 import { SharedService } from '../../../service/shared.service';
 import { filterUniqueArr } from 'src/app/lib/utils';
 import SharedUtil from 'src/app/lib/shared.util';
-import { environment } from 'src/environments/environment';
-import { debounceTime } from 'rxjs';
 import { ToastService } from 'src/app/service/toast.service';
 import { StorageService } from 'src/app/storage.service';
+import { environment } from 'src/environments/environment';
+import { WsMessage } from 'src/app/interface/ws';
 
 @Component({
   selector: 'app-order-live',
@@ -18,11 +18,11 @@ import { StorageService } from 'src/app/storage.service';
   styleUrls: ['./order-live.component.scss', '../../../../assets/styles/user.styles.scss'],
 })
 export class OrderLiveComponent extends SharedUtil implements OnInit {
+  ws!: WebSocket;
   pagingInfo = {} as PagingInfo;
   audio = new Audio('/assets/sound/bell.mp3');
 
   isLoading: boolean = true;
-  isListening: boolean = false;
   showOrderDetailsDialog: boolean = false;
 
   selectedOrder = {} as Order;
@@ -39,6 +39,9 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     },
   ];
 
+  isVisibleWindow: boolean = false;
+  visibilityChangeHandler = () => (this.isVisibleWindow = document.visibilityState === 'visible');
+
   constructor(
     private appRef: ApplicationRef,
     private sharedService: SharedService,
@@ -51,34 +54,61 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
   }
 
   ngOnInit() {
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
+
     const pageSize = this.storageService.get('liveOrderPageSize');
     this.pagingInfo.limit = Number(pageSize) || this.defaultPageOptions[0];
+
     this.getOrders();
   }
 
-  async initFcm() {
-    if (this.isListening) return;
+  async initNotification() {
+    if (this.ws?.readyState === WebSocket.OPEN) return;
 
     const permission = await Notification.requestPermission();
     if (permission === 'denied') {
       this.sharedService.showNotification('Please allow our browser notification and refresh page!', '😢', 90000);
     } else if (permission === 'granted') {
-      const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
-      if (fcmToken) {
-        const user = { ...this.sharedService.user, fcmToken };
-        this.apiService.updateFcmToken(user).subscribe((res) => {
-          if (res.status === 200) {
-            this.isListening = true;
-            this.sharedService.user = user;
-            this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
+      // const fcmToken = await this.messagingService.registerFcm(environment.firebaseConfig);
+      // if (fcmToken) {
+      //   const user = { ...this.sharedService.user, fcmToken };
+      //   this.apiService.updateFcmToken(user).subscribe((res) => {
+      //     if (res.status === 200) {
+      //       this.isListening = true;
+      //       this.sharedService.user = user;
+      //       this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
 
-            this.messagingService.messages$.pipe(debounceTime(300)).subscribe((res) => {
-              const isNewOrderNotif = res.length && res[res.length - 1].notification.title.toLowerCase().includes('new order');
-              if (isNewOrderNotif) this.getOrders();
+      //       this.messagingService.messages$.pipe(debounceTime(300)).subscribe((res) => {
+      //         const isNewOrderNotif = res.length && res[res.length - 1].notification.title.toLowerCase().includes('new order');
+      //         if (isNewOrderNotif) this.getOrders();
+      //       });
+      //     }
+      //   });
+      // } else this.refreshPage();
+
+      this.ws = new WebSocket(environment.wsUrl);
+      this.ws.onmessage = (e: MessageEvent) => {
+        const res = this.jsonParse<WsMessage>(e.data);
+        if (res.type === 'new_order') {
+          this.getOrders();
+          this.ws.readyState;
+
+          if (!this.isVisibleWindow) {
+            const notification = new Notification('Menu Kita - New Order', {
+              icon: '/assets/layout/images/logo-white.svg',
+              body: 'You have new orders!',
+              silent: true,
             });
+
+            notification.onclick = () => {
+              window.focus();
+              notification.close();
+            };
           }
-        });
-      } else this.refreshPage();
+        }
+      };
+
+      this.sharedService.showNotification(`You will be notified when new orders is coming!`, '🥳', 900000);
     }
   }
 
@@ -89,7 +119,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     this.apiService.getLiveOrders(lastFetchedId, this.pagingInfo.limit).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
-        this.initFcm();
+        this.initNotification();
         this.lastUpdated = new Date();
         if (lastFetchedId === 0) {
           this.orders = res.data;
@@ -151,11 +181,12 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
 
   onPause() {}
 
-  ngOnDestroy() {
-    clearTimeout(this.timeoutId);
-  }
-
   get awaitingOrdersCount() {
     return this.orders.filter((v) => !v.isServed).length;
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.timeoutId);
+    document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
   }
 }
