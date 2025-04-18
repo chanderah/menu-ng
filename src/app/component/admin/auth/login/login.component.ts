@@ -56,7 +56,11 @@ export class LoginComponent extends SharedUtil implements OnInit {
       if (res.status === 200) {
         this.sharedService.user = res.data;
         this.toastService.successToast('Login success!');
-      } else this.toastService.errorToast('Failed to authorize the user!');
+      } else if (res.status === 429) {
+        this.sharedService.showNotification('You are suspicious, please try again later.', '😡');
+      } else {
+        this.toastService.errorToast('Failed to authorize the user!');
+      }
     });
   }
 }
