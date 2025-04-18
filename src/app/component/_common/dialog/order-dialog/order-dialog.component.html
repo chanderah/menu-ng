@@ -102,25 +102,48 @@
           </p-scrollPanel>
         </div>
 
-        <div class="col-12 flex flex-col gap-3 py-3 h-auto" *ngIf="products().length > 0">
-          <loading-container class="w-full cursor-pointer" [isLoading]="isLoading">
-            <div
+        <div class="col-12 py-3 h-auto w-full font-bold cursor-pointer" *ngIf="products().length > 0">
+          <!-- <ng-template #close>
+            <button
+              pButton
               pRipple
-              class="col flex align-items-center justify-content-between bg-primary hover-effect px-4"
+              icon="pi pi-whatsapp"
+              class="p-button-outlined p-button-rounded cursor-pointer"
+              (click)="onClickWhatsapp()"></button>
+
+            <label class="w-full text-center"> Close </label>
+          </ng-template>
+
+          <loading-container class="w-full" [isLoading]="isLoading">
+            <div
+              *ngIf="!isOrdered || isOrderPending(data.status); else closeBtn"
+              pRipple
+              class="col flex align-items-center justify-content-between bg-primary highlight px-4"
               style="height: 3rem; border-radius: 50px"
               (click)="onSubmit()">
-              <label class="w-full font-bold text-center cursor-pointer" *ngIf="isOrdered && data.status !== 'pending'; else payment">
-                Close
-              </label>
-
-              <ng-template #payment>
-                <div>
-                  <i class="pi pi-check mr-2 font-bold"></i>
-                  <label class="font-bold cursor-pointer">
-                    {{ isOrdered ? 'Payment' : 'Checkout' }}
-                  </label>
+              <div class="w-fit flex align-items-center justify-content-between gap-2">
+                <i class="pi pi-check"></i>
+                <label> {{ isOrdered ? 'Payment' : 'Checkout' }} </label>
+              </div>
+              <label> {{ form.value['totalPrice'] | currency }} </label>
+            </div>
+          </loading-container> -->
+          <loading-container class="w-full" [isLoading]="isLoading">
+            <div
+              pRipple
+              class="col flex align-items-center justify-content-between bg-primary highlight px-4"
+              style="height: 3rem; border-radius: 50px"
+              (click)="onSubmit()">
+              <ng-container *ngIf="!isOrdered || isOrderPending(data.status); else closeBtn">
+                <div class="w-fit flex align-items-center justify-content-between gap-2">
+                  <i class="pi pi-check"></i>
+                  <label> {{ isOrdered ? 'Payment' : 'Checkout' }} </label>
                 </div>
-                <label class="font-bold cursor-pointer"> {{ form.value['totalPrice'] | currency }} </label>
+                <label> {{ form.value['totalPrice'] | currency }} </label>
+              </ng-container>
+
+              <ng-template #closeBtn>
+                <label class="w-full text-center"> Close </label>
               </ng-template>
             </div>
           </loading-container>

@@ -2,7 +2,6 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Product } from 'src/app/interface/product';
 import SharedUtil from 'src/app/lib/shared.util';
-import { SharedService } from 'src/app/service/shared.service';
 
 @Component({
   templateUrl: './product-dialog.component.html',
@@ -22,8 +21,7 @@ export class ProductDialogComponent extends SharedUtil implements OnInit, AfterV
 
   constructor(
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    public sharedService: SharedService
+    public config: DynamicDialogConfig
   ) {
     super();
   }

@@ -47,7 +47,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   constructor(
     public appMain: AppMainComponent,
     public customerService: CustomerService,
-    public sharedService: SharedService,
+    private sharedService: SharedService,
     private toastService: ToastService,
     private route: ActivatedRoute,
     private router: Router,

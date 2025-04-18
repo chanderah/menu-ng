@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
@@ -9,22 +8,11 @@ import { PrimeNGConfig } from 'primeng/api';
 export class AppComponent implements OnInit {
   public menuMode = 'static';
 
-  constructor(
-    private router: Router,
-    private primengConfig: PrimeNGConfig
-  ) {
-    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-  }
+  constructor(private primengConfig: PrimeNGConfig) {}
 
   async ngOnInit() {
     this.primengConfig.ripple = true;
     document.documentElement.style.fontSize = '14px';
-
-    // interval(3000).subscribe((res) => {
-    //   document.body.classList.forEach((v) => {
-    //     console.log('v', v);
-    //   });
-    // });
 
     // this.initMidtrans();
   }

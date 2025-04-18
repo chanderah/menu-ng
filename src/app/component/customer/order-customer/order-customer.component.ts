@@ -36,11 +36,6 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
     private sharedService: SharedService
   ) {
     super();
-    // this.router.routeReuseStrategy.shouldReuseRoute = (future) => {
-    //   const targetUrl = future['_routerState'].url;
-    //   const result = targetUrl !== '/order';
-    //   return result;
-    // };
 
     router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.state = this.router.getCurrentNavigation()?.extras?.state as OrderState;
@@ -82,14 +77,13 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
     this.isLoading = true;
 
     this.stopPolling();
-    this.subscription = interval(3000)
+    this.subscription = interval(2000)
       .pipe(
         startWith(0),
         switchMap(() => this.apiService.getOrderById(this.state.order.id))
       )
       .subscribe((res) => {
-        const isPending = res.data.status === 'pending';
-        if (isPending) {
+        if (this.isOrderPending(res.data.status)) {
           // keep pooling
         } else {
           this.stopPolling();

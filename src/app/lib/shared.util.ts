@@ -105,6 +105,10 @@ export default class SharedUtil {
     return status === 'pending';
   }
 
+  isOrderExpired(status: string) {
+    return status === 'expire';
+  }
+
   snakeToTitleCase(str: string) {
     return snakeToTitleCase(str);
   }
