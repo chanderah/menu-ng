@@ -53,12 +53,12 @@ export class ApiInterceptor implements HttpInterceptor {
               body: jsonParse(this.aes256Service.decrypt(res.body.encryptedData)),
             });
           }
-          this.logResponse(req, res, reqTime);
+          this.log(req, res, reqTime);
         }
         return res;
       }),
       catchError((err: HttpErrorResponse) => {
-        this.logResponse(req, err, reqTime);
+        this.log(req, err, reqTime);
 
         const isLoggingIn = req.url.includes('/user/login');
         if (isLoggingIn) {
@@ -68,7 +68,8 @@ export class ApiInterceptor implements HttpInterceptor {
         }
 
         this.toastService.errorToast('Something went wrong.');
-        throw new Error('Something went wrong.');
+        // throw new Error('Something went wrong.');
+        return of(new HttpResponse({ body: err }));
       })
     );
   }
@@ -83,10 +84,11 @@ export class ApiInterceptor implements HttpInterceptor {
     throw new Error('Unauthorized');
   }
 
-  logResponse(req: HttpRequest<unknown>, res: HttpResponse<any> | HttpErrorResponse, reqTime: number) {
+  log(req: HttpRequest<unknown>, res: HttpResponse<any> | HttpErrorResponse, reqTime: number) {
     if (!isDevelopment) return;
 
-    console.log('REQUEST:', req.method, req.url, req.body);
+    this.logRequest(req);
+
     const isError = res instanceof HttpErrorResponse;
     if (isError) {
       const err = res.error?.message ? res.error : res;
@@ -98,5 +100,28 @@ export class ApiInterceptor implements HttpInterceptor {
       const responseTime = new Date().getTime() - reqTime;
       console.log('RESPONSE:', res.body?.status ?? res.status, req.method, `(${responseTime}ms)`, req.url, res.body);
     }
+  }
+
+  logRequest(req: HttpRequest<unknown>) {
+    let reqBody = req.body;
+
+    const isFormData = req.body instanceof FormData;
+    if (isFormData) {
+      const obj: any = {};
+      req.body.forEach((v, key) => {
+        const value = jsonParse(v);
+        if (obj[key]) {
+          if (Array.isArray(obj[key])) {
+            obj[key].push(value);
+          } else {
+            obj[key] = [obj[key], value];
+          }
+        } else {
+          obj[key] = value;
+        }
+      });
+      reqBody = obj;
+    }
+    console.log('REQUEST:', req.method, req.url, reqBody);
   }
 }

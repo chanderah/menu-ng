@@ -18,6 +18,8 @@
         [loading]="isLoading"
         [rowsPerPageOptions]="[10, 20, 50, 100]"
         [rows]="pagingInfo.limit"
+        [sortField]="pagingInfo.sortField"
+        [sortOrder]="getSortOrder(pagingInfo)"
         [totalRecords]="pagingInfo.rowCount"
         [lazy]="true"
         [filterDelay]="500"
@@ -102,7 +104,7 @@
 </div>
 
 <!-- PRODUCT DIALOG -->
-<div [formGroup]="productForm">
+<div [formGroup]="form">
   <p-dialog
     [maximizable]="true"
     [header]="selectedProduct ? 'Edit Product' : 'Add Product'"
@@ -232,10 +234,10 @@
             pButton
             pRipple
             icon="pi pi-check"
-            (click)="onSubmit()"
             label="Save"
-            [disabled]="isLoading"
-            class="w-auto p-button-outlined"></button>
+            class="w-auto p-button-outlined"
+            (click)="onSubmit()"
+            [disabled]="isLoading || form.invalid"></button>
         </div>
       </div>
     </div>
@@ -248,7 +250,7 @@
     header="Add Options"
     [(visible)]="showProductOptionsDialog"
     (onHide)="onHideProductOptionsDialog()"
-    [style]="{ width: '40vw', height: 'auto' }"
+    [style]="defaultStackedDialogConfig.style"
     [breakpoints]="dialogBreakpoints"
     [dismissableMask]="false"
     [closeOnEscape]="false"
@@ -256,13 +258,6 @@
     [blockScroll]="true"
     showEffect="fade">
     <div formArrayName="options" class="p-fluid px-2">
-      <!-- <button (click)="addOption()" class="my-2">Add</button> -->
-      <div class="flex gap-3 justify-content-between my-4">
-        <!-- <button pButton pRipple class="p-button-outlined" type="button" label="Copy From" (click)="addOption()">
-                </button> -->
-        <button pButton pRipple class="p-button-outlined" type="button" label="Add" (click)="addOption()"></button>
-      </div>
-
       <div *ngFor="let option of options().controls; index as i" [formGroupName]="i" class="card p-1 mb-3">
         <div class="col-12 flex align-items-center justify-content-between mt-2">
           <div class="field-checkbox mb-0">
@@ -282,6 +277,7 @@
             <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteOption(i)"></button>
           </div>
         </div>
+
         <div formArrayName="values" class="col-12">
           <div *ngFor="let value of optionValues(i).controls; index as j" [formGroupName]="j">
             <div class="col-12">
@@ -313,6 +309,7 @@
             </div>
           </div>
         </div>
+
         <button
           pButton
           pRipple
@@ -320,6 +317,10 @@
           icon="pi pi-plus"
           (click)="addOptionValue(i)"
           class="w-auto p-button-text text-sm ml-2 mb-2"></button>
+      </div>
+
+      <div class="w-full flex justify-content-end">
+        <button pButton pRipple class="p-button-text w-fit" label="Option" icon="pi pi-plus" (click)="addOption()"></button>
       </div>
 
       <div class="flex justify-content-end gap-2 mt-4">
@@ -337,7 +338,7 @@
           class="w-auto p-button-outlined"
           label="Save"
           (click)="onSaveProductOptions()"
-          [disabled]="isLoading"></button>
+          [disabled]="options().invalid"></button>
       </div>
     </div>
   </p-dialog>

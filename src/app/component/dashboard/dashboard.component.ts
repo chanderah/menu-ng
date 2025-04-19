@@ -108,21 +108,7 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     this.apiService.getProducts(this.pagingInfo).subscribe((res) => {
       this.isLoading = false;
       if (res.status === 200) {
-        const data = [
-          ...res.data,
-          ...res.data,
-          ...res.data,
-          ...res.data,
-          ...res.data,
-          ...res.data,
-          ...res.data,
-          ...res.data,
-          ...res.data,
-          ...res.data,
-          ...res.data,
-          ...res.data,
-        ];
-
+        const data = res.data;
         this.pagingInfo.rowCount = res.rowCount;
         this.products = page === 1 ? data : [...this.products, ...data];
         if (page === 1) {
@@ -154,7 +140,6 @@ export class DashboardComponent extends SharedUtil implements OnInit {
 
   getFeaturedProducts() {
     if (this.swiperOptions) return;
-    // if (this.swiperOptions && this.selectedCategory) return;
     this.apiService
       .getProducts({
         limit: 10,
@@ -168,13 +153,13 @@ export class DashboardComponent extends SharedUtil implements OnInit {
           this.featuredProducts = res.data;
           this.swiperOptions = {
             autoHeight: true,
-            autoplay: {
-              delay: 2500,
-              pauseOnMouseEnter: true,
-              disableOnInteraction: false,
-            },
             loop: true,
             centeredSlides: true,
+            autoplay: {
+              delay: 2500,
+              pauseOnMouseEnter: false,
+              disableOnInteraction: true,
+            },
             breakpoints: {
               0: {
                 slidesPerView: 1,

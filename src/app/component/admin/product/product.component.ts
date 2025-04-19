@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { Product, ProductOption, ProductOptionValue } from 'src/app/interface/product';
@@ -27,9 +27,14 @@ import { ToastService } from 'src/app/service/toast.service';
   ],
 })
 export class ProductComponent extends SharedUtil implements OnInit {
-  isLoading: boolean = true;
-
-  pagingInfo = {} as PagingInfo;
+  isLoading: boolean = false;
+  pagingInfo: PagingInfo = {
+    filter: '',
+    limit: 10,
+    offset: 0,
+    sortField: 'id',
+    sortOrder: 'DESC',
+  };
 
   showProductDialog: boolean = false;
   showProductOptionsDialog: boolean = false;
@@ -39,7 +44,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
   selectedProduct!: Product;
   selectedProductImage!: Nullable<{ file: File; preview: string }>;
   selectedProductOptions!: ProductOption[]; // temp
-  productForm: FormGroup;
+  form!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,15 +60,15 @@ export class ProductComponent extends SharedUtil implements OnInit {
   }
 
   initForm() {
-    this.productForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       id: [null, []],
-      image: [null, []],
+      image: [null, [Validators.required]],
       name: ['', [Validators.required]],
       code: ['', []],
       categoryId: [null, []],
       description: ['', [Validators.maxLength(100)]],
       price: [0, [Validators.required]],
-      featured: [false],
+      featured: [this.pagingInfo.offset === 0 && this.products.length < 6],
       status: [true],
       createdBy: [0, [Validators.required]],
       options: this.formBuilder.array([]),
@@ -72,13 +77,16 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
   getProducts(e?: LazyLoadEvent) {
     this.resetProductDialog();
-    this.pagingInfo = {
-      filter: e.globalFilter || '',
-      limit: e?.rows || 10,
-      offset: e?.first || 0,
-      sortField: e?.sortField || 'ID',
-      sortOrder: e?.sortOrder ? (e.sortOrder === 1 ? 'ASC' : 'DESC') : 'ASC',
-    };
+
+    if (e) {
+      this.pagingInfo = {
+        filter: e.globalFilter,
+        limit: e.rows,
+        offset: e.first,
+        sortField: e.sortField,
+        sortOrder: e.sortOrder === 1 ? 'ASC' : 'DESC',
+      };
+    }
 
     this.isLoading = true;
     this.apiService.getProducts(this.pagingInfo).subscribe((res) => {
@@ -100,6 +108,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
   async onSelectImage(e: UploadEvent, fileUpload: FileUpload) {
     try {
       const file = await resizeImg<File>(e.files[0]);
+      this.form.get('image').setValue(file.name);
       this.selectedProductImage = {
         file,
         preview: await fileToBase64(file),
@@ -113,7 +122,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
   async onSubmit() {
     this.isLoading = true;
-    this.apiService.saveProduct(this.productForm.value, [this.selectedProductImage?.file]).subscribe((res) => {
+    this.apiService.saveProduct(this.form.value, [this.selectedProductImage?.file]).subscribe((res) => {
       if (res.status === 200) {
         this.getProducts();
       } else {
@@ -138,7 +147,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
 
   onEditProduct() {
     this.selectedProduct.options.forEach((v) => this.addOption(v));
-    this.productForm.patchValue(this.selectedProduct);
+    this.form.patchValue(this.selectedProduct);
     this.showProductDialog = true;
   }
 
@@ -180,16 +189,12 @@ export class ProductComponent extends SharedUtil implements OnInit {
   }
 
   getSelectedProductOptionsName() {
-    let data: string[] = [];
-    this.options().controls.forEach((d: FormControl) => {
-      data.push(d.value.name);
-    });
-
-    return data.length === 0 ? 'No Options' : data.join(', ');
+    const names = this.getProductOptions(this.options().value).map((v) => v.option).join(', '); // prettier-ignore
+    return names.length ? names : 'No options';
   }
 
   options(): FormArray {
-    return this.productForm.get('options') as FormArray;
+    return this.form.get('options') as FormArray;
   }
 
   option(i: number) {
@@ -234,7 +239,7 @@ export class ProductComponent extends SharedUtil implements OnInit {
       this.formBuilder.group({
         id: [null],
         value: ['', [Validators.required]],
-        price: [null, [Validators.required]],
+        price: [null],
       })
     );
 

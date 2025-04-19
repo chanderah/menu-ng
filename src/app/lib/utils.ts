@@ -70,7 +70,7 @@ export const fileToBase64 = (file: File): Promise<string> => {
 };
 
 export const getImageSrc = (filePath: string, size?: number) => {
-  if (['http://', 'https://', 'data:image'].some((v) => filePath.includes(v))) return filePath;
+  if (['http://', 'https://', 'data:image'].some((v) => filePath?.includes(v))) return filePath;
   let url = `https://res.cloudinary.com/${environment.cloudinary.cloudName}/image/upload/`;
   if (size) url += `c_fill,h_${size},w_${size}/`;
   return url + filePath;
