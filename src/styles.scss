@@ -193,6 +193,8 @@ button.p-button:disabled {
 }
 
 .border-active {
-    border: 1px solid #4f46e5;
+    outline: 1px solid #4f46e5;
     border-radius: 1rem;
+    background: #eef2ff !important;
+    color: #4338ca !important;
 }
