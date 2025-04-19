@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { interval, startWith, Subscription, switchMap } from 'rxjs';
 import { SnapResponse } from 'src/app/interface/midtrans';
 import { Order } from 'src/app/interface/order';
 import SharedUtil from 'src/app/lib/shared.util';
-import { enableBodyScroll, filterUniqueArr } from 'src/app/lib/utils';
+import { filterUniqueArr } from 'src/app/lib/utils';
 import { ApiService } from 'src/app/service/api.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { SharedService } from 'src/app/service/shared.service';
@@ -31,21 +31,22 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
 
   constructor(
     public customerService: CustomerService,
-    private router: Router,
+    private route: ActivatedRoute,
     private apiService: ApiService,
     private sharedService: SharedService
   ) {
     super();
-
-    router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.state = this.router.getCurrentNavigation()?.extras?.state as OrderState;
   }
 
   ngOnInit(): void {
-    enableBodyScroll();
+    this.route.url.subscribe(() => {
+      this.state = history.state;
+      this.processOrder();
+    });
+  }
 
+  processOrder() {
     if (!this.state?.order) return this.getOrders();
-
     this.customerService.customer = {
       ...this.customerService.customer,
       listOrderId: filterUniqueArr([...this.customerService.customer.listOrderId, this.state.order.id]),
@@ -55,7 +56,7 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
       this.startPolling();
     } else {
       this.getOrders();
-      if (this.state.response && this.state.response.transaction_status !== 'pending') {
+      if (this.state.response && !this.isOrderPending(this.state.response.transaction_status)) {
         this.sharedService.showErrorNotification();
       }
     }
@@ -111,6 +112,5 @@ export class OrderCustomerComponent extends SharedUtil implements OnInit, OnDest
 
   ngOnDestroy(): void {
     this.stopPolling();
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 }

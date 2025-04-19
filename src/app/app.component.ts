@@ -1,20 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { disableBodyScroll, enableBodyScroll } from './lib/utils';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
-export class AppComponent implements OnInit {
-  public menuMode = 'static';
+export class AppComponent implements OnInit, AfterViewInit {
+  private observer!: MutationObserver;
+  menuMode = 'static';
 
   constructor(private primengConfig: PrimeNGConfig) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.primengConfig.ripple = true;
     document.documentElement.style.fontSize = '14px';
+  }
 
+  ngAfterViewInit(): void {
     // this.initMidtrans();
+
+    this.observer = new MutationObserver(() => {
+      const hasDialog = document.querySelector('.p-dialog') || document.querySelector('.p-sidebar');
+      if (hasDialog) {
+        disableBodyScroll();
+      } else {
+        enableBodyScroll();
+      }
+    });
+
+    this.observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
   }
 
   // initMidtrans() {

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import SharedUtil from 'src/app/lib/shared.util';
-import { capitalize, disableBodyScroll, enableBodyScroll } from 'src/app/lib/utils';
+import { capitalize } from 'src/app/lib/utils';
 import { Product, ProductOption } from '../../../../interface/product';
 import { CustomerService } from 'src/app/service/customer.service';
 import { ProductOrder } from 'src/app/interface/order';
@@ -30,7 +30,6 @@ export class AddToCartDialogComponent extends SharedUtil implements OnInit {
   }
 
   ngOnInit(): void {
-    disableBodyScroll();
     this.setForm();
   }
 
@@ -68,7 +67,6 @@ export class AddToCartDialogComponent extends SharedUtil implements OnInit {
   }
 
   hideDialog() {
-    enableBodyScroll();
     this.onHide.emit(true);
   }
 
@@ -150,7 +148,7 @@ export class AddToCartDialogComponent extends SharedUtil implements OnInit {
   }
 
   // ngOnInit(): void {
-  //   disableBodyScroll();
+  //   ;
   //   for (let i = 0; i < this.selectedProduct?.options.length; i++) {
   //     this.addOption();
   //     this.selectedProduct.options[i]?.values.forEach(() => this.addOptionValues(i));

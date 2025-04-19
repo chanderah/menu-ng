@@ -102,40 +102,15 @@
           </p-scrollPanel>
         </div>
 
-        <div class="col-12 py-3 h-auto w-full font-bold cursor-pointer" *ngIf="products().length > 0">
-          <!-- <ng-template #close>
-            <button
-              pButton
-              pRipple
-              icon="pi pi-whatsapp"
-              class="p-button-outlined p-button-rounded cursor-pointer"
-              (click)="onClickWhatsapp()"></button>
-
-            <label class="w-full text-center"> Close </label>
-          </ng-template>
-
-          <loading-container class="w-full" [isLoading]="isLoading">
-            <div
-              *ngIf="!isOrdered || isOrderPending(data.status); else closeBtn"
-              pRipple
-              class="col flex align-items-center justify-content-between bg-primary highlight px-4"
-              style="height: 3rem; border-radius: 50px"
-              (click)="onSubmit()">
-              <div class="w-fit flex align-items-center justify-content-between gap-2">
-                <i class="pi pi-check"></i>
-                <label> {{ isOrdered ? 'Payment' : 'Checkout' }} </label>
-              </div>
-              <label> {{ form.value['totalPrice'] | currency }} </label>
-            </div>
-          </loading-container> -->
+        <div class="col-12 py-3 h-auto w-full font-bold" *ngIf="products().length > 0">
           <loading-container class="w-full" [isLoading]="isLoading">
             <div
               pRipple
-              class="col flex align-items-center justify-content-between bg-primary highlight px-4"
+              class="col flex align-items-center justify-content-between bg-primary highlight px-4 cursor-pointer"
               style="height: 3rem; border-radius: 50px"
               (click)="onSubmit()">
               <ng-container *ngIf="!isOrdered || isOrderPending(data.status); else closeBtn">
-                <div class="w-fit flex align-items-center justify-content-between gap-2">
+                <div class="w-fit flex align-items-center justify-content-between gap-2 cursor-pointer">
                   <i class="pi pi-check"></i>
                   <label> {{ isOrdered ? 'Payment' : 'Checkout' }} </label>
                 </div>
@@ -143,7 +118,7 @@
               </ng-container>
 
               <ng-template #closeBtn>
-                <label class="w-full text-center"> Close </label>
+                <label class="w-full text-center cursor-pointer"> Close </label>
               </ng-template>
             </div>
           </loading-container>

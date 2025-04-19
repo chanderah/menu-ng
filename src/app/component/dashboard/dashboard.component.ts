@@ -7,7 +7,7 @@ import { debounceTime, filter, map, of, Subscription, switchMap } from 'rxjs';
 import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
-import { enableBodyScroll, fadeInOut, isMobile, moveUp } from 'src/app/lib/utils';
+import { fadeInOut, isMobile, moveUp } from 'src/app/lib/utils';
 import SwiperCore, { A11y, Autoplay, Controller, Navigation, Pagination, Scrollbar, SwiperOptions, Thumbs, Virtual, Zoom } from 'swiper';
 import { SharedService } from '../../service/shared.service';
 import { PagingInfo } from './../../interface/paging_info';
@@ -131,7 +131,6 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   }
 
   onShowOrderDialogChange(value: boolean) {
-    if (value === false) enableBodyScroll();
     this.showOrderDialog = value;
   }
 

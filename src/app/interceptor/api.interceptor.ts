@@ -95,8 +95,8 @@ export class ApiInterceptor implements HttpInterceptor {
 
       console.log('ERROR:', res.status, req.method, req.url, err);
     } else {
-      const responseTime = `(${new Date().getTime() - reqTime}ms)`;
-      console.log('RESPONSE:', res.body?.status ?? res.status, req.method, responseTime, req.url, res.body);
+      const responseTime = new Date().getTime() - reqTime;
+      console.log('RESPONSE:', res.body?.status ?? res.status, req.method, `(${responseTime}ms)`, req.url, res.body);
     }
   }
 }

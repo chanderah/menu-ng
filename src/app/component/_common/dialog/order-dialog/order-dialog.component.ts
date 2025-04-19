@@ -5,7 +5,6 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
 import SharedUtil from 'src/app/lib/shared.util';
-import { disableBodyScroll, enableBodyScroll } from 'src/app/lib/utils';
 import { ApiService } from '../../../../service/api.service';
 import { SharedService } from '../../../../service/shared.service';
 import { CustomerService } from 'src/app/service/customer.service';
@@ -42,8 +41,6 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
   }
 
   ngOnInit(): void {
-    disableBodyScroll();
-
     this.setForm();
     this.isOrdered = !!this.data;
     if (this.isOrdered) {
@@ -142,8 +139,6 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
       status: [null],
       createdAt: [null, []],
     });
-
-    // this.jsonParse("obj")
   }
 
   products() {
@@ -193,7 +188,6 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
   }
 
   hideDialog(saveCart: boolean = !this.isOrdered) {
-    enableBodyScroll();
     if (saveCart) this.customerService.cart = this.products().value;
     this.onShowCartDialogChange.emit(false);
   }
