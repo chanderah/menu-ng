@@ -7,7 +7,7 @@ import { debounceTime, filter, map, of, Subscription, switchMap } from 'rxjs';
 import { Category } from 'src/app/interface/category';
 import { Product } from 'src/app/interface/product';
 import { AppMainComponent } from 'src/app/layout/app.main.component';
-import { fadeInOut, isMobile, moveUp } from 'src/app/lib/utils';
+import { fadeInOut, isDesktop, isMobile, moveUp } from 'src/app/lib/utils';
 import SwiperCore, { A11y, Autoplay, Controller, Navigation, Pagination, Scrollbar, SwiperOptions, Thumbs, Virtual, Zoom } from 'swiper';
 import { SharedService } from '../../service/shared.service';
 import { PagingInfo } from './../../interface/paging_info';
@@ -45,8 +45,8 @@ export class DashboardComponent extends SharedUtil implements OnInit {
   filterCtrl = new FormControl('');
 
   constructor(
-    public appMain: AppMainComponent,
     public customerService: CustomerService,
+    private appMain: AppMainComponent,
     private sharedService: SharedService,
     private toastService: ToastService,
     private route: ActivatedRoute,
@@ -80,6 +80,19 @@ export class DashboardComponent extends SharedUtil implements OnInit {
     this.filterCtrl.valueChanges.pipe(debounceTime(400)).subscribe(() => {
       this.getProducts();
     });
+  }
+
+  onClickFilter(e: Event) {
+    const isOpened = this.appMain.overlayMenuActive || this.appMain.menuActiveMobile || true;
+    if (!isDesktop || (isDesktop && !isOpened)) {
+      this.appMain.toggleMenu(e);
+    }
+
+    const ulElement = document.querySelector('ul#menu');
+    ulElement.classList.add('border-active');
+    setTimeout(() => {
+      ulElement.classList.remove('border-active');
+    }, 800);
   }
 
   async getProducts(page: number = 1) {
