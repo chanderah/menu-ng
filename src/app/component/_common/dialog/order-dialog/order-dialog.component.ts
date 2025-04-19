@@ -85,6 +85,7 @@ export class OrderDialogComponent extends SharedUtil implements OnInit {
   async onSubmit() {
     if (this.isLoading || this.form.invalid) return;
     else if (this.isOrdered && this.data.status !== 'pending') return this.hideDialog();
+    else if (this.sharedService.isLoggedIn) return this.sharedService.showNotification('Customer only!', '🙈');
 
     this.isLoading = true;
     this.apiService.createOrder(this.form.value).subscribe({

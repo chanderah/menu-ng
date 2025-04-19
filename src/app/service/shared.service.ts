@@ -69,7 +69,6 @@ export class SharedService {
       this.dialogService.open(NotificationDialogComponent, {
         showHeader: false,
         width: 'auto',
-        modal: true,
         closeOnEscape: true,
         dismissableMask: true,
         data: {

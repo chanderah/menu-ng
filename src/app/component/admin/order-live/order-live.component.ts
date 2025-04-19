@@ -89,6 +89,7 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
       this.ws = new WebSocket(environment.wsUrl);
       this.ws.onmessage = (e) => {
         const res = this.jsonParse<WsMessage>(e.data);
+        console.log('res', res);
         if (res.type === 'new_order') {
           this.getOrders();
 

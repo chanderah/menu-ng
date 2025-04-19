@@ -21,7 +21,6 @@
       <div class="grid formgrid px-4">
         <div class="flex justify-content-start w-full mb-4">
           <span class="card-title" *ngIf="!isOrdered">Your Cart</span>
-
           <div class="flex flex-column w-full" *ngIf="isOrdered">
             <div class="w-full flex align-items-center justify-content-between">
               <span class="font-semibold text-lg">Order ID #{{ data.orderCode }}</span>
@@ -102,7 +101,7 @@
           </p-scrollPanel>
         </div>
 
-        <div class="col-12 py-3 h-auto w-full font-bold" *ngIf="products().length > 0">
+        <div class="col-12 py-3 h-auto w-full font-bold cursor-pointer" *ngIf="products().length > 0">
           <loading-container class="w-full" [isLoading]="isLoading">
             <div
               pRipple
