@@ -12,7 +12,13 @@
 // :host ::ng-deep {}
 
 .p-dialog:not(:has(.p-dialog-header)) .p-dialog-content {
-    border-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.p-dialog:not(:has(.p-dialog-footer)) .p-dialog-content {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
 .p-dialog-content:has(.notification) {

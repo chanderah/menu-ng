@@ -66,31 +66,27 @@
     [ngClass]="true && 'v'">
     <ng-template let-product pTemplate="gridItem">
       <div class="col-6 md:col-4">
-        <div class="card mat m-2 surface-border">
-          <div class="grid">
-            <div class="col-12 mb-2 cursor-pointer pa-2" (click)="onClickProduct(product)">
+        <div class="h-full m-2">
+          <div class="card m-0 p-0 h-full flex flex-column gap-2 mat surface-border">
+            <div class="cursor-pointer" (click)="onClickProduct(product)">
               <img
                 onerror="this.src='assets/images/default_product.png'"
                 class="object-fit-cover w-full shadow-2"
                 [src]="getImageSrc(product.image)"
                 [alt]="product.name" />
             </div>
-            <div class="col-12 mx-4">
-              <span class="text-left text-lg text-capitalize font-semibold max-lines-2">
-                {{ product.name }}
-              </span>
-            </div>
-            <div class="col-12 mx-4 no-pt">
+            <div class="flex flex-column w-full h-full gap-2 p-3">
+              <span class="text-left text-lg text-capitalize font-semibold max-lines-2"> {{ product.name }} </span>
               <span class="text-left text-md">{{ product.price | currency }}</span>
-            </div>
-            <div class="col-12 text-center mt-2">
-              <button
-                pButton
-                pRipple
-                label="Add to Cart"
-                class="p-button-rounded p-button-outlined"
-                (click)="onAddToCart(product)"
-                type="button"></button>
+              <div class="text-center mt-auto">
+                <button
+                  pButton
+                  pRipple
+                  label="Add to Cart"
+                  class="p-button-rounded p-button-outlined"
+                  (click)="onAddToCart(product)"
+                  type="button"></button>
+              </div>
             </div>
           </div>
         </div>

@@ -18,6 +18,10 @@
   @media (min-width: 992px) {
     padding: 16px 12px 0px;
   } */
+
+  #listProducts .p-grid {
+    row-gap: 16px;
+  }
 }
 
 .filter-search {
