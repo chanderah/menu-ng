@@ -70,13 +70,15 @@ export class CategoryComponent extends SharedUtil implements OnInit {
   }
 
   onDeleteCategory() {
-    if (this.isEmpty(this.selectedNode)) return;
-    this.isLoading = true;
-    this.apiService.deleteCategory(this.form.value).subscribe((res) => {
-      this.isLoading = false;
-      if (res.status === 200) {
-        this.refreshPage();
-      } else this.toastService.errorToast(res.message);
+    this.sharedService.showConfirm('Are you sure to delete this category?', () => {
+      this.isLoading = true;
+      this.apiService.deleteCategory(this.form.value).subscribe((res) => {
+        this.isLoading = false;
+        if (res.status === 200) {
+          this.sharedService.loadCategories().subscribe();
+          this.resetCategoryDialog();
+        } else this.toastService.errorToast(res.message);
+      });
     });
   }
 

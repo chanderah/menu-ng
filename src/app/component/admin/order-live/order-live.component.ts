@@ -1,7 +1,6 @@
 import { ApplicationRef, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Order } from 'src/app/interface/order';
-import { MessagingService } from 'src/app/service/messaging.service';
 import { PagingInfo } from '../../../interface/paging_info';
 import { ApiService } from '../../../service/api.service';
 import { SharedService } from '../../../service/shared.service';
@@ -47,8 +46,8 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
     private sharedService: SharedService,
     private toastService: ToastService,
     private apiService: ApiService,
-    private messagingService: MessagingService,
     private storageService: StorageService
+    // private messagingService: MessagingService,
   ) {
     super();
   }
@@ -89,7 +88,6 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
       this.ws = new WebSocket(environment.wsUrl);
       this.ws.onmessage = (e) => {
         const res = this.jsonParse<WsMessage>(e.data);
-        console.log('res', res);
         if (res.type === 'new_order') {
           this.getOrders();
 
@@ -137,7 +135,8 @@ export class OrderLiveComponent extends SharedUtil implements OnInit {
   }
 
   getLastFetchedId() {
-    return this.orders.length ? Math.max(...this.orders.map((v) => v.id)) : 0;
+    if (!this.orders.length) return 0;
+    return Math.max(...this.orders.map((v) => v.id));
   }
 
   showNewOrdersNotification(count: number) {
