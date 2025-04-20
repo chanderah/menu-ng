@@ -17,6 +17,9 @@ import { SwiperModule } from 'swiper/angular';
 import { TruncatePipe } from 'src/app/pipe/truncate.pipe';
 import { CustomCurrencyPipe } from 'src/app/pipe/currency.pipe';
 import { AddToCartDialogComponent } from 'src/app/component/dialog/add-to-cart-dialog/add-to-cart-dialog.component';
+import { BadgeComponent } from 'src/app/component/badge/badge.component';
+import { DividerModule } from 'primeng/divider';
+import { OrderDialogComponent } from 'src/app/component/dialog/order-dialog/order-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,10 +42,14 @@ import { AddToCartDialogComponent } from 'src/app/component/dialog/add-to-cart-d
     TruncatePipe,
     DataViewModule,
     ButtonModule,
-    LoadingContainerComponent,
     InputTextModule,
     SwiperModule,
     SidebarModule,
+    DividerModule,
+
+    LoadingContainerComponent,
+    BadgeComponent,
+    OrderDialogComponent,
   ],
 })
 export class CustomerModule {}
