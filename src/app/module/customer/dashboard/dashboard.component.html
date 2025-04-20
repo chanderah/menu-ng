@@ -75,8 +75,8 @@
                 [src]="getImageSrc(product.image)"
                 [alt]="product.name" />
             </div>
-            <div class="flex flex-column w-full h-full gap-2 p-3">
-              <span class="text-left text-lg text-capitalize font-semibold max-lines-2"> {{ product.name }} </span>
+            <div class="flex flex-column w-full h-full gap-2 p-3" [ngClass]="{ 'px-4': !isMobile }">
+              <span class="text-left text-lg text-capitalize font-semibold truncate"> {{ product.name }} </span>
               <span class="text-left text-md">{{ product.price | currency }}</span>
               <div class="text-center mt-auto">
                 <button
