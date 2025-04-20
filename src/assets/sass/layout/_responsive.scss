@@ -1,10 +1,10 @@
 @media (min-width: 992px) {
     .layout-wrapper {
         &.layout-overlay {
-            .layout-main-container {
-                margin-left: 0;
-                padding-left: 2rem;
-            }
+            // .layout-main-container {
+            //     margin-left: 0;
+            //     padding-left: 2rem;
+            // }
 
             .layout-sidebar {
                 transform: translateX(-100%);
@@ -35,22 +35,24 @@
 
                 .layout-main-container {
                     margin-left: 0;
-                    padding-left: 2rem;
+                    // padding-left: 2rem;
                 }
             }
         }
 
-        .layout-mask {
-            display: none;
-        }
+        // .layout-mask {
+        //     display: none;
+        // }
     }
 }
 
+
+// MOBILE
 @media (max-width: 991px) {
     .layout-wrapper {
         .layout-main-container {
             margin-left: 0;
-            padding-left: 2rem;
+            padding-inline: 1.5rem; // this
         }
 
         .layout-sidebar {

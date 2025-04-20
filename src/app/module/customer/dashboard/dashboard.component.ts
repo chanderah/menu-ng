@@ -161,17 +161,14 @@ export class DashboardComponent extends SharedUtil implements OnInit {
             autoplay: {
               delay: 2500,
               pauseOnMouseEnter: false,
-              disableOnInteraction: true,
+              // reverseDirection: true,
+              // disableOnInteraction: true,
             },
             breakpoints: {
-              0: {
-                slidesPerView: 1,
-              },
-              768: {
-                slidesPerView: 4,
-              },
+              0: { slidesPerView: 1 },
+              768: { slidesPerView: 4 },
             },
-          };
+          } as SwiperOptions;
         }
       });
   }

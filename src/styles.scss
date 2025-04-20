@@ -9,29 +9,29 @@
 @import 'assets/sass/layout/_layout';
 @import 'assets/sass/overrides/_overrides';
 
-:host ::ng-deep {
-    // .p-inputgroup p-dropdown {
-    //     display: flex;
-    //     align-items: center;
-    //     justify-content: center;
-    // }
+// :host ::ng-deep {
+// .p-inputgroup p-dropdown {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+// }
 
-    // .p-inputgroup textarea {
-    //     min-height: 54px !important;
+// .p-inputgroup textarea {
+//     min-height: 54px !important;
 
-    //     .text-first::first-letter {
-    //         text-transform: capitalize;
-    //     }
-    // }
+//     .text-first::first-letter {
+//         text-transform: capitalize;
+//     }
+// }
 
-    // .p-datatable {
-    //     margin-top: 1rem;
-    // }
+// .p-datatable {
+//     margin-top: 1rem;
+// }
 
-    // .p-datatable .p-datatable-thead>tr>th {
-    //     font-weight: 600;
-    // }
-}
+// .p-datatable .p-datatable-thead>tr>th {
+//     font-weight: 600;
+// }
+// }
 
 .p-dialog:not(:has(.p-dialog-header)) .p-dialog-content {
     border-top-left-radius: 6px;
@@ -357,8 +357,8 @@ button.p-button:disabled {
     // width: 100%;
     // height: auto;
     // padding-top: 25px;
-    padding-right: 50px;
-    padding-left: 50px;
+    // padding-right: 16px !important;
+    padding-left: 16px !important;
     // padding-bottom: 50px;
 }
 
