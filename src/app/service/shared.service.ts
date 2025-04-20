@@ -2,7 +2,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/interface/user';
-import { NotificationDialogComponent } from '../component/_common/dialog/notification-dialog/notification-dialog.component';
+import { NotificationDialogComponent } from '../component/dialog/notification-dialog/notification-dialog.component';
 import { sortArrayByLabelProperty } from '../lib/utils';
 import { BehaviorSubject, filter, merge, take, tap } from 'rxjs';
 import { Category } from '../interface/category';
