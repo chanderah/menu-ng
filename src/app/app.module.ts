@@ -4,7 +4,7 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Injectable, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppTopBarComponent } from './layout/app.topbar.component';
@@ -43,26 +43,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     AppFooterComponent,
     AppMenuComponent,
     AppMenuitemComponent,
-
-    /* PIPE */
-    // CustomCurrencyPipe,
-    // StripePipe,
-    // TruncatePipe,
-
-    /* DIALOG */
-    // NotificationDialogComponent,
-    // ProductDialogComponent,
-    // AddToCartDialogComponent,
-
-    /* MAIN COMPONENT */
-    // LoginComponent,
-    // DashboardComponent,
-    // OrderCustomerComponent,
-    // LoadingContainerComponent,
-    // BadgeComponent,
-    // OrderDetailsDialogComponent,
-    // ChoosePaymentDialogComponent,
-    // PrintDialogComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -75,41 +55,11 @@ export class MyHammerConfig extends HammerGestureConfig {
     BadgeModule,
     ButtonModule,
     CheckboxModule,
-
     ConfirmDialogModule,
     ToastModule,
+    HammerModule,
 
     OrderDialogComponent,
-
-    // DataViewModule,
-    // DividerModule,
-    // PasswordModule,
-    // SidebarModule,
-    // SkeletonModule,
-    // SwiperModule,
-    // HammerModule,
-    // ScrollPanelModule,
-    // QrCodeModule,
-    // ContextMenuModule,
-    // AutoFocusModule,
-    // InputTextModule,
-    // InputTextareaModule,
-    // InputNumberModule,
-    // InputMaskModule,
-    // InputSwitchModule,
-    // CheckboxModule,
-    // DropdownModule,
-    // DialogModule,
-    // TableModule,
-    // TreeModule,
-    // RadioButtonModule,
-    // FileUploadModule,
-    // ProgressSpinnerModule,
-    // ChipModule,
-    // ScrollToBottomDirective,
-    // MenuModule,
-    // DragDropModule,
-    // TagModule,
   ],
   providers: [
     // { provide: LOCALE_ID, useValue: 'id-ID' },
@@ -129,13 +79,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     MessageService,
     ConfirmationService,
     DialogService,
-
-    // /* SHARED */
-    // SharedService,
-    // CustomCurrencyPipe,
-    // StripePipe,
-    // TruncatePipe,
-    // TreeDragDropService,
   ],
   bootstrap: [AppComponent],
 })
