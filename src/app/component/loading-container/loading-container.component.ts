@@ -1,9 +1,10 @@
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProgressSpinnerModule],
   selector: 'loading-container',
   templateUrl: './loading-container.component.html',
   styleUrls: ['./loading-container.component.scss'],
