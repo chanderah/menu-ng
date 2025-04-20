@@ -19,8 +19,13 @@
     </ng-template>
     <ng-template pTemplate="content" [formGroup]="form">
       <div class="grid formgrid px-4">
-        <div class="flex justify-content-start w-full mb-4">
-          <span class="card-title" *ngIf="!isOrdered">Your Cart</span>
+        <div class="flex w-full mb-4">
+          <div class="w-full flex justify-content-between" *ngIf="!isOrdered">
+            <span class="card-title">Your Cart</span>
+            <span class="text-xs font-semibold" *ngIf="products().length as cartLength">
+              {{ cartLength }} {{ cartLength === 1 ? 'item' : 'items' }}
+            </span>
+          </div>
           <div class="flex flex-column w-full" *ngIf="isOrdered">
             <div class="w-full flex align-items-center justify-content-between">
               <span class="font-semibold text-lg">Order ID #{{ data.orderCode }}</span>
