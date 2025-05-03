@@ -20,6 +20,7 @@ import { AddToCartDialogComponent } from 'src/app/component/dialog/add-to-cart-d
 import { BadgeComponent } from 'src/app/component/badge/badge.component';
 import { DividerModule } from 'primeng/divider';
 import { OrderDialogComponent } from 'src/app/component/dialog/order-dialog/order-dialog.component';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { OrderDialogComponent } from 'src/app/component/dialog/order-dialog/orde
     SwiperModule,
     SidebarModule,
     DividerModule,
+    CheckboxModule,
 
     LoadingContainerComponent,
     BadgeComponent,
