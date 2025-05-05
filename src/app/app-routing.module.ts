@@ -4,6 +4,7 @@ import { AdminGuard } from './guard/admin.guard';
 import { CustomerGuard } from './guard/customer.guard';
 import { AppMainComponent } from './layout/app.main.component';
 import { LoginComponent } from './component/login/login.component';
+import { CustomerComponent } from './component/customer/customer.component';
 
 const routes: Route[] = [
   {
