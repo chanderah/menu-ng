@@ -35,7 +35,7 @@ export class CustomerGuard implements CanActivate {
       this.router.navigateByUrl('/', { replaceUrl: true });
       return true;
     } else if (!this.sharedService.isLoggedIn && !this.customerService.isCustomer) {
-      this.router.navigateByUrl('/customer', { skipLocationChange: true });
+      this.router.navigateByUrl('/unauthorized', { skipLocationChange: true });
       return false;
     }
     return true;

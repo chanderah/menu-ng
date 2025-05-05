@@ -443,3 +443,14 @@ button.p-button:disabled {
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
+
+.inset-0 {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.z-1000 {
+    z-index: 1000;
+}

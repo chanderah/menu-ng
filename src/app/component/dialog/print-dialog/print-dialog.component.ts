@@ -5,10 +5,11 @@ import jsPDF from 'jspdf';
 import { SharedService } from 'src/app/service/shared.service';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, DialogModule],
+  imports: [CommonModule, DialogModule, ButtonModule],
   selector: 'app-print-dialog',
   templateUrl: './print-dialog.component.html',
   styleUrls: ['./print-dialog.component.scss'],

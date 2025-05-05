@@ -28,7 +28,6 @@ import { CheckboxModule } from 'primeng/checkbox';
     OrderCompleteComponent,
     ProductDialogComponent,
     OrderCompleteComponent,
-
     // dialog
     AddToCartDialogComponent,
   ],
@@ -46,7 +45,6 @@ import { CheckboxModule } from 'primeng/checkbox';
     SidebarModule,
     DividerModule,
     CheckboxModule,
-
     LoadingContainerComponent,
     BadgeComponent,
     OrderDialogComponent,

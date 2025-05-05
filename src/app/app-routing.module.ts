@@ -3,8 +3,6 @@ import { Route, RouterModule } from '@angular/router';
 import { AdminGuard } from './guard/admin.guard';
 import { CustomerGuard } from './guard/customer.guard';
 import { AppMainComponent } from './layout/app.main.component';
-import { LoginComponent } from './component/login/login.component';
-import { CustomerComponent } from './component/customer/customer.component';
 
 const routes: Route[] = [
   {
@@ -24,8 +22,11 @@ const routes: Route[] = [
       },
     ],
   },
-  { path: 'customer', component: CustomerComponent },
-  { path: 'login', component: LoginComponent },
+  {
+    path: 'unauthorized',
+    loadComponent: () => import('./component/unauthorized/unauthorized.component').then((c) => c.UnauthorizedComponent),
+  },
+  { path: 'login', loadComponent: () => import('./component/login/login.component').then((c) => c.LoginComponent) },
   { path: '**', redirectTo: '' },
 ];
 @NgModule({

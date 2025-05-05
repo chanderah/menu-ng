@@ -6,23 +6,25 @@ import { ApiService } from 'src/app/service/api.service';
 import { ChoosePaymentDialogComponent } from '../choose-payment-dialog/choose-payment-dialog.component';
 import { SharedService } from 'src/app/service/shared.service';
 import { PrintDialogComponent } from '../print-dialog/print-dialog.component';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { BadgeComponent } from '../../badge/badge.component';
 import { LoadingContainerComponent } from '../../loading-container/loading-container.component';
 import { DialogModule } from 'primeng/dialog';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { CustomCurrencyPipe } from 'src/app/pipe/currency.pipe';
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
-    CurrencyPipe,
+    CustomCurrencyPipe,
     PrintDialogComponent,
     BadgeComponent,
     LoadingContainerComponent,
     DialogModule,
-    ReactiveFormsModule,
-    FormsModule,
+    ButtonModule,
+    InputTextModule,
   ],
   selector: 'app-order-details-dialog',
   templateUrl: './order-details-dialog.component.html',

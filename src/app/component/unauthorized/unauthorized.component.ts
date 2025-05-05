@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   imports: [],
   selector: 'app-unauthorized',
   template: `
-    <div class="flex justify-items-center align-items-center" style="width: 100vw; height: 100vh">
+    <div class="fixed inset-0 z-1000 flex justify-items-center align-items-center" style="width: 100dvw; height: 100dvh">
       <p class="text-center w-full font-semibold">Please scan your table QR Code to continue.</p>
     </div>
   `,
