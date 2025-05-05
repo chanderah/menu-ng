@@ -8,8 +8,6 @@ import { Component, OnInit } from '@angular/core';
     </div>
   `,
 })
-export class CustomerComponent implements OnInit {
+export class CustomerComponent {
   constructor() {}
-
-  ngOnInit(): void {}
 }

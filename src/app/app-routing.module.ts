@@ -23,6 +23,7 @@ const routes: Route[] = [
       },
     ],
   },
+  { path: 'customer', component: CustomerComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '' },
 ];

@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 
 import { CustomerRoutingModule } from './customer-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { CustomerComponent } from 'src/app/component/customer/customer.component';
 import { OrderCustomerComponent } from 'src/app/module/customer/dashboard/order-customer/order-customer.component';
 import { OrderCompleteComponent } from './dashboard/order-complete/order-complete.component';
 import { ProductDialogComponent } from './dashboard/product-dialog/product-dialog.component';
@@ -25,7 +24,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 @NgModule({
   declarations: [
     DashboardComponent,
-    CustomerComponent,
     OrderCustomerComponent,
     OrderCompleteComponent,
     ProductDialogComponent,
