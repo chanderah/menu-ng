@@ -47,6 +47,7 @@ import { StripePipe } from 'src/app/pipe/stripe.pipe';
     DragDropModule,
     InputTextModule,
     InputNumberModule,
+    // QrCodeComponent,
 
     LoadingContainerComponent,
     TruncatePipe,

@@ -9,10 +9,21 @@ import { PrintDialogComponent } from '../print-dialog/print-dialog.component';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { BadgeComponent } from '../../badge/badge.component';
 import { LoadingContainerComponent } from '../../loading-container/loading-container.component';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, PrintDialogComponent, BadgeComponent, LoadingContainerComponent],
+  imports: [
+    CommonModule,
+    CurrencyPipe,
+    PrintDialogComponent,
+    BadgeComponent,
+    LoadingContainerComponent,
+    DialogModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   selector: 'app-order-details-dialog',
   templateUrl: './order-details-dialog.component.html',
   styleUrls: ['./order-details-dialog.component.scss'],
