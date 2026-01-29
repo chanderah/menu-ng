@@ -1,6 +1,6 @@
 <div class="layout-menu-container h-full flex flex-column">
   <div class="w-full flex flex-column" *ngIf="sharedService.isLoggedIn">
-    <div class="w-full flex align-items-center justify-content-between">
+    <div class="w-full flex align-items-center justify-content-between pb-4">
       <span class="font-apple font-semibold text-sm cursor-default text-uppercase">
         {{ sharedService.user.username }}
       </span>
@@ -11,13 +11,14 @@
         icon="pi pi-power-off"
         label=""
         (click)="onLogout()"
-        class="p-button-sm p-button-danger p-button-outlined"></button>
+        class="p-button-sm p-button-danger p-button-outlined"
+      ></button>
     </div>
 
     <p-divider></p-divider>
   </div>
 
-  <div class="w-full h-full overflow-scroll">
+  <div class="w-full h-full overflow-hidden overflow-y-auto">
     <ul class="layout-menu" role="menu" (keydown)="onKeydown($event)">
       <ng-container *ngFor="let item of menus; let i = index">
         <li app-menu class="layout-menuitem-category" [item]="item" [index]="i" [root]="true" role="none">
